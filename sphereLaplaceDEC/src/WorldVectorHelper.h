@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace AMDiS;
+namespace AMDiS {
 
 double dot(const WorldVector<double> &v1, const WorldVector<double> &v2) {
   double rval = 0.0;
@@ -24,4 +24,6 @@ void appendToCSV(const WorldVector<double> &v, char* file) {
   ofstream out(file, ios::app);
   out << v[0] << "," << v[1] << "," << v[2] << endl;
   out.close();
+}
+
 }
