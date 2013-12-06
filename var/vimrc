@@ -1,0 +1,188 @@
+
+" .vimrc - Pattern
+" Konfigurations-Datei fuer den vim.
+
+" >Lebt< im Heimatverzeichnis $HOME unter dem Namen .vimrc (versteckt)
+
+" Diese Datei wird von vim beim Start stets geladen und enthaelte 
+" einige benuterdefinierte nuetzliche Makros fuer den vim zum Editieren 
+" von Quelltext-Dateien.
+
+" Hinweisen moechte ich auf die Zusatzfunktionen des vim,
+" die der vi z.T. nicht hat:
+"   *  Mehrfach-UNDO  (Taste u im K-Mode)
+"   *  split - Befehl (Z-Mode) zum Editieren mehrerer Dateien
+"   *  help  - Befehl (Z-Mode)
+"   *  Cursortasten funktionieren im I-Mode korrekt
+"   *  Ergaenzung von Befehlen und Dateinamen im Z-Mode mittels TAB-Taste
+"   *  CTRL-P () / CTRL-N () im I-Mode ergaenzen Text vor dem Cursor
+"   *  % - Taste im K-Mode auf irgendeiner Klammer (,{,[... zeigt Zugehoerige 
+"   *  * - Taste springt zum naechten Wort unter dem Cursor
+"   *  Besserer Bildaufbau. Man sieht, was man tut.
+"   *  Visual-Mode mit v und V zum Markieren von Text   (siehe :help)
+"   *  ... die vielen map-, ab-, set- Befehle im Z-Mode (siehe :help)
+
+" Diese Einstellungen vereinfachen Quelltext-Editierung und ausserdem:
+" CTRL-K im I-Mode und K-Mode:  Speichert und kompiliert das aktuelle Programm
+" CTRL-A m K-Mode fuehrt aktuelles Programm aus
+" CTRL-Z springt im I-Mode an den Zeilenanfang
+" CTRL-X springt im I-Mode an das Zeilenende
+" _head_ im I-Mode generiert Kopf. Nur fehlerfrei, falls vim Dateiname bekannt
+" PRINT im Z-Mode druckt angegebene Zeilen, z.B. :1,%!print druckt alles
+
+" Settings
+" --------
+
+" swap-files an einem Ort
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swp//
+
+filetype plugin on
+
+" Schrift f�r GVIM
+":set guifont=DejaVu\ LGC\ Sans\ Mono\ 11
+
+" Toolbar abschalten
+:set guioptions-=t
+:set guioptions-=T
+
+" SyntaxHervorhebung
+:syntax on
+:let fortran_free_source=1
+
+" Colorschema
+:colorscheme af
+
+" Autoindent (Einrueckung wie Zeile davor)
+:set autoindent
+
+" Backspace-Tasten-Verhalten. 
+" 2 heisst: loesche im Insertmodus linkes Zeichen ueber Zeilenende hinaus
+:set backspace=2 
+
+" Fehlerklingel aus dafür visuell
+:set noerrorbells 
+:set visualbell
+
+" Zeige im Kommandomodus die ueblicherweise blind getippten Kommandos, z.B. 100G
+: set showcmd 
+
+" Cursorposition an
+:set ruler
+
+" Tabulator-Schrittweite. Hier: 2 Zeichen
+:set tabstop=2
+
+" Bei Druck auf TAB-Taste fuege statt unsichtbarem TAB-Zeichen Leerstellen ein
+:set expandtab
+
+" Bei Zeilen-Links/Rechtsshift <<, >> Anzahl der Einrueckungen
+:set shiftwidth=2
+
+" Besserer Bildschirmaufbau :
+:set redraw
+
+" Zeigt den Arbeitsmodus :
+:set showmode
+
+" Was wurde gerade gemacht
+:set report=0
+
+" lange Zeilen umbrechen
+:set wrap
+
+" automatisches \nl bei 10 Zeichen vor Zeilenende (nur bei .tex)
+autocmd FileType tex :set wrapmargin=10
+
+" zeige Umbruch
+set showbreak=>
+
+" Zeige zugeh. öffnende Klammer "([{<" bei Eingabe der korresp. Schließenden
+set showmatch
+
+" Hintergrund-Helligkeit definieren ("dark" oder "light"),
+" (das Syntax-Highlighting wird daran angepasst)
+set background=dark
+
+
+
+"-------------------------------------------------------------------------------
+" Such- und Ersetzungs-Optionen
+"-------------------------------------------------------------------------------
+
+" Beim Suchen über Textanfang/ende hinausspringen
+" (Meldung: "Suche erreichte ANFANG/ENDE und wurde am ENDE/ANFANG fortgesetzt")
+set wrapscan
+
+" Suche NICHT case-senitiv, außer ein Grossbuchstabe steht im Suchmuster
+" SmartCase, SMARTcase, smartCASE, SmArTcAsE, sMaRtCaSe, smartcase
+set ignorecase
+set smartcase
+
+" Während Eingabe eines Suchmusters bereits suchen (inkrementell)
+" Alle zu einem Suchmuster passenden Textstücke markieren (highlight)
+" :nohlsearch schaltet Markierungen wieder ab
+set incsearch
+set hlsearch
+
+" Flag "g=global" bei Substitute-Kommando (":s") automatisch setzen
+set gdefault
+
+" pythontagsearch ctrl-x ctrl-o
+set ofu=syntaxcomplete#Complete
+
+" zusaetzliche filetypes
+" ----------------------
+
+" Octave
+augroup filetypedetect
+  au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+augroup END 
+
+" Tastatur-Mappings
+" -----------------
+
+" Fortran comp'n'run aus dem Hauptprogramm mit abgespeichertem Modul
+:map <F10> <ESC>:cd %:p:h<CR>:w!<CR>:!g95 mod.% % -o %<.out<CR>:!./%<.out<CR>
+
+" ASPELL Rechtschreibpr�fung
+:map <F11> :w!<CR>:!gnome-terminal --disable-factory -x aspell -t --lang=de_DE check %<CR>:e! %<CR>
+
+" LaTeX compilieren und anzeigen
+" :map <F12> <ESC>:cd %:p:h<CR>:w!<CR>:!latex %<CR>:!xdvi + -bg white -s 6 -fullscreen %<.dvi<CR>
+:map <F12> <ESC>:cd %:p:h<CR>:w!<CR>:!pdflatex %<CR>
+
+" Paste
+:map ^V <ESC>"+gP 
+
+" Abkuerzungen
+" ------------
+
+" LaTeX Abs
+autocmd FileType tex ab Rar \Rightarrow
+autocmd FileType tex ab rar \rightarrow
+autocmd FileType tex ab mbb \mathbb{}<ESC>i
+autocmd FileType tex ab frac \frac{}{}<ESC>2hi
+autocmd FileType tex ab alig \begin{align*}<CR>\end{align*}<ESC>ko<SPACE>
+autocmd FileType tex ab pmat \begin{pmatrix} \end{pmatrix}<ESC>13hi
+autocmd FileType tex ab eqna \begin{eqnarray*}<CR>\end{eqnarray*}<ESC>ko<SPACE>
+autocmd FileType tex ab enum \begin{enumerate}[(a)]<CR>\end{enumerate}<ESC>ko<TAB>\item
+autocmd FileType tex ab itemize \begin{itemize}<CR>\end{itemize}<ESC>ko<TAB>\item
+autocmd FileType tex ab frame \begin{frame}<CR>\end{frame}<ESC>ko<SPACE>
+autocmd FileType tex ab block \begin{block}{}<CR>\end{block}<ESC>k$i
+
+
+autocmd FileType tex inoremap <C-k> {}<ESC>i
+
+autocmd FileType tex inoremap _ _{}<LEFT>
+autocmd FileType tex inoremap ^ ^{}<LEFT>
+autocmd FileType tex inoremap \[ \[  \]<LEFT><LEFT><LEFT>
+autocmd FileType tex inoremap \( \(  \)<LEFT><LEFT><LEFT>
+autocmd FileType tex inoremap {{ \left\{  \right\}<ESC>8hi
+autocmd FileType tex inoremap (( \left(  \right)<ESC>7hi
+autocmd FileType tex inoremap $$ $$<LEFT>
+autocmd FileType tex inoremap ~ \tilde{}<LEFT>
+autocmd FileType tex inoremap $$ \frac{\partial }{\partial }<ESC>11hi
+autocmd FileType tex inoremap \textbf  \textbf{}<LEFT>
+
+let spell_auto_type = ""
