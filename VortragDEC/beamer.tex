@@ -16,6 +16,7 @@
 \usetheme{Warsaw}
 %\useinnertheme{rounded}
 \useoutertheme{infolines}
+\setbeamercovered{transparent}
 
 \title[Einführung in DEC]{Einführung in das Kalkül diskreter Differentialformen (DEC)}
 \author{Ingo Nitschke}
@@ -64,6 +65,7 @@
       \end{enumerate}
     \end{block}
     D.h. z.B. hängende Knoten sind nicht zulässig.
+    \pause
     \begin{block}{Das \textbf{Polytop} von \( K \) ist (der zu Grunde liegende Raum)}
       \[ |K| := \bigcup_{\sigma \in K} \sigma \]
     \end{block}
@@ -98,18 +100,20 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Umkreismittelpunkt (Circumcenter) \( c(\sigma^{p}) \)}
+    \begin{block}{\textbf{Umkreismittelpunkt (Circumcenter)} \( c(\sigma^{p}) \)}
       \[ c(\sigma^{0}) := \sigma^{0} \]
       \[ v_{0},\ldots,v_{p} \in \mathds{S}^{p-1}_{c(\sigma^{p})} \subset P(\sigma^{p}) \]
     \end{block}
-    \begin{block}{Wohlzentrierter Simplizialkomplex \( K \)}
+    \begin{block}{\textbf{Wohlzentrierter Simplizialkomplex} \( K \)}<2->
     \[ \forall \sigma \in K :\quad c(\sigma) \in \text{Int}(\sigma) \]
     \end{block}
 
+    \onslide<2->{
     \begin{minipage}{0.5\textwidth}
       (\( \text{Int}(\sigma^{0}) = \sigma^{0} \), \( \text{Bd}(\sigma^{0}) = \emptyset \))\\\\
       Die Wohlzentriertheit lässt sich durch Verfeinerung sicherstellen.
-    \end{minipage} \, 
+    \end{minipage}
+    } \, 
     \begin{minipage}{0.4\textwidth}
       \begin{block}{Beispiel}
         \centering\includegraphics[width=0.6\textwidth]{bilder/inkscape/subdivision.eps}
@@ -118,15 +122,15 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Umkreismittelpunktunterteilung eines wohlzentrierten Simplizialkomplexes (Circumcentric SubDivision)}
+    \begin{block}{\textbf{Umkreismittelpunktunterteilung} eines wohlzentrierten Simplizialkomplexes (Circumcentric SubDivision)}
       \[ \text{csd}K := \left\{ \left[c(\sigma_{1}),\ldots,c(\sigma_{k})\right] \middle| \sigma_{1} \prec \ldots \prec \sigma_{k}, 1 \le k \le n \right\} \]
     \end{block}
     \begin{minipage}{0.5\textwidth}
       \begin{itemize}
-        \item \( |\text{csd}K| = |K| \)
-        \item Umsetzbar als Verfeinerung ohne Oberflächenprojektion
-        \item Vorsicht: csd induziert eine andere Kantenorientierung als die oben angegebene.
-        \item Ist \( K \) ein Primärgitter, dann ist \( \text{csd}K \) das Dualgitter.
+        \item<2-> \( |\text{csd}K| = |K| \)
+        \item<3-> Umsetzbar als Verfeinerung ohne Oberflächenprojektion
+        \item<4-> Vorsicht: csd induziert eine andere Kantenorientierung als die oben angegebene.
+        \item<5-> Ist \( K \) ein Primärgitter, dann ist \( \text{csd}K \) das Dualgitter.
       \end{itemize}
     \end{minipage} \, 
     \begin{minipage}{0.45\textwidth}
@@ -137,15 +141,15 @@
   \end{frame}
 
   
-  \section{Differentialformen und diskrete Formen in 2D}
+  \section{Differentialformen und diskrete Formen}
 
   \begin{frame}
-    \begin{block}{Der Raum der \( p \)-Formen \( \Omega^{p}(M) \) auf einer (2-)Mannigfaltigkeit \( M \)}
+    \begin{block}{Der Raum der \textbf{Differential-\( p \)-Formen} \( \Omega^{p}(M) \) auf einer (2-)Mannigfaltigkeit \( M \)}
       \( x \in M \):
       \begin{itemize}
         \item allg.: \(\Omega^{p}_{x}(M) = \mathfrak{A}(\left( T_{x}M \right)^{p}, \R) \subset \mathfrak{L}(\left( T_{x}M \right)^{p}, \R) \)
-        \item \( \Omega^{0}_{x}(M) = \text{span}\left\{ 1 \right\} \), d.h. \( \Omega^{0}(M) = \mathfrak{C}^{\infty}(M, \R)\)
-        \item \( \Omega^{1}_{x}(M) = \text{span}\left\{ dx^{1}, dx^{2} \right\} = T_{x}^{*}M = \mathfrak{L}(T_{x}M, \R) \) 
+        \item<2-> \( \Omega^{0}_{x}(M) = \text{span}\left\{ 1 \right\} \), d.h. \( \Omega^{0}(M) = \mathfrak{C}^{\infty}(M, \R)\)
+        \item<3-> \( \Omega^{1}_{x}(M) = \text{span}\left\{ dx^{1}, dx^{2} \right\} = T_{x}^{*}M = \mathfrak{L}(T_{x}M, \R) \) 
         \begin{itemize}
           \item \( dx^{i}\left(\frac{\partial}{\partial x^{j}}\right) = \delta_{i}^{j} \) (Dualität)
           \item \(\Omega^{p}(M) \overset{\flat\ \ \sharp}{\longleftrightarrow} \mathfrak{X}(M)\)
@@ -153,7 +157,7 @@
               \( \qquad \alpha(v) = \sum_{i}\alpha_{i}v^{i} = \sum_{i,j}g_{ij}\alpha^{j}v^{i} = \langle \alpha^{\sharp}, v \rangle_{M} \)\\
               (Beziehung zum Skalarprodukt)
         \end{itemize}
-        \item \( \Omega^{2}_{x}(M) = \text{span}\left\{ dx^{1} \wedge dx^{2}\right\} \subset \mathfrak{L}(T_{x}M \times T_{x}M, \R) \)
+        \item<4-> \( \Omega^{2}_{x}(M) = \text{span}\left\{ dx^{1} \wedge dx^{2}\right\} \subset \mathfrak{L}(T_{x}M \times T_{x}M, \R) \)
         \begin{itemize}
           \item \( \left(dx^{1}\wedge dx^{2}\right) \left(\frac{\partial}{\partial x^{1}}, \frac{\partial}{\partial x^{2}}\right)
               = -\left(dx^{1}\wedge dx^{2}\right) \left(\frac{\partial}{\partial x^{2}}, \frac{\partial}{\partial x^{1}}\right) = 1 \)
@@ -228,8 +232,8 @@
     \begin{block}{Randoperator \( \partial:C_{p}(K) \longrightarrow C_{p-1}(K) \)}
       \[ \partial\sigma^{p} = \partial\left[ v_{0}, \ldots, v_{p} \right] = \sum_{i=0}^{p} (-1)^{p} \left[ v_{0}, \ldots, \hat{v}_{i}, \ldots,  v_{p} \right]\]
       \begin{itemize}
-        \item \( \partial\left[ v_{0}, v_{1}, v_{2} \right] = \left[ v_{1}, v_{2} \right] - \left[ v_{0}, v_{1} \right] + \left[ v_{0}, v_{1} \right]\)
-        \item \( \partial\left[ v_{0}, v_{1} \right] = \left[ v_{0} \right] - \left[ v_{1} \right]\)
+        \item \( \partial\left[ v_{0}, v_{1}, v_{2} \right] = \left[ v_{1}, v_{2} \right] - \left[ v_{0}, v_{2} \right] + \left[ v_{0}, v_{1} \right]\)
+        \item \( \partial\left[ v_{0}, v_{1} \right] = \left[ v_{1} \right] - \left[ v_{0} \right]\)
         \item \( \partial\circ\partial = 0 \) \qquad(\( \nearrow \) Kettenkomplex)
       \end{itemize}
     \end{block}
@@ -349,7 +353,7 @@
         \item \( \delta\circ\delta = 0 \)
         \item \( \left\langle\left\langle \delta\alpha , \beta \right\rangle\right\rangle = \left\langle\left\langle \alpha , \d\beta \right\rangle\right\rangle \)
         \item Laplace-De-Rham: \( \Delta^{dR} := \delta\d + \d\delta \)
-        \item Laplace-Beltrami: \( \Delta^{B} := \text{Div}\circ\text{Grad} := -\delta\d \)
+        \item Laplace-Beltrami: \( \Delta^{B} := -\text{Div}\circ\text{Grad} := \delta\d \)
         \item in 2D:
               \begin{itemize}
                 \item \( \delta = - * \d * \)
@@ -359,6 +363,63 @@
       \end{itemize}
     \end{block}
     (\( \alpha,\beta \in \Omega^{p}(M): \qquad \left\langle\left\langle \alpha , \beta \right\rangle\right\rangle = \int_{M}\alpha\wedge *\beta\))
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Diskrete Koableitung \( \delta: \Omega_{d}^{p+1}(K) \longrightarrow \Omega_{d}^{p}(K) \)}
+      \[ \delta := (-1)^{np+1} * \d * \]
+    \end{block}
+    
+    \subsection{Diskreter Laplace-Beltrami Operator}
+    \begin{block}{Beispiel: \( \Delta^{B}f \) an einem primär Knoten \( \sigma^{0} \) für eine diskrete \( 0
+    \)-Form \( f \in \Omega_{d}^{p}(0)\)}
+      \begin{align*}
+        \left\langle \Delta^{B}f , \sigma^{0} \right\rangle 
+                &= - \left\langle * \d * \d f , \sigma^{0}  \right\rangle
+                 = \frac{1}{|\star\sigma^{0}|} \left\langle \d * \d f , \star\sigma^{0} \right\rangle
+                                  & (|\sigma^{0}| &= 1) \\
+                &= \frac{1}{|\star\sigma^{0}|} \left\langle * \d f , \partial(\star\sigma^{0}) \right\rangle \\
+                &= \frac{1}{|\star\sigma^{0}|} \left\langle * \d f , \sum_{\sigma^{1}=[\sigma^{0},v]} \star\sigma^{1}\right\rangle \\
+      \end{align*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Beispiel: Fortsetzung zu \( \Delta^{B}f \)}
+      \begin{align*}
+        \left\langle \Delta^{B}f , \sigma^{0} \right\rangle
+                &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \left\langle * \d f ,\star\sigma^{1}\right\rangle \\
+                &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left\langle \d f , \sigma^{1}\right\rangle \\
+                &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left\langle f , \partial\sigma^{1}\right\rangle \\
+                &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left\langle f , [v] - \sigma^{0} \right\rangle \\
+                &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left( f(v) - f(\sigma^{0}) \right)
+      \end{align*}
+    \end{block}
+  \end{frame}
+
+
+
+  \section{...Fortsetzung folgt.}
+
+  \begin{frame}
+    \begin{block}{... Fortsetzung folgt.}
+      In den Hauptrollen:
+      \begin{itemize}
+        \item Interpolation \( \Phi: \mathfrak{X}(M) \longrightarrow \mathfrak{X}_{d}(K) \)
+        \item diskreter Flat-Operator \( \flat: \mathfrak{X}_{d}(K) \longrightarrow \Omega_{d}^{1}(K) \) \\
+              (\( \leadsto  \) Div, ...)
+        \item diskreter Sharp-Operator \( \sharp: \Omega_{d}^{1}(K) \longrightarrow \mathfrak{X}_{d}(K)\) \\
+              (\( \leadsto  \) Grad, Rot...)
+        \item diskretes äußeres Produkt (Dachprodukt) \( \wedge: \Omega_{d}^{p}(K)\times\Omega_{d}^{q}(K) \longrightarrow  \Omega_{d}^{p+q}(K) \) \\
+              (\( \leadsto  \) Kreuzprodukt \( \times \), ...)
+        \item diskretes inneres Produkt (Kontraktion) \( \mathbf{i}: \mathfrak{X}_{d}(K) \times \Omega_{d}^{p+1}(K) \longrightarrow \Omega_{d}^{p}(K)\) \\
+              (\( \leadsto  \) Lie-Ableitung \( \mathfrak{L}_{X} \), \( \nabla_{X} \), ...)
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{}
+      \centering \large \textbf{Vielen Dank für Ihre Aufmerksamkeit!}
+    \end{block}
   \end{frame}
 
 \end{document}
