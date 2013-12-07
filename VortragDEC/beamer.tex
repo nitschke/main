@@ -125,7 +125,8 @@
       \begin{itemize}
         \item \( |\text{csd}K| = |K| \)
         \item Umsetzbar als Verfeinerung ohne Oberflächenprojektion
-        \item Vorsicht: csd induziert eine andere Kantenorientierung als die oben angegebene
+        \item Vorsicht: csd induziert eine andere Kantenorientierung als die oben angegebene.
+        \item Ist \( K \) ein Primärgitter, dann ist \( \text{csd}K \) das Dualgitter.
       \end{itemize}
     \end{minipage} \, 
     \begin{minipage}{0.45\textwidth}
@@ -163,7 +164,7 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Kettenkomplex \( C_{p}(K) \)}
+    \begin{block}{(Primärer) Kettenkomplex \( C_{p}(K) \)}
       \begin{itemize}
         \item \( C_{p}(K) = \text{span}\left\{ \sigma^{p} \in K \right\} \text{ (formal)}\)
         \item \( c^{p} \in C_{p}(K) \) heißt (primäre) p-Kette.
@@ -284,6 +285,80 @@
       \[ s_{\sigma^{p},\ldots,\sigma^{n}} = \text{sgn}\left( \left[ c(\sigma^{0}),\ldots,c(\sigma^{p}) \right], \sigma^{p} \right) 
                                       \cdot \text{sgn}\left( \left[ c(\sigma^{0}),\ldots,c(\sigma^{n}) \right], \sigma^{n} \right) \]
     \end{block}
+    \begin{block}{Beispiel: 2D}
+      \begin{itemize}
+        \item Knoten (\( \sigma^{0} \)) werden auf die  Voronoi-\glqq Zellen\grqq (-Flächenketten) abgebildet.
+          (Orientierungen sind gleich der anderen Flächensimplexe \(\Leftarrow\) Orientierbarkeit) 
+        \item Kanten (\( \sigma^{1} \)) werden auf die Voronoi-\glqq Kanten\grqq (-Kantenketten) abgebildet.
+          (Orientierung (bei Rechte-Hand-Ambiente) durch Vierteldrehung von \( \sigma^{1} \) gegen den Uhrzeigersinn)
+        \item Flächen (\( \sigma^{2} \)) werden auf die Voronoi-Knoten abgebildet. (Orientierung ist \( +1 \) per Def.)
+      \end{itemize}
+    \end{block}
+  \end{frame}
+    
+  \begin{frame}
+    \begin{block}{Beispiel: 2D}
+      \centering\includegraphics[width=0.9\textwidth]{bilder/inkscape/dualSigma0.eps}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Dualer Kettenkomplex (Voronoikomplex) \( C_{p}(\star K) \)}
+      \[ C_{p}(\star K) := \text{Im}(\star_{n-p}) \le C_{p}(\text{csd}K) \]
+    \end{block}
+    \begin{block}{(Stern-)Dualitätsoperator \( \star: C_{p}(\star K) \longrightarrow C_{n-p}(K)\), so dass gilt}
+      \[ \star\star \sigma^{n-p} = (-1)^{p(n-p)}\sigma^{n-p}\]
+    \end{block}
+    \begin{block}{Beispiel: Kante \( \sigma^{1} \) in 2D}
+      \glqq Two Quarter Turns Make a Flip \grqq
+    \end{block}
+    \begin{block}{Raum der dualen diskreten \( p \)-Formen }
+      \[ \Omega^{p}_{d}(\star K) := C^{p}(\star K) := \mathfrak{L}(C_{p}(\star K), \R) \]
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Diskreter Hodge-Stern-Operator \( *: \Omega^{p}(K) \longrightarrow \Omega^{n-p}(\star K)\)}
+      \[ \frac{1}{|\star\sigma^{p}|} \left\langle *\alpha , \star\sigma^{p} \right\rangle := \frac{s}{|\sigma^{p}|} \left\langle \alpha , \sigma^{p} \right\rangle\]
+      \begin{itemize}
+        \item Für \( 1 \le p \le n-1: \qqquad s = 1 \)
+        \item Für \( p = 0: \qqquad s = (-1)^{n-1} \text{sgn} \left( \partial(\star\sigma^{0}), \star\sigma^{1} \right) \)
+              \begin{itemize}
+                \item Kante \( \sigma^{1} \succ \sigma^{0} \) zeigt von \( \sigma^{0} \) weg.
+                \item In 2D (bei Rechte-Hand-Ambiente) ist \( s = -1 \).
+              \end{itemize}
+              \item Für \( p = n:\)      
+     \[s = \begin{cases} (-1)^{n-1} & \text{ falls für } \tilde{\sigma}^{n-1} \subset \partial \sigma^{n} \text { die } \star\tilde{\sigma}^{n-1} \text{ von } \star\sigma^{n} \text{ wegzeigen,} \\
+                         (-1)^{n} & \text{ sonst.}
+           \end{cases}\]
+                \begin{itemize}
+                  \item In 2D ist \( s = 1 \).
+                \end{itemize}
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  
+  
+  \section{Koableitung}
+
+  \begin{frame}
+    \begin{block}{Koableitung \( \delta: \Omega^{p+1}(M) \longrightarrow \Omega^{p}(M) \) \qquad (Ind\( (M)=0 \))}
+      \[ \delta := (-1)^{np+1} * \d * \]
+      \begin{itemize}
+        \item \( \delta\circ\delta = 0 \)
+        \item \( \left\langle\left\langle \delta\alpha , \beta \right\rangle\right\rangle = \left\langle\left\langle \alpha , \d\beta \right\rangle\right\rangle \)
+        \item Laplace-De-Rham: \( \Delta^{dR} := \delta\d + \d\delta \)
+        \item Laplace-Beltrami: \( \Delta^{B} := \text{Div}\circ\text{Grad} := -\delta\d \)
+        \item in 2D:
+              \begin{itemize}
+                \item \( \delta = - * \d * \)
+                \item Laplace-Beltrami für eine \( 0 \)-Form \( f \) mit Metrik \( g=\text{diag}(g_{1}, g_{2}) \):
+                      \[ \Delta^{B}f = \frac{1}{\sqrt{|g|}} \left[ \ablx{}{1}\left( \sqrt{|g|}g^{1}\ablx{f}{1}\right) +  \ablx{}{2}\left( \sqrt{|g|}g^{2}\ablx{f}{2}\right)\right] \]
+              \end{itemize}
+      \end{itemize}
+    \end{block}
+    (\( \alpha,\beta \in \Omega^{p}(M): \qquad \left\langle\left\langle \alpha , \beta \right\rangle\right\rangle = \int_{M}\alpha\wedge *\beta\))
   \end{frame}
 
 \end{document}

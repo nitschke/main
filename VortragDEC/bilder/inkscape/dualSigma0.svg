@@ -24,7 +24,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="478.40192"
+     inkscape:cx="480.54478"
      inkscape:cy="435.01345"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -185,6 +185,18 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
          transform="scale(0.4) translate(7.4, 1)" />
     </marker>
+    <filter
+       inkscape:collect="always"
+       id="filter3906"
+       x="-0.079948053"
+       width="1.1598961"
+       y="-0.10866725"
+       height="1.2173345">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="9.9935066"
+         id="feGaussianBlur3908" />
+    </filter>
   </defs>
   <metadata
      id="metadata7">
@@ -384,5 +396,21 @@
        inkscape:connector-curvature="0"
        transform="translate(0,308.2677)"
        sodipodi:nodetypes="ccc" />
+    <path
+       style="color:#000000;fill:#ff06df;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;opacity:0.6191446;filter:url(#filter3906)"
+       d="M 160,324.09448 460,343.3802 360,544.80877 z"
+       id="path3052"
+       inkscape:connector-curvature="0"
+       transform="translate(0,308.2677)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="path3914"
+       sodipodi:cx="312.5"
+       sodipodi:cy="400.88019"
+       sodipodi:rx="8.9285717"
+       sodipodi:ry="8.9285717"
+       d="m 321.42857,400.88019 a 8.9285717,8.9285717 0 1 1 -17.85714,0 8.9285717,8.9285717 0 1 1 17.85714,0 z"
+       transform="translate(-2.1428571,304.69627)" />
   </g>
 </svg>
