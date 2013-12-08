@@ -16,7 +16,7 @@
 \usetheme{Warsaw}
 %\useinnertheme{rounded}
 \useoutertheme{infolines}
-\setbeamercovered{transparent}
+%\setbeamercovered{transparent}
 
 \title[Einführung in DEC]{Einführung in das Kalkül diskreter Differentialformen (DEC)}
 \author{Ingo Nitschke}
@@ -152,7 +152,7 @@
         \item<3-> \( \Omega^{1}_{x}(M) = \text{span}\left\{ dx^{1}, dx^{2} \right\} = T_{x}^{*}M = \mathfrak{L}(T_{x}M, \R) \) 
         \begin{itemize}
           \item \( dx^{i}\left(\frac{\partial}{\partial x^{j}}\right) = \delta_{i}^{j} \) (Dualität)
-          \item \(\Omega^{p}(M) \overset{\flat\ \ \sharp}{\longleftrightarrow} \mathfrak{X}(M)\)
+          \item \(\Omega^{1}(M) \overset{\flat\ \ \sharp}{\longleftrightarrow} \mathfrak{X}(M)\)
           \item  \( \alpha = \sum_{i}\alpha_{i}dx^{i} \in \Omega^{1}(M) \), \( v = \sum_{i}v^{i}\frac{\partial}{\partial x^{i}} \in \mathfrak{X}(M)  \):\\
               \( \qquad \alpha(v) = \sum_{i}\alpha_{i}v^{i} = \sum_{i,j}g_{ij}\alpha^{j}v^{i} = \langle \alpha^{\sharp}, v \rangle_{M} \)\\
               (Beziehung zum Skalarprodukt)
@@ -168,29 +168,30 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{(Primärer) Kettenkomplex \( C_{p}(K) \)}
+    \begin{block}{\textbf{{}(Primärer) Kettenkomplex} \( C_{p}(K) \)}
       \begin{itemize}
         \item \( C_{p}(K) = \text{span}\left\{ \sigma^{p} \in K \right\} \text{ (formal)}\)
-        \item \( c^{p} \in C_{p}(K) \) heißt (primäre) p-Kette.
+        \item<2-> \( c^{p} \in C_{p}(K) \) heißt (primäre) p-Kette.
       \end{itemize}
     \end{block}
-    \begin{block}{Beispiel}
+    \begin{block}{Beispiel}<2->
       \centering\includegraphics[width=0.4\textwidth]{bilder/inkscape/bspKette.eps}
       \[ c^{1} =  4e_{1} + 2e_{2} - e_{3} \in C_{1}(K) \]
     \end{block}
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Raum der (primären) diskreten \( p \)-Formen }
+    \begin{block}{Raum der \textbf{(primären) diskreten \( p \)-Formen} }
       \[ \Omega^{p}_{d}(K) := C^{p}(K) := \mathfrak{L}(C_{p}(K), \R) \]
     \end{block}
+    \pause
     \begin{block}{Von \( p \)-Formen zu diskreten \( p \)-Formen}
       \begin{itemize}
         \item Projektion eines Simplexes auf die Mannigfaltigkeit (abstraktes Simplex):
           \[ \pi: K \ni \sigma^{p} \longmapsto \pi(\sigma^{p}) =: \tau^{p} \in L \quad (\tau^{p} \subset M)  \]
-        \item De-Rham-Abbildung \( \psi^{p}: \Omega^{p}(M) \rightarrow C^{p}(L)\):
+        \item<3-> \textbf{De-Rham-Abbildung} \( \psi^{p}: \Omega^{p}(M) \rightarrow C^{p}(L)\):
           \[ \langle\psi^{p}(\alpha) , \tau^{p} \rangle := \psi^{p}(\alpha)(\tau^{p}) :=\int_{\tau^{p}} \alpha  \]
-        \item diskrete \( p \)-Form \( \alpha_{d} \in C^{p}(K)\) einfach durch \( \psi(\alpha)\circ\pi \), d.h. 
+        \item<4-> diskrete \( p \)-Form \( \alpha_{d} \in C^{p}(K)\) einfach durch \( \psi(\alpha)\circ\pi \), d.h. 
           \[ \langle \alpha_{d} , \sigma^{p} \rangle := \alpha_{d}(\sigma^{p}) := \langle \psi^{p}(\alpha) , \pi(\sigma^{p}) \rangle\]
       \end{itemize}
     \end{block}
@@ -199,9 +200,13 @@
   \begin{frame}
     \begin{block}{Beispiel: diskrete 1-Form im Limes}
       \begin{align*}
+        \onslide<2->{
         \alpha_{d}(\sigma_{\eps}^{1}) &= \langle \psi^{1}(\alpha) , s_{\eps} \rangle = \int_{s_{\eps}}\alpha = \int_{-\eps}^{\eps} \langle \alpha , \dot{s}_{\eps}(t) \rangle_{M} dt \\
-                                 &= 2\eps \langle \alpha , v \rangle_{M} + \mathcal{O}(\eps^{3}\max_{\tau}\|\ddot{s}_{\eps}(\tau)\|) \text{ bei } x_{0} \\
+                                 &= 2\eps \langle \alpha , v \rangle_{M} + \mathcal{O}(\eps^{3}\max_{\tau}\|\ddot{s}_{\eps}(\tau)\|) \text{ bei } x_{0}\\
+        }
+        \onslide<3->{
         \Rightarrow\quad  & \frac{1}{|\sigma^{1}_{\eps}|} \alpha_{d}(\sigma_{\eps}^{1}) = \alpha_{d}(v) = \alpha(v) +  \mathcal{O}(\eps^{2}\max_{\tau}\|\ddot{s}_{\eps}(\tau)\|)
+        }
       \end{align*}
       \centering\includegraphics[width=0.8\textwidth]{bilder/inkscape/EpsilonKette.eps}\\
       (\( s_{\eps} \) so parametrisiert, dass \( \|v\|_{\R^{N}} = 1 \))
@@ -213,15 +218,15 @@
   \section{Äußere Ableitung}
 
   \begin{frame}
-    \begin{block}{Äußere (Cartan) Ableitung \( \d: \Omega^{p}(M) \longrightarrow \Omega^{p+1}(M) \) auf einer (2-)Mannigfaltigkeit \( M \)}
+    \begin{block}{\textbf{Äußere (Cartan) Ableitung} \( \d: \Omega^{p}(M) \longrightarrow \Omega^{p+1}(M) \) auf einer (2-)Mannigfaltigkeit \( M \)}
       \begin{itemize}
-        \item \( f \in \Omega^{0}(M):\quad \d f = \ablx{f}{1}dx^{1} + \ablx{f}{2}dx^{2} \in  \Omega^{1}(M)\)
-        \item \( \alpha = \alpha_{1}dx^{1} + \alpha_{2}dx^{2} \in \Omega^{1}(M):\) 
+        \item<2-> \( f \in \Omega^{0}(M):\quad \d f = \ablx{f}{1}dx^{1} + \ablx{f}{2}dx^{2} \in  \Omega^{1}(M)\)
+        \item<3-> \( \alpha = \alpha_{1}dx^{1} + \alpha_{2}dx^{2} \in \Omega^{1}(M):\) 
                 \[\d\alpha = \left( \ablx{\alpha_{2}}{1} - \ablx{\alpha_{1}}{2} \right) dx^{1} \wedge dx^{2} \in \Omega^{2}(M)\]
-        \item \( 0 \rightarrow \mathfrak{C}^{\infty}(M) \overset{\d_{0}}{\rightarrow} \Omega^{1}(M) \overset{\d_{1}}{\rightarrow} \Omega^{2}(M) \rightarrow 0\) \\
+        \item<4-> \( 0 \rightarrow \mathfrak{C}^{\infty}(M) \overset{\d_{0}}{\rightarrow} \Omega^{1}(M) \overset{\d_{1}}{\rightarrow} \Omega^{2}(M) \rightarrow 0\) \\
               (\( \nearrow \) De-Rham-Kohomologie)
-        \item d.h. \( \d\circ\d = 0 \)
-        \item Stokes' Theorem: 
+        \item<4-> d.h. \( \d\circ\d = 0 \)
+        \item<5-> Stokes' Theorem: 
             \[ \int_{M}\d\omega = \int_{\partial M} \omega \qquad (\omega\in\Omega^{p}(M))\]
             (Kurzschreibweise, eigentlich \( \int_{\partial M} i^{*}\omega \) auf der RHS mit \( i: \partial M \rightarrow M \))
       \end{itemize}
@@ -229,26 +234,28 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Randoperator \( \partial:C_{p}(K) \longrightarrow C_{p-1}(K) \)}
+    \begin{block}{\textbf{Randoperator} \( \partial:C_{p}(K) \longrightarrow C_{p-1}(K) \)}
       \[ \partial\sigma^{p} = \partial\left[ v_{0}, \ldots, v_{p} \right] = \sum_{i=0}^{p} (-1)^{p} \left[ v_{0}, \ldots, \hat{v}_{i}, \ldots,  v_{p} \right]\]
       \begin{itemize}
         \item \( \partial\left[ v_{0}, v_{1}, v_{2} \right] = \left[ v_{1}, v_{2} \right] - \left[ v_{0}, v_{2} \right] + \left[ v_{0}, v_{1} \right]\)
         \item \( \partial\left[ v_{0}, v_{1} \right] = \left[ v_{1} \right] - \left[ v_{0} \right]\)
-        \item \( \partial\circ\partial = 0 \) \qquad(\( \nearrow \) Kettenkomplex)
+        \item \( \partial\circ\partial = 0 \) \qquad(\( \nearrow \) Ketten-Homologie)
       \end{itemize}
     \end{block}
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Diskrete Äußere Ableitung (Korandoperator) \( \d: \Omega_{d}^{p}(K) \longrightarrow \Omega_{d}^{p+1}(K) \)}
+    \begin{block}{\textbf{Diskrete Äußere Ableitung (Korandoperator)} \( \d: \Omega_{d}^{p}(K) \longrightarrow \Omega_{d}^{p+1}(K) \)}
       \[ \d\alpha := \alpha\circ\partial \]
       \begin{itemize}
         \item d.h. \( \left\langle \d\alpha , c_{p+1} \right\rangle =  \left\langle \alpha , \partial c_{p+1} \right\rangle\) 
-              \qquad(Diskretes Stokes' Theorem)
-        \item \( \d\circ\d = 0 \) \qquad(\( \nearrow \) Kokettenkomplex)
+              \qquad(\textbf{Diskretes Stokes' Theorem})
+        \pause
+        \item \( \d\circ\d = 0 \) \qquad(\( \nearrow \) Ketten-Kohomologie)
       \end{itemize}
     \end{block}
-    \begin{block}{Beispiel: Rücktransport (Pullback) einer diskreten Form \( \alpha\in\Omega_{d}^{p}(K)\) bzgl. \( \varphi:|\tilde{K}|\rightarrow |K| \)}
+    \pause
+    \begin{block}{Beispiel: \textbf{Rücktransport (Pullback)} einer diskreten Form \( \alpha\in\Omega_{d}^{p}(K)\) bzgl. \( \varphi:|\tilde{K}|\rightarrow |K| \)}
       \begin{align*}
         \left\langle \varphi^{*}(\d \alpha) , \sigma^{p+1} \right\rangle &= \left\langle \d \alpha , \varphi\sigma^{p+1} \right\rangle
                                                                           = \left\langle \alpha , \partial(\varphi\sigma^{p+1}) \right\rangle
@@ -256,7 +263,7 @@
                                                                          &= \left\langle \d(\varphi^{*}\alpha) , \sigma^{p+1} \right\rangle
       \end{align*}
     \end{block}
-    (\( \varphi^{*}\alpha \in \Omega_{d}^{p}(\tilde{K}) \) ist dann die zurückgezogene diskrete Form)
+    (\( \varphi^{*}\alpha \in \Omega_{d}^{p}(\tilde{K}) \) ist dann die \textbf{zurückgezogene diskrete Form})
   \end{frame}
 
 
@@ -265,14 +272,14 @@
   \section{Hodge-Operator}
 
   \begin{frame}
-    \begin{block}{Hodge-Stern-Operator \( *: \Omega^{p}(M) \longrightarrow \Omega^{n-p}(M)\) auf einer (2-)Mannigfaltigkeit \( M \) (mit Metrik \( g = \text{diag}(g_{1}, g_{2}) \))}
+    \begin{block}{\textbf{Hodge-Stern-Operator} \( *: \Omega^{p}(M) \longrightarrow \Omega^{n-p}(M)\) (auf einer (2-)Mannigfaltigkeit \( M \) (mit Metrik \( g = \text{diag}(g_{1}, g_{2}) \)))}
       \begin{itemize}
-        \item \( * \circ * = (-1)^{p(n-p)}\text{Id} \) \qquad (für \( \text{Ind}(M) = 0 \))
-        \item \( f \in \Omega^{0}(M):\quad * f = f \sqrt{|g|} dx^{1}\wedge dx^{2}  = f\mu\) 
-        \item \( \alpha = \alpha_{1}dx^{1} + \alpha_{2}dx^{2} \in \Omega^{1}(M):\) 
+        \item<2-> \( * \circ * = (-1)^{p(n-p)}\text{Id} \) \qquad (für \( \text{Ind}(M) = 0 \))
+        \item<3-> \( f \in \Omega^{0}(M):\quad * f = f \sqrt{|g|} dx^{1}\wedge dx^{2}  = f\mu\) 
+        \item<4-> \( \alpha = \alpha_{1}dx^{1} + \alpha_{2}dx^{2} \in \Omega^{1}(M):\) 
               \[ *\alpha = \sqrt{|g|} \left( g^{1} \alpha_{1}dx^{2} - g^{2} \alpha_{2}dx^{1} \right) = \sqrt{|g|} \left( \alpha^{1}dx^{2} - \alpha^{2}dx^{1} \right)\]
-        \item \( \omega = \omega_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M):\qquad *\omega = \frac{1}{\sqrt{|g|}}\omega_{12} \)
-        \item Allgemeine Definition: \( \alpha \wedge *\beta = \left\langle \alpha , \beta \right\rangle \mu\) für \( \alpha, \beta \in \Omega^{p}(M) \)\\
+        \item<5-> \( \omega = \omega_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M):\qquad *\omega = \frac{1}{\sqrt{|g|}}\omega_{12} \)
+        \item<6-> Allgemeine Definition: \( \alpha \wedge *\beta = \left\langle \alpha , \beta \right\rangle \mu\) für \( \alpha, \beta \in \Omega^{p}(M) \)\\
               \( \Rightarrow *\left( dx^{i_{1}} \wedge \ldots \wedge dx^{i_{p}} \right) 
                   = \sqrt{|g|} \sum_{\begin{smallmatrix}
                                           j_{1}<\ldots<j_{p} \\
@@ -283,19 +290,20 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{(Stern-)Dualitätsoperator \( \star: C_{p}(K) \longrightarrow C_{n-p}(\text{csd}K) \)}
+    \begin{block}{\textbf{(Stern-)Dualitätsoperator} \( \star: C_{p}(K) \longrightarrow C_{n-p}(\text{csd}K) \)}
       \[ \star(\sigma^{p}) = \sum_{\sigma^{p} \prec \ldots \prec \sigma^{n}} s_{\sigma^{p},\ldots,\sigma^{n}} \left[ c(\sigma^{p}),\ldots,c(\sigma^{n}) \right]  \]
       wobei für beliebige \( \sigma^{0} \prec \ldots \prec \sigma^{p-1} \prec \sigma^{p} \) aus \( K \):
       \[ s_{\sigma^{p},\ldots,\sigma^{n}} = \text{sgn}\left( \left[ c(\sigma^{0}),\ldots,c(\sigma^{p}) \right], \sigma^{p} \right) 
                                       \cdot \text{sgn}\left( \left[ c(\sigma^{0}),\ldots,c(\sigma^{n}) \right], \sigma^{n} \right) \]
     \end{block}
+    \pause
     \begin{block}{Beispiel: 2D}
       \begin{itemize}
-        \item Knoten (\( \sigma^{0} \)) werden auf die  Voronoi-\glqq Zellen\grqq (-Flächenketten) abgebildet.
+        \item<2-> Knoten (\( \sigma^{0} \)) werden auf die  Voronoi-\glqq Zellen\grqq (-Flächenketten) abgebildet.
           (Orientierungen sind gleich der anderen Flächensimplexe \(\Leftarrow\) Orientierbarkeit) 
-        \item Kanten (\( \sigma^{1} \)) werden auf die Voronoi-\glqq Kanten\grqq (-Kantenketten) abgebildet.
+        \item<3-> Kanten (\( \sigma^{1} \)) werden auf die Voronoi-\glqq Kanten\grqq (-Kantenketten) abgebildet.
           (Orientierung (bei Rechte-Hand-Ambiente) durch Vierteldrehung von \( \sigma^{1} \) gegen den Uhrzeigersinn)
-        \item Flächen (\( \sigma^{2} \)) werden auf die Voronoi-Knoten abgebildet. (Orientierung ist \( +1 \) per Def.)
+        \item<4-> Flächen (\( \sigma^{2} \)) werden auf die Voronoi-Knoten abgebildet. (Orientierung ist \( +1 \) per Def.)
       \end{itemize}
     \end{block}
   \end{frame}
@@ -307,23 +315,28 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Dualer Kettenkomplex (Voronoikomplex) \( C_{p}(\star K) \)}
+    \begin{block}{\textbf{Dualer Kettenkomplex (Voronoikomplex)} \( C_{p}(\star K) \)}
       \[ C_{p}(\star K) := \text{Im}(\star_{n-p}) \le C_{p}(\text{csd}K) \]
     \end{block}
-    \begin{block}{(Stern-)Dualitätsoperator \( \star: C_{p}(\star K) \longrightarrow C_{n-p}(K)\), so dass gilt}
+    \pause
+    \begin{block}{\textbf{(Stern-)Dualitätsoperator} \( \star: C_{p}(\star K) \longrightarrow C_{n-p}(K)\), so dass gilt}
       \[ \star\star \sigma^{n-p} = (-1)^{p(n-p)}\sigma^{n-p}\]
     \end{block}
+    \pause
     \begin{block}{Beispiel: Kante \( \sigma^{1} \) in 2D}
       \glqq Two Quarter Turns Make a Flip \grqq
     \end{block}
-    \begin{block}{Raum der dualen diskreten \( p \)-Formen }
+    \pause
+    \begin{block}{Raum der \textbf{dualen diskreten \( p \)-Formen} }
       \[ \Omega^{p}_{d}(\star K) := C^{p}(\star K) := \mathfrak{L}(C_{p}(\star K), \R) \]
     \end{block}
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Diskreter Hodge-Stern-Operator \( *: \Omega^{p}(K) \longrightarrow \Omega^{n-p}(\star K)\)}
+    \begin{block}{\textbf{Diskreter Hodge-Stern-Operator} \( *: \Omega^{p}(K) \longrightarrow \Omega^{n-p}(\star K)\)}
+      \pause
       \[ \frac{1}{|\star\sigma^{p}|} \left\langle *\alpha , \star\sigma^{p} \right\rangle := \frac{s}{|\sigma^{p}|} \left\langle \alpha , \sigma^{p} \right\rangle\]
+      \pause
       \begin{itemize}
         \item Für \( 1 \le p \le n-1: \qqquad s = 1 \)
         \item Für \( p = 0: \qqquad s = (-1)^{n-1} \text{sgn} \left( \partial(\star\sigma^{0}), \star\sigma^{1} \right) \)
@@ -347,14 +360,15 @@
   \section{Koableitung}
 
   \begin{frame}
-    \begin{block}{Koableitung \( \delta: \Omega^{p+1}(M) \longrightarrow \Omega^{p}(M) \) \qquad (Ind\( (M)=0 \))}
+    \begin{block}{\textbf{Koableitung} \( \delta: \Omega^{p+1}(M) \longrightarrow \Omega^{p}(M) \) \qquad (Ind\( (M)=0 \))}
+      \pause
       \[ \delta := (-1)^{np+1} * \d * \]
       \begin{itemize}
-        \item \( \delta\circ\delta = 0 \)
-        \item \( \left\langle\left\langle \delta\alpha , \beta \right\rangle\right\rangle = \left\langle\left\langle \alpha , \d\beta \right\rangle\right\rangle \)
-        \item Laplace-De-Rham: \( \Delta^{dR} := \delta\d + \d\delta \)
-        \item Laplace-Beltrami: \( \Delta^{B} := -\text{Div}\circ\text{Grad} := \delta\d \)
-        \item in 2D:
+        \item<3-> \( \delta\circ\delta = 0 \) 
+        \item<4-> \( \left\langle\left\langle \delta\alpha , \beta \right\rangle\right\rangle = \left\langle\left\langle \alpha , \d\beta \right\rangle\right\rangle \)
+        \item<5-> Laplace-De-Rham: \( \Delta^{dR} := \delta\d + \d\delta \)
+        \item<6-> Laplace-Beltrami: \( \Delta^{B} := -\text{Div}\circ\text{Grad} := \delta\d \)
+        \item<7-> in 2D:
               \begin{itemize}
                 \item \( \delta = - * \d * \)
                 \item Laplace-Beltrami für eine \( 0 \)-Form \( f \) mit Metrik \( g=\text{diag}(g_{1}, g_{2}) \):
@@ -362,24 +376,34 @@
               \end{itemize}
       \end{itemize}
     \end{block}
+    \onslide<4->{
     (\( \alpha,\beta \in \Omega^{p}(M): \qquad \left\langle\left\langle \alpha , \beta \right\rangle\right\rangle = \int_{M}\alpha\wedge *\beta\))
+    }
   \end{frame}
 
+  
+  \subsection{Diskreter Laplace-Beltrami Operator}
   \begin{frame}
-    \begin{block}{Diskrete Koableitung \( \delta: \Omega_{d}^{p+1}(K) \longrightarrow \Omega_{d}^{p}(K) \)}
+    \begin{block}{\textbf{Diskrete Koableitung} \( \delta: \Omega_{d}^{p+1}(K) \longrightarrow \Omega_{d}^{p}(K) \)}
       \[ \delta := (-1)^{np+1} * \d * \]
     \end{block}
-    
-    \subsection{Diskreter Laplace-Beltrami Operator}
+    \pause
     \begin{block}{Beispiel: \( \Delta^{B}f \) an einem primär Knoten \( \sigma^{0} \) für eine diskrete \( 0
     \)-Form \( f \in \Omega_{d}^{p}(0)\)}
+      \pause
       \begin{align*}
         \left\langle \Delta^{B}f , \sigma^{0} \right\rangle 
                 &= - \left\langle * \d * \d f , \sigma^{0}  \right\rangle
+                \onslide<4->{
                  = \frac{1}{|\star\sigma^{0}|} \left\langle \d * \d f , \star\sigma^{0} \right\rangle
                                   & (|\sigma^{0}| &= 1) \\
+                }
+                \onslide<5->{
                 &= \frac{1}{|\star\sigma^{0}|} \left\langle * \d f , \partial(\star\sigma^{0}) \right\rangle \\
+                }
+                \onslide<6->{
                 &= \frac{1}{|\star\sigma^{0}|} \left\langle * \d f , \sum_{\sigma^{1}=[\sigma^{0},v]} \star\sigma^{1}\right\rangle \\
+                }
       \end{align*}
     \end{block}
   \end{frame}
@@ -389,10 +413,18 @@
       \begin{align*}
         \left\langle \Delta^{B}f , \sigma^{0} \right\rangle
                 &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \left\langle * \d f ,\star\sigma^{1}\right\rangle \\
+                \onslide<2->{
                 &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left\langle \d f , \sigma^{1}\right\rangle \\
+                }
+                \onslide<3->{
                 &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left\langle f , \partial\sigma^{1}\right\rangle \\
+                }
+                \onslide<4->{
                 &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left\langle f , [v] - \sigma^{0} \right\rangle \\
+                }
+                \onslide<5->{
                 &= \frac{1}{|\star\sigma^{0}|} \sum_{\sigma^{1}=[\sigma^{0},v]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|} \left( f(v) - f(\sigma^{0}) \right)
+                }
       \end{align*}
     \end{block}
   \end{frame}
@@ -403,20 +435,26 @@
 
   \begin{frame}
     \begin{block}{... Fortsetzung folgt.}
+      \pause
       In den Hauptrollen:
       \begin{itemize}
-        \item Interpolation \( \Phi: \mathfrak{X}(M) \longrightarrow \mathfrak{X}_{d}(K) \)
-        \item diskreter Flat-Operator \( \flat: \mathfrak{X}_{d}(K) \longrightarrow \Omega_{d}^{1}(K) \) \\
+        \item diskrete Vektorfelder \( \mathfrak{X}_{d}(\star K)  \) (bzw. \( \mathfrak{X}_{d}(K)  \))
+        \pause
+        \item diskreter Flat-Operator \( \flat: \mathfrak{X}_{d}(\star K) \longrightarrow \Omega_{d}^{1}(K) \) \\
               (\( \leadsto  \) Div, ...)
-        \item diskreter Sharp-Operator \( \sharp: \Omega_{d}^{1}(K) \longrightarrow \mathfrak{X}_{d}(K)\) \\
+        \pause
+        \item diskreter Sharp-Operator \( \sharp: \Omega_{d}^{1}(K) \longrightarrow \mathfrak{X}_{d}(\star K)\) \\
               (\( \leadsto  \) Grad, Rot...)
+        \pause
         \item diskretes äußeres Produkt (Dachprodukt) \( \wedge: \Omega_{d}^{p}(K)\times\Omega_{d}^{q}(K) \longrightarrow  \Omega_{d}^{p+q}(K) \) \\
               (\( \leadsto  \) Kreuzprodukt \( \times \), ...)
-        \item diskretes inneres Produkt (Kontraktion) \( \mathbf{i}: \mathfrak{X}_{d}(K) \times \Omega_{d}^{p+1}(K) \longrightarrow \Omega_{d}^{p}(K)\) \\
+        \pause
+        \item diskretes inneres Produkt (Kontraktion) \( \mathbf{i}: \mathfrak{X}_{d}(\star K) \times \Omega_{d}^{p+1}(K) \longrightarrow \Omega_{d}^{p}(K)\) \\
               (\( \leadsto  \) Lie-Ableitung \( \mathfrak{L}_{X} \), \( \nabla_{X} \), ...)
       \end{itemize}
     \end{block}
 
+    \pause
     \begin{block}{}
       \centering \large \textbf{Vielen Dank für Ihre Aufmerksamkeit!}
     \end{block}
