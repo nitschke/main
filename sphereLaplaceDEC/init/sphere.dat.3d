@@ -1,7 +1,7 @@
 dimension of world:      3
 
 sphereMesh->macro file name:       ./macro/sphere_macro.3d
-sphereMesh->global refinements:    1
+sphereMesh->global refinements:    2
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2

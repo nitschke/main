@@ -4,13 +4,13 @@
 namespace AMDiS {
 
   ElVolumesInfo2d::ElVolumesInfo2d(ElInfo *el) {
-    dualVertexVol = new WorldVector<double>;
-    oppEdgeLen = new WorldVector<double>;
-    dualOppEdgeLen = new WorldVector<double>;
+    dualVertexVol = WorldVector<double>();
+    oppEdgeLen = WorldVector<double>();
+    dualOppEdgeLen = WorldVector<double>();
 
-    WorldVector<double> p0 = el->getCoords(0);
-    WorldVector<double> p1 = el->getCoords(1);
-    WorldVector<double> p2 = el->getCoords(2);
+    WorldVector<double> p0 = el->getCoord(0);
+    WorldVector<double> p1 = el->getCoord(1);
+    WorldVector<double> p2 = el->getCoord(2);
 
     WorldVector<double> e0 = p2 - p1;
     WorldVector<double> e1 = p0 - p2;

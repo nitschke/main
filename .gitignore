@@ -7,6 +7,7 @@
 **output/
 *Makefile
 *.cmake
+*.csv
 
 # latex stuff
 *.aux

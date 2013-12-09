@@ -1,0 +1,1673 @@
+<ParaView>
+  <ServerManagerState version="3.14.1">
+    <Proxy group="animation" type="AnimationScene" id="1658" servers="16">
+      <Property name="AnimationTime" id="1658.AnimationTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="Caching" id="1658.Caching" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1658.Caching.bool"/>
+      </Property>
+      <Property name="Cues" id="1658.Cues" number_of_elements="1">
+        <Proxy value="1659"/>
+        <Domain name="groups" id="1658.Cues.groups"/>
+      </Property>
+      <Property name="Duration" id="1658.Duration" number_of_elements="1">
+        <Element index="0" value="10"/>
+      </Property>
+      <Property name="EndTime" id="1658.EndTime" number_of_elements="1">
+        <Element index="0" value="1"/>
+      </Property>
+      <Property name="EndTimeInfo" id="1658.EndTimeInfo" number_of_elements="1">
+        <Element index="0" value="1"/>
+      </Property>
+      <Property name="FramesPerTimestep" id="1658.FramesPerTimestep" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="1658.FramesPerTimestep.range"/>
+      </Property>
+      <Property name="GoToFirst" id="1658.GoToFirst"/>
+      <Property name="GoToLast" id="1658.GoToLast"/>
+      <Property name="GoToNext" id="1658.GoToNext"/>
+      <Property name="GoToPrevious" id="1658.GoToPrevious"/>
+      <Property name="LockEndTime" id="1658.LockEndTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1658.LockEndTime.bool"/>
+      </Property>
+      <Property name="LockStartTime" id="1658.LockStartTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1658.LockStartTime.bool"/>
+      </Property>
+      <Property name="Loop" id="1658.Loop" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1658.Loop.bool"/>
+      </Property>
+      <Property name="NumberOfFrames" id="1658.NumberOfFrames" number_of_elements="1">
+        <Element index="0" value="10"/>
+        <Domain name="range" id="1658.NumberOfFrames.range"/>
+      </Property>
+      <Property name="Play" id="1658.Play"/>
+      <Property name="PlayMode" id="1658.PlayMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="1658.PlayMode.enum">
+          <Entry value="0" text="Sequence"/>
+          <Entry value="1" text="Real Time"/>
+          <Entry value="2" text="Snap To TimeSteps"/>
+        </Domain>
+      </Property>
+      <Property name="StartTime" id="1658.StartTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="StartTimeInfo" id="1658.StartTimeInfo" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="Stop" id="1658.Stop"/>
+      <Property name="TimeKeeper" id="1658.TimeKeeper" number_of_elements="1">
+        <Proxy value="256"/>
+      </Property>
+      <Property name="ViewModules" id="1658.ViewModules" number_of_elements="1">
+        <Proxy value="1938"/>
+        <Domain name="groups" id="1658.ViewModules.groups"/>
+      </Property>
+    </Proxy>
+    <Proxy group="animation" type="TimeAnimationCue" id="1659" servers="16">
+      <Property name="AnimatedDomainName" id="1659.AnimatedDomainName" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="AnimatedElement" id="1659.AnimatedElement" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="AnimatedPropertyName" id="1659.AnimatedPropertyName" number_of_elements="1">
+        <Element index="0" value="Time"/>
+      </Property>
+      <Property name="AnimatedProxy" id="1659.AnimatedProxy" number_of_elements="1">
+        <Proxy value="256"/>
+        <Domain name="groups" id="1659.AnimatedProxy.groups"/>
+      </Property>
+      <Property name="Enabled" id="1659.Enabled" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1659.Enabled.bool"/>
+      </Property>
+      <Property name="EndTime" id="1659.EndTime" number_of_elements="1">
+        <Element index="0" value="1"/>
+      </Property>
+      <Property name="KeyFrames" id="1659.KeyFrames">
+        <Domain name="groups" id="1659.KeyFrames.groups"/>
+      </Property>
+      <Property name="LastAddedKeyFrameIndex" id="1659.LastAddedKeyFrameIndex" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="StartTime" id="1659.StartTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="TimeMode" id="1659.TimeMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="1659.TimeMode.enum">
+          <Entry value="0" text="Normalized"/>
+          <Entry value="1" text="Relative"/>
+        </Domain>
+      </Property>
+      <Property name="UseAnimationTime" id="1659.UseAnimationTime" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1659.UseAnimationTime.bool"/>
+      </Property>
+    </Proxy>
+    <Proxy group="misc" type="ViewLayout" id="1936" servers="4">
+      <Layout number_of_elements="1">
+        <Item direction="0" fraction="0.5" view="1938"/>
+      </Layout>
+    </Proxy>
+    <Proxy group="misc" type="RepresentationAnimationHelper" id="2721" servers="16">
+      <Property name="Source" id="2721.Source" number_of_elements="1">
+        <Proxy value="2699"/>
+      </Property>
+    </Proxy>
+    <Proxy group="misc" type="RepresentationAnimationHelper" id="3170" servers="16">
+      <Property name="Source" id="3170.Source" number_of_elements="1">
+        <Proxy value="3148"/>
+      </Property>
+    </Proxy>
+    <Proxy group="misc" type="RepresentationAnimationHelper" id="3194" servers="16">
+      <Property name="Source" id="3194.Source" number_of_elements="1">
+        <Proxy value="3183"/>
+      </Property>
+    </Proxy>
+    <Proxy group="representations" type="UnstructuredGridRepresentation" id="3008" servers="21">
+      <Property name="CubeAxesVisibility" id="3008.CubeAxesVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.CubeAxesVisibility.bool"/>
+      </Property>
+      <Property name="Input" id="3008.Input" number_of_elements="1">
+        <Proxy value="2699" output_port="0"/>
+        <Domain name="input_array_cell" id="3008.Input.input_array_cell">
+          <InputArray attribute_type="cell" number_of_components="0"/>
+        </Domain>
+        <Domain name="input_array_point" id="3008.Input.input_array_point">
+          <InputArray attribute_type="point" number_of_components="0"/>
+        </Domain>
+        <Domain name="input_type" id="3008.Input.input_type"/>
+      </Property>
+      <Property name="Representation" id="3008.Representation" number_of_elements="1">
+        <Element index="0" value="Surface With Edges"/>
+        <Domain name="list" id="3008.Representation.list">
+          <String text="3D Glyphs"/>
+          <String text="Outline"/>
+          <String text="Points"/>
+          <String text="Surface"/>
+          <String text="Surface With Edges"/>
+          <String text="Volume"/>
+          <String text="Wireframe"/>
+        </Domain>
+      </Property>
+      <Property name="RepresentationTypesInfo" id="3008.RepresentationTypesInfo" number_of_elements="7">
+        <Element index="0" value="3D Glyphs"/>
+        <Element index="1" value="Outline"/>
+        <Element index="2" value="Points"/>
+        <Element index="3" value="Surface"/>
+        <Element index="4" value="Surface With Edges"/>
+        <Element index="5" value="Volume"/>
+        <Element index="6" value="Wireframe"/>
+      </Property>
+      <Property name="SelectionCellFieldDataArrayName" id="3008.SelectionCellFieldDataArrayName" number_of_elements="1">
+        <Element index="0" value="vtkOriginalCellIds"/>
+        <Domain name="array_list" id="3008.SelectionCellFieldDataArrayName.array_list"/>
+      </Property>
+      <Property name="SelectionPointFieldDataArrayName" id="3008.SelectionPointFieldDataArrayName" number_of_elements="1">
+        <Element index="0" value="solution[0]"/>
+        <Domain name="array_list" id="3008.SelectionPointFieldDataArrayName.array_list">
+          <String text="solution[0]"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionVisibility" id="3008.SelectionVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.SelectionVisibility.bool"/>
+      </Property>
+      <Property name="Visibility" id="3008.Visibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.Visibility.bool"/>
+      </Property>
+      <Property name="AllowSpecularHighlightingWithScalarColoring" id="3008.AllowSpecularHighlightingWithScalarColoring" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.AllowSpecularHighlightingWithScalarColoring.bool"/>
+      </Property>
+      <Property name="Ambient" id="3008.Ambient" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="3008.Ambient.range"/>
+      </Property>
+      <Property name="AmbientColor" id="3008.AmbientColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.AmbientColor.range"/>
+      </Property>
+      <Property name="BackfaceAmbientColor" id="3008.BackfaceAmbientColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.BackfaceAmbientColor.range"/>
+      </Property>
+      <Property name="BackfaceDiffuseColor" id="3008.BackfaceDiffuseColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.BackfaceDiffuseColor.range"/>
+      </Property>
+      <Property name="BackfaceOpacity" id="3008.BackfaceOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.BackfaceOpacity.range"/>
+      </Property>
+      <Property name="BackfaceRepresentation" id="3008.BackfaceRepresentation" number_of_elements="1">
+        <Element index="0" value="400"/>
+        <Domain name="enum" id="3008.BackfaceRepresentation.enum">
+          <Entry value="400" text="Follow Frontface"/>
+          <Entry value="401" text="Cull Backface"/>
+          <Entry value="402" text="Cull Frontface"/>
+          <Entry value="0" text="Points"/>
+          <Entry value="1" text="Wireframe"/>
+          <Entry value="2" text="Surface"/>
+          <Entry value="3" text="Surface With Edges"/>
+        </Domain>
+      </Property>
+      <Property name="ColorArrayName" id="3008.ColorArrayName" number_of_elements="1">
+        <Element index="0" value=""/>
+        <Domain name="array_list" id="3008.ColorArrayName.array_list"/>
+      </Property>
+      <Property name="ColorAttributeType" id="3008.ColorAttributeType" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.ColorAttributeType.enum">
+          <Entry value="0" text="POINT_DATA"/>
+          <Entry value="1" text="CELL_DATA"/>
+          <Entry value="2" text="FIELD_DATA"/>
+        </Domain>
+      </Property>
+      <Property name="CubeAxesColor" id="3008.CubeAxesColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.CubeAxesColor.range"/>
+      </Property>
+      <Property name="CubeAxesCornerOffset" id="3008.CubeAxesCornerOffset" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="3008.CubeAxesCornerOffset.range"/>
+      </Property>
+      <Property name="CubeAxesEnableCustomAxisRange" id="3008.CubeAxesEnableCustomAxisRange" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.CubeAxesEnableCustomAxisRange.bool"/>
+      </Property>
+      <Property name="CubeAxesFlyMode" id="3008.CubeAxesFlyMode" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="3008.CubeAxesFlyMode.enum">
+          <Entry value="0" text="Outer Edges"/>
+          <Entry value="1" text="Closest Triad"/>
+          <Entry value="2" text="Furthest Triad"/>
+          <Entry value="3" text="Static Triad"/>
+          <Entry value="4" text="Static Edges"/>
+        </Domain>
+      </Property>
+      <Property name="CubeAxesInertia" id="3008.CubeAxesInertia" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.CubeAxesInertia.range"/>
+      </Property>
+      <Property name="CubeAxesTickLocation" id="3008.CubeAxesTickLocation" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.CubeAxesTickLocation.enum">
+          <Entry value="0" text="Inside"/>
+          <Entry value="1" text="Outside"/>
+          <Entry value="2" text="Both"/>
+        </Domain>
+      </Property>
+      <Property name="CubeAxesXAxisMinorTickVisibility" id="3008.CubeAxesXAxisMinorTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesXAxisMinorTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesXAxisRange" id="3008.CubeAxesXAxisRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Domain name="range" id="3008.CubeAxesXAxisRange.range"/>
+      </Property>
+      <Property name="CubeAxesXAxisTickVisibility" id="3008.CubeAxesXAxisTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesXAxisTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesXAxisVisibility" id="3008.CubeAxesXAxisVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesXAxisVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesXGridLines" id="3008.CubeAxesXGridLines" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.CubeAxesXGridLines.bool"/>
+      </Property>
+      <Property name="CubeAxesXTitle" id="3008.CubeAxesXTitle" number_of_elements="1">
+        <Element index="0" value="X-Axis"/>
+      </Property>
+      <Property name="CubeAxesYAxisMinorTickVisibility" id="3008.CubeAxesYAxisMinorTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesYAxisMinorTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesYAxisRange" id="3008.CubeAxesYAxisRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Domain name="range" id="3008.CubeAxesYAxisRange.range"/>
+      </Property>
+      <Property name="CubeAxesYAxisTickVisibility" id="3008.CubeAxesYAxisTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesYAxisTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesYAxisVisibility" id="3008.CubeAxesYAxisVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesYAxisVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesYGridLines" id="3008.CubeAxesYGridLines" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.CubeAxesYGridLines.bool"/>
+      </Property>
+      <Property name="CubeAxesYTitle" id="3008.CubeAxesYTitle" number_of_elements="1">
+        <Element index="0" value="Y-Axis"/>
+      </Property>
+      <Property name="CubeAxesZAxisMinorTickVisibility" id="3008.CubeAxesZAxisMinorTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesZAxisMinorTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesZAxisRange" id="3008.CubeAxesZAxisRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Domain name="range" id="3008.CubeAxesZAxisRange.range"/>
+      </Property>
+      <Property name="CubeAxesZAxisTickVisibility" id="3008.CubeAxesZAxisTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesZAxisTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesZAxisVisibility" id="3008.CubeAxesZAxisVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.CubeAxesZAxisVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesZGridLines" id="3008.CubeAxesZGridLines" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.CubeAxesZGridLines.bool"/>
+      </Property>
+      <Property name="CubeAxesZTitle" id="3008.CubeAxesZTitle" number_of_elements="1">
+        <Element index="0" value="Z-Axis"/>
+      </Property>
+      <Property name="CustomBounds" id="3008.CustomBounds" number_of_elements="6">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="0"/>
+        <Element index="3" value="1"/>
+        <Element index="4" value="0"/>
+        <Element index="5" value="1"/>
+      </Property>
+      <Property name="CustomBoundsActive" id="3008.CustomBoundsActive" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+      </Property>
+      <Property name="DataBounds" id="3008.DataBounds" number_of_elements="6">
+        <Element index="0" value="6.93405e-310"/>
+        <Element index="1" value="6.93414e-310"/>
+        <Element index="2" value="2.01818e-316"/>
+        <Element index="3" value="8.48798e-314"/>
+        <Element index="4" value="6.93414e-310"/>
+        <Element index="5" value="6.93414e-310"/>
+      </Property>
+      <Property name="Diffuse" id="3008.Diffuse" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.Diffuse.range"/>
+      </Property>
+      <Property name="DiffuseColor" id="3008.DiffuseColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.DiffuseColor.range"/>
+      </Property>
+      <Property name="EdgeColor" id="3008.EdgeColor" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0.500008"/>
+        <Domain name="range" id="3008.EdgeColor.range"/>
+      </Property>
+      <Property name="ExtractedBlockIndex" id="3008.ExtractedBlockIndex" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="tree" id="3008.ExtractedBlockIndex.tree"/>
+      </Property>
+      <Property name="InterpolateScalarsBeforeMapping" id="3008.InterpolateScalarsBeforeMapping" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.InterpolateScalarsBeforeMapping.bool"/>
+      </Property>
+      <Property name="Interpolation" id="3008.Interpolation" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="3008.Interpolation.enum">
+          <Entry value="0" text="Flat"/>
+          <Entry value="1" text="Gouraud"/>
+        </Domain>
+      </Property>
+      <Property name="LineWidth" id="3008.LineWidth" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.LineWidth.range"/>
+      </Property>
+      <Property name="LookupTable" id="3008.LookupTable">
+        <Domain name="groups" id="3008.LookupTable.groups"/>
+      </Property>
+      <Property name="MapScalars" id="3008.MapScalars" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.MapScalars.bool"/>
+      </Property>
+      <Property name="Masking" id="3008.Masking" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.Masking.bool"/>
+      </Property>
+      <Property name="MeshVisibility" id="3008.MeshVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.MeshVisibility.bool"/>
+      </Property>
+      <Property name="NonlinearSubdivisionLevel" id="3008.NonlinearSubdivisionLevel" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.NonlinearSubdivisionLevel.range"/>
+      </Property>
+      <Property name="Opacity" id="3008.Opacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.Opacity.range"/>
+      </Property>
+      <Property name="Orient" id="3008.Orient" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.Orient.bool"/>
+      </Property>
+      <Property name="Orientation" id="3008.Orientation" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3008.Orientation.range"/>
+      </Property>
+      <Property name="OrientationMode" id="3008.OrientationMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.OrientationMode.enum">
+          <Entry value="0" text="Direction"/>
+          <Entry value="1" text="Rotation"/>
+        </Domain>
+      </Property>
+      <Property name="Origin" id="3008.Origin" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3008.Origin.range"/>
+      </Property>
+      <Property name="Pickable" id="3008.Pickable" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3008.Pickable.bool"/>
+      </Property>
+      <Property name="PointSize" id="3008.PointSize" number_of_elements="1">
+        <Element index="0" value="2"/>
+        <Domain name="range" id="3008.PointSize.range"/>
+      </Property>
+      <Property name="Position" id="3008.Position" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3008.Position.range"/>
+      </Property>
+      <Property name="ScalarOpacityFunction" id="3008.ScalarOpacityFunction">
+        <Domain name="groups" id="3008.ScalarOpacityFunction.groups"/>
+      </Property>
+      <Property name="ScalarOpacityUnitDistance" id="3008.ScalarOpacityUnitDistance" number_of_elements="1">
+        <Element index="0" value="0.150117"/>
+      </Property>
+      <Property name="Scale" id="3008.Scale" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.Scale.range"/>
+      </Property>
+      <Property name="ScaleFactor" id="3008.ScaleFactor" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bounds" id="3008.ScaleFactor.bounds"/>
+        <Domain name="scalar_range" id="3008.ScaleFactor.scalar_range"/>
+        <Domain name="vector_range" id="3008.ScaleFactor.vector_range"/>
+      </Property>
+      <Property name="ScaleMode" id="3008.ScaleMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.ScaleMode.enum">
+          <Entry value="0" text="No Data Scaling Off"/>
+          <Entry value="1" text="Magnitude"/>
+          <Entry value="2" text="Vector Components"/>
+        </Domain>
+      </Property>
+      <Property name="Scaling" id="3008.Scaling" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.Scaling.bool"/>
+      </Property>
+      <Property name="SelectMapper" id="3008.SelectMapper" number_of_elements="1">
+        <Element index="0" value="Projected tetra"/>
+        <Domain name="list" id="3008.SelectMapper.list">
+          <String text="Projected tetra"/>
+          <String text="HAVS"/>
+          <String text="Z sweep"/>
+          <String text="Bunyk ray cast"/>
+        </Domain>
+      </Property>
+      <Property name="SelectMaskArray" id="3008.SelectMaskArray" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectOrientationVectors" id="3008.SelectOrientationVectors" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectScaleArray" id="3008.SelectScaleArray" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectionCellLabelBold" id="3008.SelectionCellLabelBold" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionCellLabelBold.bool"/>
+      </Property>
+      <Property name="SelectionCellLabelColor" id="3008.SelectionCellLabelColor" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3008.SelectionCellLabelColor.range"/>
+      </Property>
+      <Property name="SelectionCellLabelFontFamily" id="3008.SelectionCellLabelFontFamily" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.SelectionCellLabelFontFamily.enum">
+          <Entry value="0" text="Arial"/>
+          <Entry value="1" text="Courier"/>
+          <Entry value="2" text="Times"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionCellLabelFontSize" id="3008.SelectionCellLabelFontSize" number_of_elements="1">
+        <Element index="0" value="18"/>
+        <Domain name="range" id="3008.SelectionCellLabelFontSize.range"/>
+      </Property>
+      <Property name="SelectionCellLabelFormat" id="3008.SelectionCellLabelFormat" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectionCellLabelItalic" id="3008.SelectionCellLabelItalic" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionCellLabelItalic.bool"/>
+      </Property>
+      <Property name="SelectionCellLabelJustification" id="3008.SelectionCellLabelJustification" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.SelectionCellLabelJustification.enum">
+          <Entry value="0" text="Left"/>
+          <Entry value="1" text="Center"/>
+          <Entry value="2" text="Right"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionCellLabelOpacity" id="3008.SelectionCellLabelOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.SelectionCellLabelOpacity.range"/>
+      </Property>
+      <Property name="SelectionCellLabelShadow" id="3008.SelectionCellLabelShadow" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionCellLabelShadow.bool"/>
+      </Property>
+      <Property name="SelectionCellLabelVisibility" id="3008.SelectionCellLabelVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionCellLabelVisibility.bool"/>
+      </Property>
+      <Property name="SelectionColor" id="3008.SelectionColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.SelectionColor.range"/>
+      </Property>
+      <Property name="SelectionLineWidth" id="3008.SelectionLineWidth" number_of_elements="1">
+        <Element index="0" value="2"/>
+        <Domain name="range" id="3008.SelectionLineWidth.range"/>
+      </Property>
+      <Property name="SelectionOpacity" id="3008.SelectionOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.SelectionOpacity.range"/>
+      </Property>
+      <Property name="SelectionPointLabelBold" id="3008.SelectionPointLabelBold" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionPointLabelBold.bool"/>
+      </Property>
+      <Property name="SelectionPointLabelColor" id="3008.SelectionPointLabelColor" number_of_elements="3">
+        <Element index="0" value="0.5"/>
+        <Element index="1" value="0.5"/>
+        <Element index="2" value="0.5"/>
+        <Domain name="range" id="3008.SelectionPointLabelColor.range"/>
+      </Property>
+      <Property name="SelectionPointLabelFontFamily" id="3008.SelectionPointLabelFontFamily" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.SelectionPointLabelFontFamily.enum">
+          <Entry value="0" text="Arial"/>
+          <Entry value="1" text="Courier"/>
+          <Entry value="2" text="Times"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionPointLabelFontSize" id="3008.SelectionPointLabelFontSize" number_of_elements="1">
+        <Element index="0" value="18"/>
+        <Domain name="range" id="3008.SelectionPointLabelFontSize.range"/>
+      </Property>
+      <Property name="SelectionPointLabelFormat" id="3008.SelectionPointLabelFormat" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectionPointLabelItalic" id="3008.SelectionPointLabelItalic" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionPointLabelItalic.bool"/>
+      </Property>
+      <Property name="SelectionPointLabelJustification" id="3008.SelectionPointLabelJustification" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3008.SelectionPointLabelJustification.enum">
+          <Entry value="0" text="Left"/>
+          <Entry value="1" text="Center"/>
+          <Entry value="2" text="Right"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionPointLabelOpacity" id="3008.SelectionPointLabelOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3008.SelectionPointLabelOpacity.range"/>
+      </Property>
+      <Property name="SelectionPointLabelShadow" id="3008.SelectionPointLabelShadow" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionPointLabelShadow.bool"/>
+      </Property>
+      <Property name="SelectionPointLabelVisibility" id="3008.SelectionPointLabelVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionPointLabelVisibility.bool"/>
+      </Property>
+      <Property name="SelectionPointSize" id="3008.SelectionPointSize" number_of_elements="1">
+        <Element index="0" value="5"/>
+        <Domain name="range" id="3008.SelectionPointSize.range"/>
+      </Property>
+      <Property name="SelectionRepresentation" id="3008.SelectionRepresentation" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="3008.SelectionRepresentation.enum">
+          <Entry value="0" text="Points"/>
+          <Entry value="1" text="Wireframe"/>
+          <Entry value="2" text="Surface"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionUseOutline" id="3008.SelectionUseOutline" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SelectionUseOutline.bool"/>
+      </Property>
+      <Property name="Source" id="3008.Source">
+        <Domain name="input_type" id="3008.Source.input_type"/>
+        <Domain name="proxy_list" id="3008.Source.proxy_list"/>
+      </Property>
+      <Property name="Specular" id="3008.Specular" number_of_elements="1">
+        <Element index="0" value="0.1"/>
+        <Domain name="range" id="3008.Specular.range"/>
+      </Property>
+      <Property name="SpecularColor" id="3008.SpecularColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3008.SpecularColor.range"/>
+      </Property>
+      <Property name="SpecularPower" id="3008.SpecularPower" number_of_elements="1">
+        <Element index="0" value="100"/>
+        <Domain name="range" id="3008.SpecularPower.range"/>
+      </Property>
+      <Property name="StaticMode" id="3008.StaticMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.StaticMode.bool"/>
+      </Property>
+      <Property name="SuppressLOD" id="3008.SuppressLOD" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3008.SuppressLOD.bool"/>
+      </Property>
+      <Property name="Texture" id="3008.Texture">
+        <Domain name="groups" id="3008.Texture.groups"/>
+      </Property>
+    </Proxy>
+    <Proxy group="representations" type="GeometryRepresentation" id="3217" servers="21">
+      <Property name="CubeAxesVisibility" id="3217.CubeAxesVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.CubeAxesVisibility.bool"/>
+      </Property>
+      <Property name="Input" id="3217.Input" number_of_elements="1">
+        <Proxy value="3183" output_port="0"/>
+        <Domain name="input_array_cell" id="3217.Input.input_array_cell">
+          <InputArray attribute_type="cell" number_of_components="0"/>
+        </Domain>
+        <Domain name="input_array_point" id="3217.Input.input_array_point">
+          <InputArray attribute_type="point" number_of_components="0"/>
+        </Domain>
+        <Domain name="input_type" id="3217.Input.input_type"/>
+      </Property>
+      <Property name="Representation" id="3217.Representation" number_of_elements="1">
+        <Element index="0" value="Surface"/>
+        <Domain name="list" id="3217.Representation.list">
+          <String text="3D Glyphs"/>
+          <String text="Outline"/>
+          <String text="Points"/>
+          <String text="Surface"/>
+          <String text="Surface With Edges"/>
+          <String text="Wireframe"/>
+        </Domain>
+      </Property>
+      <Property name="RepresentationTypesInfo" id="3217.RepresentationTypesInfo" number_of_elements="6">
+        <Element index="0" value="3D Glyphs"/>
+        <Element index="1" value="Outline"/>
+        <Element index="2" value="Points"/>
+        <Element index="3" value="Surface"/>
+        <Element index="4" value="Surface With Edges"/>
+        <Element index="5" value="Wireframe"/>
+      </Property>
+      <Property name="SelectionCellFieldDataArrayName" id="3217.SelectionCellFieldDataArrayName" number_of_elements="1">
+        <Element index="0" value="vtkOriginalCellIds"/>
+        <Domain name="array_list" id="3217.SelectionCellFieldDataArrayName.array_list"/>
+      </Property>
+      <Property name="SelectionPointFieldDataArrayName" id="3217.SelectionPointFieldDataArrayName" number_of_elements="1">
+        <Element index="0" value="vtkOriginalPointIds"/>
+        <Domain name="array_list" id="3217.SelectionPointFieldDataArrayName.array_list"/>
+      </Property>
+      <Property name="SelectionVisibility" id="3217.SelectionVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.SelectionVisibility.bool"/>
+      </Property>
+      <Property name="Visibility" id="3217.Visibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.Visibility.bool"/>
+      </Property>
+      <Property name="AllowSpecularHighlightingWithScalarColoring" id="3217.AllowSpecularHighlightingWithScalarColoring" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.AllowSpecularHighlightingWithScalarColoring.bool"/>
+      </Property>
+      <Property name="Ambient" id="3217.Ambient" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="3217.Ambient.range"/>
+      </Property>
+      <Property name="AmbientColor" id="3217.AmbientColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.AmbientColor.range"/>
+      </Property>
+      <Property name="BackfaceAmbientColor" id="3217.BackfaceAmbientColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.BackfaceAmbientColor.range"/>
+      </Property>
+      <Property name="BackfaceDiffuseColor" id="3217.BackfaceDiffuseColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.BackfaceDiffuseColor.range"/>
+      </Property>
+      <Property name="BackfaceOpacity" id="3217.BackfaceOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.BackfaceOpacity.range"/>
+      </Property>
+      <Property name="BackfaceRepresentation" id="3217.BackfaceRepresentation" number_of_elements="1">
+        <Element index="0" value="400"/>
+        <Domain name="enum" id="3217.BackfaceRepresentation.enum">
+          <Entry value="400" text="Follow Frontface"/>
+          <Entry value="401" text="Cull Backface"/>
+          <Entry value="402" text="Cull Frontface"/>
+          <Entry value="0" text="Points"/>
+          <Entry value="1" text="Wireframe"/>
+          <Entry value="2" text="Surface"/>
+          <Entry value="3" text="Surface With Edges"/>
+        </Domain>
+      </Property>
+      <Property name="ColorArrayName" id="3217.ColorArrayName" number_of_elements="1">
+        <Element index="0" value=""/>
+        <Domain name="array_list" id="3217.ColorArrayName.array_list"/>
+      </Property>
+      <Property name="ColorAttributeType" id="3217.ColorAttributeType" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.ColorAttributeType.enum">
+          <Entry value="0" text="POINT_DATA"/>
+          <Entry value="1" text="CELL_DATA"/>
+          <Entry value="2" text="FIELD_DATA"/>
+        </Domain>
+      </Property>
+      <Property name="CubeAxesColor" id="3217.CubeAxesColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.CubeAxesColor.range"/>
+      </Property>
+      <Property name="CubeAxesCornerOffset" id="3217.CubeAxesCornerOffset" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="3217.CubeAxesCornerOffset.range"/>
+      </Property>
+      <Property name="CubeAxesEnableCustomAxisRange" id="3217.CubeAxesEnableCustomAxisRange" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.CubeAxesEnableCustomAxisRange.bool"/>
+      </Property>
+      <Property name="CubeAxesFlyMode" id="3217.CubeAxesFlyMode" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="3217.CubeAxesFlyMode.enum">
+          <Entry value="0" text="Outer Edges"/>
+          <Entry value="1" text="Closest Triad"/>
+          <Entry value="2" text="Furthest Triad"/>
+          <Entry value="3" text="Static Triad"/>
+          <Entry value="4" text="Static Edges"/>
+        </Domain>
+      </Property>
+      <Property name="CubeAxesInertia" id="3217.CubeAxesInertia" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.CubeAxesInertia.range"/>
+      </Property>
+      <Property name="CubeAxesTickLocation" id="3217.CubeAxesTickLocation" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.CubeAxesTickLocation.enum">
+          <Entry value="0" text="Inside"/>
+          <Entry value="1" text="Outside"/>
+          <Entry value="2" text="Both"/>
+        </Domain>
+      </Property>
+      <Property name="CubeAxesXAxisMinorTickVisibility" id="3217.CubeAxesXAxisMinorTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesXAxisMinorTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesXAxisRange" id="3217.CubeAxesXAxisRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Domain name="range" id="3217.CubeAxesXAxisRange.range"/>
+      </Property>
+      <Property name="CubeAxesXAxisTickVisibility" id="3217.CubeAxesXAxisTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesXAxisTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesXAxisVisibility" id="3217.CubeAxesXAxisVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesXAxisVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesXGridLines" id="3217.CubeAxesXGridLines" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.CubeAxesXGridLines.bool"/>
+      </Property>
+      <Property name="CubeAxesXTitle" id="3217.CubeAxesXTitle" number_of_elements="1">
+        <Element index="0" value="X-Axis"/>
+      </Property>
+      <Property name="CubeAxesYAxisMinorTickVisibility" id="3217.CubeAxesYAxisMinorTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesYAxisMinorTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesYAxisRange" id="3217.CubeAxesYAxisRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Domain name="range" id="3217.CubeAxesYAxisRange.range"/>
+      </Property>
+      <Property name="CubeAxesYAxisTickVisibility" id="3217.CubeAxesYAxisTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesYAxisTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesYAxisVisibility" id="3217.CubeAxesYAxisVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesYAxisVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesYGridLines" id="3217.CubeAxesYGridLines" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.CubeAxesYGridLines.bool"/>
+      </Property>
+      <Property name="CubeAxesYTitle" id="3217.CubeAxesYTitle" number_of_elements="1">
+        <Element index="0" value="Y-Axis"/>
+      </Property>
+      <Property name="CubeAxesZAxisMinorTickVisibility" id="3217.CubeAxesZAxisMinorTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesZAxisMinorTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesZAxisRange" id="3217.CubeAxesZAxisRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Domain name="range" id="3217.CubeAxesZAxisRange.range"/>
+      </Property>
+      <Property name="CubeAxesZAxisTickVisibility" id="3217.CubeAxesZAxisTickVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesZAxisTickVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesZAxisVisibility" id="3217.CubeAxesZAxisVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.CubeAxesZAxisVisibility.bool"/>
+      </Property>
+      <Property name="CubeAxesZGridLines" id="3217.CubeAxesZGridLines" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.CubeAxesZGridLines.bool"/>
+      </Property>
+      <Property name="CubeAxesZTitle" id="3217.CubeAxesZTitle" number_of_elements="1">
+        <Element index="0" value="Z-Axis"/>
+      </Property>
+      <Property name="CustomBounds" id="3217.CustomBounds" number_of_elements="6">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="0"/>
+        <Element index="3" value="1"/>
+        <Element index="4" value="0"/>
+        <Element index="5" value="1"/>
+      </Property>
+      <Property name="CustomBoundsActive" id="3217.CustomBoundsActive" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+      </Property>
+      <Property name="DataBounds" id="3217.DataBounds" number_of_elements="6">
+        <Element index="0" value="0"/>
+        <Element index="1" value="2.122e-314"/>
+        <Element index="2" value="3.73377e-316"/>
+        <Element index="3" value="8.48798e-314"/>
+        <Element index="4" value="4.79244e-322"/>
+        <Element index="5" value="3.7691e-316"/>
+      </Property>
+      <Property name="Diffuse" id="3217.Diffuse" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.Diffuse.range"/>
+      </Property>
+      <Property name="DiffuseColor" id="3217.DiffuseColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.DiffuseColor.range"/>
+      </Property>
+      <Property name="EdgeColor" id="3217.EdgeColor" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0.500008"/>
+        <Domain name="range" id="3217.EdgeColor.range"/>
+      </Property>
+      <Property name="InterpolateScalarsBeforeMapping" id="3217.InterpolateScalarsBeforeMapping" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.InterpolateScalarsBeforeMapping.bool"/>
+      </Property>
+      <Property name="Interpolation" id="3217.Interpolation" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="3217.Interpolation.enum">
+          <Entry value="0" text="Flat"/>
+          <Entry value="1" text="Gouraud"/>
+        </Domain>
+      </Property>
+      <Property name="LineWidth" id="3217.LineWidth" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.LineWidth.range"/>
+      </Property>
+      <Property name="LookupTable" id="3217.LookupTable">
+        <Domain name="groups" id="3217.LookupTable.groups"/>
+      </Property>
+      <Property name="MapScalars" id="3217.MapScalars" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.MapScalars.bool"/>
+      </Property>
+      <Property name="Masking" id="3217.Masking" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.Masking.bool"/>
+      </Property>
+      <Property name="MeshVisibility" id="3217.MeshVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.MeshVisibility.bool"/>
+      </Property>
+      <Property name="NonlinearSubdivisionLevel" id="3217.NonlinearSubdivisionLevel" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.NonlinearSubdivisionLevel.range"/>
+      </Property>
+      <Property name="Opacity" id="3217.Opacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.Opacity.range"/>
+      </Property>
+      <Property name="Orient" id="3217.Orient" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.Orient.bool"/>
+      </Property>
+      <Property name="Orientation" id="3217.Orientation" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3217.Orientation.range"/>
+      </Property>
+      <Property name="OrientationMode" id="3217.OrientationMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.OrientationMode.enum">
+          <Entry value="0" text="Direction"/>
+          <Entry value="1" text="Rotation"/>
+        </Domain>
+      </Property>
+      <Property name="Origin" id="3217.Origin" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3217.Origin.range"/>
+      </Property>
+      <Property name="Pickable" id="3217.Pickable" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3217.Pickable.bool"/>
+      </Property>
+      <Property name="PointSize" id="3217.PointSize" number_of_elements="1">
+        <Element index="0" value="4"/>
+        <Domain name="range" id="3217.PointSize.range"/>
+      </Property>
+      <Property name="Position" id="3217.Position" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3217.Position.range"/>
+      </Property>
+      <Property name="Scale" id="3217.Scale" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.Scale.range"/>
+      </Property>
+      <Property name="ScaleFactor" id="3217.ScaleFactor" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bounds" id="3217.ScaleFactor.bounds"/>
+        <Domain name="scalar_range" id="3217.ScaleFactor.scalar_range"/>
+        <Domain name="vector_range" id="3217.ScaleFactor.vector_range"/>
+      </Property>
+      <Property name="ScaleMode" id="3217.ScaleMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.ScaleMode.enum">
+          <Entry value="0" text="No Data Scaling Off"/>
+          <Entry value="1" text="Magnitude"/>
+          <Entry value="2" text="Vector Components"/>
+        </Domain>
+      </Property>
+      <Property name="Scaling" id="3217.Scaling" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.Scaling.bool"/>
+      </Property>
+      <Property name="SelectMaskArray" id="3217.SelectMaskArray" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectOrientationVectors" id="3217.SelectOrientationVectors" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectScaleArray" id="3217.SelectScaleArray" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectionCellLabelBold" id="3217.SelectionCellLabelBold" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionCellLabelBold.bool"/>
+      </Property>
+      <Property name="SelectionCellLabelColor" id="3217.SelectionCellLabelColor" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="0"/>
+        <Domain name="range" id="3217.SelectionCellLabelColor.range"/>
+      </Property>
+      <Property name="SelectionCellLabelFontFamily" id="3217.SelectionCellLabelFontFamily" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.SelectionCellLabelFontFamily.enum">
+          <Entry value="0" text="Arial"/>
+          <Entry value="1" text="Courier"/>
+          <Entry value="2" text="Times"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionCellLabelFontSize" id="3217.SelectionCellLabelFontSize" number_of_elements="1">
+        <Element index="0" value="18"/>
+        <Domain name="range" id="3217.SelectionCellLabelFontSize.range"/>
+      </Property>
+      <Property name="SelectionCellLabelFormat" id="3217.SelectionCellLabelFormat" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectionCellLabelItalic" id="3217.SelectionCellLabelItalic" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionCellLabelItalic.bool"/>
+      </Property>
+      <Property name="SelectionCellLabelJustification" id="3217.SelectionCellLabelJustification" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.SelectionCellLabelJustification.enum">
+          <Entry value="0" text="Left"/>
+          <Entry value="1" text="Center"/>
+          <Entry value="2" text="Right"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionCellLabelOpacity" id="3217.SelectionCellLabelOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.SelectionCellLabelOpacity.range"/>
+      </Property>
+      <Property name="SelectionCellLabelShadow" id="3217.SelectionCellLabelShadow" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionCellLabelShadow.bool"/>
+      </Property>
+      <Property name="SelectionCellLabelVisibility" id="3217.SelectionCellLabelVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionCellLabelVisibility.bool"/>
+      </Property>
+      <Property name="SelectionColor" id="3217.SelectionColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.SelectionColor.range"/>
+      </Property>
+      <Property name="SelectionLineWidth" id="3217.SelectionLineWidth" number_of_elements="1">
+        <Element index="0" value="2"/>
+        <Domain name="range" id="3217.SelectionLineWidth.range"/>
+      </Property>
+      <Property name="SelectionOpacity" id="3217.SelectionOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.SelectionOpacity.range"/>
+      </Property>
+      <Property name="SelectionPointLabelBold" id="3217.SelectionPointLabelBold" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionPointLabelBold.bool"/>
+      </Property>
+      <Property name="SelectionPointLabelColor" id="3217.SelectionPointLabelColor" number_of_elements="3">
+        <Element index="0" value="0.5"/>
+        <Element index="1" value="0.5"/>
+        <Element index="2" value="0.5"/>
+        <Domain name="range" id="3217.SelectionPointLabelColor.range"/>
+      </Property>
+      <Property name="SelectionPointLabelFontFamily" id="3217.SelectionPointLabelFontFamily" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.SelectionPointLabelFontFamily.enum">
+          <Entry value="0" text="Arial"/>
+          <Entry value="1" text="Courier"/>
+          <Entry value="2" text="Times"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionPointLabelFontSize" id="3217.SelectionPointLabelFontSize" number_of_elements="1">
+        <Element index="0" value="18"/>
+        <Domain name="range" id="3217.SelectionPointLabelFontSize.range"/>
+      </Property>
+      <Property name="SelectionPointLabelFormat" id="3217.SelectionPointLabelFormat" number_of_elements="1">
+        <Element index="0" value=""/>
+      </Property>
+      <Property name="SelectionPointLabelItalic" id="3217.SelectionPointLabelItalic" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionPointLabelItalic.bool"/>
+      </Property>
+      <Property name="SelectionPointLabelJustification" id="3217.SelectionPointLabelJustification" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="3217.SelectionPointLabelJustification.enum">
+          <Entry value="0" text="Left"/>
+          <Entry value="1" text="Center"/>
+          <Entry value="2" text="Right"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionPointLabelOpacity" id="3217.SelectionPointLabelOpacity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="3217.SelectionPointLabelOpacity.range"/>
+      </Property>
+      <Property name="SelectionPointLabelShadow" id="3217.SelectionPointLabelShadow" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionPointLabelShadow.bool"/>
+      </Property>
+      <Property name="SelectionPointLabelVisibility" id="3217.SelectionPointLabelVisibility" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionPointLabelVisibility.bool"/>
+      </Property>
+      <Property name="SelectionPointSize" id="3217.SelectionPointSize" number_of_elements="1">
+        <Element index="0" value="5"/>
+        <Domain name="range" id="3217.SelectionPointSize.range"/>
+      </Property>
+      <Property name="SelectionRepresentation" id="3217.SelectionRepresentation" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="3217.SelectionRepresentation.enum">
+          <Entry value="0" text="Points"/>
+          <Entry value="1" text="Wireframe"/>
+          <Entry value="2" text="Surface"/>
+        </Domain>
+      </Property>
+      <Property name="SelectionUseOutline" id="3217.SelectionUseOutline" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SelectionUseOutline.bool"/>
+      </Property>
+      <Property name="Source" id="3217.Source">
+        <Domain name="input_type" id="3217.Source.input_type"/>
+        <Domain name="proxy_list" id="3217.Source.proxy_list"/>
+      </Property>
+      <Property name="Specular" id="3217.Specular" number_of_elements="1">
+        <Element index="0" value="0.1"/>
+        <Domain name="range" id="3217.Specular.range"/>
+      </Property>
+      <Property name="SpecularColor" id="3217.SpecularColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="3217.SpecularColor.range"/>
+      </Property>
+      <Property name="SpecularPower" id="3217.SpecularPower" number_of_elements="1">
+        <Element index="0" value="100"/>
+        <Domain name="range" id="3217.SpecularPower.range"/>
+      </Property>
+      <Property name="StaticMode" id="3217.StaticMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.StaticMode.bool"/>
+      </Property>
+      <Property name="SuppressLOD" id="3217.SuppressLOD" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3217.SuppressLOD.bool"/>
+      </Property>
+      <Property name="Texture" id="3217.Texture">
+        <Domain name="groups" id="3217.Texture.groups"/>
+      </Property>
+    </Proxy>
+    <Proxy group="filters" type="TableToPolyData" id="3183" servers="1">
+      <Property name="Create2DPoints" id="3183.Create2DPoints" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3183.Create2DPoints.bool"/>
+      </Property>
+      <Property name="Input" id="3183.Input" number_of_elements="1">
+        <Proxy value="3148" output_port="0"/>
+        <Domain name="groups" id="3183.Input.groups"/>
+        <Domain name="input_array" id="3183.Input.input_array">
+          <InputArray attribute_type="row" number_of_components="1"/>
+        </Domain>
+        <Domain name="input_type" id="3183.Input.input_type"/>
+      </Property>
+      <Property name="KeepAllDataArrays" id="3183.KeepAllDataArrays" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3183.KeepAllDataArrays.bool"/>
+      </Property>
+      <Property name="XColumn" id="3183.XColumn" number_of_elements="1">
+        <Element index="0" value="Field 0"/>
+        <Domain name="array_list" id="3183.XColumn.array_list">
+          <String text="Field 0"/>
+          <String text="Field 1"/>
+          <String text="Field 2"/>
+        </Domain>
+      </Property>
+      <Property name="YColumn" id="3183.YColumn" number_of_elements="1">
+        <Element index="0" value="Field 1"/>
+        <Domain name="array_list" id="3183.YColumn.array_list">
+          <String text="Field 0"/>
+          <String text="Field 1"/>
+          <String text="Field 2"/>
+        </Domain>
+      </Property>
+      <Property name="ZColumn" id="3183.ZColumn" number_of_elements="1">
+        <Element index="0" value="Field 2"/>
+        <Domain name="array_list" id="3183.ZColumn.array_list">
+          <String text="Field 0"/>
+          <String text="Field 1"/>
+          <String text="Field 2"/>
+        </Domain>
+      </Property>
+    </Proxy>
+    <Proxy group="sources" type="CSVReader" id="3148" servers="1">
+      <Property name="FileName" id="3148.FileName" number_of_elements="1">
+        <Element index="0" value="/home/nitschke/git/sphereLaplaceDEC/circumcenter.csv"/>
+        <Domain name="files" id="3148.FileName.files"/>
+      </Property>
+      <Property name="FileNameInfo" id="3148.FileNameInfo" number_of_elements="1">
+        <Element index="0" value="/home/nitschke/git/sphereLaplaceDEC/circumcenter.csv"/>
+      </Property>
+      <Property name="TimestepValues" id="3148.TimestepValues"/>
+      <Property name="DetectNumericColumns" id="3148.DetectNumericColumns" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3148.DetectNumericColumns.bool"/>
+      </Property>
+      <Property name="FieldDelimiterCharacters" id="3148.FieldDelimiterCharacters" number_of_elements="1">
+        <Element index="0" value=","/>
+      </Property>
+      <Property name="HaveHeaders" id="3148.HaveHeaders" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3148.HaveHeaders.bool"/>
+      </Property>
+      <Property name="MergeConsecutiveDelimiters" id="3148.MergeConsecutiveDelimiters" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="3148.MergeConsecutiveDelimiters.bool"/>
+      </Property>
+      <Property name="UseStringDelimiter" id="3148.UseStringDelimiter" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="3148.UseStringDelimiter.bool"/>
+      </Property>
+    </Proxy>
+    <Proxy group="sources" type="XMLUnstructuredGridReader" id="2699" servers="1">
+      <Property name="FileName" id="2699.FileName" number_of_elements="1">
+        <Element index="0" value="/home/nitschke/git/sphereLaplaceDEC/output/sphere.3d.vtu"/>
+        <Domain name="files" id="2699.FileName.files"/>
+      </Property>
+      <Property name="FileNameInfo" id="2699.FileNameInfo" number_of_elements="1">
+        <Element index="0" value="/home/nitschke/git/sphereLaplaceDEC/output/sphere.3d.vtu"/>
+      </Property>
+      <Property name="TimestepValues" id="2699.TimestepValues"/>
+      <Property name="CellArrayInfo" id="2699.CellArrayInfo"/>
+      <Property name="CellArrayStatus" id="2699.CellArrayStatus">
+        <Domain name="array_list" id="2699.CellArrayStatus.array_list"/>
+      </Property>
+      <Property name="PointArrayInfo" id="2699.PointArrayInfo" number_of_elements="2">
+        <Element index="0" value="solution[0]"/>
+        <Element index="1" value="1"/>
+      </Property>
+      <Property name="PointArrayStatus" id="2699.PointArrayStatus" number_of_elements="2">
+        <Element index="0" value="solution[0]"/>
+        <Element index="1" value="1"/>
+        <Domain name="array_list" id="2699.PointArrayStatus.array_list">
+          <String text="solution[0]"/>
+        </Domain>
+      </Property>
+    </Proxy>
+    <Proxy group="misc" type="TimeKeeper" id="256" servers="16">
+      <Property name="Time" id="256.Time" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="256.Time.range"/>
+      </Property>
+      <Property name="TimeRange" id="256.TimeRange" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="1"/>
+      </Property>
+      <Property name="TimeSources" id="256.TimeSources" number_of_elements="3">
+        <Proxy value="2699"/>
+        <Proxy value="3148"/>
+        <Proxy value="3183"/>
+      </Property>
+      <Property name="TimestepValues" id="256.TimestepValues"/>
+      <Property name="Views" id="256.Views" number_of_elements="1">
+        <Proxy value="1938"/>
+      </Property>
+    </Proxy>
+    <Proxy group="views" type="RenderView" id="1938" servers="21">
+      <Property name="AlphaBitPlanes" id="1938.AlphaBitPlanes" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.AlphaBitPlanes.bool"/>
+      </Property>
+      <Property name="BackLightAzimuth" id="1938.BackLightAzimuth" number_of_elements="1">
+        <Element index="0" value="110"/>
+        <Domain name="range" id="1938.BackLightAzimuth.range"/>
+      </Property>
+      <Property name="BackLightElevation" id="1938.BackLightElevation" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="1938.BackLightElevation.range"/>
+      </Property>
+      <Property name="BackLightK:B Ratio" id="1938.BackLightK:B Ratio" number_of_elements="1">
+        <Element index="0" value="3.5"/>
+        <Domain name="range" id="1938.BackLightK:B Ratio.range"/>
+      </Property>
+      <Property name="BackLightWarmth" id="1938.BackLightWarmth" number_of_elements="1">
+        <Element index="0" value="0.5"/>
+        <Domain name="range" id="1938.BackLightWarmth.range"/>
+      </Property>
+      <Property name="Background" id="1938.Background" number_of_elements="3">
+        <Element index="0" value="0.319997"/>
+        <Element index="1" value="0.340002"/>
+        <Element index="2" value="0.429999"/>
+        <Domain name="range" id="1938.Background.range"/>
+      </Property>
+      <Property name="Background2" id="1938.Background2" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0.165"/>
+        <Domain name="range" id="1938.Background2.range"/>
+      </Property>
+      <Property name="BackgroundTexture" id="1938.BackgroundTexture">
+        <Domain name="groups" id="1938.BackgroundTexture.groups"/>
+      </Property>
+      <Property name="CacheKey" id="1938.CacheKey" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="1938.CacheKey.range"/>
+      </Property>
+      <Property name="CenterAxesVisibility" id="1938.CenterAxesVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.CenterAxesVisibility.bool"/>
+      </Property>
+      <Property name="CenterOfRotation" id="1938.CenterOfRotation" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+      </Property>
+      <Property name="CollectGeometryThreshold" id="1938.CollectGeometryThreshold" number_of_elements="1">
+        <Element index="0" value="100"/>
+        <Domain name="range" id="1938.CollectGeometryThreshold.range"/>
+      </Property>
+      <Property name="CompressorConfig" id="1938.CompressorConfig" number_of_elements="1">
+        <Element index="0" value="vtkSquirtCompressor 0 3"/>
+      </Property>
+      <Property name="DepthPeeling" id="1938.DepthPeeling" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.DepthPeeling.bool"/>
+      </Property>
+      <Property name="FillLightAzimuth" id="1938.FillLightAzimuth" number_of_elements="1">
+        <Element index="0" value="-10"/>
+        <Domain name="range" id="1938.FillLightAzimuth.range"/>
+      </Property>
+      <Property name="FillLightElevation" id="1938.FillLightElevation" number_of_elements="1">
+        <Element index="0" value="-75"/>
+        <Domain name="range" id="1938.FillLightElevation.range"/>
+      </Property>
+      <Property name="FillLightK:F Ratio" id="1938.FillLightK:F Ratio" number_of_elements="1">
+        <Element index="0" value="3"/>
+        <Domain name="range" id="1938.FillLightK:F Ratio.range"/>
+      </Property>
+      <Property name="FillLightWarmth" id="1938.FillLightWarmth" number_of_elements="1">
+        <Element index="0" value="0.4"/>
+        <Domain name="range" id="1938.FillLightWarmth.range"/>
+      </Property>
+      <Property name="HeadLightK:H Ratio" id="1938.HeadLightK:H Ratio" number_of_elements="1">
+        <Element index="0" value="3"/>
+        <Domain name="range" id="1938.HeadLightK:H Ratio.range"/>
+      </Property>
+      <Property name="HeadLightWarmth" id="1938.HeadLightWarmth" number_of_elements="1">
+        <Element index="0" value="0.5"/>
+        <Domain name="range" id="1938.HeadLightWarmth.range"/>
+      </Property>
+      <Property name="ImageReductionFactor" id="1938.ImageReductionFactor" number_of_elements="1">
+        <Element index="0" value="2"/>
+        <Domain name="range" id="1938.ImageReductionFactor.range"/>
+      </Property>
+      <Property name="InteractionMode" id="1938.InteractionMode" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="enum" id="1938.InteractionMode.enum">
+          <Entry value="0" text="3D"/>
+          <Entry value="1" text="2D"/>
+          <Entry value="2" text="Selection"/>
+        </Domain>
+      </Property>
+      <Property name="KeyLightAzimuth" id="1938.KeyLightAzimuth" number_of_elements="1">
+        <Element index="0" value="10"/>
+        <Domain name="range" id="1938.KeyLightAzimuth.range"/>
+      </Property>
+      <Property name="KeyLightElevation" id="1938.KeyLightElevation" number_of_elements="1">
+        <Element index="0" value="50"/>
+        <Domain name="range" id="1938.KeyLightElevation.range"/>
+      </Property>
+      <Property name="KeyLightIntensity" id="1938.KeyLightIntensity" number_of_elements="1">
+        <Element index="0" value="0.75"/>
+        <Domain name="range" id="1938.KeyLightIntensity.range"/>
+      </Property>
+      <Property name="KeyLightWarmth" id="1938.KeyLightWarmth" number_of_elements="1">
+        <Element index="0" value="0.6"/>
+        <Domain name="range" id="1938.KeyLightWarmth.range"/>
+      </Property>
+      <Property name="LODResolution" id="1938.LODResolution" number_of_elements="1">
+        <Element index="0" value="50"/>
+        <Domain name="range" id="1938.LODResolution.range"/>
+      </Property>
+      <Property name="LODThreshold" id="1938.LODThreshold" number_of_elements="1">
+        <Element index="0" value="5"/>
+        <Domain name="range" id="1938.LODThreshold.range"/>
+      </Property>
+      <Property name="LightAmbientColor" id="1938.LightAmbientColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="1938.LightAmbientColor.range"/>
+      </Property>
+      <Property name="LightDiffuseColor" id="1938.LightDiffuseColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="1938.LightDiffuseColor.range"/>
+      </Property>
+      <Property name="LightIntensity" id="1938.LightIntensity" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="1938.LightIntensity.range"/>
+      </Property>
+      <Property name="LightSpecularColor" id="1938.LightSpecularColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+        <Domain name="range" id="1938.LightSpecularColor.range"/>
+      </Property>
+      <Property name="LightSwitch" id="1938.LightSwitch" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.LightSwitch.bool"/>
+      </Property>
+      <Property name="LightType" id="1938.LightType" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="enum" id="1938.LightType.enum">
+          <Entry value="1" text="HeadLight"/>
+          <Entry value="2" text="CameraLight"/>
+          <Entry value="3" text="SceneLight"/>
+        </Domain>
+      </Property>
+      <Property name="MaintainLuminance" id="1938.MaintainLuminance" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.MaintainLuminance.bool"/>
+      </Property>
+      <Property name="MaximumNumberOfPeels" id="1938.MaximumNumberOfPeels" number_of_elements="1">
+        <Element index="0" value="4"/>
+        <Domain name="range" id="1938.MaximumNumberOfPeels.range"/>
+      </Property>
+      <Property name="MultiSamples" id="1938.MultiSamples" number_of_elements="1">
+        <Element index="0" value="0"/>
+      </Property>
+      <Property name="NonInteractiveRenderDelay" id="1938.NonInteractiveRenderDelay" number_of_elements="1">
+        <Element index="0" value="2"/>
+      </Property>
+      <Property name="OrientationAxesInteractivity" id="1938.OrientationAxesInteractivity" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.OrientationAxesInteractivity.bool"/>
+      </Property>
+      <Property name="OrientationAxesLabelColor" id="1938.OrientationAxesLabelColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+      </Property>
+      <Property name="OrientationAxesOutlineColor" id="1938.OrientationAxesOutlineColor" number_of_elements="3">
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
+        <Element index="2" value="1"/>
+      </Property>
+      <Property name="OrientationAxesVisibility" id="1938.OrientationAxesVisibility" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.OrientationAxesVisibility.bool"/>
+      </Property>
+      <Property name="RemoteRenderThreshold" id="1938.RemoteRenderThreshold" number_of_elements="1">
+        <Element index="0" value="3"/>
+        <Domain name="range" id="1938.RemoteRenderThreshold.range"/>
+      </Property>
+      <Property name="Representations" id="1938.Representations" number_of_elements="2">
+        <Proxy value="3008"/>
+        <Proxy value="3217"/>
+      </Property>
+      <Property name="ResetCamera" id="1938.ResetCamera"/>
+      <Property name="StencilCapable" id="1938.StencilCapable" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.StencilCapable.bool"/>
+      </Property>
+      <Property name="StereoCapableWindow" id="1938.StereoCapableWindow" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.StereoCapableWindow.bool"/>
+      </Property>
+      <Property name="StereoRender" id="1938.StereoRender" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.StereoRender.bool"/>
+      </Property>
+      <Property name="StereoType" id="1938.StereoType" number_of_elements="1">
+        <Element index="0" value="2"/>
+        <Domain name="enum" id="1938.StereoType.enum">
+          <Entry value="1" text="Crystal Eyes"/>
+          <Entry value="2" text="Red-Blue"/>
+          <Entry value="3" text="Interlaced"/>
+          <Entry value="4" text="Left"/>
+          <Entry value="5" text="Right"/>
+          <Entry value="6" text="Dresden"/>
+          <Entry value="7" text="Anaglyph"/>
+          <Entry value="8" text="Checkerboard"/>
+        </Domain>
+      </Property>
+      <Property name="StillRenderImageReductionFactor" id="1938.StillRenderImageReductionFactor" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="range" id="1938.StillRenderImageReductionFactor.range"/>
+      </Property>
+      <Property name="UseCache" id="1938.UseCache" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.UseCache.bool"/>
+      </Property>
+      <Property name="UseGradientBackground" id="1938.UseGradientBackground" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.UseGradientBackground.bool"/>
+      </Property>
+      <Property name="UseInteractiveRenderingForSceenshots" id="1938.UseInteractiveRenderingForSceenshots" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.UseInteractiveRenderingForSceenshots.bool"/>
+      </Property>
+      <Property name="UseLight" id="1938.UseLight" number_of_elements="1">
+        <Element index="0" value="1"/>
+        <Domain name="bool" id="1938.UseLight.bool"/>
+      </Property>
+      <Property name="UseOffscreenRendering" id="1938.UseOffscreenRendering" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.UseOffscreenRendering.bool"/>
+      </Property>
+      <Property name="UseOffscreenRenderingForScreenshots" id="1938.UseOffscreenRenderingForScreenshots" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.UseOffscreenRenderingForScreenshots.bool"/>
+      </Property>
+      <Property name="UseTexturedBackground" id="1938.UseTexturedBackground" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.UseTexturedBackground.bool"/>
+      </Property>
+      <Property name="ViewPosition" id="1938.ViewPosition" number_of_elements="2">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+      </Property>
+      <Property name="ViewSize" id="1938.ViewSize" number_of_elements="2">
+        <Element index="0" value="809"/>
+        <Element index="1" value="752"/>
+      </Property>
+      <Property name="ViewTime" id="1938.ViewTime" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="range" id="1938.ViewTime.range"/>
+      </Property>
+      <Property name="CameraClippingRange" id="1938.CameraClippingRange" number_of_elements="2">
+        <Element index="0" value="1.09113"/>
+        <Element index="1" value="8.96204"/>
+      </Property>
+      <Property name="CameraClippingRangeInfo" id="1938.CameraClippingRangeInfo" number_of_elements="2">
+        <Element index="0" value="1.09113"/>
+        <Element index="1" value="8.96204"/>
+      </Property>
+      <Property name="CameraFocalPoint" id="1938.CameraFocalPoint" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+      </Property>
+      <Property name="CameraFocalPointInfo" id="1938.CameraFocalPointInfo" number_of_elements="3">
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="0"/>
+      </Property>
+      <Property name="CameraParallelProjection" id="1938.CameraParallelProjection" number_of_elements="1">
+        <Element index="0" value="0"/>
+        <Domain name="bool" id="1938.CameraParallelProjection.bool"/>
+      </Property>
+      <Property name="CameraParallelScale" id="1938.CameraParallelScale" number_of_elements="1">
+        <Element index="0" value="1.73205"/>
+      </Property>
+      <Property name="CameraParallelScaleInfo" id="1938.CameraParallelScaleInfo" number_of_elements="1">
+        <Element index="0" value="1.73205"/>
+      </Property>
+      <Property name="CameraPosition" id="1938.CameraPosition" number_of_elements="3">
+        <Element index="0" value="-2.35366"/>
+        <Element index="1" value="-2.91033"/>
+        <Element index="2" value="-2.62348"/>
+      </Property>
+      <Property name="CameraPositionInfo" id="1938.CameraPositionInfo" number_of_elements="3">
+        <Element index="0" value="-2.35366"/>
+        <Element index="1" value="-2.91033"/>
+        <Element index="2" value="-2.62348"/>
+      </Property>
+      <Property name="CameraViewAngle" id="1938.CameraViewAngle" number_of_elements="1">
+        <Element index="0" value="30"/>
+      </Property>
+      <Property name="CameraViewUp" id="1938.CameraViewUp" number_of_elements="3">
+        <Element index="0" value="0.312343"/>
+        <Element index="1" value="-0.762886"/>
+        <Element index="2" value="0.56608"/>
+      </Property>
+      <Property name="CameraViewUpInfo" id="1938.CameraViewUpInfo" number_of_elements="3">
+        <Element index="0" value="0.312343"/>
+        <Element index="1" value="-0.762886"/>
+        <Element index="2" value="0.56608"/>
+      </Property>
+      <Property name="EyeAngle" id="1938.EyeAngle" number_of_elements="1">
+        <Element index="0" value="2"/>
+        <Domain name="range" id="1938.EyeAngle.range"/>
+      </Property>
+    </Proxy>
+    <ProxyCollection name="animation">
+      <Item id="1658" name="AnimationScene2"/>
+      <Item id="1659" name="TimeAnimationCue2"/>
+    </ProxyCollection>
+    <ProxyCollection name="layouts">
+      <Item id="1936" name="ViewLayout3"/>
+    </ProxyCollection>
+    <ProxyCollection name="pq_helper_proxies.2699">
+      <Item id="2721" name="RepresentationAnimationHelper"/>
+    </ProxyCollection>
+    <ProxyCollection name="pq_helper_proxies.3148">
+      <Item id="3170" name="RepresentationAnimationHelper"/>
+    </ProxyCollection>
+    <ProxyCollection name="pq_helper_proxies.3183">
+      <Item id="3194" name="RepresentationAnimationHelper"/>
+    </ProxyCollection>
+    <ProxyCollection name="representations">
+      <Item id="3008" name="DataRepresentation10"/>
+      <Item id="3217" name="DataRepresentation12"/>
+    </ProxyCollection>
+    <ProxyCollection name="sources">
+      <Item id="3183" name="TableToPoints4"/>
+      <Item id="3148" name="circumcenter.csv"/>
+      <Item id="2699" name="sphere.3d.vtu"/>
+    </ProxyCollection>
+    <ProxyCollection name="timekeeper">
+      <Item id="256" name="TimeKeeper"/>
+    </ProxyCollection>
+    <ProxyCollection name="views">
+      <Item id="1938" name="RenderView3"/>
+    </ProxyCollection>
+    <CustomProxyDefinitions/>
+    <Links/>
+    <GlobalPropertiesManagers>
+      <GlobalPropertiesManager group="misc" type="GlobalProperties" name="ParaViewProperties">
+        <Link global_name="BackgroundColor" proxy="1938" property="Background"/>
+        <Link global_name="EdgeColor" proxy="3008" property="EdgeColor"/>
+        <Link global_name="EdgeColor" proxy="3217" property="EdgeColor"/>
+        <Link global_name="ForegroundColor" proxy="3008" property="AmbientColor"/>
+        <Link global_name="ForegroundColor" proxy="3008" property="CubeAxesColor"/>
+        <Link global_name="ForegroundColor" proxy="3217" property="AmbientColor"/>
+        <Link global_name="ForegroundColor" proxy="3217" property="CubeAxesColor"/>
+        <Link global_name="SelectionColor" proxy="3008" property="SelectionColor"/>
+        <Link global_name="SelectionColor" proxy="3217" property="SelectionColor"/>
+        <Link global_name="SurfaceColor" proxy="3008" property="DiffuseColor"/>
+        <Link global_name="SurfaceColor" proxy="3008" property="BackfaceDiffuseColor"/>
+        <Link global_name="SurfaceColor" proxy="3217" property="DiffuseColor"/>
+        <Link global_name="SurfaceColor" proxy="3217" property="BackfaceDiffuseColor"/>
+      </GlobalPropertiesManager>
+    </GlobalPropertiesManagers>
+  </ServerManagerState>
+</ParaView>
