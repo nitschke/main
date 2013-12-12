@@ -1,16 +1,17 @@
 dimension of world:      3
 
 sphereMesh->macro file name:       ./macro/sphere_macro.3d
-sphereMesh->global refinements:    7
+sphereMesh->global refinements:    12
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
 sphere->components:              1
 
-sphere->solver:                gmres
+sphere->solver:                bicgstab2
 sphere->solver->max iteration: 1000
-sphere->solver->tolerance:     1.e-6
+sphere->solver->info:          4
+sphere->solver->tolerance:     1.e-9
 sphere->solver->left precon:   diag
 
 sphere->estimator[0]:          0

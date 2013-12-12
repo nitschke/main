@@ -14,7 +14,8 @@ namespace AMDiS {
     userMat = 0.0;
 
     for (int i = 0; i < 3; i++) {
-      double volStarP = volInfo.getDualVertexVol(i);
+      //double volStarP = volInfo.getDualVertexVol(i);
+      double volStarP = 1.0;
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
         int k = (2*(i+j))%3;
         double c = volInfo.getDualOppEdgeLen(k) / (volInfo.getOppEdgeLen(k) * volStarP);
@@ -31,8 +32,10 @@ namespace AMDiS {
 
     userVec = 0.0;
 
+    ElVolumesInfo2d volInfo(elInfo);
+
     for (int i = 0; i < 3; i++) {
-      userVec(i) = (*f)(elInfo->getCoord(i));
+      userVec(i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
     }
 
   }

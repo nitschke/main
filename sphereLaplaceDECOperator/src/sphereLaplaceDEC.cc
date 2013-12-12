@@ -17,7 +17,8 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
   {
-    return (x[0] > 0.5) ? 1.0 : 0.0;
+    //return (x[0] > 0.5) ? 1.0 : 0.0;
+    return -2.0 * x[0];
   }
 };
 
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
   
   // ===== create matrix operator =====
   //Operator matrixOperator(sphere.getFeSpace());
-  //matrixOperator.addTerm(new Simple_SOT);
+  //matrixOperator.addTerm(new Simple_SOT(-1.0));
   //sphere.addMatrixOperator(&matrixOperator, 0, 0);
   LBeltramiDEC decOperator(sphere.getFeSpace());
   sphere.addMatrixOperator(&decOperator, 0, 0);
@@ -61,10 +62,9 @@ int main(int argc, char* argv[])
 
   // ===== create rhs operator =====
   //Operator rhsOperator(sphere.getFeSpace());
+  //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
   FunctionDEC rhsOperator(sphere.getFeSpace(), new F(degree));
 
-
-  //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
   sphere.addVectorOperator(&rhsOperator, 0);
 
   // ===== start adaption loop =====
@@ -72,7 +72,6 @@ int main(int argc, char* argv[])
 
   //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
 
-  
   sphere.writeFiles(adaptInfo, true);
 
   AMDiS::finalize();
