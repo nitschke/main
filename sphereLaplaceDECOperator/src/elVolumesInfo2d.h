@@ -5,7 +5,7 @@ namespace AMDiS {
 class ElVolumesInfo2d {
   
   public:
-    ElVolumesInfo2d(ElInfo *el);
+    ElVolumesInfo2d(const ElInfo *el);
     
     double getDualVertexVol(int i) {return dualVertexVol[i];}
     double getOppEdgeLen(int i) {return oppEdgeLen[i];}
