@@ -1,7 +1,7 @@
 project("DEC")
 cmake_minimum_required(VERSION 2.8)
 
-#find_package(AMDIS REQUIRED COMPONENTS umfpack )
+find_package(AMDIS REQUIRED COMPONENTS umfpack )
 find_package(AMDIS REQUIRED)
 
 if(AMDIS_FOUND)

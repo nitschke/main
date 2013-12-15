@@ -1,9 +1,9 @@
 from triangle import *
 from pylab import *
 
-a = array([ 0.,  0.,  0.])
-b = array([ 1.,  2.,  3.])
-c = array([ 1.,  3.,  1.])
+a = array([ 0 ,  0 , -1 ])
+b = array([ 0.707107 , 0 , -0.707107 ])
+c = array([ 0.325058 , -0.325058 , -0.888074])
 
 t = triangle(a, b ,c)
 print t
