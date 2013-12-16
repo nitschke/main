@@ -17,8 +17,13 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
   {
-    //return (x[0] > 0.5) ? 1.0 : 0.0;
-    return -2.0 * x[0];
+    double r = 0.5;
+    double R = 2.0;
+    double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
+    if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
+    //if (!(zeta >= 0.0)) cout << zeta << " on y = " << x[1] << endl; 
+    double eta = zeta / (R + zeta);
+    return - x[0] * eta * (eta + 1.0) / r / r;
   }
 };
 
@@ -28,53 +33,53 @@ public:
 
 int main(int argc, char* argv[])
 {
-  FUNCNAME("sphere main");
+  FUNCNAME("torus main");
 
   AMDiS::init(argc, argv);
 
-  // ===== create projection =====
-  WorldVector<double> ballCenter;
-  ballCenter.set(0.0);
-  new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
+  // ===== no projection, use finalize meshes =====
 
   // ===== create and init the scalar problem ===== 
-  ProblemStat sphere("sphere");
-  sphere.initialize(INIT_ALL);
-
+  ProblemStat torus("torus");
+  torus.initialize(INIT_ALL);
 
 
   // === create adapt info ===
-  AdaptInfo *adaptInfo = new AdaptInfo("sphere->adapt", sphere.getNumComponents());
+  AdaptInfo *adaptInfo = new AdaptInfo("torus->adapt", torus.getNumComponents());
 
   // === create adapt ===
-  AdaptStationary *adapt = new AdaptStationary("sphere->adapt",
-					       &sphere,
+  AdaptStationary *adapt = new AdaptStationary("torus->adapt",
+					       &torus,
 					       adaptInfo);
   
   // ===== create matrix operator =====
-  //Operator matrixOperator(sphere.getFeSpace());
-  //matrixOperator.addTerm(new Simple_SOT(-1.0));
-  //sphere.addMatrixOperator(&matrixOperator, 0, 0);
-  LBeltramiDEC decOperator(sphere.getFeSpace());
-  sphere.addMatrixOperator(&decOperator, 0, 0);
+  //Operator laplaceOperator(torus.getFeSpace());
+  //laplaceOperator.addTerm(new Simple_SOT(-1.0));
+  LBeltramiDEC laplaceOperator(torus.getFeSpace());
+  torus.addMatrixOperator(&laplaceOperator, 0, 0);
 
-  int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
+  int degree = torus.getFeSpace()->getBasisFcts()->getDegree();
 
   // ===== create rhs operator =====
-  //Operator rhsOperator(sphere.getFeSpace());
+  //Operator rhsOperator(torus.getFeSpace());
   //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  FunctionDEC rhsOperator(sphere.getFeSpace(), new F(degree));
+  FunctionDEC rhsOperator(torus.getFeSpace(), new F(degree));
+  torus.addVectorOperator(&rhsOperator, 0);
 
-  sphere.addVectorOperator(&rhsOperator, 0);
+
+  
 
   // ===== start adaption loop =====
   adapt->adapt();
 
-  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  //cout << torus.getSystemMatrix(0,0)->getBaseMatrix() << endl;
 
-  sphere.writeFiles(adaptInfo, true);
+  torus.writeFiles(adaptInfo, true);
 
   AMDiS::finalize();
+
+  // WTF: Need a Pseudo-Operator?!?
+  FunctionDEC pseudoOp(torus.getFeSpace(), new F(degree));
 }
 
 

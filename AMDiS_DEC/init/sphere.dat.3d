@@ -1,8 +1,8 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/bunny_fixed.macro
-sphereMesh->macro file name:       ./macro/torus27k.3d
-%sphereMesh->macro file name:       ./macro/sphereIko25k.3d
+%sphereMesh->macro file name:       ./macro/torus27k.3d
+sphereMesh->macro file name:       ./macro/sphereIko25k.3d
 sphereMesh->global refinements:    0
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 %sphereMesh->global refinements:    3
