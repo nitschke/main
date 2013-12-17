@@ -14,10 +14,13 @@ add_subdirectory(src/dec)
 include_directories(src/dec)
 
 add_executable(laplaceSphere src/sphereLaplaceDEC.cc)
-target_link_libraries(laplaceSphere dec ${BASIS_LIBS})
+target_link_libraries(laplaceSphere ${BASIS_LIBS} dec)
 
 add_executable(laplaceTorus src/torusLaplaceDEC.cc)
-target_link_libraries(laplaceTorus dec ${BASIS_LIBS})
+target_link_libraries(laplaceTorus ${BASIS_LIBS} dec)
+
+add_executable(platteTorus src/torusPlatteDEC.cc)
+target_link_libraries(platteTorus ${BASIS_LIBS} dec)
 
 #create the output dir
 #file(MAKE_DIRECTORY output)

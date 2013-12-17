@@ -1,0 +1,390 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm,landscape]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{textcomp}
+\author{IWR}
+\parindent0cm
+\parsep.5ex
+\newcommand{\basis}{{(name)->}}
+\begin{document}
+\section*{AdaptInfo}
+Parameters for AdaptInfo(\texttt{[name]},\texttt{nComponents})
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis start time & \textbf{double} & [0.0] & Initial time\\ \hline
+\basis timestep & \textbf{double} & [0.0] & Time step size to be used\\ \hline
+\basis end time & \textbf{double} & [1.0] & Final time\\ \hline
+\basis max iteration & \textbf{int} & [-1] & maximal allowed number of iterations of the adaptive procedure; if maxIteration $\leq$ 0, no iteration bound is used\\ \hline
+\basis max timestep iteration & \textbf{int} & [30] & Maximal number of iterations for choosing a timestep\\ \hline
+\basis max time iteration & \textbf{int} & [30] & Maximal number of time iterations\\ \hline
+\basis min timestep & \textbf{double} & [0.0] & Minimal step size\\ \hline
+\basis max timestep & \textbf{double} & [1.0] & Maximal step size\\ \hline
+\basis number of timesteps & \textbf{int} & [0] & Per default this value is 0 and not used. If it is set to a non-zero value, the computation of the stationary problem is done nTimesteps times with a fixed timestep.\\ \hline
+\end{longtable}
+}
+
+Parameters for AdaptInfo for each component separately. \texttt{(name):=(name)[$i$]} for $i=0,\ldots,$\texttt{nComponents}$-1$
+{
+\small
+\renewcommand{\basis}{{(name)[i]->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis tolerance & \textbf{double} & [0.0] & Tolerance for the (absolute or relative) error\\ \hline
+\basis time tolerance & \textbf{double} & [0.0] & Time tolerance.\\ \hline
+\basis coarsen allowed & \textbf{int \{0,1\}} & [0] & true if coarsening is allowed, false otherwise.\\ \hline
+\basis refinement allowed & \textbf{int \{0,1\}} & [1] & true if refinement is allowed, false otherwise.\\ \hline
+\basis refine bisections & \textbf{int} & [1] & parameter to tell the marking strategy how many bisections should be performed when an element is marked for refinement; usually the value is 1 or DIM\\ \hline
+\basis coarsen bisections & \textbf{int} & [1] & parameter to tell the marking strategy how many bisections should be undone when an element is marked for coarsening; usually the value is 1 or DIM\\ \hline
+\basis sum factor & \textbf{double} & [1.0] & factors to combine max and integral time estimate\\ \hline
+\basis max factor & \textbf{double} & [0.0] & factors to combine max and integral time estimate\\ \hline
+\end{longtable}
+}
+
+\section*{AdaptInstationary}
+\texttt{(name)} ist the first argument of the constructor: AdaptInstationary(\texttt{(name)},\ldots)
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis strategy & \textbf{int} & [0] & Strategy for choosing one timestep: strategy 0: Explicit strategy, strategy 1: Implicit strategy.\\ \hline
+\basis time delta 1 & \textbf{double} & [0.7071] & Parameter $\delta_1$ used in time step reduction\\ \hline
+\basis time delta 2 & \textbf{double} & [1.4142] & Parameter $\delta_2$ used in time step enlargement\\ \hline
+\basis info & \textbf{int} & [10] & Info level (from AdaptBase)\\ \hline
+\basis break when stable & \textbf{int} & [0] & If this parameter is 1 and the instationary problem is stable, hence the number of solver iterations to solve the problem is zero, the adaption loop will stop.\\ \hline
+\basis time adaptivity debug mode & \textbf{bool} & [0] & In debug mode, the adapt loop will print information about timestep decreasing and increasing.\\ \hline
+\basis queue->runtime & \textbf{int} & [-1] & Runtime of the queue (of the servers batch system) in seconds. If the problem runs on a computer/server without a time limited queue, the value is -1.\\ \hline
+\basis queue->serialization filename & \textbf{string} & [\_\_serialized\_problem.ser] & Name of the file used to automatically serialize the problem.\\ \hline
+\end{longtable}
+}
+
+\section*{AdaptStationary}
+\texttt{(name)} ist the first argument of the constructor: AdaptStationary(\texttt{(name)},\ldots)
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis info & \textbf{int} & [10] & Info level (from AdaptBase)\\ \hline
+\end{longtable}
+}
+
+\section*{Estimator}
+Global Estimator Parameters
+{
+\small
+\renewcommand{\basis}{{(estimator)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis error norm & \textbf{enum \{\texttt{NO\_NORM, L2\_NORM, H1\_NORM}\}} & [NO\_NORM] & Used norm\\ \hline
+\end{longtable}
+}
+
+Parameters for the \textbf{RecoveryEstimator}
+{
+\small
+\renewcommand{\basis}{{(estimator)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis rec method & \textbf{int \{0,1,2\}} & [0] & Recovery method: 0: superconvergent patch recovery (discrete ZZ), 1: local L2-averaging (continuous ZZ-recovery), 2: simple averaging\\ \hline
+\basis rel error & \textbf{int \{0,1\}} & [0] & \\ \hline
+\basis C & \textbf{double} & [1.0] & \\ \hline
+\end{longtable}
+}
+
+Parameters for the \textbf{ResidualEstimator}
+{
+\small
+\renewcommand{\basis}{{(estimator)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis C0 & \textbf{double} & [0.0] & \\ \hline
+\basis C1 & \textbf{double} & [0.0] & \\ \hline
+\basis C2 & \textbf{double} & [0.0] & \\ \hline
+\basis C3 & \textbf{double} & [0.0] & \\ \hline
+\end{longtable}
+}
+
+Parameters for the \textbf{SimpleResidualEstimator}
+{
+\small
+\renewcommand{\basis}{{(estimator)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis C0 & \textbf{double} & [0.0] & \\ \hline
+\basis C1 & \textbf{double} & [0.0] & \\ \hline
+\end{longtable}
+}
+
+\section*{FileWriter}
+Parameters for Data output. Typically the label ist \texttt{(name)}:=\texttt{(problem-name)->output}
+{
+\small
+\renewcommand{\basis}{{(problem-name)->output->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis filename & \textbf{string} & [] & Used filename prefix.\\ \hline
+\basis AMDiS format & \textbf{bool} & [0] & 0: Don't write AMDiS files; 1: Write AMDiS files. \\ \hline
+\basis AMDiS mesh ext & \textbf{string} & [.mesh] & AMDiS mesh-file extension.\\ \hline
+\basis AMDiS data ext & \textbf{string} & [.dat] & AMDiS solution-file extension.\\ \hline
+\basis ParaView format & \textbf{bool} & [0] & 0: Don't write ParaView files; 1: Write ParaView files.\\ \hline
+\basis ParaView vector format & \textbf{bool} & [0] & 0: Don't write ParaView vector files; 1: Write ParaView vector files.\\ \hline
+\basis ParaView animation & \textbf{bool} & [0] & 0: Don't write ParaView animation file; 1: Write ParaView animation file.\\ \hline
+\basis ParaView ext & \textbf{string} & [.vtu] & VTK file extension.\\ \hline
+\basis Periodic format & \textbf{bool} & [0] & 0: Don't write periodic files; 1: Write periodic files.\\ \hline
+\basis Periodic ext & \textbf{string} & [.per] & Periodic file extension.\\ \hline
+\basis PNG format & \textbf{bool} & [0] & 0: Don't write png files; 1: Write png image files.\\ \hline
+\basis PNG type & \textbf{int} & [0] & 0: Gray color picture; 1: RGB picture.\\ \hline
+\basis append index & \textbf{int} & [0] & 0: Don't append time index to filename prefix, 1: Append time index to filename prefix.\\ \hline
+\basis index length & \textbf{int} & [5] & Total length of appended time index.\\ \hline
+\basis index decimals & \textbf{int} & [3] & Number of decimals in time index.\\ \hline
+\basis write every i-th timestep & \textbf{int} & [1] & Timestep modulo: write only every tsModulo-th timestep! \\ \hline
+\basis Povray format & \textbf{bool} & [0] & 0: Don't write Povray scripts; 1: Write Povray scripts\\ \hline
+\basis Povray template & \textbf{string} & [] & name of the template file that will be prepended to all created *.pov files \\ \hline
+\basis Povray camera location & \textbf{string} & [] & camera position for povray script files\\ \hline
+\basis Povray camera look\_at & \textbf{string} & [] & orientation for camera in povray script files\\ \hline
+\basis DOF format & \textbf{bool} & [0] & 0: Don't write DOF files; 1: Write DOF files\\ \hline
+\basis ARH format & \textbf{bool} & [0] & 0: Don't write ARH files; 1: Write ARH files\\ \hline
+\basis compression & \textbf{enum \{\texttt{gz, gzip, bz2, bzip2}\}} & [] & \\ \hline
+\end{longtable}
+}
+
+\section*{HL\_SignedDistTraverse}
+Reinitialization class HL\_SignedDistTraverse(\texttt{(name)},\ldots) with \texttt{(name)} as first argument in the constructor.
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis tolerance & \textbf{double} & [] & Tolerance for Hopf-Lax update iteration loop.\\ \hline
+\basis maximal number of iteration steps & \textbf{int} & [] & Maximal number of mesh iterations for Hopf-Lax update.\\ \hline
+\basis Gauss-Seidel iteration & \textbf{bool} & [] & Indicates whether Gauss-Seidel or Jacobi iteration is used. 0: Jacobi, 1: Gauss-Seidel\\ \hline
+\basis infinity value & \textbf{double} & [] & Initialization value ``inifinity'' for non-boundary vertices. Must be $>$ 1000\\ \hline
+\basis boundary initialization & \textbf{int} & [] & Define boundary initialization strategy. 0: BoundaryElementLevelSetDist, 1: BoundaryElementTopDist, 2: BoundaryElementEdgeDist, 3: BoundaryElementNormalDist\\ \hline
+\end{longtable}
+}
+
+\section*{Marker}
+Global Marker Parameters
+{
+\small
+\renewcommand{\basis}{{(marker)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis strategy & \textbf{int \{0-4\}} & [0] & 0..no marker, 1..GRMarker, 2..MSMarker, 3..ESMarker, 4..GERSMarker\\ \hline
+\basis p & \textbf{int} & [2] & power in estimator norm\\ \hline
+\basis info & \textbf{int} & [10] & Info level\\ \hline
+\basis max refinement level & \textbf{int} & [-1] & Maximal level of all elements\\ \hline
+\basis min refinement level & \textbf{int} & [-1] & Minimal level of all elements\\ \hline
+\end{longtable}
+}
+
+Parameters for the \textbf{ESMarker} (Equidistribution strategy \cite{es_marker})
+{
+\small
+\renewcommand{\basis}{{(marker)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis ESTheta & \textbf{double} & [0.9] & Marking parameter $\theta$\\ \hline
+\basis ESThetaC & \textbf{double} & [0.2] & Marking parameter $\theta_C$\\ \hline
+\end{longtable}
+}
+
+Parameters for the \textbf{GERSMarker} (Guaranteed error reduction strategy \cite{gers_marker})
+{
+\small
+\renewcommand{\basis}{{(marker)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis GERSThetaStar & \textbf{double} & [0.6] & Marking parameter $\theta^\ast$\\ \hline
+\basis GERSNu & \textbf{double} & [0.1] & Marking parameter $\nu$\\ \hline
+\basis GERSThetaC & \textbf{double} & [0.1] & Marking parameter $\theta_C$\\ \hline
+\end{longtable}
+}
+
+Parameters for the \textbf{GRMarker} (Global refinement strategy)
+{
+\small
+\renewcommand{\basis}{{(marker)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\end{longtable}
+}
+
+Parameters for the \textbf{MSMarker} (Maximum strategy)
+{
+\small
+\renewcommand{\basis}{{(marker)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis MSGamma & \textbf{double} & [0.5] & Marking parameter $\gamma$\\ \hline
+\basis MSGammaC & \textbf{double} & [0.1] & Marking parameter $\gamma_C$\\ \hline
+\end{longtable}
+}
+
+\section*{Mesh}
+Mesh(\texttt{(name)},$\cdot$)
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis macro file name & \textbf{string} & [] & Filename for the macrofile\\ \hline
+\basis value file name & \textbf{string} & [] & Filename for value file. \\ \hline
+\basis periodic file & \textbf{string} & [] & filename for periodic file\\ \hline
+\basis check & \textbf{int} & [1] & Check the mesh structure\\ \hline
+\basis preserve coarse dofs & \textbf{bool} & [0] & When an element is refined, not all dofs of the coarse element must be part of the new elements. An example are centered dofs when using higher lagrange basis functions. The midpoint dof of the parents element is not a dof of the both children elements. Therefore, the dof can be deleted. In some situation, e.g., when using multigrid techniques, it can be necessary to store this coarse dofs. Then this variable must be set to true. If false, the not required coarse dofs will be deleted.\\ \hline
+\basis macro weights & \textbf{string} & [] & file of file that contains weight number for each element. The higher the weigh, the more this element will be refined and thus more processors share this element.\\ \hline
+\basis global refinements & \textbf{int} & [0] & Number of global refinements\\ \hline
+\end{longtable}
+}
+
+\section*{Meshdistributor}
+The label \texttt{(name)} represents the string that is passed to the constructor of MeshDistributor.
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis repartitioning & \textbf{bool} & [0] & En/disables repartitioning of the macro mesh, when derivation of mean number of DOFs exceeds a threshold value.\\ \hline
+\basis repartition ith change & \textbf{int} & [20] & Sets number of mesh changes to wait before threshold check for repartitioning will be performed.\\ \hline
+\basis partitioner & \textbf{enum \{\texttt{parmetis, zoltan, simple}\}} & [parmetis] & Defines the external tool that performs the partitioning of the, e.g.~by graph-partitioning. {\em simple} does not change the initial partitioning, i.e., its a random distribution of the macro elements to the processors.\\ \hline
+\basis box partitioning & \textbf{bool} & [0] & If the macro mesh is globally refined from macro.stand.2d or macro.stand.3d, than the partitioner may compute the partitioning not based on triangled or tetrahedron, but on (composed) rectangles or boxes. Till now this is implemented only for 3D and Zoltan partitioner.\\ \hline
+\basis log main rank & \textbf{bool} & [0] & If set to {\em true}, stdout output will be printed only by the main rank 0. Otherwise, all ranks stdout output will be created.\\ \hline
+\basis pre refine & \textbf{int} & [-1] & If set to -1, the number of pre refinements for the macro mesh will be calculated for the given number of processors. This value can be overwritten by setting a value $>= 0$.\\ \hline
+\basis output->serialization filename & \textbf{string} & [] & Name of the parallel serialization file. If at least one stationary problem is serialized, this parameter must be set.\\ \hline
+\basis input->serialization filename & \textbf{string} & [] & Name of the parallel deserialization file. If at least one stationary problem is deserialized, this parameter must be set.\\ \hline
+\basis debug output dir & \textbf{string} & [] & Path name where debug data should be written to.\\ \hline
+\basis write parallel debug file & \textbf{bool} & [0] & If set to {\em true}, the parallelization will create for each rank a file with the name ``mpi-dbg-\{rank-no\}.dat''. This files contain information about all DOF indices in ranks domain. They may be useful for debugging or some postprocessing steps.\\ \hline
+\end{longtable}
+}
+
+\section*{OEMSolver}
+Standard parameters for OEMSolver
+{
+\small
+\renewcommand{\basis}{{(solver)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis left precon & \textbf{enum \{\texttt{diag,ilu,ic,no}\}} & [no] & left preconditioner\\ \hline
+\basis right precon & \textbf{enum \{\texttt{diag,ilu,ic,no}\}} & [no] & right preconditioner\\ \hline
+\basis ell & \textbf{int} & [1] & additional solver parameter\\ \hline
+\basis tolerance & \textbf{double} & [0.0] & Solver tolerance norm(r).\\ \hline
+\basis relative tolerance & \textbf{double} & [0.0] & Relative solver tolerance norm(r)/norm(r0).\\ \hline
+\basis max iteration & \textbf{int} & [1000] & maximal number of iterations.\\ \hline
+\basis print cycle & \textbf{int} & [100] & Print cycle, after how many iterations the residuum norm is logged.\\ \hline
+\basis info & \textbf{int} & [0] & info level during solving the system.\\ \hline
+\end{longtable}
+}
+
+Parameters for the direct sparse LU-solver \textbf{Umfpack}
+{
+\small
+\renewcommand{\basis}{{(solver)->}}
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis store symbolic & \textbf{int} & [0] & \\ \hline
+\basis symmetric strategy & \textbf{int} & [0] & \\ \hline
+\basis alloc init & \textbf{double} & [0.7] & \\ \hline
+\end{longtable}
+}
+
+\section*{ProblemStat}
+Standard ProblemStat(\texttt{(name)}). First construktor argument is \texttt{(name)}
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis components & \textbf{int} & [-1] & Number of problem components (must be set)\\ \hline
+\basis input->read serialization & \textbf{int} & [0] & \\ \hline
+\basis input->serialization with adaptinfo & \textbf{int} & [0] & \\ \hline
+\basis input->serialization filename & \textbf{string} & [] & \\ \hline
+\basis mesh & \textbf{string} & [] & Name of the mesh\\ \hline
+\basis dim & \textbf{int} & [0] & problem dimension\\ \hline
+\basis refinement set[i] & \textbf{int} & [-1] & $i=0,\ldots,$\texttt{nComponents},\\ \hline
+\basis polynomial degree[i] & \textbf{int} & [1] & $i=0,\ldots,$\texttt{nComponents},\\ \hline
+\basis solver & \textbf{enum \{\texttt{cg, cgs, bicg, bicgstab, bicgstab2, bicgstab\_ell, qmr, tfqmr, gmres, idr\_s, minres, (umfpack), 0}\}} & [0] & iterative/direct solver for the linear system\\ \hline
+\basis estimator[i] & \textbf{enum \{\texttt{residual, simple-residual, recovery, 0}\}} & [0] & $i=0,\ldots,$\texttt{nComponents}, estimator type for each components\\ \hline
+\basis output->write serialization & \textbf{int} & [0] & write serialization files\\ \hline
+\end{longtable}
+}
+
+\section*{RosenbrockAdaptInstationary}
+RosenbrockAdaptInstationary
+{
+\small
+\begin{longtable}[l]{|>{\ttfamily}lp{.15\textwidth}>{\ttfamily}lp{.4\textwidth}|}
+\hline
+\textrm{\textbf{keyword}} & \textrm{\textbf{data type}} & \textrm{\textbf{default}} & \textrm{\textbf{description}} \\
+\hline\hline
+
+\hline\basis rosenbrock method & \textbf{enum \{\texttt{ros2, rowda3, ros3p, rodasp}\}} & [] & Rosenbrock method that should be used.\\ \hline
+\basis fix first timesteps & \textbf{int} & [0] & If greater than 0, than for the first given number of timesteps the timestep will be not changed and is set to the very first one.\\ \hline
+\basis rosenbrock->timestep study & \textbf{bool} & [0] & If true, the first timestep is calculated with different timesteps. This is usually used to make a study how the time error estimator behavous for different timesteps.\\ \hline
+\basis rosenbrock->timestep study steps & \textbf{bool} & [0] & If dbgTimestepStudy is set to true, then this array contains the timesteps for which the first timestep should be calculated.\\ \hline
+\end{longtable}
+}
+
+\bibliographystyle{plain}
+\bibliography{parameters}\end{document}

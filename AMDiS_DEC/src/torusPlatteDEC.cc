@@ -21,9 +21,8 @@ public:
     double R = 2.0;
     double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
     if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
-    //if (!(zeta >= 0.0)) cout << zeta << " on y = " << x[1] << endl; 
-    double eta = zeta / (R + zeta);
-    return - x[0] * eta * (eta + 1.0) / r / r;
+    double sgt = R + zeta;
+    return - (R * (r*R + (r*r + R*R ) * zeta/r) * x[0]) / (r*r*r * sgt*sgt*sgt*sgt);
   }
 };
 
@@ -37,7 +36,7 @@ int main(int argc, char* argv[])
 
   AMDiS::init(argc, argv);
 
-  // ===== no projection, use finalize meshes =====
+  // ===== no projection, use finalized meshes =====
 
   // ===== create and init the scalar problem ===== 
   ProblemStat torus("torus");
@@ -55,8 +54,15 @@ int main(int argc, char* argv[])
   // ===== create matrix operator =====
   //Operator laplaceOperator(torus.getFeSpace());
   //laplaceOperator.addTerm(new Simple_SOT(-1.0));
-  LBeltramiDEC laplaceOperator(torus.getFeSpace());
-  torus.addMatrixOperator(&laplaceOperator, 0, 0);
+  LBeltramiDEC laplaceOperator_h(torus.getFeSpace(0), torus.getFeSpace(0));
+  torus.addMatrixOperator(&laplaceOperator_h, 0, 0);
+
+  LBeltramiDEC laplaceOperator_u(torus.getFeSpace(1), torus.getFeSpace(1));
+  torus.addMatrixOperator(&laplaceOperator_u, 1, 1);
+
+  SimpleDEC operator_h(torus.getFeSpace(1), torus.getFeSpace(0));
+  operator_h.setFactor(-1.0);
+  torus.addMatrixOperator(&operator_h, 1, 0);
 
   int degree = torus.getFeSpace()->getBasisFcts()->getDegree();
 

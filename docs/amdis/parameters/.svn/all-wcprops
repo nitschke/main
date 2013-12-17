@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/amdis/!svn/ver/1937/trunk/doc/parameters
+END
+AdaptInfo.inc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/amdis/!svn/ver/1929/trunk/doc/parameters/AdaptInfo.inc
+END
+Estimator.inc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/Estimator.inc
+END
+AdaptStationary.inc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/amdis/!svn/ver/1929/trunk/doc/parameters/AdaptStationary.inc
+END
+OEMSolver.inc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/OEMSolver.inc
+END
+OEMSolver_UmfpackSolver.inc
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/OEMSolver_UmfpackSolver.inc
+END
+FileWriter.inc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/FileWriter.inc
+END
+Estimator_RecoveryEstimator.inc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/Estimator_RecoveryEstimator.inc
+END
+RosenbrockAdaptInstationary.inc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/RosenbrockAdaptInstationary.inc
+END
+MeshDistributor.inc
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/MeshDistributor.inc
+END
+Estimator_ResidualEstimator.inc
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/Estimator_ResidualEstimator.inc
+END
+ProblemStat.inc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/amdis/!svn/ver/1937/trunk/doc/parameters/ProblemStat.inc
+END
+Mesh.inc
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/amdis/!svn/ver/1929/trunk/doc/parameters/Mesh.inc
+END
+HL_SignedDistTraverse.inc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/amdis/!svn/ver/1929/trunk/doc/parameters/HL_SignedDistTraverse.inc
+END
+AdaptInstationary.inc
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/amdis/!svn/ver/1929/trunk/doc/parameters/AdaptInstationary.inc
+END
+Estimator_SimpleResidualEstimator.inc
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/amdis/!svn/ver/1932/trunk/doc/parameters/Estimator_SimpleResidualEstimator.inc
+END
+AdaptInfo_ScalContent.inc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/amdis/!svn/ver/1929/trunk/doc/parameters/AdaptInfo_ScalContent.inc
+END

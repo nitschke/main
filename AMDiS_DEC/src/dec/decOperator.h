@@ -4,34 +4,28 @@ namespace AMDiS {
 
   using namespace std;
 
-  class SandboxOperator : public Operator {
-    
+  class DecOperator : public Operator {
+
     public:
+      DecOperator(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : Operator(rowFeSpace, colFeSpace) {
+        opFactor = 1.0;
+       }
 
-      SandboxOperator(const FiniteElemSpace *rowFeSpace,
-	     const FiniteElemSpace *colFeSpace = NULL) : Operator(rowFeSpace, colFeSpace) {}
-
-      void getElementMatrix(const ElInfo *elInfo, 
-		    ElementMatrix& userMat, 
-				double factor) {
-        //if (!assembler) initAssembler(NULL, NULL, NULL, NULL);
-
-        for (int i = 0; i < 3; i++) {
-          for (int j = 0; j < 3; j++) {
-            userMat(i,j) = factor;
-          }
-        }
-
-         cout << userMat << endl;
+      void setFactor(double factor) {
+        opFactor = factor;
       }
-  };
 
+    protected:
+      double opFactor;
   
-  class LBeltramiDEC : public Operator {
+  };
+  
+  class LBeltramiDEC : public DecOperator {
     
     public:
       LBeltramiDEC(const FiniteElemSpace *rowFeSpace,
-	     const FiniteElemSpace *colFeSpace = NULL) : Operator(rowFeSpace, colFeSpace) {}
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
 
       void getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
@@ -39,21 +33,38 @@ namespace AMDiS {
     
   };
 
-  class FunctionDEC : public Operator {
+  class FunctionDEC : public DecOperator {
     
     public:
       
       FunctionDEC(const FiniteElemSpace *rowFeSpace, AbstractFunction<double, WorldVector<double> > *fun,
-	     const FiniteElemSpace *colFeSpace = NULL) : Operator(rowFeSpace, colFeSpace), f(fun) {}
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), f(fun) {}
 
       void getElementVector(const ElInfo *elInfo, 
 				  ElementVector& userVec, 
 				  double factor = 1.0);
+
+      void getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor = 1.0);
     
     protected:
       
       AbstractFunction<double, WorldVector<double> > *f;
 
   };
+
+  class SimpleDEC : public DecOperator {
+    
+    public:
+      SimpleDEC(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
+
+      void getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor = 1.0);
+    
+  };
+
 
 }

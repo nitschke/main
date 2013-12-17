@@ -7,12 +7,12 @@ torusMesh->check:                 0
 torus->mesh:                    torusMesh
 torus->dim:                     2
 torus->polynomial degree[0]:    1
-torus->components:              1
+torus->components:              2
 
-torus->solver:                cg
+torus->solver:                bicgstab2
 torus->solver->max iteration: 1000
 torus->solver->info:          4
-torus->solver->tolerance:     1.e-8
+torus->solver->tolerance:     1.e-3
 torus->solver->left precon:   diag
 
 torus->estimator[0]:          0
