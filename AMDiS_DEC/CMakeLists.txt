@@ -22,5 +22,8 @@ target_link_libraries(laplaceTorus ${BASIS_LIBS} dec)
 add_executable(platteTorus src/torusPlatteDEC.cc)
 target_link_libraries(platteTorus ${BASIS_LIBS} dec)
 
+add_executable(platteSphere src/spherePlatteDEC.cc)
+target_link_libraries(platteSphere ${BASIS_LIBS} dec)
+
 #create the output dir
 #file(MAKE_DIRECTORY output)

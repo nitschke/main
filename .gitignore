@@ -26,3 +26,6 @@
 *.synctex.gz
 *.vrb
 *.synctex
+
+#C4D
+**/backup

@@ -1,0 +1,31 @@
+dimension of world:      3
+
+%sphereMesh->macro file name:       ./macro/ikosaeder.3d
+sphereMesh->macro file name:       ./macro/sphereIko25k.3d
+sphereMesh->global refinements:    0
+sphereMesh->check:                 0
+
+sphere->mesh:                    sphereMesh
+sphere->dim:                     2
+sphere->polynomial degree[0]:    1
+sphere->components:              2
+
+sphere->solver:                cgs
+sphere->solver->ell:           1
+sphere->solver->max iteration: 1000
+sphere->solver->info:          4
+sphere->solver->print cycle:   50
+sphere->solver->tolerance:     1.e-9
+sphere->solver->left precon:   diag
+
+sphere->estimator[0]:          0
+sphere->marker[0]->strategy:   0
+sphere->adapt[0]->max iteration: 0
+
+
+sphere->output->filename:         output/sphere.3d
+sphere->output->ParaView format:  1
+sphere->output->AMDiS format: 0
+sphere->output->ARH format: 0
+
+

@@ -21,8 +21,11 @@ public:
     double R = 2.0;
     double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
     if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
-    double sgt = R + zeta;
-    return - (R * (r*R + (r*r + R*R ) * zeta/r) * x[0]) / (r*r*r * sgt*sgt*sgt*sgt);
+    double q = r*(R + zeta);
+    double r2 = r*r;
+    double R2 = R*R;
+    double zeta2 = zeta*zeta;
+    return - x[0] * ( 3.0*r2*R2 + 3.0*r2*R*zeta - R2*R*zeta - 8.0*R2*zeta2 - 10.0*R*zeta2*zeta - 4.0*zeta2*zeta2 ) / (q*q*q*q);
   }
 };
 
