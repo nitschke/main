@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
   // ===== create rhs operator =====
   //Operator rhsOperator(torus.getFeSpace());
   //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  FunctionDEC rhsOperator(torus.getFeSpace(), new F(degree));
+  FunctionDEC rhsOperator(new F(degree), torus.getFeSpace());
   torus.addVectorOperator(&rhsOperator, 0);
 
 

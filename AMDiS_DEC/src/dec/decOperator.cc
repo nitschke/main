@@ -22,7 +22,7 @@ namespace AMDiS {
       }
     }
 
-    userMat *= opFactor;
+    userMat *= opFactor * factor;
     //cout << userMat << endl;
   }
 
@@ -36,7 +36,7 @@ namespace AMDiS {
       userVec(i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
     }
 
-    userVec *= opFactor;
+    userVec *= opFactor * factor;
 
   }
 
@@ -53,7 +53,7 @@ namespace AMDiS {
       userMat(i, i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
     }
     
-    userMat *= opFactor;
+    userMat *= opFactor * factor;
   }
 
   
@@ -69,8 +69,31 @@ namespace AMDiS {
       userMat(i, i) = volInfo.getDualVertexVol(i);
     }
     
-    userMat *= opFactor;
+    userMat *= opFactor * factor;
   }
 
+
+  void SimpleDEC::getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor) {
+
+    ElVolumesInfo2d volInfo(elInfo);
+
+    if (uhOld) {
+      //cout << "*";
+      uhOld->getLocalVector(elInfo->getElement(), userVec);
+      //cout << userVec << endl;
+    } else {
+      userVec = 1.0;
+    }
+
+    for (int i = 0; i < 3; i++) {
+      userVec(i) *= volInfo.getDualVertexVol(i);
+    }
+
+
+    userVec *= opFactor * factor;
+
+  }
 
 }

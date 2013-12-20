@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
   // ===== create rhs operator =====
   //Operator rhsOperator(sphere.getFeSpace());
   //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  FunctionDEC rhsOperator(sphere.getFeSpace(), new F(degree));
+  FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
   sphere.addVectorOperator(&rhsOperator, 0);
 
 

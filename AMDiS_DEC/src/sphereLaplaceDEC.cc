@@ -52,23 +52,20 @@ int main(int argc, char* argv[])
 					       adaptInfo);
   
   // ===== create matrix operator =====
-  Operator matrixOperator(sphere.getFeSpace());
-  matrixOperator.addTerm(new Simple_SOT(-1.0));
-  sphere.addMatrixOperator(&matrixOperator, 0, 0);
-  //LBeltramiDEC decOperator(sphere.getFeSpace());
-  //sphere.addMatrixOperator(&decOperator, 0, 0);
+  //Operator matrixOperator(sphere.getFeSpace());
+  //matrixOperator.addTerm(new Simple_SOT(-1.0));
+  //sphere.addMatrixOperator(&matrixOperator, 0, 0);
+  LBeltramiDEC decOperator(sphere.getFeSpace());
+  sphere.addMatrixOperator(&decOperator, 0, 0);
 
   int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
 
   // ===== create rhs operator =====
-  Operator rhsOperator(sphere.getFeSpace());
-  rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  //FunctionDEC rhsOperator(sphere.getFeSpace(), new F(degree));
+  //Operator rhsOperator(sphere.getFeSpace());
+  //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
+  FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
 
   sphere.addVectorOperator(&rhsOperator, 0);
-
-  // WTF: Need a Pseudo-Operator?!?
-  FunctionDEC pseudoOp(sphere.getFeSpace(), new F(degree));
 
   // ===== start adaption loop =====
   adapt->adapt();

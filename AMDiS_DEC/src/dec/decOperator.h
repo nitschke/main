@@ -37,7 +37,7 @@ namespace AMDiS {
     
     public:
       
-      FunctionDEC(const FiniteElemSpace *rowFeSpace, AbstractFunction<double, WorldVector<double> > *fun,
+      FunctionDEC(AbstractFunction<double, WorldVector<double> > *fun, const FiniteElemSpace *rowFeSpace, 
 	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), f(fun) {}
 
       void getElementVector(const ElInfo *elInfo, 
@@ -59,6 +59,10 @@ namespace AMDiS {
     public:
       SimpleDEC(const FiniteElemSpace *rowFeSpace,
 	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
+
+      void getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor = 1.0);
 
       void getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
