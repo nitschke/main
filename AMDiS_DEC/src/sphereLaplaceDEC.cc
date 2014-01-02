@@ -57,13 +57,13 @@ int main(int argc, char* argv[])
   //Operator matrixOperator(sphere.getFeSpace());
   //matrixOperator.addTerm(new Simple_SOT(-1.0));
   //sphere.addMatrixOperator(&matrixOperator, 0, 0);
-  LBeltramiDEC decOperator(sphere.getFeSpace());
-  sphere.addMatrixOperator(&decOperator, 0, 0);
   
   //Operator simple(sphere.getFeSpace());
   //simple.addTerm(new Simple_ZOT());
   SimpleDEC simple(sphere.getFeSpace());
   sphere.addMatrixOperator(&simple,0,0);
+  LBeltramiDEC decOperator(sphere.getFeSpace());
+  sphere.addMatrixOperator(&decOperator, 0, 0);
 
   int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
 

@@ -11,7 +11,8 @@ namespace AMDiS {
     
     ElVolumesInfo2d volInfo(elInfo);
     
-    userMat = 0.0;
+    //cout << "Beltrami: \n" << userMat << endl;
+    //userMat = 0.0;
 
     for (int i = 0; i < 3; i++) {
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
@@ -23,7 +24,6 @@ namespace AMDiS {
     }
 
     userMat *= opFactor * factor;
-    cout << "Beltrami: \n" << userMat << endl;
   }
 
   void FunctionDEC::getElementVector(const ElInfo *elInfo, 
@@ -63,7 +63,7 @@ namespace AMDiS {
     
     ElVolumesInfo2d volInfo(elInfo);
     
-    userMat = 0.0;
+    //userMat = 0.0;
 
     for (int i = 0; i < 3; i++) {
       userMat(i, i) = volInfo.getDualVertexVol(i);
