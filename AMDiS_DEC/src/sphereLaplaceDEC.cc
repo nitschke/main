@@ -40,6 +40,8 @@ int main(int argc, char* argv[])
   // ===== create and init the scalar problem ===== 
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
+  sphere.setWriteAsmInfo(true);
+  sphere.setAssembleMatrixOnlyOnce(0, 0, false);
 
 
 
@@ -57,6 +59,11 @@ int main(int argc, char* argv[])
   //sphere.addMatrixOperator(&matrixOperator, 0, 0);
   LBeltramiDEC decOperator(sphere.getFeSpace());
   sphere.addMatrixOperator(&decOperator, 0, 0);
+  
+  //Operator simple(sphere.getFeSpace());
+  //simple.addTerm(new Simple_ZOT());
+  SimpleDEC simple(sphere.getFeSpace());
+  sphere.addMatrixOperator(&simple,0,0);
 
   int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
 
@@ -70,7 +77,10 @@ int main(int argc, char* argv[])
   // ===== start adaption loop =====
   adapt->adapt();
 
-  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
+  sphere.getSystemMatrix(0,0)->calculateNnz();
+  cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
 
   sphere.writeFiles(adaptInfo, true);
 

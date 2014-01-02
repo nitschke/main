@@ -1,0 +1,628 @@
+*unknown function*
+               #### HUHU from own build! ####MacroReader::checkMesh():
+               Checking mesh ...
+               checking done; no error detected
+AdaptStationary::AdaptStationary():
+               You make use of the obsolete constructor AdaptStationary::AdaptStationary(...)!
+               Please use the constructor that uses references instead of pointers!
+StandardProblemIteration::beginIteration():
+               
+               begin of iteration number: 0
+               =============================
+ProblemStat::buildAfterCoarsen():
+               12 DOFs for sphere->feSpace[0]
+               --------- 0 0 -------------
+                 -> matrix has 2 operators
+assembleMatrixOnlyOnce: 0
+######## here i am, near line 875 #########
+*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 ################# here i am, near line 888 #########
+matrix (NNZ 72):
+[0.797878        0        0        0        0        0        0        0        0        0        0        0]
+[       0 0.797878        0        0        0        0        0        0        0        0        0        0]
+[       0        0 0.797878        0        0        0        0        0        0        0        0        0]
+[       0        0        0 0.797878        0        0        0        0        0        0        0        0]
+[       0        0        0        0 0.797878        0        0        0        0        0        0        0]
+[       0        0        0        0        0 0.797878        0        0        0        0        0        0]
+[       0        0        0        0        0        0 0.797878        0        0        0        0        0]
+[       0        0        0        0        0        0        0 0.797878        0        0        0        0]
+[       0        0        0        0        0        0        0        0 0.797878        0        0        0]
+[       0        0        0        0        0        0        0        0        0 0.797878        0        0]
+[       0        0        0        0        0        0        0        0        0        0 0.797878        0]
+[       0        0        0        0        0        0        0        0        0        0        0 0.797878]
+
+systemMatrix:
+[0.797878        0        0        0        0        0        0        0        0        0        0        0]
+[       0 0.797878        0        0        0        0        0        0        0        0        0        0]
+[       0        0 0.797878        0        0        0        0        0        0        0        0        0]
+[       0        0        0 0.797878        0        0        0        0        0        0        0        0]
+[       0        0        0        0 0.797878        0        0        0        0        0        0        0]
+[       0        0        0        0        0 0.797878        0        0        0        0        0        0]
+[       0        0        0        0        0        0 0.797878        0        0        0        0        0]
+[       0        0        0        0        0        0        0 0.797878        0        0        0        0]
+[       0        0        0        0        0        0        0        0 0.797878        0        0        0]
+[       0        0        0        0        0        0        0        0        0 0.797878        0        0]
+[       0        0        0        0        0        0        0        0        0        0 0.797878        0]
+[       0        0        0        0        0        0        0        0        0        0        0 0.797878]
+
+ProblemStat::buildAfterCoarsen():
+               huhu fillin of assembled matrix: 72
+               buildAfterCoarsen needed 0.02000 seconds
+MTL4Solver::solve():
+               fill MTL4 matrix needed 0.00000 seconds
+iteration 0: resid 3.19151
+finished! error code = 0
+1 iterations
+3.51083e-16 is actual final residual. 
+1.10005e-16 is actual relative tolerance achieved. 
+Relative tol: 0  Absolute tol: 1e-08
+Convergence:  1.10005e-16
+               solve MTL4 matrix needed 0.00000 seconds
+               MTL4Solver: ||b-Ax||= 4.965068e-16
+Problem::solve():
+               solution of discrete system needed 0.00000 seconds
+ProblemStat::estimate():
+               estimation of the error needed 0.00000 seconds
+StandardProblemIteration::endIteration():
+               
+               end of iteration number: 0
+               =============================
+StandardProblemIteration::beginIteration():
+               
+               begin of iteration number: 1
+               =============================
+ProblemStat::buildAfterCoarsen():
+               12 DOFs for sphere->feSpace[0]
+               --------- 0 0 -------------
+                 -> matrix has 2 operators
+assembleMatrixOnlyOnce: 0
+######## here i am, near line 875 #########
+*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 #########*unknown function*
+               ######## here i am, near line 1508 #########Beltrami: 
+[-0.57735 0.288675 0.288675]
+[0.288675 -0.57735 0.288675]
+[0.288675 0.288675 -0.57735]
+
+SimpleDEC:
+[0.159576        0        0]
+[       0 0.159576        0]
+[       0        0 0.159576]
+
+*unknown function*
+               ######## here i am, near line 1517 ################# here i am, near line 888 #########
+matrix (NNZ 72):
+[0.797878        0        0        0        0        0        0        0        0        0        0        0]
+[       0 0.797878        0        0        0        0        0        0        0        0        0        0]
+[       0        0 0.797878        0        0        0        0        0        0        0        0        0]
+[       0        0        0 0.797878        0        0        0        0        0        0        0        0]
+[       0        0        0        0 0.797878        0        0        0        0        0        0        0]
+[       0        0        0        0        0 0.797878        0        0        0        0        0        0]
+[       0        0        0        0        0        0 0.797878        0        0        0        0        0]
+[       0        0        0        0        0        0        0 0.797878        0        0        0        0]
+[       0        0        0        0        0        0        0        0 0.797878        0        0        0]
+[       0        0        0        0        0        0        0        0        0 0.797878        0        0]
+[       0        0        0        0        0        0        0        0        0        0 0.797878        0]
+[       0        0        0        0        0        0        0        0        0        0        0 0.797878]
+
+systemMatrix:
+[0.797878        0        0        0        0        0        0        0        0        0        0        0]
+[       0 0.797878        0        0        0        0        0        0        0        0        0        0]
+[       0        0 0.797878        0        0        0        0        0        0        0        0        0]
+[       0        0        0 0.797878        0        0        0        0        0        0        0        0]
+[       0        0        0        0 0.797878        0        0        0        0        0        0        0]
+[       0        0        0        0        0 0.797878        0        0        0        0        0        0]
+[       0        0        0        0        0        0 0.797878        0        0        0        0        0]
+[       0        0        0        0        0        0        0 0.797878        0        0        0        0]
+[       0        0        0        0        0        0        0        0 0.797878        0        0        0]
+[       0        0        0        0        0        0        0        0        0 0.797878        0        0]
+[       0        0        0        0        0        0        0        0        0        0 0.797878        0]
+[       0        0        0        0        0        0        0        0        0        0        0 0.797878]
+
+ProblemStat::buildAfterCoarsen():
+               huhu fillin of assembled matrix: 72
+               buildAfterCoarsen needed 0.02000 seconds
+MTL4Solver::solve():
+               fill MTL4 matrix needed 0.00000 seconds
+iteration 0: resid 4.96507e-16
+finished! error code = 0
+0 iterations
+4.96507e-16 is actual final residual. 
+1 is actual relative tolerance achieved. 
+Relative tol: 0  Absolute tol: 1e-08
+Convergence:  1
+               solve MTL4 matrix needed 0.00000 seconds
+               MTL4Solver: ||b-Ax||= 4.965068e-16
+Problem::solve():
+               solution of discrete system needed 0.01000 seconds
+ProblemStat::estimate():
+               estimation of the error needed 0.00000 seconds
+StandardProblemIteration::endIteration():
+               
+               end of iteration number: 1
+               =============================
+[0.797878        0        0        0        0        0        0        0        0        0        0        0]
+[       0 0.797878        0        0        0        0        0        0        0        0        0        0]
+[       0        0 0.797878        0        0        0        0        0        0        0        0        0]
+[       0        0        0 0.797878        0        0        0        0        0        0        0        0]
+[       0        0        0        0 0.797878        0        0        0        0        0        0        0]
+[       0        0        0        0        0 0.797878        0        0        0        0        0        0]
+[       0        0        0        0        0        0 0.797878        0        0        0        0        0]
+[       0        0        0        0        0        0        0 0.797878        0        0        0        0]
+[       0        0        0        0        0        0        0        0 0.797878        0        0        0]
+[       0        0        0        0        0        0        0        0        0 0.797878        0        0]
+[       0        0        0        0        0        0        0        0        0        0 0.797878        0]
+[       0        0        0        0        0        0        0        0        0        0        0 0.797878]
+
+NNZ: 20
+NNZ: 20
+FileWriterTemplated<T>::writeFiles():
+               ParaView file written to output/sphere.3d.vtu
+ProblemStat::writeFiles():
+               writeFiles needed 0.00000 seconds

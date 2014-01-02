@@ -23,7 +23,7 @@ namespace AMDiS {
     }
 
     userMat *= opFactor * factor;
-    //cout << userMat << endl;
+    cout << "Beltrami: \n" << userMat << endl;
   }
 
   void FunctionDEC::getElementVector(const ElInfo *elInfo, 
@@ -69,7 +69,10 @@ namespace AMDiS {
       userMat(i, i) = volInfo.getDualVertexVol(i);
     }
     
+    //cout << factor << endl;
+    //cout << opFactor << endl;
     userMat *= opFactor * factor;
+    cout << "SimpleDEC:\n" << userMat << endl;
   }
 
 
@@ -84,7 +87,7 @@ namespace AMDiS {
       uhOld->getLocalVector(elInfo->getElement(), userVec);
       //cout << userVec << endl;
     } else {
-      userVec = 1.0;
+      userVec = 0.0;
     }
 
     for (int i = 0; i < 3; i++) {

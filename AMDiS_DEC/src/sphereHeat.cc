@@ -18,6 +18,7 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
   {
+    //cout << (*timePtr) << endl;
     double pit = M_PI * (*timePtr);
     return (M_PI * cos(pit) + 2.0 * sin(pit)) * x[0];
   }
@@ -74,6 +75,7 @@ public:
   {
     ProblemInstat::closeTimestep(adaptInfo);
     WAIT;
+    cout << problemStat->getSystemMatrix(0,0)->getBaseMatrix() << endl;
   }
 
   // ===== initial problem methods =====================================
@@ -185,7 +187,7 @@ int main(int argc, char** argv)
   LBeltramiDEC A(heatSpace.getFeSpace());
   A.setFactor(-1.0);
   //A.setUhOld(heat.getOldSolution(0));
-  if (*(heat.getThetaPtr()) != 0.0)
+  //if (*(heat.getThetaPtr()) != 0.0)
     heatSpace.addMatrixOperator(A, 0, 0, heat.getThetaPtr());
   //if (*(heat.getTheta1Ptr()) != 0.0)
   //  heatSpace.addVectorOperator(A, 0, heat.getTheta1Ptr(), &zero);
@@ -193,10 +195,12 @@ int main(int argc, char** argv)
   // create zero order operator
   //Operator C(heatSpace.getFeSpace());
   //C.addTerm(new Simple_ZOT);
+  double *invTau = heat.getInvTau();
+  //invTau = &zero;
   SimpleDEC C(heatSpace.getFeSpace());
   C.setUhOld(heat.getOldSolution(0));
-  heatSpace.addMatrixOperator(C, 0, 0, heat.getInvTau(), heat.getInvTau());
-  heatSpace.addVectorOperator(C, 0, heat.getInvTau(), heat.getInvTau());
+  heatSpace.addMatrixOperator(C, 0, 0, invTau);
+  heatSpace.addVectorOperator(C, 0, invTau);
 
   // create RHS operator
   //Operator F(heatSpace.getFeSpace());
@@ -212,6 +216,8 @@ int main(int argc, char** argv)
   int errorCode = adaptInstat.adapt();
 
   AMDiS::finalize();
+
+
 
   return errorCode;
 }
