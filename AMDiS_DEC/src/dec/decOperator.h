@@ -8,7 +8,7 @@ namespace AMDiS {
 
     public:
       DecOperator(const FiniteElemSpace *rowFeSpace,
-	     const FiniteElemSpace *colFeSpace = NULL) : Operator(rowFeSpace, colFeSpace) {
+	     const FiniteElemSpace *colFeSpace = NULL) : Operator(rowFeSpace, colFeSpace), opMat(3,3), opVec(3) {
         opFactor = 1.0;
        }
 
@@ -17,8 +17,14 @@ namespace AMDiS {
       }
 
     protected:
+      inline void updateUserMat(ElementMatrix& userMat, ElementMatrix& opMat);
+      inline void updateUserVec(ElementVector& userVec, ElementVector& opVec);
+
+    protected:
       double opFactor;
-  
+
+      ElementMatrix opMat;
+      ElementVector opVec;
   };
   
   class LBeltramiDEC : public DecOperator {

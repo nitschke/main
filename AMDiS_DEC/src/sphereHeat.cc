@@ -75,7 +75,7 @@ public:
   {
     ProblemInstat::closeTimestep(adaptInfo);
     WAIT;
-    cout << problemStat->getSystemMatrix(0,0)->getBaseMatrix() << endl;
+    //cout << problemStat->getSystemMatrix(0,0)->getBaseMatrix() << endl;
   }
 
   // ===== initial problem methods =====================================

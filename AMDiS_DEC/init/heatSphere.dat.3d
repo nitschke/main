@@ -1,7 +1,7 @@
 dimension of world:   3
 
-%heatMesh->macro file name:            ./macro/sphereIko1k.3d
-heatMesh->macro file name:            ./macro/ikosaeder.3d
+heatMesh->macro file name:            ./macro/sphereIko10k.3d
+%heatMesh->macro file name:            ./macro/ikosaeder.3d
 heatMesh->global refinements:         0
 
 heat->space->polynomial degree[0]:    1
@@ -24,7 +24,7 @@ heat->space->estimator[0]->C3:       1.0
 
 heat->theta:                         1.0
 
-heat->adapt->timestep:               0.25
+heat->adapt->timestep:               0.001
 heat->adapt->start time:             0.0
 heat->adapt->end time:               1.0
 

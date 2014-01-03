@@ -5,25 +5,34 @@ namespace AMDiS {
 
   using namespace std;
 
+  inline void DecOperator::updateUserMat(ElementMatrix& userMat, ElementMatrix& opMat) {
+    userMat += opFactor * opMat;
+  }
+
+  inline void DecOperator::updateUserVec(ElementVector& userVec, ElementVector& opVec) {
+    userVec += opFactor * opVec;
+  }
+
+
   void LBeltramiDEC::getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
 				double factor) {
     
     ElVolumesInfo2d volInfo(elInfo);
+    opMat = 0.0;
     
-    //cout << "Beltrami: \n" << userMat << endl;
-    //userMat = 0.0;
-
     for (int i = 0; i < 3; i++) {
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
         int k = (2*(i+j))%3;
         double c = volInfo.getDualOppEdgeLen(k) / (volInfo.getOppEdgeLen(k));
-        userMat(i, i) = userMat(i, i) - c;
-        userMat(i, j) = userMat(i, j) + c;
+        opMat(i, i) = opMat(i, i) - c;
+        opMat(i, j) = opMat(i, j) + c;
       }
     }
 
-    userMat *= opFactor * factor;
+    opMat *= factor;
+    //cout << "Beltrami: \n" << opMat << endl;
+    updateUserMat(userMat, opMat);
   }
 
   void FunctionDEC::getElementVector(const ElInfo *elInfo, 
@@ -33,11 +42,11 @@ namespace AMDiS {
     ElVolumesInfo2d volInfo(elInfo);
 
     for (int i = 0; i < 3; i++) {
-      userVec(i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
+      opVec(i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
     }
 
-    userVec *= opFactor * factor;
-
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
   }
 
   // TODO: untested
@@ -47,13 +56,14 @@ namespace AMDiS {
     
     ElVolumesInfo2d volInfo(elInfo);
     
-    userMat = 0.0;
+    opMat = 0.0;
 
     for (int i = 0; i < 3; i++) {
-      userMat(i, i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
+      opMat(i, i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
     }
     
-    userMat *= opFactor * factor;
+    opMat *= factor;
+    updateUserMat(userMat, opMat);
   }
 
   
@@ -63,16 +73,15 @@ namespace AMDiS {
     
     ElVolumesInfo2d volInfo(elInfo);
     
-    //userMat = 0.0;
+    opMat = 0.0;
 
     for (int i = 0; i < 3; i++) {
-      userMat(i, i) = volInfo.getDualVertexVol(i);
+      opMat(i, i) = volInfo.getDualVertexVol(i);
     }
     
-    //cout << factor << endl;
-    //cout << opFactor << endl;
-    userMat *= opFactor * factor;
-    cout << "SimpleDEC:\n" << userMat << endl;
+    opMat *= factor;
+    //cout << "SimpleDEC:\n" << opMat << endl;
+    updateUserMat(userMat, opMat);
   }
 
 
@@ -84,19 +93,19 @@ namespace AMDiS {
 
     if (uhOld) {
       //cout << "*";
-      uhOld->getLocalVector(elInfo->getElement(), userVec);
-      //cout << userVec << endl;
+      uhOld->getLocalVector(elInfo->getElement(), opVec);
+      //cout << opVec << endl;
     } else {
-      userVec = 0.0;
+      opVec = 1.0;
     }
 
     for (int i = 0; i < 3; i++) {
-      userVec(i) *= volInfo.getDualVertexVol(i);
+      opVec(i) *= volInfo.getDualVertexVol(i);
     }
 
 
-    userVec *= opFactor * factor;
-
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
   }
 
 }
