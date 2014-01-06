@@ -7,6 +7,7 @@ namespace AMDiS {
     dualVertexVol = WorldVector<double>();
     oppEdgeLen = WorldVector<double>();
     dualOppEdgeLen = WorldVector<double>();
+    cc = WorldVector<double>();
 
     WorldVector<double> p0 = el->getCoord(0);
     WorldVector<double> p1 = el->getCoord(1);
@@ -26,7 +27,7 @@ namespace AMDiS {
     //double a2 = - dot(e2, e2) * dot(e0, e1) / d;
 
     // circumcenter
-    WorldVector<double> cc = p0 - a1*e2 + a2*e1;
+    cc = p0 - a1*e2 + a2*e1;
     //WorldVector<double> cc = a0*p0 + a1*p1 + a2*p2; 
     //appendToCSV(cc, "circumcenter.csv");
 
