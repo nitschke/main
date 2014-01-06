@@ -39,6 +39,27 @@ namespace AMDiS {
     
   };
 
+  class JacobianDEC : public DecOperator {
+    
+    public:
+      
+      JacobianDEC(AbstractFunction<double, WorldVector<double> > *psiFun, const FiniteElemSpace *rowFeSpace, 
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), psi(psiFun) {}
+
+      //void getElementVector(const ElInfo *elInfo, 
+			//	  ElementVector& userVec, 
+			//	  double factor = 1.0);
+
+      void getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor = 1.0);
+    
+    protected:
+      
+      AbstractFunction<double, WorldVector<double> > *psi;
+
+  };
+
   class FunctionDEC : public DecOperator {
     
     public:
