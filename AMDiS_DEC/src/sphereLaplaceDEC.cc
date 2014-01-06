@@ -58,10 +58,6 @@ int main(int argc, char* argv[])
   //matrixOperator.addTerm(new Simple_SOT(-1.0));
   //sphere.addMatrixOperator(&matrixOperator, 0, 0);
   
-  //Operator simple(sphere.getFeSpace());
-  //simple.addTerm(new Simple_ZOT());
-  SimpleDEC simple(sphere.getFeSpace());
-  sphere.addMatrixOperator(&simple,0,0);
   LBeltramiDEC decOperator(sphere.getFeSpace());
   sphere.addMatrixOperator(&decOperator, 0, 0);
 
@@ -77,10 +73,10 @@ int main(int argc, char* argv[])
   // ===== start adaption loop =====
   adapt->adapt();
 
-  cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
-  cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
-  sphere.getSystemMatrix(0,0)->calculateNnz();
-  cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
+  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
+  //sphere.getSystemMatrix(0,0)->calculateNnz();
+  //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
 
   sphere.writeFiles(adaptInfo, true);
 
