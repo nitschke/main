@@ -28,5 +28,8 @@ target_link_libraries(platteSphere ${BASIS_LIBS} dec)
 add_executable(heatSphere src/sphereHeat.cc)
 target_link_libraries(heatSphere ${BASIS_LIBS} dec)
 
+add_executable(jacobianSphere src/sphereJacobian.cc)
+target_link_libraries(jacobianSphere ${BASIS_LIBS} dec)
+
 #create the output dir
 #file(MAKE_DIRECTORY output)

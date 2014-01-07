@@ -38,6 +38,7 @@ namespace AMDiS {
   void JacobianDEC::getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
 				double factor) {
+    //cout << "*** TIC ***\n";
     
     ElVolumesInfo2d volInfo(elInfo);
     opMat = 0.0;
@@ -46,7 +47,7 @@ namespace AMDiS {
     
     for (int i = 0; i < 3; i++) {
       // next point
-      int iPNext = (i+1)%3
+      int iPNext = (i+1)%3;
       // edge [p_i, p_iPNext]
       int kENext = (2*(i+iPNext))%3;
       double c = volInfo.getDualOppEdgeLen(kENext) / (volInfo.getOppEdgeLen(kENext));
@@ -54,7 +55,7 @@ namespace AMDiS {
       opMat(i, iPNext) += c * psiCC;
 
       // prev point
-      int iPPrev = (i-1)%3
+      int iPPrev = (i-1)%3;
       // edge [p_i, p_iPPrev]
       int kEPrev = (2*(i+iPPrev))%3;
       c = volInfo.getDualOppEdgeLen(kEPrev) / (volInfo.getOppEdgeLen(kEPrev));
@@ -64,6 +65,7 @@ namespace AMDiS {
 
     opMat *= factor;
     updateUserMat(userMat, opMat);
+    //cout << "*** TOC ***\n";
   }
 
   void FunctionDEC::getElementVector(const ElInfo *elInfo, 
