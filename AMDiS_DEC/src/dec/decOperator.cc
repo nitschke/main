@@ -51,18 +51,18 @@ namespace AMDiS {
       // edge [p_i, p_iPNext]
       int kENext = (2*(i+iPNext))%3;
       double c = volInfo.getDualOppEdgeLen(kENext) / (volInfo.getOppEdgeLen(kENext));
-      opMat(i, i)      += c * psiCC;
-      opMat(i, iPNext) += c * psiCC;
+      opMat(i, i)      = opMat(i, i) + c * psiCC;
+      opMat(i, iPNext) = opMat(i, iPNext) + c * psiCC;
 
       // prev point
-      int iPPrev = (i-1)%3;
+      int iPPrev = (i+2)%3;
       // edge [p_i, p_iPPrev]
       int kEPrev = (2*(i+iPPrev))%3;
       c = volInfo.getDualOppEdgeLen(kEPrev) / (volInfo.getOppEdgeLen(kEPrev));
-      opMat(i, i)      -= c * psiCC;
-      opMat(i, iPPrev) -= c * psiCC;
+      opMat(i, i)      = opMat(i, i) - c * psiCC;
+      opMat(i, iPPrev) = opMat(i, iPPrev) - c * psiCC;
     }
-
+    
     opMat *= factor;
     updateUserMat(userMat, opMat);
     //cout << "*** TOC ***\n";

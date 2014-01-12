@@ -8,17 +8,15 @@ using namespace AMDiS;
 // ===== function definitions ================================================
 // ===========================================================================
 
-/// RHS function
-class F : public AbstractFunction<double, WorldVector<double> >
+class Psi : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  F(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
+  Psi(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
   {
-    //return (x[0] > 0.5) ? 1.0 : 0.0;
-    return -2.0 * x[0];
+    return x[0] * x[2];
   }
 };
 
@@ -54,7 +52,7 @@ int main(int argc, char* argv[])
 					       adaptInfo);
   
   // ===== create matrix operator =====
-  JacobianDEC decOperator(new F(1), sphere.getFeSpace());
+  JacobianDEC decOperator(new Psi(1), sphere.getFeSpace());
   sphere.addMatrixOperator(&decOperator, 0, 0);
 
   // ===== create rhs operator =====
@@ -65,7 +63,7 @@ int main(int argc, char* argv[])
   adapt->adapt();
 
   cout << "SysMat:" << endl;
-  cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
   //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
   //sphere.getSystemMatrix(0,0)->calculateNnz();
   //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;

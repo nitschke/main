@@ -17,8 +17,8 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
   {
-    //return (x[0] > 0.5) ? 1.0 : 0.0;
-    return -2.0 * x[0];
+    //return -2.0 * x[0];
+    return -6.0 * x[0] * x[2];
   }
 };
 
