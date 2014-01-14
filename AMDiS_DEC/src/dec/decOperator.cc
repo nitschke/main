@@ -43,24 +43,16 @@ namespace AMDiS {
     ElVolumesInfo2d volInfo(elInfo);
     opMat = 0.0;
 
-    double psiCC = (*psi)(volInfo.getCircumcenter());
+    ElementVector phiVec(3);
+    for (int i = 0; i < 3; i++) phiVec(i) = (*phi)(elInfo->getCoord(i));
     
     for (int i = 0; i < 3; i++) {
-      // next point
-      int iPNext = (i+1)%3;
-      // edge [p_i, p_iPNext]
-      int kENext = (2*(i+iPNext))%3;
-      double c = volInfo.getDualOppEdgeLen(kENext) / (volInfo.getOppEdgeLen(kENext));
-      opMat(i, i)      = opMat(i, i) + c * psiCC;
-      opMat(i, iPNext) = opMat(i, iPNext) + c * psiCC;
-
-      // prev point
-      int iPPrev = (i+2)%3;
-      // edge [p_i, p_iPPrev]
-      int kEPrev = (2*(i+iPPrev))%3;
-      c = volInfo.getDualOppEdgeLen(kEPrev) / (volInfo.getOppEdgeLen(kEPrev));
-      opMat(i, i)      = opMat(i, i) - c * psiCC;
-      opMat(i, iPPrev) = opMat(i, iPPrev) - c * psiCC;
+      double c = volInfo.getDualVertexVol(i) / elInfo->getDet();
+      for (int k = 0; k < 3; k++) {
+        int kk = (k+1)%3;
+        opMat(i, k) += c * phiVec(kk);
+        opMat(i, kk) -= c * phiVec(k);
+      }
     }
     
     opMat *= factor;

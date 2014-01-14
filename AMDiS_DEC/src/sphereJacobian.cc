@@ -8,15 +8,16 @@ using namespace AMDiS;
 // ===== function definitions ================================================
 // ===========================================================================
 
-class Psi : public AbstractFunction<double, WorldVector<double> >
+class Phi : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  Psi(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
+  Phi(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
   {
     return x[0] * x[2];
+    //return 1.0;
   }
 };
 
@@ -39,7 +40,6 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
   sphere.setWriteAsmInfo(true);
-  sphere.setAssembleMatrixOnlyOnce(0, 0, false);
 
 
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 					       adaptInfo);
   
   // ===== create matrix operator =====
-  JacobianDEC decOperator(new Psi(1), sphere.getFeSpace());
+  JacobianDEC decOperator(new Phi(1), sphere.getFeSpace());
   sphere.addMatrixOperator(&decOperator, 0, 0);
 
   // ===== create rhs operator =====
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
   adapt->adapt();
 
   cout << "SysMat:" << endl;
-  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
   //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
   //sphere.getSystemMatrix(0,0)->calculateNnz();
   //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
