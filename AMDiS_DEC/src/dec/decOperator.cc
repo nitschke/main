@@ -50,8 +50,8 @@ namespace AMDiS {
       double c = volInfo.getDualVertexVol(i) / elInfo->getDet();
       for (int k = 0; k < 3; k++) {
         int kk = (k+1)%3;
-        opMat(i, k) += c * phiVec(kk);
-        opMat(i, kk) -= c * phiVec(k);
+        opMat(i, k) -= c * phiVec(kk);
+        opMat(i, kk) += c * phiVec(k);
       }
     }
     
