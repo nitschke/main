@@ -16,8 +16,14 @@ include_directories(src/dec)
 add_executable(laplaceSphere src/sphereLaplaceDEC.cc)
 target_link_libraries(laplaceSphere ${BASIS_LIBS} dec)
 
+add_executable(laplaceWeightedSphere src/sphereWeightedLaplace.cc)
+target_link_libraries(laplaceWeightedSphere ${BASIS_LIBS} dec)
+
 add_executable(laplaceTorus src/torusLaplaceDEC.cc)
 target_link_libraries(laplaceTorus ${BASIS_LIBS} dec)
+
+add_executable(meanCurvTorus src/torusMeanCurvature.cc)
+target_link_libraries(meanCurvTorus ${BASIS_LIBS} dec)
 
 add_executable(platteTorus src/torusPlatteDEC.cc)
 target_link_libraries(platteTorus ${BASIS_LIBS} dec)
@@ -31,5 +37,9 @@ target_link_libraries(heatSphere ${BASIS_LIBS} dec)
 add_executable(jacobianSphere src/sphereJacobian.cc)
 target_link_libraries(jacobianSphere ${BASIS_LIBS} dec)
 
+add_executable(gradSphere src/sphereGrad.cc)
+target_link_libraries(gradSphere ${BASIS_LIBS} dec)
+
+#create the output dir
 #create the output dir
 #file(MAKE_DIRECTORY output)

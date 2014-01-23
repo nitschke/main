@@ -1,5 +1,6 @@
 #include "decOperator.h"
 #include "elVolumesInfo2d.h"
+#include "WorldVectorHelper.h"
 
 namespace AMDiS {
 
@@ -34,6 +35,74 @@ namespace AMDiS {
     //cout << "Beltrami: \n" << opMat << endl;
     updateUserMat(userMat, opMat);
   }
+
+  void LBeltramiInteriorFunctionDEC::getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor) {
+    
+    ElVolumesInfo2d volInfo(elInfo);
+    opVec = 0.0;
+    
+    for (int i = 0; i < 3; i++) {
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        int k = (2*(i+j))%3;
+        double c = volInfo.getDualOppEdgeLen(k) / (volInfo.getOppEdgeLen(k)) * (*q)(elInfo->getCoord(j));
+        opVec(i) -= c;
+        opVec(j) += c;
+      }
+    }
+
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
+  }
+
+
+  void LBeltramiWeightedDEC::getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor) {
+    
+    ElVolumesInfo2d volInfo(elInfo);
+    opMat = 0.0;
+    
+    for (int i = 0; i < 3; i++) {
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        int k = (2*(i+j))%3;
+        double c = (volInfo.getDualOppEdgeLen(k) / (volInfo.getOppEdgeLen(k)))
+                      * 0.5 * ((*kappa)(elInfo->getCoord(i)) + (*kappa)(elInfo->getCoord(j)));
+        opMat(i, i) = opMat(i, i) - c;
+        opMat(i, j) = opMat(i, j) + c;
+      }
+    }
+
+    opMat *= factor;
+    //cout << "Beltrami: \n" << opMat << endl;
+    updateUserMat(userMat, opMat);
+  }
+  
+  void PrimalPrimalGradFunctionDEC::getElementVector(const ElInfo *elInfo, 
+		    ElementVector& userVec, 
+				double factor) {
+
+    ElVolumesInfo2d volInfo(elInfo);
+    opVec = 0.0;
+
+    double VolT = 0.5 * elInfo->getDet();
+
+    for (int i = 0; i < 3; i++) {
+      WorldVector<double> normal;
+      //elInfo->getElementNormal(normal);
+      //cout << dot(elInfo->getGrdLambda()[i], normal) << endl;
+      double c = volInfo.getDualVertexVol(i) * volInfo.getDualVertexVol(i) / VolT;
+      //double c = volInfo.getDualVertexVol(i) / VolT;
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        opVec[i] += c * (elInfo->getGrdLambda()[j])[l] * ((*f)(elInfo->getCoord(j)) - (*f)(elInfo->getCoord(i)));
+      }
+    }
+
+    //cout << opVec << endl;
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
+    }
 
   void JacobianDEC::getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
@@ -102,6 +171,7 @@ namespace AMDiS {
 
     for (int i = 0; i < 3; i++) {
       opMat(i, i) = volInfo.getDualVertexVol(i);
+      //opMat(i, i) = 1.0;
     }
     
     opMat *= factor;
