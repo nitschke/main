@@ -1,6 +1,6 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/sphereIko25k.3d
+sphereMesh->macro file name:       ./macro/sphereIko10k.3d
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 sphereMesh->global refinements:    0

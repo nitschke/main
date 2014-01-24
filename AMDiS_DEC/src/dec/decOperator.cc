@@ -92,7 +92,7 @@ namespace AMDiS {
       WorldVector<double> normal;
       //elInfo->getElementNormal(normal);
       //cout << dot(elInfo->getGrdLambda()[i], normal) << endl;
-      double c = volInfo.getDualVertexVol(i) * volInfo.getDualVertexVol(i) / VolT;
+      double c = volInfo.getDualVertexVol(i);
       //double c = volInfo.getDualVertexVol(i) / VolT;
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
         opVec[i] += c * (elInfo->getGrdLambda()[j])[l] * ((*f)(elInfo->getCoord(j)) - (*f)(elInfo->getCoord(i)));
