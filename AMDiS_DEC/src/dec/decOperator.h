@@ -108,6 +108,38 @@ namespace AMDiS {
 
   };
 
+  class PrimalPrimalGradDEC : public DecOperator {
+    
+    public:
+      PrimalPrimalGradDEC(int direction, const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), l(direction) {}
+
+      void getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor = 1.0);
+    
+     protected:
+      
+      int l;
+
+  };
+
+  class DualPrimalNormalDEC : public DecOperator {
+    
+    public:
+      DualPrimalNormalDEC(int direction, const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), l(direction) {}
+
+      void getElementVector(const ElInfo *elInfo, 
+		    ElementVector& userVec, 
+				double factor = 1.0);
+    
+     protected:
+      
+      int l;
+
+  };
+
 
   class JacobianDEC : public DecOperator {
     
@@ -167,5 +199,17 @@ namespace AMDiS {
     
   };
 
+
+  class GaussCurvatureDEC : public DecOperator {
+    
+    public:
+      GaussCurvatureDEC(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
+
+      void getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor = 1.0);
+
+  };
 
 }

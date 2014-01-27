@@ -40,6 +40,9 @@ target_link_libraries(jacobianSphere ${BASIS_LIBS} dec)
 add_executable(gradSphere src/sphereGrad.cc)
 target_link_libraries(gradSphere ${BASIS_LIBS} dec)
 
+add_executable(curvSphere src/sphereCurv.cc)
+target_link_libraries(curvSphere ${BASIS_LIBS} dec)
+
 #create the output dir
 #create the output dir
 #file(MAKE_DIRECTORY output)
