@@ -8,15 +8,18 @@ using namespace AMDiS;
 // ===== function definitions ================================================
 // ===========================================================================
 
-class F : public AbstractFunction<double, WorldVector<double> >
+class X : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  F(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
+  X(int i_) : AbstractFunction<double, WorldVector<double> >(1), i(i_) {}
 
   double operator()(const WorldVector<double>& x) const 
   {
-    return x[2];
+    return x[i];
   }
+
+protected:
+  int i;
 };
 
 // ===========================================================================
@@ -48,14 +51,22 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
   
+  // Grad(X_2)
   for (int i = 0; i < 3; i++) {
     // ===== create matrix operator =====
     SimpleDEC *decOperator = new SimpleDEC(sphere.getFeSpace(i),sphere.getFeSpace(i) );
     sphere.addMatrixOperator(decOperator, i, i);
 
     // ===== create rhs operator =====
-    PrimalPrimalGradFunctionDEC *rhsOperator = new PrimalPrimalGradFunctionDEC(i, new F(1), sphere.getFeSpace(i));
+    PrimalPrimalGradFunctionDEC *rhsOperator = new PrimalPrimalGradFunctionDEC(i, new X(2), sphere.getFeSpace(i));
     sphere.addVectorOperator(rhsOperator, i);
+  }
+  // Div(X)
+  SimpleDEC *decOperator = new SimpleDEC(sphere.getFeSpace(3),sphere.getFeSpace(3) );
+  sphere.addMatrixOperator(decOperator, 3, 3);
+  for (int i = 0; i < 3; i++) {
+    PrimalPrimalGradFunctionDEC *rhsOperator = new PrimalPrimalGradFunctionDEC(i, new X(i), sphere.getFeSpace(3));
+    sphere.addVectorOperator(rhsOperator, 3);
   }
 
   // ===== start adaption loop =====

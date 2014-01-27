@@ -8,7 +8,7 @@ sphereMesh->global refinements:    0
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              3
+sphere->components:              4
 
 sphere->solver:                cg %bicgstab2 %tfqmr
 sphere->solver->max iteration: 10000
