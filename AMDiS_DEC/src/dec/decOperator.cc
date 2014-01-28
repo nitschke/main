@@ -245,7 +245,8 @@ namespace AMDiS {
     //TODO: improve!
     for (int i = 0; i < 3; i++) {
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
-        opVec[i] += 2.0 * M_PI - atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
+        opVec[i] += 2.0 * M_PI / 12.0 - atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
+        //cout << atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j)) << endl;
       }
     }
 
