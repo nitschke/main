@@ -1,5 +1,6 @@
 #include "AMDiS.h"
 #include "decOperator.h"
+#include "MeshHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -41,8 +42,7 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
   sphere.setWriteAsmInfo(true);
-  sphere.setAssembleMatrixOnlyOnce(0, 0, false);
-
+  //sphere.setAssembleMatrixOnlyOnce(0, 0, false);
 
 
   // === create adapt info ===
@@ -79,6 +79,21 @@ int main(int argc, char* argv[])
   //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
 
   sphere.writeFiles(adaptInfo, true);
+
+  DOFVector<double> vorvol = getDualVols(sphere.getFeSpace());
+  cout << "Vol      : " << vorvol.sum() << endl;
+  cout << "Vol_Error: " << abs(vorvol.sum() - 4.0 * M_PI) << endl;
+  VtkVectorWriter::writeFile(vorvol, string("output/vorvol.vtu"));
+
+  DOFVector<double> radii = getVoronoiRadii(sphere.getFeSpace());
+  VtkVectorWriter::writeFile(radii, string("output/vorradii.vtu"));
+
+  DOFVector<int> nrOfCon = getConnections(sphere.getFeSpace());
+  VtkVectorWriter::writeFile(nrOfCon, string("output/connections.vtu"));
+
+  DOFVector<double> vol = get1RingVols(sphere.getFeSpace());
+  VtkVectorWriter::writeFile(vol, string("output/vol1Ring.vtu"));
+
 
   AMDiS::finalize();
 }
