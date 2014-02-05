@@ -244,16 +244,31 @@ namespace AMDiS {
     
     //TODO: improve!
     for (int i = 0; i < 3; i++) {
+      DegreeOfFreedom iGlob = elInfo->getElement()->getDof(i,0);
+      int ni = (*np)[iGlob];
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
-        opVec[i] += 2.0 * M_PI / 12.0 - atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
-        //cout << atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j)) << endl;
+        double angle = atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
+        opVec[i] += M_PI / ((double)ni) - angle;
       }
+      //double lSigmaV1 = volInfo.getOppEdgeLen((i+2)%3);
+      //double lSigmaV2 = volInfo.getOppEdgeLen((i+1)%3);
+      //double lV1V2 = volInfo.getOppEdgeLen(i);
+      //double angle = acos(0.5 * (lSigmaV1*lSigmaV1 + lSigmaV2*lSigmaV2 - lV1V2*lV1V2) / (lSigmaV1*lSigmaV2));
+      //opVec[i] += 2.0 * M_PI / ((double)ni) - angle;
     }
 
     opVec *= factor;
     updateUserVec(userVec, opVec);
 
 
+  }
+
+  void SimplePrimalDEC::getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor) {
+    opVec = 1.0;
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
   }
 
 }

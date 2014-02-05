@@ -57,6 +57,10 @@ int main(int argc, char* argv[])
   GaussCurvatureDEC *rhs = new GaussCurvatureDEC(sphere.getFeSpace(0));
   sphere.addVectorOperator(rhs,0);
 
+  //SimplePrimalDEC *twoPi = new SimplePrimalDEC(sphere.getFeSpace(0));
+  //twoPi->setFactor(M_PI / 3.0);
+  //sphere.addVectorOperator(twoPi,0);
+
   // ===== start adaption loop =====
   adapt->adapt();
 
