@@ -43,6 +43,12 @@ target_link_libraries(gradSphere ${BASIS_LIBS} dec)
 add_executable(curvSphere src/sphereCurv.cc)
 target_link_libraries(curvSphere ${BASIS_LIBS} dec)
 
+add_executable(heine51b src/heine51b.cc)
+target_link_libraries(heine51b ${BASIS_LIBS} dec)
+
+add_executable(heine51c src/heine51c.cc)
+target_link_libraries(heine51c ${BASIS_LIBS} dec)
+
 #create the output dir
 #create the output dir
 #file(MAKE_DIRECTORY output)
