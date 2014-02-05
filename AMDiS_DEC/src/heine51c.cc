@@ -2,6 +2,7 @@
 #include "decOperator.h"
 #include "phiProjection.h"
 #include "meshCorrector.h"
+#include "MeshHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -85,10 +86,13 @@ int main(int argc, char* argv[])
   // ===== start adaption loop =====
   adapt->adapt();
 
+  DOFVector<WorldVector<double> > forces = getConnectionForces(sphere.getFeSpace());
+  VtkVectorWriter::writeFile(forces, string("output/ConForces.vtu"));
+
   MeshCorrector mc(sphere.getFeSpace());
-  int n = 100;
+  int n = 10000;
   for (int i = 0; i < n; i++) {
-    mc.oneIteration(0.05);
+    mc.oneIteration(1.0);
   }
   sphere.setFeSpace(mc.getFeSpace());
   DOFVector<double> phiNew(mc.getFeSpace(), "phiNew");

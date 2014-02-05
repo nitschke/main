@@ -122,7 +122,12 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
       DegreeOfFreedom dofj = el->getElement()->getDof(j,0);
       WorldVector<double> xDelta = el->getCoord(i) - el->getCoord(j);
       double len = sqrt(dot(xDelta, xDelta));
-      WorldVector<double> Fe = (k / len) * (Radii[dofi] + Radii[dofj] - len) * xDelta;
+      double delta = Radii[dofi] + Radii[dofj] - len;
+      //linear law
+      //double fe = delta;
+      //area law
+      double fe = delta * (Radii[dofi] + Radii[dofj] - 0.5 * delta);
+      WorldVector<double> Fe = (k / len) * fe * xDelta;
       F[dofi] += Fe;
       F[dofj] -= Fe;
     }
