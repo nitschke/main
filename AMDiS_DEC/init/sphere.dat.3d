@@ -1,8 +1,10 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/sphereIko50k.3d
+%sphereMesh->macro file name:       ./macro/sphereIko25k.3d
+sphereMesh->macro file name:       ./macro/heine51c_5k.3d
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
+%sphereMesh->macro file name:       ./macro/bunny_fixed.macro
 sphereMesh->global refinements:    0
 
 sphere->mesh:                    sphereMesh
@@ -11,7 +13,7 @@ sphere->polynomial degree[0]:    1
 sphere->components:              1
 
 sphere->solver:                bicgstab2 %tfqmr
-sphere->solver->max iteration: 10000
+sphere->solver->max iteration: 100
 sphere->solver->info:          8
 sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   no
