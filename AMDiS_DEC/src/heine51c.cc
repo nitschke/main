@@ -89,15 +89,28 @@ int main(int argc, char* argv[])
   DOFVector<WorldVector<double> > forces = getConnectionForces(sphere.getFeSpace());
   VtkVectorWriter::writeFile(forces, string("output/ConForces.vtu"));
 
+  DOFVector<WorldVector<double> > normals = getNormals(sphere.getFeSpace());
+  VtkVectorWriter::writeFile(normals, string("output/Normals.vtu"));
+
+  DOFVector<double> radii;
+
+  double h;
+  Parameters::get("meshCorrector->h", h);
+  int nMax;
+  Parameters::get("meshCorrector->nMax", nMax);
+
   MeshCorrector mc(sphere.getFeSpace());
-  int n = 10000;
-  for (int i = 0; i < n; i++) {
-    mc.oneIteration(1.0);
-  }
-  sphere.setFeSpace(mc.getFeSpace());
-  DOFVector<double> phiNew(mc.getFeSpace(), "phiNew");
-  phiNew.interpol(new Phi());
-  VtkVectorWriter::writeFile(phiNew, string("output/phiNew.vtu"));
+  mc.iterate(nMax, h);
+  //for (int i = 0; i < nMax; i++) {
+  //  mc.iterate(1, h);
+  //  
+  //  forces = getConnectionForces(sphere.getFeSpace(), true);
+  //  VtkVectorWriter::writeFile(forces, string("output/ConForces_" + boost::lexical_cast<std::string>(i) + ".vtu"));
+
+  //  radii = getVoronoiRadii(sphere.getFeSpace());
+  //  radii = radii.average();
+  //  VtkVectorWriter::writeFile(radii, string("output/Radii_" + boost::lexical_cast<std::string>(i) + ".vtu"));
+  //}
 
   sphere.writeFiles(adaptInfo, true);
 

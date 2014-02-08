@@ -1,7 +1,7 @@
 dimension of world:      3
 
-%sphereMesh->macro file name:       ./macro/sphereIko25k.3d
-sphereMesh->macro file name:       ./macro/heine51c_5k.3d
+sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+%sphereMesh->macro file name:       ./macro/heine51c_5k.3d
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 %sphereMesh->macro file name:       ./macro/bunny_fixed.macro
@@ -29,3 +29,7 @@ sphere->output->AMDiS format: 0
 sphere->output->ARH format: 0
 
 
+meshCorrector->h: 1.e-6
+meshCorrector->nMax: 10000
+
+edgeForces->k: 0.75   % in [0,1]
