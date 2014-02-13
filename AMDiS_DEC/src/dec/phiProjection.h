@@ -10,7 +10,7 @@ public:
              ProjectionType type, 
              AbstractFunction<double, WorldVector<double> > *phi_,
              AbstractFunction<WorldVector<double>, WorldVector<double> > *gradPhi_,
-             double eps_ = 1.0e-6) : Projection(id, type), phi(phi_), gradPhi(gradPhi_), eps(eps_) {}
+             double eps_ = 1.0e-6, int nMax_ = 100) : Projection(id, type), phi(phi_), gradPhi(gradPhi_), eps(eps_), nMax(nMax_) {}
 
   
   void project(WorldVector<double> &x);
@@ -18,6 +18,7 @@ public:
 private:
 
   double eps;
+  int nMax;
   
   AbstractFunction<double, WorldVector<double> > *phi;
   AbstractFunction<WorldVector<double>, WorldVector<double> > *gradPhi;

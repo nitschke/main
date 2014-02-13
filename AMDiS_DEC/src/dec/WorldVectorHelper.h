@@ -15,6 +15,10 @@ inline double dot(const WorldVector<double> &v1, const WorldVector<double> &v2) 
   return rval;
 }
 
+inline double wvnorm(const WorldVector<double> &v1) {
+  return sqrt(dot(v1,v1));
+}
+
 inline WorldVector<double> cross(const WorldVector<double> &v1, const WorldVector<double> &v2) {
   WorldVector<double> rval;
   rval[0] = v1[1]*v2[2] - v1[2]*v2[1];

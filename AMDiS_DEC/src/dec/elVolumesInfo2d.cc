@@ -3,7 +3,7 @@
 
 namespace AMDiS {
 
-  ElVolumesInfo2d::ElVolumesInfo2d(const ElInfo *el) {
+  ElVolumesInfo2d::ElVolumesInfo2d(const ElInfo *el): elInfo(el) {
     dualVertexVol = WorldVector<double>();
     oppEdgeLen = WorldVector<double>();
     dualOppEdgeLen = WorldVector<double>();
@@ -55,15 +55,11 @@ namespace AMDiS {
     dualVertexVol[0] = 0.25 * (dualOppEdgeLen[1]*oppEdgeLen[1] + dualOppEdgeLen[2]*oppEdgeLen[2]);
     dualVertexVol[1] = 0.25 * (dualOppEdgeLen[0]*oppEdgeLen[0] + dualOppEdgeLen[2]*oppEdgeLen[2]);
     dualVertexVol[2] = 0.25 * (dualOppEdgeLen[1]*oppEdgeLen[1] + dualOppEdgeLen[0]*oppEdgeLen[0]);
+  }
 
-    //double vol = dualVertexVol[1] + dualVertexVol[2] +  dualVertexVol[0];
-    //cout << "\n*** VolErr ***" << endl;
-    //cout << abs(2.0*vol - el->getDet()) << endl;
-    //cout << "*** Coords ***" << endl;
-    //cout << p0 << endl;
-    //cout << p1 << endl;
-    //cout << p2 << endl;
-    //cout << "*** Circumc ***" << endl;
-    //cout << cc << endl;
+
+  double ElVolumesInfo2d::getDiameter() {
+    WorldVector<double> rVec = elInfo->getCoord(0) - cc;
+    return 2.0 * sqrt(dot(rVec, rVec));
   }
 }

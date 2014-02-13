@@ -13,6 +13,9 @@ endif(AMDIS_FOUND)
 add_subdirectory(src/dec)
 include_directories(src/dec)
 
+add_executable(meshCorrector src/correctMesh.cc)
+target_link_libraries(meshCorrector ${BASIS_LIBS} dec)
+
 add_executable(laplaceSphere src/sphereLaplaceDEC.cc)
 target_link_libraries(laplaceSphere ${BASIS_LIBS} dec)
 

@@ -1,0 +1,23 @@
+dimension of world:      3
+
+sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+%sphereMesh->macro file name:       ./macro/sphere_macro.3d
+%sphereMesh->macro file name:       ./macro/heine51c_5k.3d
+sphereMesh->global refinements:    0
+
+sphere->mesh:                    sphereMesh
+sphere->dim:                     2
+sphere->polynomial degree[0]:    1
+sphere->components:              1
+
+sphere->solver: cg
+
+%heine5k 0.006
+%heine50k 0.002
+meshCorrector->h: 0.005
+meshCorrector->nMax: 100000
+meshCorrector->outName: ./macro/heine51c_5k_k05.3d
+
+edgeForces->k: 1.0   % in [0,1]
+
+

@@ -4,27 +4,6 @@
 
 namespace AMDiS {
 
-  //// TODO: improve (calc coords only onetime, problem: coors must be set for all mels), 
-  ////       projection from element without segfault
-  //void MeshCorrector::oneIteration(double h) {
-  //  DOFVector<WorldVector<double> > F = getConnectionForces(feSpace, true);
-
-  //  TraverseStack stack;
-  //  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS); el; el = stack.traverseNext(el)) {
-  //    for (int i = 0; i < 3; i++) {
-  //      DegreeOfFreedom dof = el->getMacroElement()->getElement()->getDof(i,0);
-  //      //cout << el->getCoord(i) << endl;;
-  //      WorldVector<double> newCoord = el->getMacroElement()->getCoord(i) + h * F[dof];
-  //      //el->getMacroElement()->getProjection(i)->project(newCoord);
-  //      Projection::getProjection(1)->project(newCoord);
-  //      //cout << newCoord << endl;
-  //      el->getMacroElement()->setCoord(i, newCoord);
-  //      //cout << endl;
-  //    }
-  //  }
-  //  //cout << "*************************" << endl;
-  //}
-  //
 
   MeshCorrector::MeshCorrector(const FiniteElemSpace *finiteElemSpace) :
     feSpace(const_cast<FiniteElemSpace *>(finiteElemSpace)) {
@@ -122,6 +101,11 @@ namespace AMDiS {
   }
 
   void MeshCorrector::iterate(int n, double h) {
+    MeshInfoCSVWriter infowriter("meshStats.csv");
+   cout << "huhu" << endl;
+    infowriter.appendData(feSpace);
+   cout << "huhu" << endl;
+   cout << "huhu" << endl;
     double tol1 = 1.0e-1;
     double tol2 = 1.0e-6;
     F = getConnectionForces(feSpace, true);
@@ -129,31 +113,42 @@ namespace AMDiS {
     double fOld = getMaxMagnitude(F);
     double hh = h;
     double hhOld = h;
-    double fac = 1.5;
-    double fac2 = 0.75;
+    double fac = 1.2;
+    double fac2 = 0.70;
     double k = 1.8;
+    int nVerbose = 1;
+    double h0 = 1.e-9;
+    double n1 = 1000;
     for (int i = 0; i < n; i++) {
+      //hh = (i > n1)? h : ((n1 - (double)i) * h0 + (double)i * h) / n1;
       //if (i%100 == 0 && i != 0) {
       //  fac = fac * fac * fac * fac * fac;
       //  fac2 = fac2 * fac2 * fac2 * fac2 * fac2;
       //}
-      oneHeunIteration(hh);
+      //oneHeunIteration(hh);
+      oneIteration(hh);
       F = getConnectionForces(feSpace, true);
       fNew = getMaxMagnitude(F);
+      //if (fNew < 1.0e-7) break;
       //hh *= 4.0 * fOld / (fNew + 3.0*fOld);
       double tmp = (fOld - fNew) / fOld;
-      if (tmp < tol1 && tmp > 0.0) {
-        hh *= fac;
-        fac2 = (1+k) - k * fac;
-      }
-      if (tmp < -tol2) {
-          hh *= fac2;
-          fac = 0.5 + 0.5 * fac;
-      }
+      //if (tmp < tol1 && tmp > 0.0) {
+      //  hh *= fac;
+      //  fac2 = (1+k) - k * fac;
+      //}
+      //if (tmp < -tol2) {
+      //    hh *= fac2;
+      //    fac = 0.5 + 0.5 * fac;
+      //}
       fOld = fNew;
+      //hh *= (tmp < 0.01 && tmp >= 0) ? fac : fac2; 
 
-      cout << i << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
+      infowriter.appendData(feSpace);
+      if (i%nVerbose == 0) cout << i << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
       VtkVectorWriter::writeFile(F, string("output/ConForces_" + boost::lexical_cast<std::string>(i) + ".vtu"));
+      if (i%1000 == 0) {
+        MacroWriter::writeMacro(new DataCollector<double>(feSpace), string("output/meshOut" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
+      }
     }
   }
 

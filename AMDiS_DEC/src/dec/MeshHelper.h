@@ -1,4 +1,10 @@
+#ifndef MESH_HELPER
+#define MESH_HELPER
+
 #include "AMDiS.h"
+#include <iostream>
+#include <fstream>
+
 
 namespace AMDiS {
 
@@ -21,5 +27,27 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
 
 double getMaxMagnitude(DOFVector<WorldVector<double> > F);
 
+//need wellcentered
+DOFVector<double> getAverage(DOFVector<double> f);
+
+
+class MeshInfoCSVWriter {
+
+public:
+  MeshInfoCSVWriter(string file) : out(file.data(), ios::out), n(0) {
+    out << "Nr,AvDiameter,MaxDiameter,AvArea,MaxArea,AvMaxAngle,MaxMaxAngle,AvAngleRatio,MaxAngleRation"<< endl;
+  }
+
+  ~MeshInfoCSVWriter() {out.close();}
+
+  void appendData(const FiniteElemSpace *feSpace);
+
+private:
+  ofstream out;
+  int n;
+
+};
   
 }
+
+#endif

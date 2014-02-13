@@ -48,7 +48,7 @@ public:
     double z2 = x[2] * x[2];
     rval[0] -= z2;
     rval[1] -= z2;
-    rval[2] += 2.0 * x[2]* (z2 - x[0] - x[1]);
+    rval[2] += 2.0 * x[2]* (2.0 * z2 - x[0] - x[1]);
     return rval;
   }
 };
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-2);
+  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6, 100);
 
   // ===== create and init the scalar problem ===== 
   ProblemStat sphere("sphere");

@@ -1,5 +1,6 @@
 #include "AMDiS.h"
 #include "decOperator.h"
+#include "MatrixHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -22,6 +23,24 @@ public:
     if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
     double eta = zeta / (R + zeta);
     return 0.5 * (1.0 + eta) / r;
+  }
+};
+
+class GaussCurv : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  GaussCurv() : AbstractFunction<double, WorldVector<double> >(1) {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x) const 
+  {
+    double r = 0.5;
+    double R = 2.0;
+    //double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
+    double zeta =  (true) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
+    if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
+    double eta = zeta / (R + zeta);
+    return eta / (r * r);
   }
 };
 
@@ -105,17 +124,53 @@ int main(int argc, char* argv[])
     // ===== create rhs operator =====
     torus.addVectorOperator(new LBeltramiInteriorFunctionDEC(new X_i(i), torus.getFeSpace(i)), i);
   }
+  
+  // GaussCurv: geometric operator
+  SimpleDEC *gaussCurv = new SimpleDEC(torus.getFeSpace(3),torus.getFeSpace(3) );
+  torus.addMatrixOperator(gaussCurv, 3, 3);
 
+  GaussCurvatureDEC *rhs = new GaussCurvatureDEC(torus.getFeSpace(3));
+  torus.addVectorOperator(rhs,3);
+
+
+  int oh = 4;
+  for (int i = 0; i < 3; i++) {
+    // N
+    torus.addMatrixOperator(new SimpleDEC(torus.getFeSpace(i+oh), torus.getFeSpace(i+oh)), i+oh, i+oh);
+    torus.addVectorOperator(new DualPrimalNormalDEC(i, torus.getFeSpace(i+oh)), i+oh);
+    for (int j = 0; j < 3; j++) {
+       int pos = matIndex(i,j) + oh + 3;
+       // -II_ij
+       SimpleDEC *II = new SimpleDEC(torus.getFeSpace(pos), torus.getFeSpace(pos));
+       II->setFactor(-1.0);
+       torus.addMatrixOperator(II, pos, pos);
+       // [d(N_j)]_i
+       PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, torus.getFeSpace(pos), torus.getFeSpace(j+oh));
+      torus.addMatrixOperator(dN, pos, j+oh);
+    }
+  }
   
 
   // ===== start adaption loop =====
   adapt->adapt();
 
-  //cout << torus.getSystemMatrix(0,0)->getBaseMatrix() << endl;
+  WorldMatrix<DOFVector<double> * > IIDV;
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      IIDV[i][j] = torus.getSolution(matIndex(i,j) + oh + 3);
+    }
+  }
 
-  DOFVector<double> meanCurvDofVector(torus.getFeSpace(),"meanCurvature");
+  DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
+  VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
+
+  DOFVector<double> meanCurvDofVector(torus.getFeSpace(0),"meanCurvature");
   meanCurvDofVector.interpol(new MeanCurv());
   VtkVectorWriter::writeFile(meanCurvDofVector, string("output/torusMeanCurvature.vtu"));
+
+  DOFVector<double> gaussCurvDofVector(torus.getFeSpace(3),"gaussCurvature");
+  gaussCurvDofVector.interpol(new GaussCurv());
+  VtkVectorWriter::writeFile(gaussCurvDofVector, string("output/torusGaussCurvature.vtu"));
 
   torus.writeFiles(adaptInfo, true);
 

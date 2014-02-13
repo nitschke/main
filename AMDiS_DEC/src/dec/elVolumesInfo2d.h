@@ -12,10 +12,14 @@ class ElVolumesInfo2d {
     double getDualOppEdgeLen(int i) {return dualOppEdgeLen[i];}
     WorldVector<double> getCircumcenter() {return cc;}
 
+    double getDiameter();
+
   protected:
     WorldVector<double> dualVertexVol;
     WorldVector<double> oppEdgeLen;
     WorldVector<double> dualOppEdgeLen;
     WorldVector<double> cc;
+
+    const ElInfo *elInfo;
 };
 }

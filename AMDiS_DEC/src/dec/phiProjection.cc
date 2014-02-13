@@ -9,7 +9,6 @@ namespace AMDiS {
     double evalPhiOld;
     WorldVector<double> xWedge;
     int n = 0;
-    int nMax = 20;
     while(abs(evalPhi) > eps && n < nMax) {
       WorldVector<double> evalGradPhi = (*gradPhi)(x);
       xWedge = x - (evalPhi / dot(evalGradPhi, evalGradPhi)) * evalGradPhi;

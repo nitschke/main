@@ -1,13 +1,14 @@
 dimension of world:      3
 
-torusMesh->macro file name:       ./macro/torus60k.3d
+%torusMesh->macro file name:       ./macro/torus60k.3d
+torusMesh->macro file name:       ./macro/torus27k.3d
 torusMesh->global refinements:    0
 torusMesh->check:                 0
 
 torus->mesh:                    torusMesh
 torus->dim:                     2
 torus->polynomial degree[0]:    1
-torus->components:              3
+torus->components:              16
 
 torus->solver:                cg
 torus->solver->max iteration: 1000

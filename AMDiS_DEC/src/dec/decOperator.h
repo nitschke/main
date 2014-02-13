@@ -1,4 +1,5 @@
 #include "AMDiS.h"
+#include "MeshHelper.h"
 
 namespace AMDiS {
 
@@ -226,14 +227,50 @@ namespace AMDiS {
       DOFVector<int> *np;
   };
 
-  class SimplePrimalDEC : public DecOperator {
+  class MinusAngleDEC : public DecOperator {
     
     public:
-      SimplePrimalDEC(const FiniteElemSpace *rowFeSpace,
-	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
+      MinusAngleDEC(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {
+        np = new DOFVector<int>(rowFeSpace, "np");
+        np->set(0);
+        TraverseStack stack;
+        for (ElInfo *el = stack.traverseFirst(rowFeSpace->getMesh(), -1, Mesh::CALL_LEAF_EL); el; el = stack.traverseNext(el)) {
+          for (int k = 0; k < 3; k++) {
+            DegreeOfFreedom iGlob = el->getElement()->getDof(k,0);
+            (*np)[iGlob]++;
+          }
+        }
+        
+       }
 
       void getElementVector(const ElInfo *elInfo, 
 				  ElementVector& userVec, 
 				  double factor = 1.0);
+
+   private:
+    
+      DOFVector<int> *np;
+  };
+
+  class SimplePrimalDEC : public DecOperator {
+    
+    public:
+      SimplePrimalDEC(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {
+          visited = new DOFVector<int>(rowFeSpace, "visited");
+          (*visited) = 0;
+          n = 0;
+          firstElInfo = NULL;
+       }
+
+      void getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor = 1.0);
+
+    private:
+      DOFVector<int> *visited;
+      ElInfo *firstElInfo;
+      int n;
   };
 }

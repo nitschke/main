@@ -248,13 +248,54 @@ namespace AMDiS {
       int ni = (*np)[iGlob];
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
         double angle = atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
-        opVec[i] += M_PI / ((double)ni) - angle;
+        opVec[i] -= angle;
+        if (iGlob == 554) {
+          cout << angle << " #### " << elInfo->getElement()->getDof(j,0 )<< endl;
+        }
       }
+      opVec[i] += 2.0 * M_PI / ((double)ni);
       //double lSigmaV1 = volInfo.getOppEdgeLen((i+2)%3);
       //double lSigmaV2 = volInfo.getOppEdgeLen((i+1)%3);
       //double lV1V2 = volInfo.getOppEdgeLen(i);
       //double angle = acos(0.5 * (lSigmaV1*lSigmaV1 + lSigmaV2*lSigmaV2 - lV1V2*lV1V2) / (lSigmaV1*lSigmaV2));
       //opVec[i] += 2.0 * M_PI / ((double)ni) - angle;
+      //if (ni == 5) cout << opVec << endl;
+      if (iGlob == 554) {
+          cout << "*** " << opVec[i] << endl;
+      }
+    }
+
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
+
+
+  }
+
+  void MinusAngleDEC::getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor) {
+
+    ElVolumesInfo2d volInfo(elInfo);
+    opVec = 0.0;
+    
+    //TODO: improve!
+    for (int i = 0; i < 3; i++) {
+      DegreeOfFreedom iGlob = elInfo->getElement()->getDof(i,0);
+      int ni = (*np)[iGlob];
+      double angle = 0.0;
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        angle += atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
+      }
+      if (iGlob == 554) {
+        cout << angle << " #### " << endl;
+      }
+      WorldVector<double> e1 = elInfo->getCoord(i) - elInfo->getCoord((i+1)%3);
+      WorldVector<double> e2 = elInfo->getCoord(i) - elInfo->getCoord((i+2)%3);
+      double angle2 = acos(dot(e1,e2) / sqrt(dot(e1,e1)*dot(e2,e2)));
+      opVec[i] -= angle2;
+      if (iGlob == 554) {
+          cout << "*** " << opVec[i] << endl;
+      }
     }
 
     opVec *= factor;
@@ -266,7 +307,29 @@ namespace AMDiS {
   void SimplePrimalDEC::getElementVector(const ElInfo *elInfo, 
 				  ElementVector& userVec, 
 				  double factor) {
-    opVec = 1.0;
+    
+    ElVolumesInfo2d volInfo(elInfo);
+    opVec = 0.0;
+
+    //hack for reset
+    if (firstElInfo == NULL) {
+      firstElInfo = new ElInfo2d(elInfo->getMesh());
+       FixVec< WorldVector< double >, VERTEX > coords = elInfo->getCoords();
+      firstElInfo->setCoords(coords);
+    } else if (firstElInfo->getCoords() == elInfo->getCoords()) {
+      (*visited) = 0;
+    }
+      
+
+    for (int i = 0; i < 3; i++) {
+      DegreeOfFreedom iGlob = elInfo->getElement()->getDof(i,0);
+      if ((*visited)[iGlob] == 0) {
+        opVec(i) = 1.0;
+        (*visited)[iGlob] = 1;
+      }
+    }
+
+
     opVec *= factor;
     updateUserVec(userVec, opVec);
   }
