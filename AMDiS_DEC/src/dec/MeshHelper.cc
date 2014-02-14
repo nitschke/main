@@ -145,6 +145,10 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
   Parameters::get("edgeForces->k", kInit);
   if (kInit != -1.0) k = kInit;
 
+  double c = -1.0;
+  Parameters::get("edgeForces->c", c);
+  TEST_EXIT(c >= 0 && c <=1)("invalide edgeForces->c");
+
   DOFVector<double> Radii = getVoronoiRadii(feSpace);
   double lRef = 2.0 * Radii.average();
   //if (constantRadii) Radii = 0.5 * Radii.average();
@@ -180,7 +184,6 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
       double deltaLen = len / lRef - k;
       double deltaA = cosAngle - 0.3;
       //linear law
-      double c = 1./2.;
       double fe = c * deltaLen + (1.0-c) * deltaA;
       WorldVector<double> Fe = (fe/len) * xDelta;
       F[dofi] += Fe - (dot(Fe, normals[dofi]) / dot(normals[dofi],normals[dofi])) * normals[dofi];

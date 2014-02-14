@@ -1,0 +1,22 @@
+\chapter{Diskrete Mannigfaltigkeit}
+
+\section{Gittergenerierung}
+
+  see \cite{meshCooper} \cite{meshHirani}
+
+  \begin{ziel}
+    Die Wohlzentriertheit eines Gitters ist Pflicht, da ohne sie kein brauchbares duales Gitter (Voronoigitter) erzeugt werden kann. 
+    Diese zur Triangulierung duale Gebietsdiskretisierung wird aber benötigt um zum Beispiel ein diskreten Hodge-Stern-Operator sinnvoll zu entwickeln. 
+    Bei einem nicht wohlzentrierten Dreieck liegt der Voronoiknoten \( \star\sigma^{2} \) nicht im Dreick \( \sigma^{2} \).
+    Das Problem dabei ist, dass sich die Werte auf \( \star\sigma^{2} \) und \( \sigma^{2} \) nur um einen 
+    metrischen Faktor\footnote{hier \( |\sigma^{2}| \) bzw. dessen Reziproke} unterscheiden sollten.
+    Diese Vorraussetzung wäre aber nicht mehr haltbar, da die Gebiete, die beide Elemente einnehmen, disjunkt sind. 
+    Sie können sogar \glqq sehr weit\grqq %todo  anführungsstriche ordentlich machen
+    von einander entfernt liegen.
+    Dann hätte die eine Größe fast nichts mehr mit der anderen gemein und die Linearität beider wäre nicht mehr gegeben.
+
+    Wohlzentiertheit ist eine schwerwiegende Einschränkung an die Gitterstruktur. Sie verbietet unter anderem einen 1-Ring um einen Knoten aus vier oder weniger Dreickselementen.
+    Für eine nicht planare Triangulierung mag ein 1-Ring aus vier Flächenelementen gerade noch funktionieren, da die Innenwinkelsumme der inneren Kanten weniger als \( 2\pi \) ist.
+    Im planaren Fall erhalten wir aber für eine optimale\footnote{bzgl. der maximalen Winkel} Triangulierung Winkel von \( \frac{\pi}{2} \) 
+    und somit nur Wohlzentriertheit im Limes\footnote{für planare äquidistante Gitter kann diese schwächere Restriktion dennoch sinnvoll sein, da somit bekannte Differenzenschematas entstehen können}.
+  \end{ziel}

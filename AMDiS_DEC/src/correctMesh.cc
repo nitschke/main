@@ -82,7 +82,11 @@ int main(int argc, char* argv[])
   cout << cos(M_PI) << endl;
 
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  //new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  WorldVector<double> ballCenter;
+  ballCenter.set(0.0);
+  new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
+  
 
   // ===== create and init the scalar problem ===== 
   ProblemStat sphere("sphere");
@@ -112,10 +116,10 @@ int main(int argc, char* argv[])
 
   string meshOut;
   Parameters::get("meshCorrector->outName", meshOut);
-  MacroWriter::writeMacro(new DataCollector<double>(sphere.getFeSpace()), meshOut.c_str());
-  DOFVector<double> *phi = new DOFVector<double>(sphere.getFeSpace(),"phi");
-  phi->interpol(new Phi());
-  VtkVectorWriter::writeFile(phi, meshOut + string("_phi.vtu"));
+  //MacroWriter::writeMacro(new DataCollector<double>(sphere.getFeSpace()), meshOut.c_str());
+  //DOFVector<double> *phi = new DOFVector<double>(sphere.getFeSpace(),"phi");
+  //phi->interpol(new Phi());
+  //VtkVectorWriter::writeFile(phi, meshOut + string("_phi.vtu"));
 
   AMDiS::finalize();
 }

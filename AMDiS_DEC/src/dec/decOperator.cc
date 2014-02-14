@@ -249,9 +249,9 @@ namespace AMDiS {
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
         double angle = atan2(volInfo.getDualOppEdgeLen(j), 0.5 * volInfo.getOppEdgeLen(j));
         opVec[i] -= angle;
-        if (iGlob == 554) {
-          cout << angle << " #### " << elInfo->getElement()->getDof(j,0 )<< endl;
-        }
+        //if (iGlob == 554) {
+        //  cout << angle << " #### " << elInfo->getElement()->getDof(j,0 )<< endl;
+        //}
       }
       opVec[i] += 2.0 * M_PI / ((double)ni);
       //double lSigmaV1 = volInfo.getOppEdgeLen((i+2)%3);
@@ -260,9 +260,9 @@ namespace AMDiS {
       //double angle = acos(0.5 * (lSigmaV1*lSigmaV1 + lSigmaV2*lSigmaV2 - lV1V2*lV1V2) / (lSigmaV1*lSigmaV2));
       //opVec[i] += 2.0 * M_PI / ((double)ni) - angle;
       //if (ni == 5) cout << opVec << endl;
-      if (iGlob == 554) {
-          cout << "*** " << opVec[i] << endl;
-      }
+      //if (iGlob == 554) {
+      //    cout << "*** " << opVec[i] << endl;
+      //}
     }
 
     opVec *= factor;

@@ -1,7 +1,7 @@
 dimension of world:      3
 
-%sphereMesh->macro file name:       ./macro/badheine2500.3d
-sphereMesh->macro file name:       ./macro/sphereIko25k.3d
+sphereMesh->macro file name:       ./macro/meshOut10k2000.3d
+%sphereMesh->macro file name:       ./macro/sphereIko25k.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 sphereMesh->global refinements:    0
 

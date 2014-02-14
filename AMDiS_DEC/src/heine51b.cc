@@ -8,6 +8,26 @@ using namespace AMDiS;
 // ===========================================================================
 // ===== function definitions ================================================
 // ===========================================================================
+class GaussCurv : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  GaussCurv() : AbstractFunction<double, WorldVector<double> >(1) {}
+
+  double operator()(const WorldVector<double>& xx) const 
+  {
+    double x = xx[0];
+    double y = xx[1];
+    double z = xx[2];
+    double x2 = x*x;
+    double y2 = y*y;
+    double z2 = z*z;
+    double tmp = 1.0 - 4.0*(-2.0 + x + x2 + y - 2.0*x*y + y2) * z2;
+    return -(1.0 + 2.0*x - 2.0*x2 + 2.0*y - 2.0*y2 + 2.0*(-3.0 + x + y) * z2 ) / (tmp*tmp);
+  }
+};
+
+
+
 
 class X : public AbstractFunction<double, WorldVector<double> >
 {
@@ -89,13 +109,14 @@ int main(int argc, char* argv[])
   // ===== start adaption loop =====
   adapt->adapt();
 
-
-  //sphere.getRhsVector()->print();
-
-  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
-  //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
-  //sphere.getSystemMatrix(0,0)->calculateNnz();
-  //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
+  DOFVector<double> *gaussCurvDV = new DOFVector<double>(sphere.getFeSpace(),"gaussCurv");
+  GaussCurv *gc = new GaussCurv();
+  WorldVector<double> xtest;
+  xtest = 0.0;
+  xtest[1] = -1.0;
+  cout << (*gc)(xtest) << endl;
+  gaussCurvDV->interpol(gc);
+  VtkVectorWriter::writeFile(gaussCurvDV, "output/gaussCurv.vtu");
 
   sphere.writeFiles(adaptInfo, true);
 

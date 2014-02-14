@@ -101,11 +101,8 @@ namespace AMDiS {
   }
 
   void MeshCorrector::iterate(int n, double h) {
-    MeshInfoCSVWriter infowriter("meshStats.csv");
-   cout << "huhu" << endl;
+    MeshInfoCSVWriter infowriter("meshStatsSphereDivBy4.csv");
     infowriter.appendData(feSpace);
-   cout << "huhu" << endl;
-   cout << "huhu" << endl;
     double tol1 = 1.0e-1;
     double tol2 = 1.0e-6;
     F = getConnectionForces(feSpace, true);
@@ -119,6 +116,7 @@ namespace AMDiS {
     int nVerbose = 1;
     double h0 = 1.e-9;
     double n1 = 1000;
+    int minusCounter = 0;
     for (int i = 0; i < n; i++) {
       //hh = (i > n1)? h : ((n1 - (double)i) * h0 + (double)i * h) / n1;
       //if (i%100 == 0 && i != 0) {
@@ -132,6 +130,11 @@ namespace AMDiS {
       //if (fNew < 1.0e-7) break;
       //hh *= 4.0 * fOld / (fNew + 3.0*fOld);
       double tmp = (fOld - fNew) / fOld;
+      minusCounter = (tmp < 0) ? (minusCounter+1) : 0;
+      if (minusCounter > 5) {
+        hh *= 0.8;
+        minusCounter = 0;
+      }
       //if (tmp < tol1 && tmp > 0.0) {
       //  hh *= fac;
       //  fac2 = (1+k) - k * fac;
@@ -145,9 +148,9 @@ namespace AMDiS {
 
       infowriter.appendData(feSpace);
       if (i%nVerbose == 0) cout << i << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
-      VtkVectorWriter::writeFile(F, string("output/ConForces_" + boost::lexical_cast<std::string>(i) + ".vtu"));
+      if (i%1 == 0) VtkVectorWriter::writeFile(F, string("output/ConForces_" + boost::lexical_cast<std::string>(i) + ".vtu"));
       if (i%1000 == 0) {
-        MacroWriter::writeMacro(new DataCollector<double>(feSpace), string("output/meshOut" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
+        //MacroWriter::writeMacro(new DataCollector<double>(feSpace), string("output/meshOut5k" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
       }
     }
   }
