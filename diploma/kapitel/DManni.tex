@@ -57,11 +57,21 @@
     zu erfüllen.
     \begin{align}
       \vec{x}_{i}(t+\Delta t) &= \pi\left(\vec{x}_{i}(t) + h \vec{F}_{i}\right)
+      \label{euler}
     \end{align}
     wobei \( h:= \frac{\Delta t}{\gamma} \) und \( \vec{F}_{i}:= \vec{F}(\vec{x}_{i}(t)) \).
     Der Kraftvektor \( \vec{F}_{i} \) resultiert aus Interaktion mit den anderen Knoten. 
-    Im Overlapping-Sphere-Modell(OS)\cite{meshCooper} sind das all die Knoten \( \sigma^{0}_{j} \), die einen bestimmten abstand zu \( \sigma^{0}_{i} \) haben. 
-    Wir wollen hier aber die Gitterstruktur des Simplizialkomplexes ausnutzen, das heißt es interagieren genau die Knoten mit einander, die eine gemeinsame Kante besitzen. Somit lässt sich der Kraftvektor \( \vec{F}_{i} \) zerlegen zu
+    Im Overlapping-Sphere-Modell(OS)\cite{meshCooper} sind das all die Knoten \( \sigma^{0}_{j} \), die einen bestimmten Abstand zu \( \sigma^{0}_{i} \) haben.
+    Für das explizite Eulerverfahren (Verfahren 1.Ordnung) werden kleine Schrittweiten \( h \) benötigt. 
+    Allerdings bringen Verfahren höherer Ordnung wahrscheinlich keine signifikant besseren Ergebnisse. Zum einen könnte eine größere Schrittweite
+    nicht ausgenutzt werden, da es sonst passieren kann, dass sich, durch die resultierende größere Verschiebung eines Knoten, Dreiecke überlappen
+    und somit keine zulässige Triangulierung mehr vorliegt. Zum anderen reduziert die Projektion \( \pi \) die Konvergenzordnung der Verfahren.
+    So wurde zum Beispiel in den numerischen Experimenten auch das Heun-Verfahren (explizites Runge-Kutta-Verfahren der Ordnung 2) getesten ohne
+    nenneswerten besseren Resultaten, dafür wesentlich (linear) höheren Aufwand.
+    Implizite Verfahren haben einen zu hohen Aufwand in der Implementation, denn es ist zu bedenken, dass der Kraftvektor \(\vec{F}_{i}\) nicht
+    nur von den Koordinaten \(  \vec{x}_{i} \) abhängt, sondern auch von der umgebenden Struktur.
+
+    Wir wollen hier, im Gegensatz zum OS-Modell, die Gitterstruktur des Simplizialkomplexes ausnutzen, das heißt es interagieren genau die Knoten mit einander, die eine gemeinsame Kante besitzen. Somit lässt sich der Kraftvektor \( \vec{F}_{i} \) zerlegen zu
   \begin{align}
     \vec{F}_{i} &= \sum_{\sigma^{1}:=[\sigma^{0}_{j}, \sigma^{0}_{i}]\succ\sigma^{0}_{i}} 
                                   \frac{F_{\sigma^{1}}}{\|\vec{x}_{j} - \vec{x}_{i}\|} \left(\vec{x}_{j} - \vec{x}_{i}\right)
@@ -71,10 +81,59 @@
   \begin{align}
     F_{\sigma^{1}} &= \sum_{\sigma^{2}\succ\sigma^{1}} F_{\sigma^{2}}
   \end{align}
+  Als praktisches erweißt es sich außerdem die Kräfte dimensionslos zuhalten, da somit eventuell auftretende Parameter für unterschiedliche
+  Ausgangsgitter annährend gleich gewählt werden können. 
+  Die Schrittweite \( h \) in \eqref{euler} hängt somit annährend linear von der Gitterweite ab. 
+  Zu beachten ist hierbei, dass sich die Gitterweite, je nach Definition\footnote{z.B. Maximum aller Umkreisradien}, in jedem Eulerschritt ändern kann.
 
-  \subsection{Flächenelementkräfte}
-    \subsubsection{optimale Kantenlängen}
-      in einem
+  Es folgen nun 2 heuristische Ansätze für die Kraft um die Beschaffenheit des Gitters positiv zu beeinflussen.
+
+  \subsubsection{Optimale Kantenlängen}
+    Ein ideales Dreieck mit bestmöglichen Eigenschaften hat überall Innenwinkel von \( \frac{\pi}{3} \). 
+    Folglich liegt ein gleichseitiges Dreieck vor. 
+    Deshalb wäre es ein guter Ansatz zu versuchen eben diese Eigenschaft bei einem Dreieckelement hervorzurufen.
+    Wir setzen eine Kantenkraft in linearer Abhängigkeit der Länge der Kante \( \sigma^{1} \) an.
+    \begin{align}
+       F^{L}_{\sigma^{1}} &:= \frac{|\sigma^{1}|}{l^{*}} - k
+    \end{align}
+    mit \( k \in [0,1] \). \( l^{*} \) ist das Mittel aller 1-Ring Radii \(  l^{*}_{\circlearrowleft\sigma^{0}} \), das heißt
+    \begin{align}
+      l^{*} &:= \frac{1}{N_{\left\{ \sigma^{0}\in K \right\}}} \sum_{\sigma^{0}\in K } l^{*}_{\circlearrowleft\sigma^{0}} \\
+      l^{*}_{\circlearrowleft\sigma^{0}} &:= \frac{1}{2V_{\circlearrowleft\sigma^{0}}} \sum_{\sigma^{1}\succ\sigma^{0}}
+                                              |\sigma^{1}| \sum_{\sigma^{2}\succ\sigma^{1}} |\sigma^{2}|      
+    \end{align}
+    wobei \( N_{\left\{ \sigma^{0}\in K \right\}} \) die Anzahl aller Knoten in K ist 
+    und \( V_{\circlearrowleft\sigma^{0}}  \) die Fläche des 1-Rings \( \circlearrowleft\sigma^{0} \).
+    Der Grund, warum hier der Radius \( l^{*}_{\circlearrowleft\sigma^{0}} \) gewichtet bezüglich der Dreieckflächen gemittelt wird,
+    ist der, dass somit die Längen stumpfwinkliger Dreiecke weniger Beachtung bekommen.
+    Für \( k=1 \) kann man sich das so vorsellen, dass die beiden Knoten einer Kante \( \sigma^{1} \) sich abstoßen falls \( |\sigma^{1}| < l^{*}
+    \), sich anziehen falls \( |\sigma^{1}| > l^{*}\) oder keine Kräfte wirken wenn \( |\sigma^{1}| = l^{*}\) gilt (siehe Abb. \ref{edgeLaw}).
+    \( k = 0 \) würde für eine Gitter mit Rand und freien Randknoten\footnote{Randknoten dürfen auch nach innen wandern} bedeuten, 
+    dass es immer weiter schrumpft. In unserem Fall, also Triangulierung von Oberflächen ohne Rand, zeigt sich, dass sich die Gitter vor allem dort
+    zusammen ziehen, wo sich zum einen 1-Ringe aus 5 Dreieckelementen befinden und zum anderen wo die Krümmung der Mannigfaltigkeit klein ist.
+    Letzteres ist allerdings keine gute Eigenschaft, da gerade dort ein feineres Gitter von nöten wäre, wo die Oberfläche eine große Krümmung
+    aufweist.
+    Der andere Extremfall, \( k=1 \), würde zwar ein annährend gleich grobes Gitter erzeugen, aber in Experimenten zeigte sich, dass \eqref{euler}
+    dadurch instabil wird. Stabilisierend wirkt sich aber das Zuaddieren des folgenden Kraftansatzes aus.
+    \begin{figure}
+      \begin{minipage}[t]{0.45\textwidth}
+      \includegraphics[width=\textwidth]{bilder/meshCorrector/EdgeLaw.eps}
+      \caption[Kantenkräfte für optimale Kantenlängen]{Kantenkräfte für an einem Knoten \( k = 1 \). Die eingezeichneten Radii entsprechen \( \frac{l^{*}}{2} \).}
+      \label{edgeLaw}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.45\textwidth}
+      \raisebox{10pt}{\includegraphics[width=\textwidth]{bilder/meshCorrector/AngleLaw.eps}}
+      \caption[Winkeländerung durch Verschiebung]{Eine Verschiebung des Knotens entlang einer Kante verändert den Winkel.}
+      \label{angleLaw}
+      \end{minipage}
+    \end{figure}
+
+  \subsubsection{Optimale Winkel}
+    Ein anderer
+    
+
+
 
 
       
