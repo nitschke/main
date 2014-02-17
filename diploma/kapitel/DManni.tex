@@ -1,22 +1,84 @@
+\renewcommand{\d}{\mathrm{d}}
+
 \chapter{Diskrete Mannigfaltigkeit}
 
-\section{Gittergenerierung}
+\section{Gittergenerierung für Oberflächen}
 
-  see \cite{meshCooper} \cite{meshHirani}
 
   \begin{ziel}
     Die Wohlzentriertheit eines Gitters ist Pflicht, da ohne sie kein brauchbares duales Gitter (Voronoigitter) erzeugt werden kann. 
     Diese zur Triangulierung duale Gebietsdiskretisierung wird aber benötigt um zum Beispiel ein diskreten Hodge-Stern-Operator sinnvoll zu entwickeln. 
-    Bei einem nicht wohlzentrierten Dreieck liegt der Voronoiknoten \( \star\sigma^{2} \) nicht im Dreick \( \sigma^{2} \).
+    Bei einem nicht wohlzentrierten Dreieck liegt der Voronoiknoten \( \star\sigma^{2} \) nicht im Dreieck \( \sigma^{2} \).
     Das Problem dabei ist, dass sich die Werte auf \( \star\sigma^{2} \) und \( \sigma^{2} \) nur um einen 
     metrischen Faktor\footnote{hier \( |\sigma^{2}| \) bzw. dessen Reziproke} unterscheiden sollten.
-    Diese Vorraussetzung wäre aber nicht mehr haltbar, da die Gebiete, die beide Elemente einnehmen, disjunkt sind. 
-    Sie können sogar \glqq sehr weit\grqq %todo  anführungsstriche ordentlich machen
+    Diese Voraussetzung wäre aber nicht mehr haltbar, da die Gebiete, die beide Elemente einnehmen, disjunkt sind. 
+    Sie können sogar  "`sehr weit"'
     von einander entfernt liegen.
     Dann hätte die eine Größe fast nichts mehr mit der anderen gemein und die Linearität beider wäre nicht mehr gegeben.
 
-    Wohlzentiertheit ist eine schwerwiegende Einschränkung an die Gitterstruktur. Sie verbietet unter anderem einen 1-Ring um einen Knoten aus vier oder weniger Dreickselementen.
+    Wohlzentriertheit ist eine schwerwiegende Einschränkung an die Gitterstruktur. Sie verbietet unter anderem einen 1-Ring um einen Knoten aus vier oder weniger Dreickelementen.
     Für eine nicht planare Triangulierung mag ein 1-Ring aus vier Flächenelementen gerade noch funktionieren, da die Innenwinkelsumme der inneren Kanten weniger als \( 2\pi \) ist.
     Im planaren Fall erhalten wir aber für eine optimale\footnote{bzgl. der maximalen Winkel} Triangulierung Winkel von \( \frac{\pi}{2} \) 
     und somit nur Wohlzentriertheit im Limes\footnote{für planare äquidistante Gitter kann diese schwächere Restriktion dennoch sinnvoll sein, da somit bekannte Differenzenschematas entstehen können}.
+    Damit sind oft genutzte lokale und globale Verfeinenerungstrategien nicht anwendbar. So wird zum Beispiel bei der FEM-Toolbox AMDiS \cite{amdis} die längste Kante halbiert und von dort zwei neue Kanten zu den jeweils gegenüberliegenden Knoten der beiden angrenzenden Dreiecken erstellt. Der neu entstandene Knotenpunkt hat folglich einen 1-Ring aus 4 Flächenelementen.
+    Auch CAD-Programme liefern im Allgemeinen keine geeigneten Gitter. 
+    Ein möglicher Ausweg könnte eine Triangulierung (bzw. Neutriangulierung) mittels angepassten Delaunay oder anderen Algorithmen sein, zum Beispiel Centroidal Voronoi Tessellation (CVT)\cite{CVTGunzburger}, 
+    Optimal Delaunay Triangulations (ODT)\cite{ODT} oder Hexagonal Delaunay Triangulation\cite{HDT}.
+
+    Im Folgenden wollen wir davon ausgehen, dass zu mindest eine Triangulation vorliegt, die die Bedingung erfüllt, dass jeder Knoten Teil von mehr als 4 Dreiecken ist. 
+    Damit möchten wir ein Oberflächengitter erzeugen, welches wohlzentriert ist.
+    Die Struktur des Simplizialkomplexes soll dabei erhalten bleiben. Nur die Knotenpunkte werden neu arrangiert. Das setzt natürlich vorraus, dass die Oberfläche exakt, 
+    zum Beispiel explizit durch eine Immersion \( X: M \rightarrow \R^{3} \) oder implizit durch das 0-Niveau einer Level-Set-Funktion\cite{levelset}, oder eine Approximation der 2-Mannigfaltigkeit höher als 1 gegeben ist.
+
+    Ansätze zur Gitterverbesserung bei der die Wohlzentriertheit im Vordergrund steht gibt es bis jetzt wenige.
+    Denn obwohl diese Vorderung an der Triangulation für viele numerische Verfahren Vorteile bringen würde, so ist sie doch nur für den DEC zwingend. 
+    Eine Arbeit ist zum Beispiel \cite{meshHirani}, wobei auch hier das diskrete Äußere Kalkül die Motivation bildete.
+    Hier wird eine Kostenfunktion aufgestellt deren Argument des Minimums ein wohlzentrierter Simplizialkomplex ist.
+    Leider muss solch ein Minimum nicht existieren, weder im planaren noch auf gekrümmten Oberflächen.
+    Wir wollen hier im Folgendem einen ähnlich Ansatz verwenden. 
+    Ausgangspunkt sind Kraftvektoren an den Knoten, die das Gitter so unter Zwang setzen, dass die daraus resultierende Bewegung der Knoten, wenn es denn möglich ist, eine wohlzentierte Triangulation formt. 
+    Das Modell ist nicht neu und wird zum Beispiel zur Simulation von biologischen Zellgewebe verwendet. 
+    Einen Überblick zu der Thematik bietet \cite{meshCooper}.  
   \end{ziel}
+
+  
+  
+  \subsection{Mechanisches Modell und dessen Diskretisierung}
+    
+    Ein einfacher mechanischer Ansatz, um nach gewissen Kriterien ein optimales Gitter zu entwickeln ist
+    \begin{align}
+      \gamma\frac{\d \vec{x}_{i}}{\d t} &= \vec{F}(\vec{x}_{i})
+      \label{visd}
+    \end{align}
+    Diese gewöhnliche Differentialgleichung erster Ordnung beschreibt eine Viskosedämpfung am Knoten 
+    \( \sigma^{0}_{i} \) mit Koordinaten \( \vec{x}_{i} \in X(M) \subset \R^{3}\) und Viskositätskoeffizient \( \gamma \).
+    Eine einfache Diskretisierung des Problems \eqref{visd} ist das Explizite Eulerverfahren 
+    mit nachgeschalteter Projektion \( \pi:\R^{3} \rightarrow X(M) \) um die Nebenbedingung \( \vec{x}_{i} \in X(M) \)
+    zu erfüllen.
+    \begin{align}
+      \vec{x}_{i}(t+\Delta t) &= \pi\left(\vec{x}_{i}(t) + h \vec{F}_{i}\right)
+    \end{align}
+    wobei \( h:= \frac{\Delta t}{\gamma} \) und \( \vec{F}_{i}:= \vec{F}(\vec{x}_{i}(t)) \).
+    Der Kraftvektor \( \vec{F}_{i} \) resultiert aus Interaktion mit den anderen Knoten. 
+    Im Overlapping-Sphere-Modell(OS)\cite{meshCooper} sind das all die Knoten \( \sigma^{0}_{j} \), die einen bestimmten abstand zu \( \sigma^{0}_{i} \) haben. 
+    Wir wollen hier aber die Gitterstruktur des Simplizialkomplexes ausnutzen, das heißt es interagieren genau die Knoten mit einander, die eine gemeinsame Kante besitzen. Somit lässt sich der Kraftvektor \( \vec{F}_{i} \) zerlegen zu
+  \begin{align}
+    \vec{F}_{i} &= \sum_{\sigma^{1}:=[\sigma^{0}_{j}, \sigma^{0}_{i}]\succ\sigma^{0}_{i}} 
+                                  \frac{F_{\sigma^{1}}}{\|\vec{x}_{j} - \vec{x}_{i}\|} \left(\vec{x}_{j} - \vec{x}_{i}\right)
+  \end{align}
+  \( F_{\sigma^{1}} \) ist folglich die Kraft die in Richtung der Kante \( \sigma^{1} \) wirkt. 
+  Da die Kraft aber auch von der Geometrie der Flächenelemente abhängen soll, zerlegen wir die Kantenkräfte weiter
+  \begin{align}
+    F_{\sigma^{1}} &= \sum_{\sigma^{2}\succ\sigma^{1}} F_{\sigma^{2}}
+  \end{align}
+
+  \subsection{Flächenelementkräfte}
+    \subsubsection{optimale Kantenlängen}
+      in einem
+
+
+      
+
+  \begin{fazit}
+  dfsd
+  \end{fazit}
