@@ -74,14 +74,14 @@
     Wir wollen hier, im Gegensatz zum OS-Modell, die Gitterstruktur des Simplizialkomplexes ausnutzen, das heißt es interagieren genau die Knoten mit einander, die eine gemeinsame Kante besitzen. Somit lässt sich der Kraftvektor \( \vec{F}_{i} \) zerlegen zu
   \begin{align}
     \vec{F}_{i} &= \sum_{\sigma^{1}:=[\sigma^{0}_{j}, \sigma^{0}_{i}]\succ\sigma^{0}_{i}} 
-                                  \frac{F_{\sigma^{1}}}{\|\vec{x}_{j} - \vec{x}_{i}\|} \left(\vec{x}_{j} - \vec{x}_{i}\right)
+                                  \frac{F_{\sigma^{0}_{i}\prec\sigma^{1}}}{\|\vec{x}_{j} - \vec{x}_{i}\|} \left(\vec{x}_{j} - \vec{x}_{i}\right)
   \end{align}
-  \( F_{\sigma^{1}} \) ist folglich die Kraft die in Richtung der Kante \( \sigma^{1} \) wirkt. 
-  Da die Kraft aber auch von der Geometrie der Flächenelemente abhängen soll, zerlegen wir die Kantenkräfte weiter
+  \( F_{\sigma^{0}\prec\sigma^{1}} \) ist folglich die Kraft die am Knoten \( \sigma^{0} \) in Richtung der Kante \( \sigma^{1} \) wirkt. 
+  Da die Kraft aber auch von der Geometrie der Flächenelemente abhängen kann, zerlegen wir die Kantenkräfte weiter zu
   \begin{align}
-    F_{\sigma^{1}} &= \sum_{\sigma^{2}\succ\sigma^{1}} F_{\sigma^{2}}
+    F_{\sigma^{0}\prec\sigma^{1}} &= \sum_{\sigma^{2}\succ\sigma^{1}} F_{\sigma^{0}\prec\sigma^{1}\prec\sigma^{2}}
   \end{align}
-  Als praktisches erweißt es sich außerdem die Kräfte dimensionslos zuhalten, da somit eventuell auftretende Parameter für unterschiedliche
+  Als praktisch erweist es sich außerdem die Kräfte dimensionslos zuhalten, da somit eventuell auftretende Parameter für unterschiedliche
   Ausgangsgitter annährend gleich gewählt werden können. 
   Die Schrittweite \( h \) in \eqref{euler} hängt somit annährend linear von der Gitterweite ab. 
   Zu beachten ist hierbei, dass sich die Gitterweite, je nach Definition\footnote{z.B. Maximum aller Umkreisradien}, in jedem Eulerschritt ändern kann.
@@ -92,9 +92,9 @@
     Ein ideales Dreieck mit bestmöglichen Eigenschaften hat überall Innenwinkel von \( \frac{\pi}{3} \). 
     Folglich liegt ein gleichseitiges Dreieck vor. 
     Deshalb wäre es ein guter Ansatz zu versuchen eben diese Eigenschaft bei einem Dreieckelement hervorzurufen.
-    Wir setzen eine Kantenkraft in linearer Abhängigkeit der Länge der Kante \( \sigma^{1} \) an.
+    Wir setzen eine Kantenkraft in linearer Abhängigkeit der Länge der Kante \( \sigma^{1} \) an, die für alle Knoten \( \sigma^{0}\prec\sigma^{1} \) gleich ist.
     \begin{align}
-       F^{L}_{\sigma^{1}} &:= \frac{|\sigma^{1}|}{l^{*}} - k
+       F^{L}_{\sigma^{0}\prec\sigma^{1}} := F^{L}_{\sigma^{1}} &:= \frac{|\sigma^{1}|}{l^{*}} - k
     \end{align}
     mit \( k \in [0,1] \). \( l^{*} \) ist das Mittel aller 1-Ring Radii \(  l^{*}_{\circlearrowleft\sigma^{0}} \), das heißt
     \begin{align}
@@ -130,10 +130,17 @@
     \end{figure}
 
   \subsubsection{Optimale Winkel}
-    Ein weiterer heuristischer Ansatz bezieht sich direkt auf die innerrenn Winkel eines Dreieckselements. 
+    Ein weiterer heuristischer Ansatz bezieht sich direkt auf die inneren Winkel eines Dreieckselements. 
     Wie in Abbildung \ref{angleLaw} angedeutet bewirkt eine Verschiebung entlang der Kante eine änderung des Winkels.
-    Wird dabei, wie in Abbildung \ref{AngleLaw}, die Kante länger, dann wird der Winkel an dem zuverscheibenen Knoten kleiner, et vice versa. 
-    
+    Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, dann wird der Winkel an dem zuverscheibenen Knoten kleiner, et vice versa. 
+    \begin{align}
+       F^{A}_{\sigma^{0}\prec\sigma^{1}\prec\sigma^{2}} &:= \cos\measuredangle(\vec{e},\vec{e_{*}}) - c \\
+                              &= \frac{\vec{e} \cdot \vec{e_{*}}}{\|\vec{e}\|\|\vec{e_{*}}\|} - c \\
+       \vec{e} := \vec{e}_{[\sigma^{0},v]} &= \vec{x}_{v} - \vec{x}_{\sigma^{0}} \qquad ([\sigma^{0},v] = \sigma^{1})\\
+       \vec{e_{*}} := \vec{e_{*}}_{[\sigma^{0},v_{*}]} &= \vec{x}_{v_{*}} - \vec{x}_{\sigma^{0}} \qquad (v \neq v_{*} \prec \sigma^{2})
+    \end{align}
+    mit \( c\in[-1,1] \). \( v \) ist somit der Knoten, der mit \( \sigma^{0} \) die gemeinsame Kante \( \sigma^{1} \) hat 
+    und \( v_{*} \) ist der noch verbliebene Knoten im Dreieck \( \sigma^{2} = [\sigma^{0},v,v_{*}] \).
 
 
 

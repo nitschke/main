@@ -185,9 +185,10 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
       double deltaA = cosAngle - 0.3;
       //linear law
       double fe = c * deltaLen + (1.0-c) * deltaA;
-      WorldVector<double> Fe = (fe/len) * xDelta;
+      double feK = (1.0-c) * deltaA;
+      WorldVector<double> Fe = (fe/len) * xDelta + (feK/lenK) * xDeltaK;
       F[dofi] += Fe - (dot(Fe, normals[dofi]) / dot(normals[dofi],normals[dofi])) * normals[dofi];
-      F[dofj] -= Fe - (dot(Fe, normals[dofj]) / dot(normals[dofj],normals[dofj])) * normals[dofj];
+      //F[dofj] -= Fe - (dot(Fe, normals[dofj]) / dot(normals[dofj],normals[dofj])) * normals[dofj];
     }
   }
 
