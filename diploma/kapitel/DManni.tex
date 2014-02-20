@@ -134,13 +134,15 @@
     Wie in Abbildung \ref{angleLaw} angedeutet bewirkt eine Verschiebung entlang der Kante eine änderung des Winkels.
     Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, dann wird der Winkel an dem zuverscheibenen Knoten kleiner, et vice versa. 
     \begin{align}
-       F^{A}_{\sigma^{0}\prec\sigma^{1}\prec\sigma^{2}} &:= \cos\measuredangle(\vec{e},\vec{e_{*}}) - c \\
-                              &= \frac{\vec{e} \cdot \vec{e_{*}}}{\|\vec{e}\|\|\vec{e_{*}}\|} - c \\
-       \vec{e} := \vec{e}_{[\sigma^{0},v]} &= \vec{x}_{v} - \vec{x}_{\sigma^{0}} \qquad ([\sigma^{0},v] = \sigma^{1})\\
-       \vec{e_{*}} := \vec{e_{*}}_{[\sigma^{0},v_{*}]} &= \vec{x}_{v_{*}} - \vec{x}_{\sigma^{0}} \qquad (v \neq v_{*} \prec \sigma^{2})
+       F^{A}_{\sigma^{0}\prec\sigma^{1}_{i}\prec\sigma^{2}} &:= \cos\measuredangle(\vec{e}_{0},\vec{e}_{1}) - c \\
+                              &= \frac{\vec{e}_{0} \cdot \vec{e}_{1}}{\|\vec{e}_{0}\|\|\vec{e}_{1}\|} - c \\
+       \vec{e}_{i} := \vec{e}_{\sigma^{1}_{i}} &= \vec{x}_{v_{i}} - \vec{x}_{\sigma^{0}}\\
     \end{align}
-    mit \( c\in[-1,1] \). \( v \) ist somit der Knoten, der mit \( \sigma^{0} \) die gemeinsame Kante \( \sigma^{1} \) hat 
-    und \( v_{*} \) ist der noch verbliebene Knoten im Dreieck \( \sigma^{2} = [\sigma^{0},v,v_{*}] \).
+    mit \( i\in\{0,1\} \) und \( c\in[-1,1] \). 
+    \( v_{i} \) ist also der Knoten, der mit \( \sigma^{0} \) die gemeinsame Kante \( \sigma^{1}_{i} \) 
+    im Dreieck \( \sigma^{2} = [\sigma^{0},v_{0},v_{1}] \) hat.
+    
+    Eine sinnvolle Wahl für die Konstante ist \( c = \cos \frac{\pi}{3} = 0.5\). 
 
 
 

@@ -35,7 +35,7 @@ class MeshInfoCSVWriter {
 
 public:
   MeshInfoCSVWriter(string file) : out(file.data(), ios::out), n(0) {
-    out << "Nr,AvDiameter,MaxDiameter,AvArea,MaxArea,AvMaxAngle,MaxMaxAngle,AvAngleRatio,MaxAngleRation"<< endl;
+    out << "Nr,AvDiameter,MaxDiameter,AvArea,MinArea,MaxArea,AvMaxAngle,MaxMaxAngle,AvAngleRatio,MaxAngleRation"<< endl;
   }
 
   ~MeshInfoCSVWriter() {out.close();}

@@ -15,6 +15,11 @@ public:
   
   void project(WorldVector<double> &x);
 
+  void project(const WorldVector<double> &x, WorldVector<double> &v);
+
+  WorldVector<double> getNormal(const WorldVector<double> &x);
+
+
 private:
 
   double eps;

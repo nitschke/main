@@ -14,12 +14,12 @@ sphere->components:              1
 sphere->solver: cg
 
 %heine5k 0.006
-%heine50k 0.002
+%heine50k 0.005
 meshCorrector->h: 0.005
 meshCorrector->nMax: 100000
 meshCorrector->outName: ./macro/heine51c_10k_k1.3d
 
-edgeForces->k: 1.0   % in [0,1] % hold k times average edge length in length preserving
-edgeForces->c: 0.1   % in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
+edgeForces->k: 0.5   % in [0,1] % hold k times average edge length in length preserving
+edgeForces->c: 0.7   % in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
 
 

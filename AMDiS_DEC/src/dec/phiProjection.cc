@@ -23,27 +23,15 @@ namespace AMDiS {
     }
   }
 
-  //void PhiProject::project(WorldVector<double> &x) {
-  //  double evalPhi = (*phi)(x);
-  //  WorldVector<double> evalGradPhi = (*gradPhi)(x);
-  //  double evalPhiOld;
-  //  double f = evalPhi;
-  //  double df;
-  //  double h = 0;
-  //  int n = 0;
-  //  WorldVector<double> xWedge;
-  //  while(abs(f) > eps && n < 10) {
-  //    xWedge = x - h * evalGradPhi;
-  //    WorldVector<double> evalGradPhiWedge = (*gradPhi)(xWedge);
-  //    f = (*phi)(xWedge);
-  //    df = dot(evalGradPhi, evalGradPhiWedge);
-  //    h -= f / df;
-  //    n++;
+  void PhiProject::project(const WorldVector<double> &x, WorldVector<double> &v) {
+    WorldVector<double> normal = getNormal(x);
+    v -= dot(v,normal) * normal;
+  }
 
-  //    //cout << f << endl;
 
-  //  }
-  //  x += h * evalGradPhi;
-  //}
+  WorldVector<double> PhiProject::getNormal(const WorldVector<double> &x) {
+     WorldVector<double> evalGradPhi = (*gradPhi)(x);
+     return (1./wvnorm(evalGradPhi)) * evalGradPhi;
+  }
 
 }

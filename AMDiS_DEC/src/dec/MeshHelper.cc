@@ -1,6 +1,7 @@
 #include "MeshHelper.h"
 #include "WorldVectorHelper.h"
 #include "elVolumesInfo2d.h"
+#include "phiProjection.h"
 
 namespace AMDiS{
 
@@ -169,7 +170,7 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
     //ElVolumesInfo2d volInfo(el);
     for (int i = 0; i < 3; i++) {
       int j = (i+1)%3;
-      int m = (i+1)%3;
+      int m = (i+2)%3;
       dofi = localIndices[i];
       dofj = localIndices[j];
 
@@ -182,13 +183,19 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
       double lenK = sqrt(dot(xDeltaK, xDeltaK));
       double cosAngle = dot(xDelta, xDeltaK) / len / lenK;
       double deltaLen = len / lRef - k;
-      double deltaA = cosAngle - 0.3;
+      double deltaA = cosAngle - 0.5;
       //linear law
       double fe = c * deltaLen + (1.0-c) * deltaA;
       double feK = (1.0-c) * deltaA;
       WorldVector<double> Fe = (fe/len) * xDelta + (feK/lenK) * xDeltaK;
-      F[dofi] += Fe - (dot(Fe, normals[dofi]) / dot(normals[dofi],normals[dofi])) * normals[dofi];
-      //F[dofj] -= Fe - (dot(Fe, normals[dofj]) / dot(normals[dofj],normals[dofj])) * normals[dofj];
+      try {
+        PhiProject &proj = dynamic_cast<PhiProject&>(*(Projection::getProjection(1)));
+        proj.project(el->getCoord(i), Fe);
+      } catch (std::bad_cast& bc) {
+        Fe -= (dot(Fe, normals[dofi]) / dot(normals[dofi],normals[dofi])) * normals[dofi];
+      }
+      F[dofi] += Fe;
+      //F[dofj] -= Fe;
     }
   }
 
@@ -252,6 +259,7 @@ void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace) {
   double avDia = 0.0;
   double maxDia = 0.0;
   double avArea = 0.0;
+  double minArea = 1.0 / 0.0;
   double maxArea = 0.0;
   double avAngle = 0.0;
   double maxAngle = 0.0;
@@ -271,6 +279,7 @@ void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace) {
     avDia += c * dia;
 
     if (vol > maxArea) maxArea = vol;
+    if (vol < minArea) minArea = vol;
     avArea += c * vol;
 
     Vector<WorldVector<double> > edges(3);
@@ -297,6 +306,7 @@ void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace) {
   out << "," << avDia;
   out << "," << maxDia;
   out << "," << avArea;
+  out << "," << minArea;
   out << "," << maxArea;
   out << "," << avAngle * 180.0 / M_PI;
   out << "," << maxAngle * 180.0 / M_PI ;

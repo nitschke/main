@@ -1,0 +1,26 @@
+\chapter{Appendix}
+
+\section{Algorithmen}
+  
+  \subsection{Assemblierung der Knotenkräfte}
+
+    \begin{verbatim}
+for all v: Force(v) = 0
+
+lRef = averageLength
+
+for all T:
+    for all v in T:
+        T <-> [v,v0,v1]
+        
+        E0 = X(v0) - X(v)
+        l0 = length(E0)
+        forceLength = d * (l0/lRef - k)
+
+        E1 = X(v1) - X(v)
+        l1 = length(E1)
+        forceAngle = (d - 1) * ((E0.E1) / (l0*l1) - c);
+
+        Force(v) += project( (forceLength + forceAngle)*(E0/l0) 
+                                          + forceAngle *(E1/l1) ) 
+    \end{verbatim}
