@@ -150,12 +150,19 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
   Parameters::get("edgeForces->c", c);
   TEST_EXIT(c >= 0 && c <=1)("invalide edgeForces->c");
 
-  DOFVector<double> Radii = getVoronoiRadii(feSpace);
-  double lRef = 2.0 * Radii.average();
+  //DOFVector<double> Radii = getVoronoiRadii(feSpace);
+  //double lRef = 2.0 * Radii.average();
   //if (constantRadii) Radii = 0.5 * Radii.average();
   //Radii = 0.0;
+  DOFVector<double> one(feSpace,"jhsdfakf");
+  one = 1.0;
+  double volM = one.Int();
+  int nT = feSpace->getMesh()->getNumberOfLeaves(); 
+  double lRef = 2.0 * sqrt(volM/sqrt(3.0)/nT);
 
-  DOFVector<WorldVector<double> > normals = getNormals(feSpace);
+
+  DOFVector<WorldVector<double> > normals;
+  bool normalsUnInit = true;
 
   const BasisFunction *basFcts = feSpace->getBasisFcts();
     int numBasFcts = basFcts->getNumber();
@@ -192,6 +199,10 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
         PhiProject &proj = dynamic_cast<PhiProject&>(*(Projection::getProjection(1)));
         proj.project(el->getCoord(i), Fe);
       } catch (std::bad_cast& bc) {
+        if (normalsUnInit)  {
+          normals = getNormals(feSpace);
+          normalsUnInit = false;
+        }
         Fe -= (dot(Fe, normals[dofi]) / dot(normals[dofi],normals[dofi])) * normals[dofi];
       }
       F[dofi] += Fe;

@@ -2,14 +2,12 @@
 
 \section{Algorithmen}
   
-  \subsection{Assemblierung der Knotenkräfte}
+  
+  \subsection{Element-Knotenkräfte}
+    \label{AlgoForces}
+    Berechnung der Knotenkräfte \texttt{Force}\( \in\R^{3}\times\R^{3} \) für ein Element:
 
     \begin{verbatim}
-for all v: Force(v) = 0
-
-lRef = averageLength
-
-for all T:
     for all v in T:
         T <-> [v,v0,v1]
         
@@ -24,3 +22,12 @@ for all T:
         Force(v) += project( (forceLength + forceAngle)*(E0/l0) 
                                           + forceAngle *(E1/l1) ) 
     \end{verbatim}
+
+    Parameter \texttt{c,d,k}\( \in\R \), 
+    Koordinatenabbildung \texttt{X}\(: \sigma^{0} \mapsto \vec{x}\in M \subset \R^{3} \) 
+    und Tangentialprojektion \texttt{project}\(: \R^{3} \rightarrow T_{p}M \subset \R^{3} \)
+    sind (approximativ oder exakt) gegeben.
+
+    Zu Beachten ist hierbei, dass die Kantenkraft \texttt{forceLength} nur auf einem Knoten aufgetragen wird.
+    Der andere Knoten der ebenfalls zu dieser Kante gehört bekommt die gleiche Kantenkraft aufdatiert, wenn die Knotenkräfte auf dem 2. Dreieckelement, das sich diese Kante teilt, berechnet
+    werden.

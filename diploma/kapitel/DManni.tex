@@ -95,17 +95,33 @@
     Wir setzen eine Kantenkraft in linearer Abhängigkeit der Länge der Kante \( \sigma^{1} \) an, die für alle Knoten \( \sigma^{0}\prec\sigma^{1} \) gleich ist.
     \begin{align}
        F^{L}_{\sigma^{0}\prec\sigma^{1}} := F^{L}_{\sigma^{1}} &:= \frac{|\sigma^{1}|}{l^{*}} - k
+       \label{edgeForce}
     \end{align}
-    mit \( k \in [0,1] \). \( l^{*} \) ist das Mittel aller 1-Ring Radii \(  l^{*}_{\circlearrowleft\sigma^{0}} \), das heißt
+    mit \( k \in [0,1] \). 
+    \( l^{*} \) ist die Referenzlänge des Dreiecks \( T^{*} \). Sie resultiert aus der Annahme, dass wir ein äquidistantes flache Triangulierung haben mit hexagonaler Struktur.
+    Das heißt alle Dreiecke \( \sigma^{2}\) wären dann vom Ausmaß gleich einem gleichseitigen Referenzdreieck \( T^{*} \).
+    Dessen Fläche berechnet sich dann über die Gesamtfläche \( V(K) = \sum_{\sigma^{2}}|\sigma^{2}| \) und der Anzahl aller Dreiecke \( N_{\sigma^{2}} = |\left\{ \sigma^{2} \in K \right\}|\)
     \begin{align}
-      l^{*} &:= \frac{1}{N_{\left\{ \sigma^{0}\in K \right\}}} \sum_{\sigma^{0}\in K } l^{*}_{\circlearrowleft\sigma^{0}} \\
-      l^{*}_{\circlearrowleft\sigma^{0}} &:= \frac{1}{2V_{\circlearrowleft\sigma^{0}}} \sum_{\sigma^{1}\succ\sigma^{0}}
-                                              |\sigma^{1}| \sum_{\sigma^{2}\succ\sigma^{1}} |\sigma^{2}|      
+        |T^{*}| &= \frac{V(K)}{N_{\sigma^{2}}}
     \end{align}
-    wobei \( N_{\left\{ \sigma^{0}\in K \right\}} \) die Anzahl aller Knoten in K ist 
-    und \( V_{\circlearrowleft\sigma^{0}}  \) die Fläche des 1-Rings \( \circlearrowleft\sigma^{0} \).
-    Der Grund, warum hier der Radius \( l^{*}_{\circlearrowleft\sigma^{0}} \) gewichtet bezüglich der Dreieckflächen gemittelt wird,
-    ist der, dass somit die Längen stumpfwinkliger Dreiecke weniger Beachtung bekommen.
+    sowie unter Ausnutzung, dass \( T^{*} \) gleichseitig ist
+    \begin{align}
+      |T^{*}| &= \frac{l^{*}\sqrt{3}}{4}
+    \end{align}
+    Zusammen ergibt sich für die Referenzlänge \( l^{*} > 0 \)
+    \begin{align}
+      l^{*} &= 2 \sqrt{\frac{V(K)}{\sqrt{3}N_{\sigma^{2}}}}
+    \end{align}
+   % \( l^{*} \) ist das Mittel aller 1-Ring Radii \(  l^{*}_{\circlearrowleft\sigma^{0}} \), das heißt
+   % \begin{align}
+   %   l^{*} &:= \frac{1}{N_{\left\{ \sigma^{0}\in K \right\}}} \sum_{\sigma^{0}\in K } l^{*}_{\circlearrowleft\sigma^{0}} \\
+   %   l^{*}_{\circlearrowleft\sigma^{0}} &:= \frac{1}{2V_{\circlearrowleft\sigma^{0}}} \sum_{\sigma^{1}\succ\sigma^{0}}
+   %                                           |\sigma^{1}| \sum_{\sigma^{2}\succ\sigma^{1}} |\sigma^{2}|      
+   % \end{align}
+   % wobei \( N_{\left\{ \sigma^{0}\in K \right\}} \) die Anzahl aller Knoten in K ist 
+   % und \( V_{\circlearrowleft\sigma^{0}}  \) die Fläche des 1-Rings \( \circlearrowleft\sigma^{0} \).
+   % Der Grund, warum hier der Radius \( l^{*}_{\circlearrowleft\sigma^{0}} \) gewichtet bezüglich der Dreieckflächen gemittelt wird,
+   % ist der, dass somit die Längen stumpfwinkliger Dreiecke weniger Beachtung bekommen.
     Für \( k=1 \) kann man sich das so vorsellen, dass die beiden Knoten einer Kante \( \sigma^{1} \) sich abstoßen falls \( |\sigma^{1}| < l^{*}
     \), sich anziehen falls \( |\sigma^{1}| > l^{*}\) oder keine Kräfte wirken wenn \( |\sigma^{1}| = l^{*}\) gilt (siehe Abb. \ref{edgeLaw}).
     \( k = 0 \) würde für eine Gitter mit Rand und freien Randknoten\footnote{Randknoten dürfen auch nach innen wandern} bedeuten, 
@@ -130,11 +146,11 @@
     \end{figure}
 
   \subsubsection{Optimale Winkel}
-    Ein weiterer heuristischer Ansatz bezieht sich direkt auf die inneren Winkel eines Dreieckselements. 
+    Ein weiterer heuristischer Ansatz bezieht sich direkt auf die inneren Winkel eines Dreieckelements. 
     Wie in Abbildung \ref{angleLaw} angedeutet bewirkt eine Verschiebung entlang der Kante eine änderung des Winkels.
     Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, dann wird der Winkel an dem zuverscheibenen Knoten kleiner, et vice versa. 
     \begin{align}
-       F^{A}_{\sigma^{0}\prec\sigma^{1}_{i}\prec\sigma^{2}} &:= \cos\measuredangle(\vec{e}_{0},\vec{e}_{1}) - c \\
+       F^{A}_{\sigma^{0}\prec\sigma^{1}_{i}\prec\sigma^{2}} &:= \cos\measuredangle(\vec{e}_{0},\vec{e}_{1}) - c \label{angleForce}\\
                               &= \frac{\vec{e}_{0} \cdot \vec{e}_{1}}{\|\vec{e}_{0}\|\|\vec{e}_{1}\|} - c \\
        \vec{e}_{i} := \vec{e}_{\sigma^{1}_{i}} &= \vec{x}_{v_{i}} - \vec{x}_{\sigma^{0}}\\
     \end{align}
@@ -142,8 +158,46 @@
     \( v_{i} \) ist also der Knoten, der mit \( \sigma^{0} \) die gemeinsame Kante \( \sigma^{1}_{i} \) 
     im Dreieck \( \sigma^{2} = [\sigma^{0},v_{0},v_{1}] \) hat.
     
-    Eine sinnvolle Wahl für die Konstante ist \( c = \cos \frac{\pi}{3} = 0.5\). 
+    Eine sinnvolle Wahl für die Konstante ist \( c = \cos \frac{\pi}{3} = 0.5\).
+    Sie würde in einer flachen Triangulation mit hexagonaler Struktur bewirken, dass sich keine Kräfte entwickeln, falls alle Dreiecke bis auf Rotation und Translation gleich sind.
 
+  \subsubsection{Kombination der Kantenkräfte}
+    Es hat sich gezeigt, dass \eqref{edgeForce} und \eqref{angleForce} gerade auf komplizierteren Gebieten einzeln entweder nicht das gewünschste Resultat liefern oder insatbil sind.
+    Deshalb kombinieren wir die beiden Kräfte linear:
+    \begin{align}
+      F^{\text{Gesamt}}_{\sigma^{0}\prec\sigma^{1}} &:= D \cdot F^{L}_{\sigma^{0}\prec\sigma^{1}} + (1-D) \cdot F^{A}_{\sigma^{0}\prec\sigma^{1}}
+    \end{align}
+    mit \( D\in[0,1] \).
+    Algorithmus \ref{AlgoForces} zeigt wie die resultierenden Kräfte auf einem Dreieckelement berechnet werden können. 
+    Um alle Knotenkräfte\footnote{d.h. \((\vec{F}_{i})_{i=1,\ldots, N_{\sigma^{0}}}\in (\R^{3})^{N_{\sigma^{0}}} \)} zu erhalten müssen wir nur noch diese Element-Knotenkräfte aufassemblieren. 
+    
+    Des Weiteren, wie im Algorithmus \ref{AlgoForces} zu sehen, wird der Kraftvektor \( \vec{F}_{i} \) in den Tangentialraum projeziert, das heißt
+    \begin{align}
+      \vec{F}_{T_{p}M,i} = \vec{F}_{i} - (\vec{F}_{i}\cdot\vec{\nu_{i}})\vec{\nu_{i}}
+    \end{align}
+    wobei der Normalenvektor \( \vec{\nu_{i}}  \) am Knoten \( \sigma^{0}_{i} \) entweder als bekannt vorrausgesetzt ist,
+    über eine signierte Distanze Funktion \( \varphi \) ermittelt wird, also
+    \begin{align}
+      \vec{\nu_{i}} = \frac{\nabla\varphi}{\|\nabla\varphi\|}(\vec{x}_{i})
+    \end{align}
+    oder über die Elementnormalen approximiert wird
+    \begin{align}
+      \vec{\nu_{i}} = \frac{1}{|\circlearrowleft\sigma^{0}_{i}|} \sum_{\sigma^{2}\succ\sigma^{0}_{i}} |\sigma^{2}|\cdot \vec{\nu}_{\sigma^{2}}
+    \end{align}
+    Somit kann im expliziten Eulervefahren \eqref{euler} \( \vec{F}_{T_{p}M,i}\) statt \( \vec{F}_{i} \) verwendet werden.
+    Das müssen wir nicht machen, aber es bringt Vorteile. 
+    Zum einen könnten Knoten soweit in Normalenrichtung verschoben werden, dass die nachfolgende Projektion den Knoten falsch abbildet und das Gitter zerstört 
+    (vgl. Abb. \ref{AbbFatalEuler}) zum anderen wird die Projektion in \eqref{euler} oft iterativ gelöst (vgl. \ref{SubSubSecPhiProject}) und je weiter weg wir den Knoten von der
+    Mannigfaltigkeit verschieben um so schlechter ist die Startnährung für das iterative Verfahren.
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.5\textwidth]{bilder/meshCorrector/fatalEuler.eps}
+      \caption[Euler mit und ohne Vorprojektion]{Eindimensionales Extrembeispiel für ein Schritt Euler-Explizit \( E \) (inkl. Nachprojektion \( \pi \))
+                                                  eines Knotens mit und ohne Vorprojektion des Kraftvektors \( \vec{F}_{i} \)
+                                                 zu \( \vec{F}_{T_{p}M,i}\). 
+                                                 Ohne Vorprojektion kann es zu einem unzulässigen Gitter kommen.}
+      \label{AbbFatalEuler}
+    \end{figure}
 
 
 
