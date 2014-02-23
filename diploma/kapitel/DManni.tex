@@ -171,6 +171,7 @@
     Algorithmus \ref{AlgoForces} zeigt wie die resultierenden Kräfte auf einem Dreieckelement berechnet werden können. 
     Um alle Knotenkräfte\footnote{d.h. \((\vec{F}_{i})_{i=1,\ldots, N_{\sigma^{0}}}\in (\R^{3})^{N_{\sigma^{0}}} \)} zu erhalten müssen wir nur noch diese Element-Knotenkräfte aufassemblieren. 
     
+  \subsubsection{Projektion der Kraftvektoren}
     Des Weiteren, wie im Algorithmus \ref{AlgoForces} zu sehen, wird der Kraftvektor \( \vec{F}_{i} \) in den Tangentialraum projeziert, das heißt
     \begin{align}
       \vec{F}_{T_{p}M,i} = \vec{F}_{i} - (\vec{F}_{i}\cdot\vec{\nu_{i}})\vec{\nu_{i}}
@@ -186,8 +187,8 @@
     \end{align}
     Somit kann im expliziten Eulervefahren \eqref{euler} \( \vec{F}_{T_{p}M,i}\) statt \( \vec{F}_{i} \) verwendet werden.
     Das müssen wir nicht machen, aber es bringt Vorteile. 
-    Zum einen könnten Knoten soweit in Normalenrichtung verschoben werden, dass die nachfolgende Projektion den Knoten falsch abbildet und das Gitter zerstört 
-    (vgl. Abb. \ref{AbbFatalEuler}) zum anderen wird die Projektion in \eqref{euler} oft iterativ gelöst (vgl. \ref{SubSubSecPhiProject}) und je weiter weg wir den Knoten von der
+    Zum einen könnten Knoten soweit in Normalenrichtung verschoben werden, dass die nachfolgende Projektion den Knoten falsch abbildet und das Gitter zerstört wird 
+    (vgl. Abb. \ref{AbbFatalEuler}), zum anderen wird die Projektion in \eqref{euler} oft iterativ gelöst (vgl. \ref{SubSubSecPhiProject}) und je weiter weg wir den Knoten von der
     Mannigfaltigkeit verschieben um so schlechter ist die Startnährung für das iterative Verfahren.
     \begin{figure}
       \centering
@@ -199,6 +200,7 @@
       \label{AbbFatalEuler}
     \end{figure}
 
+  \section{Implizit gegebene Oberflächen}
 
 
       
