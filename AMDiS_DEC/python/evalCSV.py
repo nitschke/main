@@ -10,7 +10,7 @@ lw = 3;
 name = ["MaxMaxAngle", "AvMaxAngle"]
 #name = ["AvArea", "MinArea","MaxArea"]
 n = len(name)
-last = 900
+last = 7500
 with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]
