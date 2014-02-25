@@ -1,3 +1,6 @@
+\newcommand{\trace}{\text{Trace}}
+
+
 \chapter{Appendix}
 
 \section{Algorithmen}
@@ -32,9 +35,35 @@
     Der andere Knoten der ebenfalls zu dieser Kante gehört bekommt die gleiche Kantenkraft aufdatiert, wenn die Knotenkräfte auf dem 2. Dreieckelement, das sich diese Kante teilt, berechnet
     werden.
 
+\section{Krümmungsgrößen für impliziten Oberflächen}
 
-% start merge
+  Es sei \( \varphi\in C^{2}(\R^{3}) \) gegeben mit \( M = \left\{ \vec{x}\in\R^{3} \middle| \varphi(\vec{x}) = 0 \right\} \).
+  Die Gaußkrümmung \( \mathfrak{K} \) und die Mittlere Krümmung \( \mathfrak{H} \) von \( M \) berechnet sich wie folgt (siehe \cite{CurvatureFormulas}):
+  \begin{align}
+    \mathfrak{K} &= \frac{\nabla^{T}\varphi \cdot H^{*}[\varphi] \cdot \nabla\varphi}{ \|\nabla\varphi\|_{2}^{4}}
+                 = - \frac{\det \begin{bmatrix} H[\varphi] & \nabla\varphi \\ \nabla^{T}\varphi & 0 \end{bmatrix}}{\|\nabla\varphi\|_{2}^{4}} \\
+    \mathfrak{H} &= \frac{\nabla^{T}\varphi \cdot H[\varphi] \cdot \nabla\varphi - \|\nabla\varphi\|_{2}^{2}\cdot\trace(H[\varphi])}
+                        {2\cdot\|\nabla\varphi\|_{2}^{3}}
+  \end{align}
+  wobei \( H^{*}[\varphi] \) die Adjunkte\footnote{nicht Adjungierte!} des Hessian \( H[\varphi] \) ist.
+
+
 \section{Oberflächenbeispiele}
+
+  \subsection{Einheitssphäre}
+    \label{sphere}
+
+    \subsubsection{Level-Set-Funktion}
+      \begin{align}
+        \varphi(\vec{x}) &:= \frac{1}{2}\left( \|\vec{x}\|_{2}^{2} - 1 \right) \\
+        \nabla\varphi(\vec{x}) &= \vec{x} \\
+        H[\varphi] &\equiv I
+      \end{align}
+
+     \subsubsection{Krümmungsgrößen}
+      \begin{align}
+        \mathfrak{K} &\equiv 1
+      \end{align}
 
   \subsection{Ellipsoid}
     \label{heineC}
@@ -42,6 +71,13 @@
     \subsubsection{Level-Set-Funktion}
       \begin{align}
         \varphi(x,y,z) &:= \frac{1}{2}\left( (3x)^{2} + (6y)^{2} + (2z)^{2} - 9 \right) \\
-        \nabla\varphi(x,y,z) &= \left[ 9x, 36y, 4z \right]^{T}
+        \nabla\varphi(x,y,z) &= \left[ 9x, 36y, 4z \right]^{T} \\
+        H[\varphi] &\equiv \begin{bmatrix} 9 & 0 & 0 \\
+                                             0 & 36 & 0 \\
+                                             0 & 0 & 4 \end{bmatrix}
       \end{align}
-%end merge
+
+     \subsubsection{Krümmungsgrößen}
+      \begin{align}
+        \mathfrak{K}(x,y,z) &= \frac{11664}{(81+972y^{2}-20z^{2})^{2}}
+      \end{align}

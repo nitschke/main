@@ -2,6 +2,9 @@
 
 \chapter{Diskrete Mannigfaltigkeit}
 
+\section{Primal- und Dualkomplex}
+  blub
+
 \section{Gittergenerierung für Oberflächen}
 
 
@@ -201,7 +204,6 @@
     \end{figure}
 
 
-  % start merge
   
   \subsection{Beispiele}
     
@@ -211,34 +213,40 @@
       Es ist fast überall eine hexagonale Struktur vorhanden bis auf 12 Defekte, genauer, an 12 Knoten
       befinden sich pentagonale 1-Ringe. 
       Dieses Startgitter wird nun auf den Ellipsoid projeziert (vgl. \ref{SubSubSecPhiProject}).
+      
       Wie in Abbildung \ref{AbbEllipsoid} zu sehen, ist ein wohlzentrierter Simplizialkomplexe nach nur
       wenigen Eulerschritten \eqref{euler} erreicht. 
       Der größte Winkel nimmt aber weiterhin logarithmisch ab. 
       Nach zirka 200 Schritten hat er sein Minimum erreicht und steigt danach wieder leicht.
       Das ist nicht verwunderlich, denn kleinere Winkel sind nicht das einzige Optimalitätskriterium.
-      Geplottet wurde auch das Integralmittel der größten Winkel der Dreiecke, das heißt
+      Geplottet wurde das Integralmittel \( \bar{\alpha}_{\max} \) (\texttt{AvMaxAngle}) der größten Winkel der Dreiecke
+      und der größte aller aximalen Winkel \(\alpha_{\max}^{\max} \) (\texttt{MaxMaxAngle}) nach jedem Iterationsschritt.
       \begin{align}
-         \alpha_{max} = blub
+         \bar{\alpha}_{\max} &:= \frac{\int_{|K|}\alpha_{max}\mu}{\int_{|K|}\mu}
+                              = \frac{1}{V(K)} \sum_{\sigma^{2}\in K} |\sigma^{2}| \left< \alpha_{max}, \star\sigma^{2} \right> \\
+         \alpha_{\max}^{\max} &:= \max\left\{ \left< \alpha_{max}, \star\sigma^{2} \right> \middle| \sigma^{2} \in K \right\}
       \end{align}
+      wobei \( |K| \) der zugrunde liegende Raum des Simplizialkomplexes \( K \) ist 
+      und \( \mu\in\Lambda^{2}(|K|) \) die die stückweise konstante Volumenform auf \( |K| \).
+      \( \left< \alpha_{max}, \star\sigma^{2} \right> \) ist der größte Winkel auf dem Dreieck \( \sigma^{2} \).
 
-      
       \begin{figure}
         \begin{minipage}[t]{0.45\textwidth}
         \includegraphics[width=\textwidth]{bilder/meshCorrector/Before_AnglesHeine51c_1k_h001_k10_c07.eps}
         \end{minipage}
         \hfill
         \begin{minipage}[t]{0.49\textwidth}
-        {\includegraphics[width=\textwidth]{bilder/meshCorrector/step7_AnglesHeine51c_1k_h001_k10_c07.eps}}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/step7_AnglesHeine51c_1k_h001_k10_c07.eps}
         \end{minipage}
         \begin{minipage}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{bilder/meshCorrector/step1000_AnglesHeine51c_1k_h001_k10_c07.eps}
         \end{minipage}
         \hfill
         \begin{minipage}[t]{0.5\textwidth}
-        {\includegraphics[width=\textwidth]{bilder/meshCorrector/step7500_AnglesHeine51c_1k_h001_k10_c07.eps}}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/step7500_AnglesHeine51c_1k_h001_k10_c07.eps}
         \end{minipage}
         \begin{minipage}[t]{\textwidth}
-        {\includegraphics[width=\textwidth]{bilder/meshCorrector/Angle6090_scaleBar.eps}}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/Angle6090_scaleBar.eps}
         \end{minipage}
         \caption[Gittergenerierung: Ellipsoid]
                 {Parameter: h = 0.01; k = 1; c = 0.7. 
@@ -250,7 +258,52 @@
          \label{AbbEllipsoid}
       \end{figure}
 
-  % end merge
+    \subsubsection{Lokale Verfeinerung}
+     
+      \begin{figure}
+        \begin{minipage}[t]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/sphereDivBy4Before.eps}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/sphereDivBy4AfterH01K1C07_1Step.eps}
+        \end{minipage}
+        \begin{minipage}[t]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/sphereDivBy4AfterH008K03C07_1Step.eps}
+        \end{minipage}
+        \hfill
+        \caption[Gittergenerierung: Lokale Verfeinerung]
+                 {Von links nach rechts: 
+                 Startgitter; 
+                 nach 1 Eulerschritt (h = 0.1, k = 1, c = 0.7, max. Winkel ca. \ang{86.5});
+                 nach 1 Eulerschritt (h = 0.08, k = 0.3, c = 0.7, max. Winkel ca. \ang{80.8})}
+         \label{AbbVerfeinerung}
+      \end{figure}
+
+      Die in der FEM häufig anzutreffende Verfeinerung, nämlich die Halbierung der Dreiecke, führt zu 1-Ringen aus 4 Flächenelementen an den neu
+      enstandenen Knoten und ist somit im Algemeinen nicht zulässig für unsere Triangulierung.
+      Eine Möglichkeit Dreiecke zu verfeinern und trotzdem eine Ausgangssituation für ein wohlzentriertes Gitter zu schaffen ist das Vierteln von
+      Flächenelementen, wobei 3 neue Knoten an den Seitenhalbierenden enstehen (siehe Abb. \ref{AbbVerfeinerung} ganz links). 
+      Die somit hängenden Knoten werden beseitigt indem die Nachbarelemente halbiert werden.
+      Das heißt es ensteht hexagonale Struktur an einem neuen Knoten, wenn beide angrenzende Dreiecke zum Verfeinern markiert wurden und
+      pentagonale Struktur, wenn nur ein Dreieck markiert wurde. Für die alten Knoten an denen eine neue Kante hinzu kommt erhöht sich die Anzahl
+      der umliegenden Flächenelemente um eins.
+
+      Nachdem die neuen Knoten auf die Mannigfaltigkeit projeziert werden ist im Allgemeinen noch nicht sichergestellt, dass ein wohlzentrierte
+      Triangulation vorliegt. Deshalb wenden wir unseren Algorithmus \eqref{euler} darauf an.
+      Wenn vor der Verfeinerung ein zulässiges Gitter vorlag, dann zeigt sich, dass wir nur sehr wenige Iterationsschritte benötigen um ein
+      zulässiges Gitter wieder herzustellen. Abbildung \ref{AbbVerfeinerung} zeigt das Resultat nach nur einem Eulerschritt mit zwei verschiedenen
+      Parameterkonfigurationen. Hier wurde ein Dreieck verfeinert (links). Das Gitterverbesserungsverfahren erzeugt zum einen wohlzentrierte
+      Dreiecke bei denen die Abmessungen weitestgehend gleich bleiben (mitte) und bei denen die neu entstandenen Elemente schrumpfen aber die Winkel
+      besser sind (rechts).
+
+     \begin{fazit}
+        blub
+     \end{fazit}
+
+
+
+
 
   \section{Implizit gegebene Oberflächen}
     Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Immersion 
@@ -277,6 +330,7 @@
     In Falle von 2-Mannigfaltigkeiten ohne Rand, ist "`innen"' gerade das von der Oberfläche umschlossene Gebiet im \( \R^{3} \).
 
     \subsection{Numerische Projektion}
+      \label{SubSubSecPhiProject}
       Wenn bei einem Simplizialkomplex, welches die Oberfläche approximiert, neue Knoten enstehen oder vorhandene verschoben werden sollen,
       dann ist es notwendig diese Knoten auf die Mannigfaltigkeit zu projezieren. 
       Denn eine Bedingung an den Simplizialkomplex ist, dass die Knoten dort und auf dem abstrakten Simplizialkomplex übereinstimmen.
@@ -288,8 +342,50 @@
       für den Knoten mit den Koordinaten \( \vec{y} \), der sich noch nicht auf der Mannigfaltigkeit \( M \) befindet 
       und damit \( \varphi(\vec{y}) \neq 0 \) gilt.
 
-      
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{bilder/projection/projection.eps}
+        \caption[Projektion]{Darstellung des Punktes \( \vec{y} \) und dessen projezierter Punkt \( \vec{x} \)}
+        \label{AbbProjection}
+      \end{figure}
+      Der kürzeste Weg mit Länge \( \varepsilon \) steht im rechten Winkel zur Oberfläche am Punkt \( \vec{x} \) (siehe Abb. \ref{AbbProjection}).
+      \begin{align}
+        \vec{x} &= \vec{y} + \frac{\varepsilon}{\|\nabla\varphi(\vec{x})\|} \nabla\varphi(\vec{x}) \\
+                &= \vec{y} + h \nabla\varphi(\vec{x}) \label{EqProjection}
+      \end{align}
+      für \( \varepsilon = h \|\nabla\varphi(\vec{x})\| \).
+      Allerdings ist weder \( h \) noch \( \vec{x} \) bekannt. 
+      Deshalb approximieren wir den Gradienten mittels Taylor an \( \vec{y} \):
+      \begin{align}
+        \nabla\varphi(\vec{x}) &= \nabla\varphi(\vec{y}) + H[\varphi](\vec{y})(\vec{x}-\vec{y}) + HOT \\
+                               &= \nabla\varphi(\vec{y}) + \frac{\varepsilon}{\|\nabla\varphi(\vec{x})\|} H[\varphi](\vec{y})\nabla\varphi(\vec{x}) + HOT
+      \end{align}
+      wobei  \( HOT \) für Therme höherer Ordnung (in \( \varepsilon \)) steht 
+      und \( H[\varphi] \) ist die (symmetrische) Hessematrix von \( \varphi \in
+      C^{2}\left(\overline{B_{\varepsilon}(\vec{x})}\right) \).
+      Einsetzen in \eqref{EqProjection} liefert
+      \begin{align}
+        \vec{x} &= \vec{y} +  h \nabla\varphi(\vec{y}) + \vec{O}(\varepsilon^{2}) \quad\text{.}
+      \end{align}
+      Somit ist für uns die Abschätzung 
+      \begin{align}
+        \vec{x}^{*} &:= \vec{y} +  h \nabla\varphi(\vec{y})
+      \end{align}
+      für \( \vec{x} \) ausreichend falls \( \varphi \) hinreichend glatt und \( \varepsilon \) klein.
 
-  \begin{fazit}
-  dfsd
-  \end{fazit}
+      Nun wollen wir \( h \) so bestimmen, dass \(\vec{x}^{*}\) auf der Oberfläche liegt, das heißt
+      \begin{align}
+        \Phi_{\vec{y}}(h) := \varphi(\vec{x}^{*}) = \varphi(\vec{y} +  h \nabla\varphi(\vec{y})) = 0 \quad\text{.}
+      \end{align}
+      Dieses Nullstellenproblem lösen wir in erster Nährung mittels Newton-Verfahren und Startlösung \( h=0 \).
+      \begin{align}
+        \hat{h} &= - \frac{\Phi_{\vec{y}}(0)}{\Phi'_{\vec{y}}(0)}
+                = - \frac{\varphi(\vec{y})}{\|\nabla\varphi(\vec{y})\|^{2}}
+      \end{align}
+      Damit stellen wir die Iterationsvorschrift
+      \begin{align}
+        \vec{y}_{i+1} &:= \vec{y}_{i} - \frac{\varphi(\vec{y}_{i})}{\|\nabla\varphi(\vec{y}_{i})\|^{2}}  \nabla\varphi(\vec{y}_{i})
+                       %% \overset{i\rightarrow\infty}{\longrightarrow}  \vec{x}^{*}
+      \end{align}
+      auf.
+      \textcolor{red}{näher darauf eingehen? Konvergenz etc. beweisen?}
