@@ -201,7 +201,40 @@
     \end{figure}
 
   \section{Implizit gegebene Oberflächen}
+    Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Immersion 
+    \begin{align}
+      X:(u,v)\mapsto X(u,v)\in\R^{3}
+    \end{align}
+    gegeben, sondern über den 0-Level-Set einer signierten Distanzfunktion
+    \begin{align}
+      \varphi = \pm\text{dist}(\cdot,M) = \pm\inf_{\vec{x}\in M} d(\cdot,\vec{x})
+    \end{align}
+    mit einer beliebigen (ausreichend glatten) Metrik \( d \) im \( \R^{3} \).
+    Die 2-Mannigfaltigkeit ist dann definiert durch 
+    \begin{align}
+      M = \left\{ \vec{x}\in\R^{3} \middle| \varphi(\vec{x})=0 \right\} \text{.}
+    \end{align}
+    Solche implizit beschriebenen Oberflächen liegen zum Beispiel bei 3D-Phasenfeldproblemen vor 
+    (z.B. Allen-Cahn-, Cahn-Hilliard- oder Phase-Field-Crystal-Modell). 
+    Die Distanzfunktion\footnote{auch Phasen- oder Ordnungsfunktion genannt} \( \varphi:\R^{3}\rightarrow\R \) ist dort gerade die Lösung dieser Probleme
+    und das 0-Niveau dieser Funktion beschreibt die Phasengrenzen.
 
+    Wir treffen hier die Konvention, dass "`außen"' \( \varphi > 0 \) gilt und "`innen"' \( \varphi < 0 \).
+    Dadurch zeigt der Gradient \( \nabla\varphi(\vec{x}) \) für alle \( \vec{x}\in M \) in Richtung der äußeren Normalen.
+    "`Außen"' und "`innen"' ist durch die Orientierung der Mannnigfaltigkeit gegeben. 
+    In Falle von 2-Mannigfaltigkeiten ohne Rand, ist "`innen"' gerade das von der Oberfläche umschlossene Gebiet im \( \R^{3} \).
+
+    \subsection{Numerische Projektion}
+      Wenn bei einem Simplizialkomplex, welches die Oberfläche approximiert, neue Knoten enstehen oder vorhandene verschoben werden sollen,
+      dann ist es notwendig diese Knoten auf die Mannigfaltigkeit zu projezieren. 
+      Denn eine Bedingung an den Simplizialkomplex ist, dass die Knoten dort und auf dem abstrakten Simplizialkomplex übereinstimmen.
+
+      Gesucht ist also das
+      \begin{align}
+        \argmin_{\vec{x}\in M} \|\vec{y} - \vec{x}\|
+      \end{align}
+      für den Knoten mit den Koordinaten \( \vec{y} \), der sich noch nicht auf der Mannigfaltigkeit \( M \) befindet 
+      und damit \( \varphi(\vec{y}) \neq 0 \) gilt.
 
       
 
