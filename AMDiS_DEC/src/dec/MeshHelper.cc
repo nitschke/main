@@ -161,7 +161,7 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
   double lRef = 2.0 * sqrt(volM/sqrt(3.0)/nT);
 
 
-  DOFVector<WorldVector<double> > normals;
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
   bool normalsUnInit = true;
 
   const BasisFunction *basFcts = feSpace->getBasisFcts();

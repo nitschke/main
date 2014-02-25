@@ -200,6 +200,58 @@
       \label{AbbFatalEuler}
     \end{figure}
 
+
+  % start merge
+  
+  \subsection{Beispiele}
+    
+    \subsubsection{Ellipsoid}
+      Wir wollen nun ein geeignetes Gitter für ein Ellipsoid erstellen (vgl. Appendix \ref{heineC}).
+      Zur Verfügung steht uns eine Starttriangulierung der Einheitssphäre mit zirka 1000 Knoten.
+      Es ist fast überall eine hexagonale Struktur vorhanden bis auf 12 Defekte, genauer, an 12 Knoten
+      befinden sich pentagonale 1-Ringe. 
+      Dieses Startgitter wird nun auf den Ellipsoid projeziert (vgl. \ref{SubSubSecPhiProject}).
+      Wie in Abbildung \ref{AbbEllipsoid} zu sehen, ist ein wohlzentrierter Simplizialkomplexe nach nur
+      wenigen Eulerschritten \eqref{euler} erreicht. 
+      Der größte Winkel nimmt aber weiterhin logarithmisch ab. 
+      Nach zirka 200 Schritten hat er sein Minimum erreicht und steigt danach wieder leicht.
+      Das ist nicht verwunderlich, denn kleinere Winkel sind nicht das einzige Optimalitätskriterium.
+      Geplottet wurde auch das Integralmittel der größten Winkel der Dreiecke, das heißt
+      \begin{align}
+         \alpha_{max} = blub
+      \end{align}
+
+      
+      \begin{figure}
+        \begin{minipage}[t]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/Before_AnglesHeine51c_1k_h001_k10_c07.eps}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{0.49\textwidth}
+        {\includegraphics[width=\textwidth]{bilder/meshCorrector/step7_AnglesHeine51c_1k_h001_k10_c07.eps}}
+        \end{minipage}
+        \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/meshCorrector/step1000_AnglesHeine51c_1k_h001_k10_c07.eps}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{0.5\textwidth}
+        {\includegraphics[width=\textwidth]{bilder/meshCorrector/step7500_AnglesHeine51c_1k_h001_k10_c07.eps}}
+        \end{minipage}
+        \begin{minipage}[t]{\textwidth}
+        {\includegraphics[width=\textwidth]{bilder/meshCorrector/Angle6090_scaleBar.eps}}
+        \end{minipage}
+        \caption[Gittergenerierung: Ellipsoid]
+                {Parameter: h = 0.01; k = 1; c = 0.7. 
+                 Von links oben nach rechts unten: 
+                 Startgitter (keine Wohlzentriertheit, maximaler Winkel ca. \ang{95.9}); 
+                 nach 7 Eulerschritten (Wohlzentriertheit);
+                 nach 1000 Eulerschritten (danach keine signifikanten Veränderungen mehr);
+                 (semilog)Eulerschritte-Winkel-Plot (Maximum und Integralmittel)}
+         \label{AbbEllipsoid}
+      \end{figure}
+
+  % end merge
+
   \section{Implizit gegebene Oberflächen}
     Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Immersion 
     \begin{align}

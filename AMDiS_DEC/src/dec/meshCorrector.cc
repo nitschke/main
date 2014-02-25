@@ -106,6 +106,7 @@ namespace AMDiS {
     double tol1 = 1.0e-1;
     double tol2 = 1.0e-6;
     F = getConnectionForces(feSpace, true);
+    VtkVectorWriter::writeFile(F, string("output/ConForces_" + boost::lexical_cast<std::string>(0) + ".vtu"));
     double fNew;
     double fOld = getMaxMagnitude(F);
     double hh = h;
@@ -117,7 +118,7 @@ namespace AMDiS {
     double h0 = 1.e-9;
     double n1 = 1000;
     int minusCounter = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 1; i < n; i++) {
       //hh = (i > n1)? h : ((n1 - (double)i) * h0 + (double)i * h) / n1;
       //if (i%100 == 0 && i != 0) {
       //  fac = fac * fac * fac * fac * fac;

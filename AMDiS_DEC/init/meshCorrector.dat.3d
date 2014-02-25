@@ -1,7 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/sphereDivBy4.3d
-sphereMesh->macro file name:       ./macro/sphereIko25k.3d
+sphereMesh->macro file name:       ./macro/sphereIko1k.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 %sphereMesh->macro file name:       ./macro/heine51c_5k.3d
 sphereMesh->global refinements:    0
@@ -15,7 +15,7 @@ sphere->solver: cg
 
 %heine5k 0.006
 %heine50k 0.005
-meshCorrector->h: 0.005
+meshCorrector->h: 0.01
 meshCorrector->nMax: 100000
 meshCorrector->outName: ./macro/heine51c_10k_k1.3d
 
