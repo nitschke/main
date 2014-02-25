@@ -119,15 +119,15 @@ int main(int argc, char* argv[])
   SimpleDEC *gaussCurv = new SimpleDEC(sphere.getFeSpace(3),sphere.getFeSpace(3) );
   sphere.addMatrixOperator(gaussCurv, 3, 3);
 
-  //GaussCurvatureDEC *rhs = new GaussCurvatureDEC(sphere.getFeSpace(3));
-  //sphere.addVectorOperator(rhs,3);
+  GaussCurvatureDEC *rhs = new GaussCurvatureDEC(sphere.getFeSpace(3));
+  sphere.addVectorOperator(rhs,3);
 
-  MinusAngleDEC *ma = new MinusAngleDEC(sphere.getFeSpace(3));
-  sphere.addVectorOperator(ma,3);
+  //MinusAngleDEC *ma = new MinusAngleDEC(sphere.getFeSpace(3));
+  //sphere.addVectorOperator(ma,3);
 
-  SimplePrimalDEC *tp = new SimplePrimalDEC(sphere.getFeSpace(3));
-  tp->setFactor(2.0*M_PI);
-  sphere.addVectorOperator(tp,3);
+  //SimplePrimalDEC *tp = new SimplePrimalDEC(sphere.getFeSpace(3));
+  //tp->setFactor(2.0*M_PI);
+  //sphere.addVectorOperator(tp,3);
 
 
   int oh = 4;
