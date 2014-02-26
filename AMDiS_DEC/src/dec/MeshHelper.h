@@ -40,7 +40,7 @@ public:
 
   ~MeshInfoCSVWriter() {out.close();}
 
-  void appendData(const FiniteElemSpace *feSpace);
+  void appendData(const FiniteElemSpace *feSpace, bool verbose = false);
 
 private:
   ofstream out;

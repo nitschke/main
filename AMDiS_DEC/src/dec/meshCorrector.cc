@@ -150,7 +150,7 @@ namespace AMDiS {
       infowriter.appendData(feSpace);
       if (i%nVerbose == 0) cout << i << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
       if (i%1 == 0) VtkVectorWriter::writeFile(F, string("output/ConForces_" + boost::lexical_cast<std::string>(i) + ".vtu"));
-      if (i%1000 == 0) {
+      if (i%100 == 0) {
         MacroWriter::writeMacro(new DataCollector<double>(feSpace), string("output/meshOut" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
       }
     }

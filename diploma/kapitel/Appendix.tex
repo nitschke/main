@@ -42,7 +42,8 @@
   \begin{align}
     \mathfrak{K} &= \frac{\nabla^{T}\varphi \cdot H^{*}[\varphi] \cdot \nabla\varphi}{ \|\nabla\varphi\|_{2}^{4}}
                  = - \frac{\det \begin{bmatrix} H[\varphi] & \nabla\varphi \\ \nabla^{T}\varphi & 0 \end{bmatrix}}{\|\nabla\varphi\|_{2}^{4}} \\
-    \mathfrak{H} &= \frac{\nabla^{T}\varphi \cdot H[\varphi] \cdot \nabla\varphi - \|\nabla\varphi\|_{2}^{2}\cdot\trace(H[\varphi])}
+    \mathfrak{H} &= \frac{1}{2}\nabla \cdot \frac{\nabla\varphi}{\|\nabla\varphi\|}
+          = \frac{\|\nabla\varphi\|_{2}^{2}\cdot\trace(H[\varphi]) - \nabla^{T}\varphi \cdot H[\varphi] \cdot \nabla\varphi }
                         {2\cdot\|\nabla\varphi\|_{2}^{3}}
   \end{align}
   wobei \( H^{*}[\varphi] \) die Adjunkte\footnote{nicht Adjungierte!} des Hessian \( H[\varphi] \) ist.
@@ -79,5 +80,6 @@
 
      \subsubsection{Krümmungsgrößen}
       \begin{align}
-        \mathfrak{K}(x,y,z) &= \frac{11664}{(81+972y^{2}-20z^{2})^{2}}
+        \mathfrak{K}(x,y,z) &= \frac{11664}{(81+972y^{2}-20z^{2})^{2}} \\
+        \mathfrak{H}(x,y,z) &= \frac{36 \left(45+54 y^2-10 z^2\right)}{\left(81+972 y^2-20 z^2\right)^{3/2}}
       \end{align}

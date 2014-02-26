@@ -261,7 +261,7 @@ DOFVector<double> getAverage(DOFVector<double> f) {
 
 
 
-void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace) {
+void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace, bool verbose) {
   DOFVector<double> one(feSpace,"jhsdfakf");
   one = 1.0;
   double volM = one.Int();
@@ -324,6 +324,18 @@ void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace) {
   out << "," << avRat;
   out << "," << maxRat << endl;
 
+  if (verbose) {
+    cout << "N................. " << n-1 << endl;
+    cout << "Av Diameter....... " << avDia << endl;
+    cout << "Max Diameter...... " << maxDia << endl;
+    cout << "Av Area........... " << avArea << endl;
+    cout << "Min Area.......... " << minArea << endl;
+    cout << "Max Area.......... " << maxArea << endl;
+    cout << "Av Angle.......... " << avAngle * 180.0 / M_PI << endl;
+    cout << "Max Angle......... " << maxAngle * 180.0 / M_PI  << endl;
+    cout << "Av Angle Ratio.... " << avRat << endl;
+    cout << "Max Angle Ratio... " << maxRat << endl;
+  }
 }
 
 }

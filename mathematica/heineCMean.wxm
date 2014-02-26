@@ -1,0 +1,19 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+grad: matrix([9*x],[36*y],[4*z]);
+H:matrix([9,0,0],[0,36,0],[0,0,4]);
+oben:transpose(grad).H.grad - transpose(grad).grad*(9+36+4);
+unten:2*sqrt(transpose(grad).grad*transpose(grad).grad*transpose(grad).grad);
+load ("lrats")$
+MCurv:fullratsimp(oben/unten);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+normgradphi:sqrt(81*x^2+1296*y^2+16*z^2);
+fullratsimp(-(1/(normgradphi^3))*(729*x^2+46656*y^2+64*z^2)+49/normgradphi+2*MCurv);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

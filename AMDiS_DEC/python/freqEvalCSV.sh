@@ -1,6 +1,9 @@
 while true
   do
     eval "python evalCSV.py &"
-    sleep $1
-    kill $!
+    pid=$!
+    while ps -p $pid > /dev/null
+    do
+      sleep 1
+    done
   done

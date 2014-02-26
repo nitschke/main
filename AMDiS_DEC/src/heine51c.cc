@@ -5,6 +5,7 @@
 #include "MeshHelper.h"
 #include "WorldVectorHelper.h"
 #include "MatrixHelper.h"
+#include "DOFVHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -68,6 +69,38 @@ private:
   int i;
   
 };
+
+class GC : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  GC() : AbstractFunction<double, WorldVector<double> >(1) {}
+
+  double operator()(const WorldVector<double>& coord) const 
+  {
+    double x = coord[0];
+    double y = coord[1];
+    double z = coord[2];
+    double c = 81.0 + 972.0*y*y - 20.0*z*z;
+    return 11664.0 / (c * c);
+  }
+};
+
+class MC : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  MC() : AbstractFunction<double, WorldVector<double> >(1) {}
+
+  double operator()(const WorldVector<double>& coord) const 
+  {
+    double x = coord[0];
+    double y = coord[1];
+    double z = coord[2];
+    double c = sqrt(81.0 + 972.0*y*y - 20.0*z*z);
+    return 36.0 * (45.0 + 54.0 * y*y - 10.0 * z * z) / (c * c * c);
+  }
+};
+
+
 
 
 // ===========================================================================
@@ -164,8 +197,20 @@ int main(int argc, char* argv[])
   DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
   VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
 
-  DOFVector<double> avK = getAverage(getAverage(*(sphere.getSolution(3))));
-  VtkVectorWriter::writeFile(avK, string("output/GaussCurvAverage.vtu"));
+  //DOFVector<double> avK = getAverage(getAverage(*(sphere.getSolution(3))));
+  //VtkVectorWriter::writeFile(avK, string("output/GaussCurvAverage.vtu"));
+
+  DOFVector<double> gcBonnet = *(sphere.getSolution(3));
+
+  DOFVector<double> gcDOFV(sphere.getFeSpace(),"GaussCurvExact");
+  gcDOFV.interpol(new GC());
+  DOFVector<double> mcDOFV(sphere.getFeSpace(),"MeanCurvExact");
+  mcDOFV.interpol(new MC());
+
+  printError(gcBonnet, gcDOFV, "GaussBonnet");
+
+  MeshInfoCSVWriter mwriter("/dev/null/fickDieHenne.csv");
+  mwriter.appendData(sphere.getFeSpace(),true);
 
   sphere.writeFiles(adaptInfo, true);
 
