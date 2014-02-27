@@ -29,5 +29,6 @@ for i in arange(n):
 #semilogx([1,last],[90,90],'k'+lineStyles[i+1],label="wellcentered", linewidth=lw)
 #plot([0,last],[90,90],"--",label="wellcentered")
 
+grid(True)
 legend()
 show()

@@ -200,16 +200,24 @@ int main(int argc, char* argv[])
   //DOFVector<double> avK = getAverage(getAverage(*(sphere.getSolution(3))));
   //VtkVectorWriter::writeFile(avK, string("output/GaussCurvAverage.vtu"));
 
-  DOFVector<double> gcBonnet = *(sphere.getSolution(3));
-
   DOFVector<double> gcDOFV(sphere.getFeSpace(),"GaussCurvExact");
   gcDOFV.interpol(new GC());
   DOFVector<double> mcDOFV(sphere.getFeSpace(),"MeanCurvExact");
   mcDOFV.interpol(new MC());
 
+  DOFVector<double> gcBonnet = *(sphere.getSolution(3));
   printError(gcBonnet, gcDOFV, "GaussBonnet");
 
-  MeshInfoCSVWriter mwriter("/dev/null/fickDieHenne.csv");
+  DOFVector<double> gcWeingarten = prod01(eigDofVector);
+  printError(gcWeingarten, gcDOFV, "GaussWeingarten");
+
+  DOFVector<double> mcMagY = halfMag(*(sphere.getSolution(0)), *(sphere.getSolution(1)), *(sphere.getSolution(2)));
+  printError(mcMagY, mcDOFV, "MeanMagY");
+
+  DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
+  printError(mcWeingarten, mcDOFV, "MeanWeingarten");
+
+  MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
   mwriter.appendData(sphere.getFeSpace(),true);
 
   sphere.writeFiles(adaptInfo, true);
