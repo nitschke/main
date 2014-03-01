@@ -27,11 +27,23 @@ DOFVector<WorldVector<double> > getEigenVals(WorldMatrix< DOFVector<double> * > 
       }
     }
 
+    // TODO: algo with eps-truncation (e.g. new mtl version)
     dVec eigs = mtl::matrix::qr_algo(mat, 200);
 
+    // one phase bubblesort for absvals to take the 
+    // expected 0-eigenval to eigs[2]
+    // TODO: is this necessary? order of qr_algo rval?
+    for (int i = 0; i < 2; i++) {
+      if (abs(eigs[i]) < abs(eigs[i+1])) {
+        double tmp = eigs[i];
+        eigs[i] = eigs[i+1];
+        eigs[i+1] = tmp;
+      }
+    }
     for (int i = 0; i < 3; i++) {
       (*rIter)[i] = eigs[i];
     }
+    
     
     rIter++;
     for (int i = 0; i < 3; i++) {
