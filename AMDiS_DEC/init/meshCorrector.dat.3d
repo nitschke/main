@@ -1,7 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/sphereDivBy4.3d
-sphereMesh->macro file name:       ./macro/sphereIko250k.3d
+sphereMesh->macro file name:        ./macro/heine51c_250k_improved_incompleteAt5500.3d
 %sphereMesh->macro file name:       ./output/meshOut5600.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 %sphereMesh->macro file name:       ./macro/heine51c_5k.3d

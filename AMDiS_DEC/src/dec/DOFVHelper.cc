@@ -4,7 +4,7 @@ namespace AMDiS {
 
   DOFVector<double> minus(const DOFVector<double>& x, const DOFVector<double>& y)
   {
-    FUNCNAME_DBG("DOFVector<double>::minus(const DOFVector<double>& x, const DOFVector<double>& y)");
+    FUNCNAME("DOFVector<double>::minus(const DOFVector<double>& x, const DOFVector<double>& y)");
 
     DOFVector<double>::Iterator xIterator(const_cast<DOFVector<double>*>(&x), USED_DOFS);
     DOFVector<double>::Iterator yIterator(const_cast<DOFVector<double>*>(&y), USED_DOFS);
@@ -22,7 +22,7 @@ namespace AMDiS {
 
   DOFVector<double> halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z)
   {
-    FUNCNAME_DBG("DOFVector<double>::halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z)");
+    FUNCNAME("DOFVector<double>::halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z)");
 
     DOFVector<double>::Iterator xIterator(const_cast<DOFVector<double>*>(&x), USED_DOFS);
     DOFVector<double>::Iterator yIterator(const_cast<DOFVector<double>*>(&y), USED_DOFS);
@@ -42,7 +42,7 @@ namespace AMDiS {
 
   DOFVector<double> prod01(const DOFVector<WorldVector<double> >& v)
   {
-    FUNCNAME_DBG("DOFVector<double>::prod01(const DOFVector<WorldVector<double> >& v");
+    FUNCNAME("DOFVector<double>::prod01(const DOFVector<WorldVector<double> >& v");
 
     DOFVector<WorldVector<double> >::Iterator vIterator(const_cast<DOFVector<WorldVector<double> >*>(&v), USED_DOFS);
 
@@ -59,7 +59,7 @@ namespace AMDiS {
 
   DOFVector<double> halfSum01(const DOFVector<WorldVector<double> >& v)
   {
-    FUNCNAME_DBG("DOFVector<double>::halfSum(const DOFVector<WorldVector<double> >& v");
+    FUNCNAME("DOFVector<double>::halfSum(const DOFVector<WorldVector<double> >& v");
 
     DOFVector<WorldVector<double> >::Iterator vIterator(const_cast<DOFVector<WorldVector<double> >*>(&v), USED_DOFS);
 
