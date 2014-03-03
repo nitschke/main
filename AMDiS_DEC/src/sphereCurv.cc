@@ -1,5 +1,7 @@
 #include "AMDiS.h"
 #include "decOperator.h"
+#include "MatrixHelper.h"
+#include "DOFVHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -21,6 +23,30 @@ public:
 protected:
   int i;
 };
+
+
+class GC : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  GC() : AbstractFunction<double, WorldVector<double> >(1) {}
+
+  double operator()(const WorldVector<double>& coord) const 
+  {
+    return 1.0;
+  }
+};
+
+class MC : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  MC() : AbstractFunction<double, WorldVector<double> >(1) {}
+
+  double operator()(const WorldVector<double>& coord) const 
+  {
+    return 1.0;
+  }
+};
+
 
 // ===========================================================================
 // ===== main program ========================================================
@@ -51,26 +77,84 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
   
-  SimpleDEC *gaussCurv = new SimpleDEC(sphere.getFeSpace(0),sphere.getFeSpace(0) );
-  sphere.addMatrixOperator(gaussCurv, 0, 0);
+  for (int i = 0; i < 3; i++) {
+    // ===== create matrix operator =====
+    sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i), sphere.getFeSpace(i)), i, i);
+    // ===== create rhs operator =====
+    sphere.addVectorOperator(new LBeltramiInteriorFunctionDEC(new X(i), sphere.getFeSpace(i)), i);
+  }
+  
+  // GaussCurv: geometric operator
+  SimpleDEC *gaussCurv = new SimpleDEC(sphere.getFeSpace(3),sphere.getFeSpace(3) );
+  sphere.addMatrixOperator(gaussCurv, 3, 3);
 
-  GaussCurvatureDEC *rhs = new GaussCurvatureDEC(sphere.getFeSpace(0));
-  sphere.addVectorOperator(rhs,0);
+  GaussCurvatureDEC *rhs = new GaussCurvatureDEC(sphere.getFeSpace(3));
+  sphere.addVectorOperator(rhs,3);
 
-  //SimplePrimalDEC *twoPi = new SimplePrimalDEC(sphere.getFeSpace(0));
-  //twoPi->setFactor(M_PI / 3.0);
-  //sphere.addVectorOperator(twoPi,0);
+  //MinusAngleDEC *ma = new MinusAngleDEC(sphere.getFeSpace(3));
+  //sphere.addVectorOperator(ma,3);
+
+  //SimplePrimalDEC *tp = new SimplePrimalDEC(sphere.getFeSpace(3));
+  //tp->setFactor(2.0*M_PI);
+  //sphere.addVectorOperator(tp,3);
+
+
+  int oh = 4;
+  for (int i = 0; i < 3; i++) {
+    // N
+    sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
+    sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
+    for (int j = 0; j < 3; j++) {
+       int pos = matIndex(i,j) + oh + 3;
+       // -II_ij
+       SimpleDEC *II = new SimpleDEC(sphere.getFeSpace(pos), sphere.getFeSpace(pos));
+       II->setFactor(-1.0);
+       sphere.addMatrixOperator(II, pos, pos);
+       // [d(N_j)]_i
+       //PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
+       //sphere.addMatrixOperator(dN, pos, j+oh);
+       PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new X(j), sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
+       dN->setFactor(-1.0);
+       sphere.addVectorOperator(dN, pos);
+    }
+  }
+  
 
   // ===== start adaption loop =====
   adapt->adapt();
 
+  WorldMatrix<DOFVector<double> * > IIDV;
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      IIDV[i][j] = sphere.getSolution(matIndex(i,j) + oh + 3);
+    }
+  }
 
-  //sphere.getRhsVector()->print();
+  DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
+  VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
 
-  //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
-  //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
-  //sphere.getSystemMatrix(0,0)->calculateNnz();
-  //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;
+  //DOFVector<double> avK = getAverage(getAverage(*(sphere.getSolution(3))));
+  //VtkVectorWriter::writeFile(avK, string("output/GaussCurvAverage.vtu"));
+
+  DOFVector<double> gcDOFV(sphere.getFeSpace(),"GaussCurvExact");
+  gcDOFV.interpol(new GC());
+  DOFVector<double> mcDOFV(sphere.getFeSpace(),"MeanCurvExact");
+  mcDOFV.interpol(new MC());
+
+  DOFVector<double> gcBonnet = *(sphere.getSolution(3));
+  printError(gcBonnet, gcDOFV, "GaussBonnet");
+
+  DOFVector<double> gcWeingarten = prod01(eigDofVector);
+  printError(gcWeingarten, gcDOFV, "GaussWeingarten");
+
+  DOFVector<double> mcMagY = halfMag(*(sphere.getSolution(0)), *(sphere.getSolution(1)), *(sphere.getSolution(2)));
+  printError(mcMagY, mcDOFV, "MeanMagY");
+
+  DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
+  printError(mcWeingarten, mcDOFV, "MeanWeingarten");
+
+  MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
+  mwriter.appendData(sphere.getFeSpace(),true);
 
   sphere.writeFiles(adaptInfo, true);
 
