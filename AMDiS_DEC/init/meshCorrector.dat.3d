@@ -1,8 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/sphereDivBy4.3d
-sphereMesh->macro file name:        ./macro/heine51c_250k_improved_incompleteAt11300.3d
-%sphereMesh->macro file name:       ./output/meshOut5600.3d
+sphereMesh->macro file name:        ./macro/sphereIko10k.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 %sphereMesh->macro file name:       ./macro/heine51c_5k.3d
 sphereMesh->global refinements:    0
@@ -16,8 +15,8 @@ sphere->solver: cg
 
 %heine50k 0.005
 %meshCorrector->h: 0.005
-meshCorrector->h: 0.002
-meshCorrector->nMax: 10000 %100000
+meshCorrector->h: 0.008
+meshCorrector->nMax: 100000 %100000
 meshCorrector->outName: ./macro/heine51c_10k_k1.3d
 
 edgeForces->k: 1.0   % in [0,1] % hold k times average edge length in length preserving

@@ -1,8 +1,6 @@
 #include "AMDiS.h"
 #include "decOperator.h"
 #include "phiProjection.h"
-#include "meshCorrector.h"
-#include "MeshHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -10,34 +8,41 @@ using namespace AMDiS;
 // ===========================================================================
 // ===== function definitions ================================================
 // ===========================================================================
+class GaussCurv : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  GaussCurv() : AbstractFunction<double, WorldVector<double> >(1) {}
 
-//// Heine 5.1(c)
-//class Phi : public AbstractFunction<double, WorldVector<double> >
-//{
-//public:
-//  Phi() : AbstractFunction<double, WorldVector<double> >(1) {}
-//
-//  double operator()(const WorldVector<double>& x) const 
-//  {
-//    return 0.5 * (x[0]*x[0] + 4.0*x[1]*x[1] + (4.0/9.0)*x[2]*x[2] - 1.0);
-//  }
-//};
-//
-//class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
-//{
-//public:
-//  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >(1) {}
-//
-//  WorldVector<double> operator()(const WorldVector<double>& x) const 
-//  {
-//    WorldVector<double> rval(x);
-//    rval[1] *= 4.0;
-//    rval[2] *= 4.0/9.0;
-//    return rval;
-//  }
-//};
+  double operator()(const WorldVector<double>& xx) const 
+  {
+    double x = xx[0];
+    double y = xx[1];
+    double z = xx[2];
+    double x2 = x*x;
+    double y2 = y*y;
+    double z2 = z*z;
+    double tmp = 1.0 - 4.0*(-2.0 + x + x2 + y - 2.0*x*y + y2) * z2;
+    return -(1.0 + 2.0*x - 2.0*x2 + 2.0*y - 2.0*y2 + 2.0*(-3.0 + x + y) * z2 ) / (tmp*tmp);
+  }
+};
 
-// Heine 5.1(b)
+
+
+
+class X : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  X(int i_) : AbstractFunction<double, WorldVector<double> >(1), i(i_) {}
+
+  double operator()(const WorldVector<double>& x) const 
+  {
+    return x[i];
+  }
+
+protected:
+  int i;
+};
+
 class Phi : public AbstractFunction<double, WorldVector<double> >
 {
 public:
@@ -68,7 +73,6 @@ public:
   }
 };
 
-
 // ===========================================================================
 // ===== main program ========================================================
 // ===========================================================================
@@ -80,15 +84,12 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
-  //WorldVector<double> ballCenter;
-  //ballCenter.set(0.0);
-  //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
-  
+  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6, 100);
 
   // ===== create and init the scalar problem ===== 
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
+
 
 
   // === create adapt info ===
@@ -99,25 +100,25 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
   
-  double h;
-  Parameters::get("meshCorrector->h", h);
-  int nMax;
-  Parameters::get("meshCorrector->nMax", nMax);
+  SimpleDEC *gaussCurv = new SimpleDEC(sphere.getFeSpace(0),sphere.getFeSpace(0) );
+  sphere.addMatrixOperator(gaussCurv, 0, 0);
 
-  MeshCorrector mc(sphere.getFeSpace());
-  mc.iterate(nMax, h);
-
+  GaussCurvatureDEC *rhs = new GaussCurvatureDEC(sphere.getFeSpace(0));
+  sphere.addVectorOperator(rhs,0);
 
   // ===== start adaption loop =====
   adapt->adapt();
 
+  DOFVector<double> *gaussCurvDV = new DOFVector<double>(sphere.getFeSpace(),"gaussCurv");
+  GaussCurv *gc = new GaussCurv();
+  WorldVector<double> xtest;
+  xtest = 0.0;
+  xtest[1] = -1.0;
+  cout << (*gc)(xtest) << endl;
+  gaussCurvDV->interpol(gc);
+  VtkVectorWriter::writeFile(gaussCurvDV, "output/gaussCurv.vtu");
 
-  string meshOut;
-  Parameters::get("meshCorrector->outName", meshOut);
-  //MacroWriter::writeMacro(new DataCollector<double>(sphere.getFeSpace()), meshOut.c_str());
-  //DOFVector<double> *phi = new DOFVector<double>(sphere.getFeSpace(),"phi");
-  //phi->interpol(new Phi());
-  //VtkVectorWriter::writeFile(phi, meshOut + string("_phi.vtu"));
+  sphere.writeFiles(adaptInfo, true);
 
   AMDiS::finalize();
 }

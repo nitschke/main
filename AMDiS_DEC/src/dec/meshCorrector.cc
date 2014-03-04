@@ -133,6 +133,7 @@ namespace AMDiS {
       double tmp = (fOld - fNew) / fOld;
       minusCounter = (tmp < 0) ? (minusCounter+1) : 0;
       if (minusCounter > 5) {
+        return;
         hh *= 0.8;
         minusCounter = 0;
       }
