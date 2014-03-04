@@ -6,8 +6,8 @@ lineStyles = ['-','--', '-.', ':']
 lw = 3;
 
 #name = ["MaxAngleRatio", "AvAngleRatio"]
-#name = ["MaxDiameter", "AvDiameter"]
-name = ["MaxMaxAngle", "AvMaxAngle"]
+name = ["MaxDiameter", "AvDiameter"]
+#name = ["MaxMaxAngle", "AvMaxAngle"]
 #name = ["AvArea", "MinArea","MaxArea"]
 n = len(name)
 last = 10000
@@ -23,8 +23,8 @@ with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
 
 
 for i in arange(n):
-  semilogx(x[i], 'k'+lineStyles[i], label=name[i], linewidth=lw)
-  #plot(x[i], label=name[i])
+  #semilogx(x[i], 'k'+lineStyles[i], label=name[i], linewidth=lw)
+  plot(x[i], label=name[i])
 
 #semilogx([1,last],[90,90],'k'+lineStyles[i+1],label="wellcentered", linewidth=lw)
 #plot([0,last],[90,90],"--",label="wellcentered")
