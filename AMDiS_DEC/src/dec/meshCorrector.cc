@@ -132,7 +132,8 @@ namespace AMDiS {
       //hh *= 4.0 * fOld / (fNew + 3.0*fOld);
       double tmp = (fOld - fNew) / fOld;
       minusCounter = (tmp < 0) ? (minusCounter+1) : 0;
-      if (minusCounter > 5) {
+      if (minusCounter > 500) {
+        VtkVectorWriter::writeFile(F, string("output/ConForces_EndAt_" + boost::lexical_cast<std::string>(i) + ".vtu"));
         return;
         hh *= 0.8;
         minusCounter = 0;
