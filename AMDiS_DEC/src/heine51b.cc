@@ -85,12 +85,17 @@ public:
     double x = coord[0];
     double y = coord[1];
     double z = coord[2];
-    double c = 81.0 + 972.0*y*y - 20.0*z*z;
-    return 11664.0 / (c * c);
+    //double c = 81.0 + 972.0*y*y - 20.0*z*z;
+    //return 11664.0 / (c * c);
+    double x2 = x*x;
+    double y2 = y*y;
+    double z2 = z*z;
+    double oben = 1.0 + 2.0*x - 2.0*x2 + 2.0*y - 2.0*y2 + 2.0*(-3.0 + x + y)*z2;
+    double sqUnten = 1.0 - 4.0*(-2.0 + x + x2 + y - 2.0*x*y + y2)*z2;
+    return  - oben / (sqUnten*sqUnten);
   }
 };
 
-//TODO:
 class MC : public AbstractFunction<double, WorldVector<double> >
 {
 public:
@@ -101,8 +106,12 @@ public:
     double x = coord[0];
     double y = coord[1];
     double z = coord[2];
-    double c = sqrt(81.0 + 972.0*y*y - 20.0*z*z);
-    return 36.0 * (45.0 + 54.0 * y*y - 10.0 * z * z) / (c * c * c);
+    double x2 = x*x;
+    double y2 = y*y;
+    double z2 = z*z;
+    double oben = x - x2 + y - y2 + (-7.0 + 3.0*x + 3.0*y)*z2;
+    double unten23 = 1.0 - 4.0*(-2.0 + x + x2 + y - 2.0*x*y + y2)*z2;
+    return - oben / sqrt(unten23*unten23*unten23);
   }
 };
 
@@ -208,8 +217,11 @@ int main(int argc, char* argv[])
 
   DOFVector<double> gcDOFV(sphere.getFeSpace(),"GaussCurvExact");
   gcDOFV.interpol(new GC());
+  VtkVectorWriter::writeFile(gcDOFV, string("output/gaussExact.vtu"));
+
   DOFVector<double> mcDOFV(sphere.getFeSpace(),"MeanCurvExact");
   mcDOFV.interpol(new MC());
+  VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
 
   DOFVector<double> gcBonnet = *(sphere.getSolution(3));
   printError(gcBonnet, gcDOFV, "GaussBonnet");
