@@ -16,7 +16,7 @@ sphere->solver: cg
 %heine50k 0.005
 %meshCorrector->h: 0.005
 %meshCorrector->h: 0.008
-meshCorrector->h: 0.01
+meshCorrector->h: 0.009
 
 meshCorrector->nMax: 100000 %100000
 meshCorrector->outName: ./macro/heine51c_10k_k1.3d
