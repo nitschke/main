@@ -21,7 +21,7 @@ meshCorrector->h: 0.009
 meshCorrector->nMax: 100000 %100000
 meshCorrector->outName: ./macro/heine51c_10k_k1.3d
 
-edgeForces->k: 1.0   % in [0,1] % hold k times average edge length in length preserving
+edgeForces->k: 0.7   % in [0,1] % hold k times average edge length in length preserving
 edgeForces->c: 0.7   % in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
 
 
