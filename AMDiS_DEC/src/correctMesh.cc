@@ -1,6 +1,7 @@
 #include "AMDiS.h"
 #include "decOperator.h"
 #include "phiProjection.h"
+#include "torusProjection.h"
 #include "meshCorrector.h"
 #include "MeshHelper.h"
 
@@ -80,7 +81,8 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  //new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  new TorusProject(1, VOLUME_PROJECTION);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);
   //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
