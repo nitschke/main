@@ -1,6 +1,6 @@
 dimension of world:      3
 
-torusMesh->macro file name:       ./macro/torus27k.3d
+torusMesh->macro file name:       ./macro/torus1k.3d
 torusMesh->global refinements:    0
 torusMesh->check:                 0
 

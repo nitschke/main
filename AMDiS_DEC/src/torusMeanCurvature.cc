@@ -1,6 +1,9 @@
 #include "AMDiS.h"
 #include "decOperator.h"
 #include "MatrixHelper.h"
+#include "MeshHelper.h"
+#include "WorldVectorHelper.h"
+#include "DOFVHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -9,10 +12,10 @@ using namespace AMDiS;
 // ===== function definitions ================================================
 // ===========================================================================
 
-class MeanCurv : public AbstractFunction<double, WorldVector<double> >
+class MC : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  MeanCurv() : AbstractFunction<double, WorldVector<double> >(1) {}
+  MC() : AbstractFunction<double, WorldVector<double> >(1) {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
@@ -26,10 +29,10 @@ public:
   }
 };
 
-class GaussCurv : public AbstractFunction<double, WorldVector<double> >
+class GC : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  GaussCurv() : AbstractFunction<double, WorldVector<double> >(1) {}
+  GC() : AbstractFunction<double, WorldVector<double> >(1) {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x) const 
@@ -164,13 +167,28 @@ int main(int argc, char* argv[])
   DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
   VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
 
-  DOFVector<double> meanCurvDofVector(torus.getFeSpace(0),"meanCurvature");
-  meanCurvDofVector.interpol(new MeanCurv());
-  VtkVectorWriter::writeFile(meanCurvDofVector, string("output/torusMeanCurvature.vtu"));
+  DOFVector<double> gcDOFV(torus.getFeSpace(),"GaussCurvExact");
+  gcDOFV.interpol(new GC());
+  VtkVectorWriter::writeFile(gcDOFV, string("output/gaussExact.vtu"));
 
-  DOFVector<double> gaussCurvDofVector(torus.getFeSpace(3),"gaussCurvature");
-  gaussCurvDofVector.interpol(new GaussCurv());
-  VtkVectorWriter::writeFile(gaussCurvDofVector, string("output/torusGaussCurvature.vtu"));
+  DOFVector<double> mcDOFV(torus.getFeSpace(),"MeanCurvExact");
+  mcDOFV.interpol(new MC());
+  VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
+
+  DOFVector<double> gcBonnet = *(torus.getSolution(3));
+  printError(gcBonnet, gcDOFV, "GaussBonnet");
+
+  DOFVector<double> gcWeingarten = prod01(eigDofVector);
+  printError(gcWeingarten, gcDOFV, "GaussWeingarten");
+
+  DOFVector<double> mcMagY = halfMag(*(torus.getSolution(0)), *(torus.getSolution(1)), *(torus.getSolution(2)));
+  printError(mcMagY, mcDOFV, "MeanMagY");
+
+  DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
+  printError(mcWeingarten, mcDOFV, "MeanWeingarten");
+
+  MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
+  mwriter.appendData(torus.getFeSpace(),true);
 
   torus.writeFiles(adaptInfo, true);
 
