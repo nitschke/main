@@ -3,7 +3,21 @@
 \chapter{Diskrete Mannigfaltigkeit}
 
 \section{Primal- und Dualkomplex}
-  blub
+  
+  \begin{ziel}
+    Bei vielen numerischen Methoden werden Gebiete über überabzählbaren Mengen auf denen Gleichungen "`leben"' diskretisiert.
+    Ziel dabei ist es endlich viele Gleichungen zuerzeugen, die das ursprüngliche Problem approximativ lösen.
+    Ein Beispiel für solch ein Vorgehen ist die FDM (Finite-Differenzen-Methode) im \( \R^{n} \).
+    Dort wird ein Gebiet \( U\subseteq\R^{n} \) mit endlich vielen Rechtecken diskretisiert 
+    und es wird versucht eine Funktion zu finden, die jedem Knoten einen Wert zuweist und damit endlichdimensional beschrieben ist, so dass diese
+    diskrete Funktion eine stetige Funktion auf \( U \) approximiert. 
+
+    Das funktioniert beim DEC ähnlich. Die Objekte die es hier zu approximieren gilt sind allerdings Differentialformen und das Gebiet eine
+    Mannigfaltigkeit welche durch Polyeder diskretsiert wird. Die diskreten Differentialformen sind dann auf den Knoten, Kanten, Flächen usw.
+    definiert. Wir werden uns hierbei auf Simplizes als spezielle Polyeder beschränken und die Menge der Simplizes so charakterisieren, dass wir
+    eine algebraische Topologie bekommen. Somit wird eine algebraische Struktur erzeugt wird, die es einem ermöglicht in dieser Topologie
+    "`sinnvoll zu rechnen"'.
+  \end{ziel}
 
 \section{Gittergenerierung für Oberflächen}
 
