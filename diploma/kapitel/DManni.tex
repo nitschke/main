@@ -33,6 +33,7 @@
     Diese wollen wir hier erst einmal geometrisch als Teilmenge des \( \R^{N} \) einführen.
 
     \begin{definition}
+      \label{defSimplex}
       Ein \( p \)-Simplex ist die konvexe Hülle von \( p+1 \) geometrisch unabhängigen Punkten im \( \R^{N} \), d.h.
       \begin{align}
         \sigma^{p} &:= \left\{  x \in \R^{N} \middle| x = \sum_{i=0}^{p}\mu^{i}v_{i} \text{ wobei } \mu^{i} \ge 0  \text{ und } \sum_{i=0}^{p}\mu^{i} = 1 \right\}
@@ -44,7 +45,27 @@
     \todo{noch bezeichnungen vergessen?}
     Des Weiteren schreiben wir auch kurz \( \sigma^{p} = v_{0} v_{1} \ldots v_{p} \) und sagen 
     "`Das Simplex \( \sigma^{p} \) wird von den Ecken \( \{ v_{0}, v_{1}, \ldots, v_{p}\} \) aufgespannt."'.
-    
+
+    \begin{bemerkung}
+      Die obige Defintion eines Simplexes, hier als \( \sigma_{\text{geo}} \) geschrieben, nennt man auch geometrische Realisierung eines Simplexes.
+      Denn es ist auch möglich ein Simplex als Abbildung vom Standard-Simplex 
+        \begin{align} 
+          \Delta^{p} &:= \left\{\left( \mu^{0},\mu^{1},\ldots,\mu^{p} \right) \middle| \mu^{i} \ge 0  \text{ und } \sum_{i=0}^{p}\mu^{i} = 1 \right\} \subset
+        \R^{p+1} 
+        \end{align}
+      in einen Topologischen Raum zu definieren, im obigen Fall in den \( \R^{N} \). 
+      Mit Hilfe der Ecken \( v_{i}\in\R^{N} \) können wir die Abbildung festlegen durch
+      \begin{align}
+        \sigma_{\text{sing}} = \sigma^{p}_{\text{sing}} : \Delta^{p} &\rightarrow \R^{N}
+                        : \left( \mu^{0},\mu^{1},\ldots,\mu^{p} \right)\mapsto \sum_{i=0}^{p}\mu^{i}v_{i}
+      \end{align}
+      so dass \( \sigma_{\text{sing}}(\Delta^{p}) = \sigma^{p}_{\text{geo}} \).
+      Das Simplex \(\sigma_{\text{sing}}\) heißt singuläres \( p \)-Simplex (vgl. \cite{lueck}).
+    \end{bemerkung}
+
+    Von nun an ist mit einem Simplex \( \sigma \) immer die geometrische Realisierung nach Definition \ref{defSimplex} gemeint solange nicht explizit auf
+    etwas anderes hingewiesen wird.
+
     \begin{definition}
       Für \( 0 \le r < p \) definert sich eine Relation zwischen dem \( r- \)Simplex \(\sigma^{r}\) und dem \( p- \)Simplex \( \sigma^{p}:= v_{0} v_{1} \ldots v_{p} \) durch
       \begin{align}
@@ -57,16 +78,53 @@
     Damit bildet \( \prec \) beziehungsweise \( \succ \) eine strikte Ordnung auf der Menge aller (endlichen) Simplizes.
     
     \begin{definition}
-      Ein Simplizialkomplex \( K \) über \( \R^{n} \) ist eine Menge von Simplizes, so dass
+      Ein Simplizialkomplex \( K \) über \( \R^{N} \) ist eine Menge von Simplizes mit folgenden zwei Regeln
       \begin{itemize}
         \item Jede Facette eines Simplexes aus \( K \) ist ebenfalls aus \( K \).
-        \item Der Schnitt zweier Simplizes aus \( K \) ist entweder eine Facette von einem der beiden oder leer.
+        \item Der Schnitt zweier Simplizes aus \( K \) ist entweder eine Facette von beiden oder leer.
       \end{itemize}
       
       \( \text{dim}(K) := \max\left\{ p \in \mathds{N} \middle| \sigma^{p} \in K \right\} \)
       heißt die Dimension von \( K \).
     \end{definition}
+
+    Im Folgendem ist ein Simplizialkomplex immer endlich, das heißt es besteht nur aus einer endlichen Menge von Simplizes.
+
+    \begin{definition}
+      Die Vereinigung aller Simplizes eines Simplizialkomplexes über \( \R^{N} \), das heißt
+      \begin{align}
+        |K| := \bigcup_{\sigma \in K} \sigma \subset \R^{N} \text{,}
+      \end{align}
+      ist der zugrundeliegender (topologischer) Raum oder auch Polytop.
+      Die Topologie von \( |K| \) ist dann gerade die induzierte Teilraum Topologie des \( \R^{N} \).
+      \todo{evtl. wenn nötig auf die besonderheit dass ecken keine offenen mengen sind hinweisen}
+    \end{definition}
     
+    Meißtens sieht es aber so aus, dass wir ein Raum haben und ein Simplizialkomplex suchen der diesen beschriebt.
+    Dieses führt uns zu folgender Definition.
+
+    \begin{definition}
+      Ein Simplizialkomplex \( L \) heißt (simpliziale) Triangulation von \( V \subset \R^{N} \), wenn \( |L| = V \) gilt.
+      Existiert eine Triangulation von \( V \), dann heißt \( V \) triangulierbar.
+    \end{definition}
+
+    Bisher beschreibt solch ein Simplizialkomplex noch alle möglichen Teilräume des \( \R^{N} \). 
+    Wir wollen deshalb die Menge der Simplizialkomplexe etwas einschränken, um uns langsam der Beschreibung von (Hyper-)Oberflächen zu nähern.
+
+    \begin{definition}
+      Ein Simplizialkomplex \( K \) heißt mannigfaltigartig, wenn das Polytop \( |K| \) eine \( C^{0} \)-Mannigfaltigkeit ist.
+    \end{definition}
+
+    Für 
+    Da wir uns später mit den Spezialfall von Oberflächen im \( \R^{3} \) beschäftigen möchten, seien hier schon mal ein paar Bemerkungen dazu.
+    
+    \begin{bemerkung}
+      Sei \( K \) ein mannigfaltigartiger Simplizialkomplex im \( \R^{3} \) mit dim(\( K \)) = 2.
+      \begin{itemize}
+        \item Falls \( |K| \) nicht flach ist, dann ist \( |K| \) global nicht differenzierbar.
+        \item Falls \( |K| \) zudem eine geschlossene Mannigfaltigkeit ist, dann ist \( |K| \) ein Polyeder.
+      \end{itemize}
+    \end{bemerkung}
 
 \section{Gittergenerierung für Oberflächen}
 
