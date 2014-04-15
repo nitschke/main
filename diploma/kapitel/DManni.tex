@@ -13,11 +13,60 @@
     diskrete Funktion eine stetige Funktion auf \( U \) approximiert. 
 
     Das funktioniert beim DEC ähnlich. Die Objekte die es hier zu approximieren gilt sind allerdings Differentialformen und das Gebiet eine
-    Mannigfaltigkeit welche durch Polyeder diskretsiert wird. Die diskreten Differentialformen sind dann auf den Knoten, Kanten, Flächen usw.
+    Mannigfaltigkeit welche durch Polyeder diskretsiert wird. Die diskreten Differentialformen sind dann auf den Knoten, Kanten, Flächen usw. als Integralwerte
     definiert. Wir werden uns hierbei auf Simplizes als spezielle Polyeder beschränken und die Menge der Simplizes so charakterisieren, dass wir
-    eine algebraische Topologie bekommen. Somit wird eine algebraische Struktur erzeugt wird, die es einem ermöglicht in dieser Topologie
+    eine algebraische Topologie bekommen. Somit wird eine algebraische Struktur erzeugt, die es einem ermöglicht in dieser Topologie
     "`sinnvoll zu rechnen"'.
+    Das heißt der große Unterschied zu anderen numerischen Verfahren ist, dass wir nicht auf einem Gitter sondern mit einem Gitter rechnen wollen.
+    Aus diesem Grund müssen Anforderungen an die diskrete Struktur gestellt werden, die bestimmte Eigenschaften der Differentialformen auch wieder spiegeln.
+    So bilden die Differentialformen auf einer Mannigfaltigkeit zusammen mit der äußeren Ableitung einen Kokettenkomplex den de-Rham-Kokomplex und mit ihm die de-Rham-Kohomologiegruppen.
+    Kohomologiegruppen lassen sich mit Hilfe des Randoperators auch erzeugen, deshalb scheinen die Simplizialkomplexe als Triangulierung einer Mannigfaltigkeit ein geeigneter Kanditat für
+    eine Gitterstruktur zu sein.
+    Und das magische daran ist, wie wir später noch in Kapitel \ref{chapterDEC} sehen werden, dass es mit den Satz von de Rham einen Isomorphismus zwischen den de-Rham- und den simplizialen
+    Kohomologiegruppen existiert und auch praktisch anwendbar ist. \todo{konkreter prüfen, zwecks singularität}
+    \todo{algebraische Topologie von Lück als Quelle? auch für die basics.}
   \end{ziel}
+
+  \subsection{Simplizialkomplex}
+    
+    Die Elemente des noch zu definierenden Simplizialkomplexes sind die Simplizes.
+    Diese wollen wir hier erst einmal geometrisch als Teilmenge des \( \R^{N} \) einführen.
+
+    \begin{definition}
+      Ein \( p \)-Simplex ist die konvexe Hülle von \( p+1 \) geometrisch unabhängigen Punkten im \( \R^{N} \), d.h.
+      \begin{align}
+        \sigma^{p} &:= \left\{  x \in \R^{N} \middle| x = \sum_{i=0}^{p}\mu^{i}v_{i} \text{ wobei } \mu^{i} \ge 0  \text{ und } \sum_{i=0}^{p}\mu^{i} = 1 \right\}
+      \end{align}
+    \end{definition}
+    
+    Geometrisch unabhängig bedeutet dabei, dass die \( p \) Vektoren \( v_{1} - v_{0}, v_{2} - v_{0},\ldots,  v_{p} - v_{0} \) linear unabhängig sind.
+    Konkret werden wir je nach Kontext \( \sigma^{0} \) Knoten oder Ecke, \( \sigma^{1} \) Kante und \( \sigma^{2} \) Dreieck oder Volumenelement nennen.
+    \todo{noch bezeichnungen vergessen?}
+    Des Weiteren schreiben wir auch kurz \( \sigma^{p} = v_{0} v_{1} \ldots v_{p} \) und sagen 
+    "`Das Simplex \( \sigma^{p} \) wird von den Ecken \( \{ v_{0}, v_{1}, \ldots, v_{p}\} \) aufgespannt."'.
+    
+    \begin{definition}
+      Für \( 0 \le r < p \) definert sich eine Relation zwischen dem \( r- \)Simplex \(\sigma^{r}\) und dem \( p- \)Simplex \( \sigma^{p}:= v_{0} v_{1} \ldots v_{p} \) durch
+      \begin{align}
+        \sigma^{r} \prec \sigma^{p} &:\Leftrightarrow \sigma^{p} \succ \sigma^{r} \\
+                                    &:\Leftrightarrow \exists \{ v_{i_{0}}, v_{i_{1}}, \ldots, v_{i_{r}} \} \subset \{ v_{0}, v_{1}, \ldots, v_{p}\} : \sigma^{r} = v_{i_{0}} v_{i_{1}} \ldots v_{i_{r}}
+      \end{align}
+      und \( \sigma^{r} \) nennen wir Facette oder Seite von \( \sigma^{p} \).
+    \end{definition}
+    
+    Damit bildet \( \prec \) beziehungsweise \( \succ \) eine strikte Ordnung auf der Menge aller (endlichen) Simplizes.
+    
+    \begin{definition}
+      Ein Simplizialkomplex \( K \) über \( \R^{n} \) ist eine Menge von Simplizes, so dass
+      \begin{itemize}
+        \item Jede Facette eines Simplexes aus \( K \) ist ebenfalls aus \( K \).
+        \item Der Schnitt zweier Simplizes aus \( K \) ist entweder eine Facette von einem der beiden oder leer.
+      \end{itemize}
+      
+      \( \text{dim}(K) := \max\left\{ p \in \mathds{N} \middle| \sigma^{p} \in K \right\} \)
+      heißt die Dimension von \( K \).
+    \end{definition}
+    
 
 \section{Gittergenerierung für Oberflächen}
 
