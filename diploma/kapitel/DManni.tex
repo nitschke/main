@@ -47,6 +47,7 @@
     "`Das Simplex \( \sigma^{p} \) wird von den Ecken \( \{ v_{0}, v_{1}, \ldots, v_{p}\} \) aufgespannt."'.
 
     \begin{bemerkung}
+      \label{singSimplex}
       Die obige Defintion eines Simplexes, hier als \( \sigma_{\text{geo}} \) geschrieben, nennt man auch geometrische Realisierung eines Simplexes.
       Denn es ist auch möglich ein Simplex als Abbildung vom Standard-Simplex 
         \begin{align} 
@@ -96,11 +97,11 @@
         |K| := \bigcup_{\sigma \in K} \sigma \subset \R^{N} \text{,}
       \end{align}
       ist der zugrundeliegender (topologischer) Raum oder auch Polytop.
-      Die Topologie von \( |K| \) ist dann gerade die induzierte Teilraum Topologie des \( \R^{N} \).
+      Die Topologie von \( |K| \) ist dann gerade die induzierte Teilraumtopologie des \( \R^{N} \).
       \todo{evtl. wenn nötig auf die besonderheit dass ecken keine offenen mengen sind hinweisen}
     \end{definition}
     
-    Meißtens sieht es aber so aus, dass wir ein Raum haben und ein Simplizialkomplex suchen der diesen beschriebt.
+    Meistens sieht es aber so aus, dass wir ein Raum haben und ein Simplizialkomplex suchen der diesen beschriebt.
     Dieses führt uns zu folgender Definition.
 
     \begin{definition}
@@ -108,23 +109,62 @@
       Existiert eine Triangulation von \( V \), dann heißt \( V \) triangulierbar.
     \end{definition}
 
-    Bisher beschreibt solch ein Simplizialkomplex noch alle möglichen Teilräume des \( \R^{N} \). 
+    Bisher kann solch ein Simplizialkomplex noch sehr viele Teilräume des \( \R^{N} \) beschreiben, die für diese Arbeit nicht von Belang sind. 
     Wir wollen deshalb die Menge der Simplizialkomplexe etwas einschränken, um uns langsam der Beschreibung von (Hyper-)Oberflächen zu nähern.
 
     \begin{definition}
       Ein Simplizialkomplex \( K \) heißt mannigfaltigartig, wenn das Polytop \( |K| \) eine \( C^{0} \)-Mannigfaltigkeit ist.
     \end{definition}
 
-    Für 
     Da wir uns später mit den Spezialfall von Oberflächen im \( \R^{3} \) beschäftigen möchten, seien hier schon mal ein paar Bemerkungen dazu.
     
     \begin{bemerkung}
       Sei \( K \) ein mannigfaltigartiger Simplizialkomplex im \( \R^{3} \) mit dim(\( K \)) = 2.
       \begin{itemize}
-        \item Falls \( |K| \) nicht flach ist, dann ist \( |K| \) global nicht differenzierbar.
+        \item Falls \( |K| \) nicht flach ist, dann ist das Polytop \( |K| \) global nicht differenzierbar.
         \item Falls \( |K| \) zudem eine geschlossene Mannigfaltigkeit ist, dann ist \( |K| \) ein Polyeder.
       \end{itemize}
     \end{bemerkung}
+
+    Der zugrundeliegende Raum eines Simplizialkomplexes kann im Allgemeinen nicht eine beliebige 
+    \( C^{\infty} \)-Mannigfalltigkeit sein. Jedoch kann ein Simplizialkomplex solch eine
+    Mannigfaltigkeit approximieren, d.h.
+    
+    \begin{definition}
+      Sei \( K \) ein Simplizialkomplex und \( M \) eine \( C^{\infty} \)-Mannigfaltigkeit, dann
+      \begin{align}
+        K \sim M &:\Leftrightarrow \forall \sigma^{0}\in K : \sigma^{0} \in M \formpunkt
+      \end{align}
+      Das heißt \( K \) approximiert \( M \) genau dann, wenn alle Ecken von \( K \) auch auf \( M \) liegen.
+    \end{definition}
+
+    \begin{bemerkung}
+      Wenn \( K \sim M \) gilt, dann würden wir für die Übertragung von skalarwertigen Informationen von der Mannigfaltigkeit
+      \( M \) auf den Simplizialkomplex \( K \) auf den Ecken nichts falsch machen.
+      Wie sieht es aber mit höherwertigen Informationen aus, wie zum Beispiel Vektorfelder oder Differentialformen höheren Grades als 0? Für 2 dimensionale Mannigfaltigkeiten bedeutet das, dass 1-Formen auf Kanten und 2-Formen auf den Volumenformen ausgewertet werden, wie wir später noch sehen werden. \todo{link zu diskreten diffformen}
+      Kanten und Dreickflächen liegen aber nur (linear) approximiert im Simplizialkomplex vor, genauso wie auch die Metrik.
+      \todo{Quelle?}
+      Dennoch brauchen wir für spätere Argumentationen ein simpliziales Konstrukt bei dem wir diese Fehler nicht machen.
+      Dieses Konstrukt nennen wir abstrakter Simplizialkomlex (über die Mannigfaltigkeit \( M \) ). 
+      Er lässt sich genauso einführen wie oben für den Simplizialkomplex über dem \( \R^{N} \) 
+      nur das die \(p\)-Simplizes für \( p > 0 \) eine Krümmung besitzen, die gleiche wie \( M \) eingeschränkt auf das jeweilige Simplex.
+      Das heißt, dass der zugrundeliegende Raum des abstrakten Simplexes gleich der Mannigfaltig \( M \) ist.
+      Folgendes kommutative Diagramm, soll das für ein Simplex verdeutlichen.
+      \begin{align}
+        \begin{xy}
+          \xymatrix{
+            **[l] \R^{p+1} \supset \Delta^{p} \ar[rr]^{\sigma_{\text{sing}}} \ar[rd]_{\hat{\sigma}_{\text{sing}}} 
+            & & **[r] \sigma^{p} \subset \R^{N} \\
+                                       & **[r] \sigma^{p}_{M}\subset M \ar[ru]_{\pi_{\sigma}}&
+          }
+        \end{xy}
+      \end{align}
+      Die Abbildungen \( \sigma_{\text{sing}} \) und \( \hat{\sigma}_{\text{sing}} \) sind singuläre Simplexe, wie in
+      Bemerkung \ref{singSimplex} definiert. \( \pi_{\sigma} \) ist die sogenannt Klebeabbildung. 
+      \todo{abstr.Simplex als kartenabbildung?}
+
+    \end{bemerkung}
+
 
 \section{Gittergenerierung für Oberflächen}
 
