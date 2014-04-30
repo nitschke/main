@@ -1,5 +1,6 @@
 \renewcommand{\d}{\mathrm{d}}
 
+
 \chapter{Diskrete Mannigfaltigkeit}
 
 \section{Primal- und Dualkomplex}
@@ -96,7 +97,7 @@
       \begin{align}
         |K| := \bigcup_{\sigma \in K} \sigma \subset \R^{N} \text{,}
       \end{align}
-      ist der zugrundeliegender (topologischer) Raum oder auch Polytop.
+      ist der zugrundeliegende (topologische) Raum oder auch Polytop.
       Die Topologie von \( |K| \) ist dann gerade die induzierte Teilraumtopologie des \( \R^{N} \).
       \todo{evtl. wenn nötig auf die besonderheit dass ecken keine offenen mengen sind hinweisen}
     \end{definition}
@@ -145,7 +146,7 @@
       Kanten und Dreickflächen liegen aber nur (linear) approximiert im Simplizialkomplex vor, genauso wie auch die Metrik.
       \todo{Quelle?}
       Dennoch brauchen wir für spätere Argumentationen ein simpliziales Konstrukt bei dem wir diese Fehler nicht machen.
-      Dieses formale Brücke zwischen der Mannigfaltigkeit und dem Simplizialkomplex nennen wir abstraktes Simplizialkomlex (über die Mannigfaltigkeit \( M \) ). 
+      Dieses formale Brücke zwischen der Mannigfaltigkeit und dem Simplizialkomplex nennen wir abstrakter Simplizialkomplex (über der Mannigfaltigkeit \( M \) ). 
       Er lässt sich genauso einführen wie oben für den Simplizialkomplex über dem \( \R^{N} \) 
       nur dass die \(p\)-Simplizes für \( p > 0 \) eine Krümmung besitzen, die gleiche wie \( M \) eingeschränkt auf das jeweilige Simplex.
       Das heißt, dass der zugrundeliegende Raum des abstrakten Simplexes gleich der Mannigfaltig \( M \) ist.
@@ -154,17 +155,39 @@
         \begin{xy}
           \xymatrix{
             **[l] \R^{p+1} \supset \Delta^{p} \ar[rr]^{\sigma_{\text{sing}}} \ar[rd]_{\hat{\sigma}_{\text{sing}}} 
-            & & **[r] \sigma^{p} \subset \R^{N} \\
-                                       & **[r] \sigma^{p}_{M}\subset M \ar[ru]_{\pi_{\sigma}}&
+            & & **[r] \sigma^{p} \subset \R^{N} \ar[ld]_{\pi_{\sigma}} \\
+                                       & **[r] \sigma^{p}_{M}\subset M&
           }
         \end{xy}
       \end{align}
       Die Abbildungen \( \sigma_{\text{sing}} \) und \( \hat{\sigma}_{\text{sing}} \) sind singuläre Simplexe, wie in
-      Bemerkung \ref{singSimplex} definiert. \( \sigma^{p} \) und \( \sigma^{p}_{M} \) sind deren geometrische Realisierungen im \( R^{N} \) beziehungsweise auf \( M \).
-      \( \pi_{\sigma} \) ist die sogenannt Klebeabbildung.\todo{name doppeldeutig, vgl. topologische summe} 
-      \todo{abstr.Simplex als kartenabbildung?}
-
+      \todo[noline]{abstr.Simplex als kartenabbildung?}
+      Bemerkung \ref{singSimplex} definiert. \( \sigma^{p} \) und \( \sigma^{p}_{M} \) sind deren geometrische Realisierungen im \( \R^{N} \) beziehungsweise auf \( M \)
+      und es gelte \( \sigma^{p} \sim \sigma^{p}_{M} \).
+      \( \pi_{\sigma} \) ist ein Homöomorphismus, das heißt bijektiv, stetig und \( \pi_{\sigma}^{-1} \) ist ebenfalls stetig. \todo{pastingmap?}
+      Whitney \cite{whitney} forderte noch weitere Bedingungen an diese Abbildung. 
+      Für uns soll die Homöomorphieeigenschaft allerdings reichen, da wir sie nur formal nutzen werden und nie explizit mit ihr rechnen wollen.
+      Prinzipiell genügt es, wenn wir uns die Abbildung \( \pi_{\sigma} \) als "`Ankleben"' des Simplexes \( \sigma \) auf die Mannigfaltigkeit vorstellen.
+      Des Weiteren soll \( \pi:=\pi_{\bullet} \) \footnote{d.h. \( \pi|_{\sigma} = \pi_{\sigma} \)} homomorph auf dem ganzem Simplizialkomplex bezüglich der Relation \( \prec \) sein, 
+      also ist \( \pi \) ein Isormophismus zwischen dem Simplizialkomplex \( K \) und einem abstrakten Simplizialkomplex \( L \) mit \( |L| = M \) und \( K \sim L \).
+      Zu dem ist \( L \) somit eindeutig bestimmt falls \( \pi \) bekannt. \todo{beweis?}
     \end{bemerkung}
+
+    Für den DEC ist der Begriff der Orientierung von essenzieller Bedeutung. 
+    Zum einen, weil die Orientierung der Simplizes über das Vorzeichen eines Berechnungsschemata entscheiden kann 
+    und zum anderen wird eine weitere notwendige Eigenschaft an den Simplizialkomplex, dessen Polytop und die zu approximierende Mannigfaltigkeit gestellt, die Orientierbarkeit.
+
+    \begin{definition}
+      Für einen Simplizialkomplex \( K \) heißt
+      \begin{align}
+        K^{(p)} &:= \left\{ \sigma^{p} \in K \right\}
+      \end{align}
+      das \( p \)-Skelett von \( K \).  \todo{brauche ich das noch?}
+    \end{definition}
+
+    \begin{definition}
+      Es sei \( \mathcal{V} := \left\{v_{0},v_{1},\ldots ,v_{p} \right\} \) Es lässt sich Relation \( \Theta \)
+    \end{definition}
 
 
 \section{Gittergenerierung für Oberflächen}
