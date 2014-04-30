@@ -131,6 +131,10 @@ set gdefault
 " pythontagsearch ctrl-x ctrl-o
 set ofu=syntaxcomplete#Complete
 
+
+" zeilennummern
+set number
+
 " zusaetzliche filetypes
 " ----------------------
 
@@ -142,14 +146,13 @@ augroup END
 " Tastatur-Mappings
 " -----------------
 
-" Fortran comp'n'run aus dem Hauptprogramm mit abgespeichertem Modul
-:map <F10> <ESC>:cd %:p:h<CR>:w!<CR>:!g95 mod.% % -o %<.out<CR>:!./%<.out<CR>
+" LateXen der hauptdatei (main.tex im unterordner)
+:map <F10> <ESC>:cd %:p:h<CR>:cd ..<CR>:w!<CR>:!pdflatex main.tex<CR>
 
 " ASPELL Rechtschreibprüfung
 :map <F11> :w!<CR>:!gnome-terminal --disable-factory -x aspell -t --lang=de_DE check %<CR>:e! %<CR>
 
-" LaTeX compilieren und anzeigen
-" :map <F12> <ESC>:cd %:p:h<CR>:w!<CR>:!latex %<CR>:!xdvi + -bg white -s 6 -fullscreen %<.dvi<CR>
+" LaTeXen
 :map <F12> <ESC>:cd %:p:h<CR>:w!<CR>:!pdflatex %<CR>
 
 " Paste
@@ -163,7 +166,7 @@ autocmd FileType tex ab Rar \Rightarrow
 autocmd FileType tex ab rar \rightarrow
 autocmd FileType tex ab mbb \mathbb{}<ESC>i
 autocmd FileType tex ab frac \frac{}{}<ESC>2hi
-autocmd FileType tex ab alig \begin{align*}<CR>\end{align*}<ESC>ko<SPACE>
+autocmd FileType tex ab alig \begin{align}<CR>\end{align}<ESC>ko<SPACE>
 autocmd FileType tex ab pmat \begin{pmatrix} \end{pmatrix}<ESC>13hi
 autocmd FileType tex ab eqna \begin{eqnarray*}<CR>\end{eqnarray*}<ESC>ko<SPACE>
 autocmd FileType tex ab enum \begin{enumerate}[(a)]<CR>\end{enumerate}<ESC>ko<TAB>\item
@@ -188,3 +191,4 @@ autocmd FileType tex inoremap $$ \frac{\partial }{\partial }<ESC>11hi
 autocmd FileType tex inoremap \textbf  \textbf{}<LEFT>
 
 let spell_auto_type = ""
+
