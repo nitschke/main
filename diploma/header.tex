@@ -26,18 +26,26 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{bemerkung}[theorem]{Bemerkung}
+\newtheorem{beispiel}[theorem]{Beispiel}
 \newtheorem*{ziel}{Zielsetzung}
 \newtheorem*{fazit}{Fazit}
 
 \usepackage[matrix,arrow]{xy}
 
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
 \usepackage{dsfont}
 \newcommand{\R}{\mathds{R}}
 \renewcommand{\d}{\mathrm{d}}
-\newcommand\argmin{\operatornamewithlimits{argmin}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\sgn}{\mathop{\mathrm{sgn}}}
 \newcommand{\formpunkt}{\,\text{.}}
+\newcommand{\formkomma}{\,\text{,}}
 
 \usepackage{siunitx}
+
+
 
 \usepackage{todonotes}
 

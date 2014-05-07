@@ -49,6 +49,7 @@
 
     \begin{bemerkung}
       \label{singSimplex}
+      \label{refSingSimplex}
       Die obige Defintion eines Simplexes, hier als \( \sigma_{\text{geo}} \) geschrieben, nennt man auch geometrische Realisierung eines Simplexes.
       Denn es ist auch möglich ein Simplex als Abbildung vom Standard-Simplex 
         \begin{align} 
@@ -58,7 +59,7 @@
       in einen Topologischen Raum zu definieren, im obigen Fall in den \( \R^{N} \). 
       Mit Hilfe der Ecken \( v_{i}\in\R^{N} \) können wir die Abbildung festlegen durch
       \begin{align}
-        \sigma_{\text{sing}} = \sigma^{p}_{\text{sing}} : \Delta^{p} &\rightarrow \R^{N}
+        \sigma_{\text{sing}} = \sigma^{p}_{\text{sing}}\left( v_{0}, v_{1}, \ldots, v_{p} \right) : \Delta^{p} &\rightarrow \R^{N}
                         : \left( \mu^{0},\mu^{1},\ldots,\mu^{p} \right)\mapsto \sum_{i=0}^{p}\mu^{i}v_{i}
       \end{align}
       so dass \( \sigma_{\text{sing}}(\Delta^{p}) = \sigma^{p}_{\text{geo}} \).
@@ -177,16 +178,110 @@
     Zum einen, weil die Orientierung der Simplizes über das Vorzeichen eines Berechnungsschemata entscheiden kann 
     und zum anderen wird eine weitere notwendige Eigenschaft an den Simplizialkomplex, dessen Polytop und die zu approximierende Mannigfaltigkeit gestellt, die Orientierbarkeit.
 
+    Wie wir in Bemerkung \ref{refSingSimplex} sehen hängt die geometrische Realisierung \( \sigma \) eines singulären Simplexes \( \sigma_{\text{sing}} \), 
+    also dessen Bild, nicht von der gewählten Reihenfolge der Ecken \( v_{i} \) ab. 
+    Formal können wir aber diesen für \( \sigma \) syntaktischen Unterschied auch semantisch nutzen und schreiben \( \sigma = \left( v_{0}, v_{1}, \ldots, v_{p} \right) \)
+    mit runden Klammern um die Reihenfolge zu würdigen. 
+    Somit ergeben sich für einen Satz Ecken \( p! \) Simplizes 
+    \begin{align}
+      \Sigma^{p} &:= \left\{ \left( v_{\tau(0)}, v_{\tau(1)}, \ldots, v_{\tau(p)} \right) \middle| \tau\in S_{p} \text{ Permutation} \right\} \formkomma
+    \end{align}
+    die geometrisch das gleiche Simplex beschreiben.
+    Auf \( \Sigma^{p} \) lässt sich nun eine Äquivalenzrelation \( \Theta \subseteq \Sigma^{p}\times\Sigma^{p} \) definieren:
+
+    \begin{definition}
+      \label{defAeqRel}
+      Es sei \( \sigma_{1} = \tau(\sigma_{2})\in\Sigma^{p} \), dann gelte
+      \begin{align}
+        \sigma_{1} \Theta \sigma_{2} &:\Leftrightarrow \tau \in A_{n} \text{ gerade Permutation,}
+      \end{align}
+      wobei \( \tau(\sigma) := \left( v_{\tau(0)}, v_{\tau(1)}, \ldots, v_{\tau(p)} \right) \) für \( \sigma = \left( v_{0}, v_{1}, \ldots, v_{p} \right) \).
+
+      Ein Element des Faktorraumes \( \Sigma^{p}\slash\Theta \) heißt orientiertes Simplex und wir schreiben dafür
+      \begin{align}
+        \sigma &= \left[ v_{0}, v_{1}, \ldots, v_{p} \right]
+      \end{align}
+    \end{definition}
+
+    Dass hier das orientierte Simplex ebenfalls als \( \sigma \) geschrieben wird, soll uns nicht stören, da dieses auch immer das entsprechende geometrische Simplex impliziert.
+    Für \( p \ge 0 \) ergeben sich somit genau 2 Äquivalenzklassen und somit Orientierungen pro Simplex. 
+    Wir wollen die Orientierung eineindeutig mit 
+    \begin{align}
+      \sgn: \Sigma^{p}\slash\Theta \rightarrow \left\{ -1 , +1 \right\}
+    \end{align}
+    beschreiben.
+    Falls \( p=0 \), das heißt es liegt eine Ecke vor und folglich nur eine Orientierungsmöglichkeit, dann wird die Orientierung festgelegt, wenn möglich durch die induzierte Orientierung.
+
+    \begin{definition}
+      \label{defIndOri}
+      Es sei \( \sigma^{p} = \left[ v_{0}, v_{1}, \ldots, v_{p} \right] \in \Sigma^{p}\slash\Theta \) mit \( p \ge 1 \), 
+      dann definiert sich eine induzierte Orientierung für die Facetten von \( \sigma^{p} \) durch
+      \begin{align}
+        \sgn\left( \left[ v_{0}, v_{1}, \ldots, \hat{v_{i}}, \ldots, v_{p} \right] \right) &:=
+        \begin{cases}
+          \sgn(\sigma^{p}) & \text{falls } i \text{ gerade,} \\
+          -\sgn(\sigma^{p}) & \text{falls } i \text{ ungerade,} 
+        \end{cases}
+      \end{align}
+      wobei \( \left[ v_{0}, v_{1}, \ldots, \hat{v_{i}}, \ldots, v_{p} \right] \) bedeutet, dass die \( i \)-te Ecke weggelassen wird.
+    \end{definition}
+
+    \begin{beispiel}
+      Anhand folgendes Beispieles sehen wir, dass diese Definition intuitiver ist als es vielleicht auf den ersten Blick anmuten mag.
+      Gegeben sei ein \( 2 \)-Simplex \( \sigma:=\left[ v_{0}, v_{1}, v_{2} \right] \), also ein Dreieck, dessen Orientierung auf \( +1 \) festgelegt wird.
+      Daraus leiten sich die Orientierungen der Kanten ab. 
+      Durch Transposition der Kante \( \left[ v_{0}, v_{2} \right] \), und damit der Wechsel zur anderen Äquivalenzklasse, kann zudem eine einheitliche Orintierung aller Kanten erreicht werden.
+      \begin{align}
+        \begin{xy}
+          \xymatrix{
+            & \sgn\left( \left[ v_{0}, v_{1}, v_{2} \right] \right):=+1 \ar@{=>}[ld] \ar@{=>}[d] \ar@{=>}[rd]& \\
+            \sgn\left( \left[ v_{0}, v_{1} \right] \right)=+1 &
+            \sgn\left( \left[ v_{0}, v_{2} \right] \right)=-1 \ar@{=>}[d] &
+            \sgn\left( \left[ v_{1}, v_{2} \right] \right)=+1 \\
+            & \sgn\left( \left[ v_{2}, v_{0} \right] \right)=+1 &
+          }
+        \end{xy}
+      \end{align}
+      \begin{minipage}{0.65\textwidth}
+        Geometrisch wird die Orientierung oft durch Pfeile visualisiert.
+        In diesem Beispiel ein gebogener Pfeil für die Fläche.
+        Gegen den Uhrzeigersinn bedeutet dabei eine Orientierung von \( +1 \), das ist auch gleichbedeutend damit, 
+        dass die Rechte-Hand-Regel gilt und die Fläche per Definition eine äußere Normale besitzt.
+        Sollen nun alle Kanten die gleiche Orientierung wie die Fläche besitzen, so müssen die Pfeile der Kanten ebenfalls gegen den Uhrzeiger abgetragen werden. 
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.3\textwidth}  
+      \begin{tikzpicture}[>=latex]
+        % Coords
+        \coordinate (V0) at (0,0);
+        \coordinate (V1) at (2,0);
+        \coordinate (V2) at (1,2);
+        % Arrows
+        \draw[line width=1pt, ->]
+          (V0) -- node[below] {\( +1 \)} (V1);
+        \draw[line width=1pt, ->]
+          (V1) -- node[above right] {\( +1 \)} (V2);
+        \draw[line width=1pt, ->]
+          (V2) -- node[above left] {\( +1 \)} (V0);
+        % Points
+        \fill (V0) node[below left] {\( v_{0} \)} circle (2pt);
+        \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
+        \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
+        % circ arrow
+        \coordinate (C) at (1,0.666);
+        \node at (C) {\( +1 \)};
+        \def\r{0.35} 
+        \draw[line width=1pt, ->] ($(C)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+      \end{tikzpicture}
+      \end{minipage}
+    \end{beispiel}
+
     \begin{definition}
       Für einen Simplizialkomplex \( K \) heißt
       \begin{align}
         K^{(p)} &:= \left\{ \sigma^{p} \in K \right\}
       \end{align}
-      das \( p \)-Skelett von \( K \).  \todo{brauche ich das noch?}
-    \end{definition}
-
-    \begin{definition}
-      Es sei \( \mathcal{V} := \left\{v_{0},v_{1},\ldots ,v_{p} \right\} \) Es lässt sich Relation \( \Theta \)
+      das \( p \)-Skelett von \( K \).  \todo{brauche ich das eigentlich noch?}
     \end{definition}
 
 
