@@ -133,7 +133,7 @@
     Mannigfaltigkeit approximieren, d.h.
     
     \begin{definition}
-      Sei \( K \) ein Simplizialkomplex und \( M \) eine \( C^{\infty} \)-Mannigfaltigkeit, dann
+      Sei \( K \) ein mannigfaltigartiger Simplizialkomplex und \( M \) eine \( C^{\infty} \)-Mannigfaltigkeit, dann
       \begin{align}
         K \sim M &:\Leftrightarrow \forall \sigma^{0}\in K : \sigma^{0} \in M \formpunkt
       \end{align}
@@ -204,7 +204,8 @@
     \end{definition}
 
     Dass hier das orientierte Simplex ebenfalls als \( \sigma \) geschrieben wird, soll uns nicht stören, da dieses auch immer das entsprechende geometrische Simplex impliziert.
-    Für \( p \ge 0 \) ergeben sich somit genau 2 Äquivalenzklassen und somit Orientierungen pro Simplex. 
+    Oft werden wir der einfachheithalber nur Simplex sagen, wenn aus dem Kontext klar ist, das dieses Simplex orientiert ist.
+    Für \( p > 0 \) ergeben sich somit genau 2 Äquivalenzklassen und somit Orientierungen pro Simplex. 
     Wir wollen die Orientierung eineindeutig mit 
     \begin{align}
       \sgn: \Sigma^{p}\slash\Theta \rightarrow \left\{ -1 , +1 \right\}
@@ -334,15 +335,82 @@
     \end{definition}
 
     \begin{bemerkung}
-      festlegen gegen den uhrzeiger
+      Für Simplizialkomplexe der Dimension 2 im \( \R^{3} \) wollen wir nun festlegen, dass die \( 2 \)-Simplizes die Orientierung \( +1 \)
+      besitzen genau dann, wenn dessen Ecken geometrisch gegen den Uhrzeigersinn gezählt werden, falls wir von "`oben"' drauf schauen,
+      das heißt in Richtung der inneren Normale.
+      Da wir uns später ausschließlich mit unberandeten orientierbaren Oberflächen beschäftigen möchten, ist auch intuitiv immer klar, was "`innen"' und
+      was "`außen"' bezeichnet.
+      In Graphiken kennzeichnen wir die Orientierung mit einem gebogenen Pfeil ebenfalls im mathematisch positiven Drehsinn, wie im Beispiel
+      \ref{bspOrientierung}.
     \end{bemerkung}
 
     \begin{folgerung}
-     äqv. v. gegen uhr und gleichorient.
-     \begin{proof}
-      
-     \end{proof}
+      \label{folgOrientierungImR3}
+      Im \( \R^{3} \) ist ein Paar von \( 2 \)-Simplizes, die sich eine Kante teilen, genau dann gleichorientiert, wenn die Ecken beider
+      gegen den Uhrzeigersinn gezählt werden.
+      \begin{proof}
+        \leavevmode\\
+        \begin{minipage}{0.65\textwidth}
+        Es seien 2 Simplizes gegeben mit \( \sigma_{1} := v v_{1} v_{2} \) und \( \sigma_{2} := w v_{1} v_{2} \). 
+        Da für 3-elementige Mengen jede zyklische Permutation eine gerade Permutation ist, lässt auch jede zyklische Vertauschung der
+        Ecken das jeweilige Simplex in der gleichen Äquivalenzklasse bleiben. 
+        Sind die Ecken im mathematisch positiven Drehsinn gezählt, so ist es deshalb auch keine Einschränkung der Allgemeinheit, wenn
+        \end{minipage}
+        \hfill
+        \begin{minipage}[c]{0.3\textwidth}  
+        \begin{tikzpicture}[>=latex]
+          % Coords
+          \coordinate (V0) at (0,0);
+          \coordinate (V1) at (2,0);
+          \coordinate (V2) at (1,2);
+          \coordinate (V3) at (3,2);
+          % Arrows
+          \draw[line width=1pt]
+            (V0) -- (V1);
+          \draw[line width=1pt]
+            (V1) -- (V2);
+          \draw[line width=1pt]
+            (V2) -- (V0);
+          \draw[line width=1pt]
+            (V1) -- (V3);
+          \draw[line width=1pt]
+            (V3) -- (V2);
+          % Points
+          \fill (V0) node[below left] {\( v \)} circle (2pt);
+          \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
+          \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
+          \fill (V3) node[above] {\( w \)} circle (2pt);
+          % circ arrow
+          \coordinate (C) at (1,0.666);
+          \coordinate (CC) at (2,1.333);
+          \def\r{0.25} 
+          \draw[line width=1pt, ->] ($(C)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+          \draw[line width=1pt, ->] ($(CC)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+        \end{tikzpicture}
+        \end{minipage}
+        \begin{align}
+          &&\sigma_{1} = \left[ v, v_{1}, v_{2} \right] && \sigma_{2} = \left[ w, v_{2}, v_{1} \right] \\
+          & \Leftrightarrow & \sgn_{\sigma_{1}}\left( \left[ v_{1}, v_{2} \right] \right) &= +1
+                            & \sgn_{\sigma_{2}}\left( \left[ v_{2}, v_{1} \right] \right) &= +1 \\
+          & \Leftrightarrow & \sgn_{\sigma_{1}}\left( \left[ v_{1}, v_{2} \right] \right)
+                                          &= -\sgn_{\sigma_{2}}\left( \left[ v_{1}, v_{2} \right]\right)
+        \end{align}
+        d.h. \( \sigma_{1} \) und \( \sigma_{2} \) sind gleichorientiert.
+      \end{proof}
     \end{folgerung}
+
+    \begin{definition}
+      Ein mannigfaltigartiger Simplizialkomplex der Dimension \( n \) heißt orientiert, wenn alle paarweise benachbarten \( n \)-Simplizes
+      gleich orientiert sind. Solch einen orientierten mannigfaltigartigen Simplizialkomplex nennen wir auch kurz Primärgitter.
+    \end{definition}
+
+    \begin{bemerkung}
+      Da später alle computergestützten Rechnungen mit AMDiS gemacht werden ist es wichtig, dass die dortigen Gitter die Anforderungen
+      eines Primärgitters erfüllen. 
+      Ob ein mannigfaltigartiger Simplizialkomplex als Eingangsgröße vorliegt entscheidet der Benutzer selbst.
+      Die Orientiertheit eines 2D-Gitters, also für Simplizialkomplexe der Dimension 2, ist mit Folgerung \ref{folgOrientierungImR3} 
+      automatisch gegeben, da in AMDiS die Ecken eines Dreieckelemet immer gegen den Uhrzeigersinn aufgetragen werden, siehe \cite{tutorial}.
+    \end{bemerkung}
 
     \begin{definition}
       Für einen Simplizialkomplex \( K \) heißt
@@ -351,6 +419,8 @@
       \end{align}
       das \( p \)-Skelett von \( K \).  \todo{brauche ich das eigentlich noch?}
     \end{definition}
+
+
 
 
 \section{Gittergenerierung für Oberflächen}
