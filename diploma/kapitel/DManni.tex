@@ -215,7 +215,7 @@
     \begin{definition}
       \label{defIndOri}
       Es sei \( \sigma^{p} = \left[ v_{0}, v_{1}, \ldots, v_{p} \right] \in \Sigma^{p}\slash\Theta \) mit \( p \ge 1 \), 
-      dann definiert sich eine induzierte Orientierung für die Facetten von \( \sigma^{p} \) durch
+      dann definiert sich eine induzierte Orientierung für die \( (p-1) \)-Facetten von \( \sigma^{p} \) durch
       \begin{align}
         \sgn\left( \left[ v_{0}, v_{1}, \ldots, \hat{v_{i}}, \ldots, v_{p} \right] \right) &:=
         \begin{cases}
@@ -227,6 +227,7 @@
     \end{definition}
 
     \begin{beispiel}
+      \label{bspOrientierung}
       Anhand folgendes Beispieles sehen wir, dass diese Definition intuitiver ist als es vielleicht auf den ersten Blick anmuten mag.
       Gegeben sei ein \( 2 \)-Simplex \( \sigma:=\left[ v_{0}, v_{1}, v_{2} \right] \), also ein Dreieck, dessen Orientierung auf \( +1 \) festgelegt wird.
       Daraus leiten sich die Orientierungen der Kanten ab. 
@@ -246,9 +247,12 @@
         Geometrisch wird die Orientierung oft durch Pfeile visualisiert.
         In diesem Beispiel ein gebogener Pfeil für die Fläche.
         Gegen den Uhrzeigersinn bedeutet dabei eine Orientierung von \( +1 \), das ist auch gleichbedeutend damit, 
-        dass die Rechte-Hand-Regel gilt und die Fläche per Definition eine äußere Normale besitzt.
-        Sollen nun alle Kanten die gleiche Orientierung wie die Fläche besitzen, so müssen die Pfeile der Kanten ebenfalls gegen den Uhrzeiger abgetragen werden. 
+        dass die Rechte-Hand-Regel 
+        gilt und die Fläche per Definition eine äußere Normale besitzt.
+        Sollen nun alle Kanten die gleiche Orientierung wie die Fläche besitzen, so müssen die Pfeile der Kanten ebenfalls gegen den Uhrzeiger abgetragen werden.
+        Von nun an werden wir Pfeile ohne Beschriftung immer als positiv, also mit Orientierung \( +1 \), anerkennen.
       \end{minipage}
+      \todo[noline]{Quelle? vgl. \url{http://de.wikipedia.org/wiki/Korkenzieherregel}}
       \hfill
       \begin{minipage}{0.3\textwidth}  
       \begin{tikzpicture}[>=latex]
@@ -256,7 +260,7 @@
         \coordinate (V0) at (0,0);
         \coordinate (V1) at (2,0);
         \coordinate (V2) at (1,2);
-        % Arrows
+        % Arrows\tilde{\sigma}
         \draw[line width=1pt, ->]
           (V0) -- node[below] {\( +1 \)} (V1);
         \draw[line width=1pt, ->]
@@ -274,7 +278,71 @@
         \draw[line width=1pt, ->] ($(C)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
       \end{tikzpicture}
       \end{minipage}
+      \begin{minipage}{0.65\textwidth}
+      Es sei nun ein weiteres Simplex \( \tilde{\sigma} := \left[ v_{1}, v_{3}, v_{2} \right] \) "`angelegt"', so dass beide Simplizes sich die Kante
+      \( \left[ v_{1}, v_{2} \right] \) teilen, und die Orientierung von \( \tilde{\sigma} \) auf \( +1 \) gesetzt wird. 
+      Dabei müssen die von den Kanten aufgespannten (Unter-)Vektorräume (z.B. des \( \R^{3} \)) nicht notwendigerweise gleich sein.
+      Dennoch liegt das Gefühl nahe zusagen, dass die beiden 2-Simplexe irgendwie "`gleichorientiert"' sind.
+      Des Weiteren fällt auf, dass die induzierte Orientierung der gemeinsamen Kante für beide Dreiecke entgegengesetzt ist.
+      Darauf wollen wir im allgemeineneren näher eingehen.
+      \end{minipage}
+      \hfill
+      \begin{minipage}[c]{0.3\textwidth}  
+      \begin{tikzpicture}[>=latex]
+        % Coords
+        \coordinate (V0) at (0,0);
+        \coordinate (V1) at (2,0);
+        \coordinate (V2) at (1,2);
+        \coordinate (V3) at (3,2);
+        % Arrows
+        \draw[line width=1pt, ->]
+          (V0) -- (V1);
+        \draw[line width=1pt, ->]
+          (V1) -- node[above=10pt] {\small{-1}} node[below=10pt] {\small{+1}} (V2);
+        \draw[line width=1pt, ->]
+          (V2) -- (V0);
+        \draw[line width=1pt, ->]
+          (V1) -- (V3);
+        \draw[line width=1pt, ->]
+          (V3) -- (V2);
+        % Points
+        \fill (V0) node[below left] {\( v_{0} \)} circle (2pt);
+        \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
+        \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
+        \fill (V3) node[above] {\( v_{3} \)} circle (2pt);
+        % circ arrow
+        \coordinate (C) at (1,0.666);
+        \coordinate (CC) at (2,1.333);
+        \def\r{0.25} 
+        \draw[line width=1pt, ->] ($(C)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+        \draw[line width=1pt, ->] ($(CC)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+      \end{tikzpicture}
+      \end{minipage}
     \end{beispiel}
+
+    \begin{definition}
+      Es seien zwei orientierte \( p \)-Simplizes \( \sigma^{p}_{1} \) und \( \sigma^{p}_{2} \) gegeben mit \( 1 \le p \le n \), 
+      die sich genau eine \( (p-1) \)-Facette teilen, das heißt es existiert genau ein \( \sigma^{p-1} \) mit 
+      \( \sigma^{p-1} \prec \sigma^{p}_{1} \) und \( \sigma^{p-1} \prec \sigma^{p}_{2} \).
+
+      \( \sigma^{p}_{1} \) und \( \sigma^{p}_{2} \) heißen gleichorientiert, falls
+      \begin{align}
+        \sgn_{\sigma^{p}_{1}}(\sigma^{p-1}) &= - \sgn_{\sigma^{p}_{2}}(\sigma^{p-1}) \formkomma
+      \end{align}
+      also die von den beiden Simplizes induzierten Orientierungen der gemeinsamen Facette umgleich sind.
+      Anderfalls heißen \( \sigma^{p}_{1} \) und \( \sigma^{p}_{2} \) verschiedenorientiert.
+    \end{definition}
+
+    \begin{bemerkung}
+      festlegen gegen den uhrzeiger
+    \end{bemerkung}
+
+    \begin{folgerung}
+     äqv. v. gegen uhr und gleichorient.
+     \begin{proof}
+      
+     \end{proof}
+    \end{folgerung}
 
     \begin{definition}
       Für einen Simplizialkomplex \( K \) heißt

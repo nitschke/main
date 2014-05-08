@@ -135,6 +135,8 @@ set ofu=syntaxcomplete#Complete
 " zeilennummern
 set number
 
+let mapleader = ","
+
 " zusaetzliche filetypes
 " ----------------------
 
@@ -146,17 +148,18 @@ augroup END
 " Tastatur-Mappings
 " -----------------
 
+
 " LateXen der hauptdatei (main.tex im unterordner)
-:map <F10> <ESC>:cd %:p:h<CR>:cd ..<CR>:w!<CR>:!pdflatex main.tex<CR>
+map <F10> <ESC>:cd %:p:h<CR>:cd ..<CR>:w!<CR>:!pdflatex main.tex<CR>
 
 " ASPELL Rechtschreibprüfung
-:map <F11> :w!<CR>:!gnome-terminal --disable-factory -x aspell -t --lang=de_DE check %<CR>:e! %<CR>
+map <F11> :w!<CR>:!gnome-terminal --disable-factory -x aspell -t --lang=de_DE check %<CR>:e! %<CR>
 
 " LaTeXen
-:map <F12> <ESC>:cd %:p:h<CR>:w!<CR>:!pdflatex %<CR>
+map <F12> <ESC>:cd %:p:h<CR>:w!<CR>:!pdflatex %<CR>
 
 " Paste
-:map ^V <ESC>"+gP 
+map ^V <ESC>"+gP 
 
 " Abkuerzungen
 " ------------
@@ -189,6 +192,8 @@ autocmd FileType tex inoremap $$ $$<LEFT>
 autocmd FileType tex inoremap ~ \tilde{}<LEFT>
 autocmd FileType tex inoremap $$ \frac{\partial }{\partial }<ESC>11hi
 autocmd FileType tex inoremap \textbf  \textbf{}<LEFT>
+"Expandieren des Wortes underm Cursor zu einem \begin{<WORT>}...\end{<WORT>}
+autocmd FileType tex inoremap ,be <ESC>vawyi\begin{<ESC>ea}<CR>\end{<ESC>pa}<ESC>O<TAB>
 
-let spell_auto_type = ""
+let spell_auto_type = "de"
 
