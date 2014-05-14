@@ -3,7 +3,7 @@
 
 \chapter{Diskrete Mannigfaltigkeit}
 
-\section{Primal- und Dualkomplex}
+\section{Primär- und Dualgitter}
   
   \begin{ziel}
     Bei vielen numerischen Methoden werden Gebiete über überabzählbaren Mengen auf denen Gleichungen "`leben"' diskretisiert.
@@ -100,7 +100,6 @@
       \end{align}
       ist der zugrundeliegende (topologische) Raum oder auch Polytop.
       Die Topologie von \( |K| \) ist dann gerade die induzierte Teilraumtopologie des \( \R^{N} \).
-      \todo{evtl. wenn nötig auf die besonderheit dass ecken keine offenen mengen sind hinweisen}
     \end{definition}
     
     Meistens sieht es aber so aus, dass wir ein Raum haben und ein Simplizialkomplex suchen der diesen beschriebt.
@@ -170,8 +169,14 @@
       Für uns soll die Homöomorphieeigenschaft allerdings reichen, da wir sie nur formal nutzen werden und nie explizit mit ihr rechnen wollen.
       Prinzipiell genügt es, wenn wir uns die Abbildung \( \pi_{\sigma} \) als "`Ankleben"' des Simplexes \( \sigma \) auf die Mannigfaltigkeit vorstellen.
       Des Weiteren soll \( \pi:=\pi_{\bullet} \) \footnote{d.h. \( \pi|_{\sigma} = \pi_{\sigma} \)} homomorph auf dem ganzem Simplizialkomplex bezüglich der Relation \( \prec \) sein, 
-      also ist \( \pi \) ein Isormophismus zwischen dem Simplizialkomplex \( K \) und einem abstrakten Simplizialkomplex \( L \) mit \( |L| = M \) und \( K \sim L \).
+      also ist \( \pi \) ein Isormophismus zwischen dem Simplizialkomplex \( K \) und einem abstrakten Simplizialkomplex \( L \) mit \( |L| = M \) und \( K^{(0)} = L^{(0)} \).
+      Wobei
+      \begin{align}
+        K^{(p)} &:= \left\{ \sigma^{p} \in K \right\}
+      \end{align}
+      das \( p \)-Skelett von \( K \) ist. 
       Zu dem ist \( L \) somit eindeutig bestimmt falls \( \pi \) bekannt. \todo{beweis?}
+      Wenn solch eine Triangulation \( L \) von \( M \) exzistiert, dann nennen wir auch \( K \) eine (lineare) Triangulation von \( M \).
     \end{bemerkung}
 
     Für den DEC ist der Begriff der Orientierung von essenzieller Bedeutung. 
@@ -401,25 +406,87 @@
 
     \begin{definition}
       Ein mannigfaltigartiger Simplizialkomplex der Dimension \( n \) heißt orientiert, wenn alle paarweise benachbarten \( n \)-Simplizes
-      gleich orientiert sind. Solch einen orientierten mannigfaltigartigen Simplizialkomplex nennen wir auch kurz Primärgitter.
+      gleichorientiert sind. Solch einen orientierten mannigfaltigartigen Simplizialkomplex nennen wir auch kurz Primärgitter.
+    \end{definition}
+
+    \begin{satz}
+      Ist eine triangulierbare Mannigfaltigkeit \( M \) orientiert, so sind auch alle linearen Triangulationen \( K \sim M \) orientiert.
+      \begin{proof}
+        Sei \( L \) der zugehörige abstrakte Simplizialkomplex, d.h. \( |L|=M \), \( L^{(0)} = K^{(0)} \) und \( \left( L,\prec \right) \cong \left( K,\prec \right)\).
+        Es reicht zu zeigen, dass \( L \) orientiert ist, da die Orientierung eines abstrakten \( n \)-Simplexes auf das zugehörige \( n \)-Simplex aus \( K \) einfach übertragen werden kann, et
+        vice versa.
+        Für jedes einzelne abstrakte \( n \)-Simplex \( \sigma^{n}\in L \) kann die Orientierung im Inneren der Untermannigfaltig \( |\sigma^{n}| \subset M \) übernommen werden, da sie dort
+        konstant ist. 
+        Betrachten wir die gemeinsame Kante \( \sigma^{(n-1)}\in L \) eines benachbarten abstrakten \( n- \)Simplexes \( \tilde{\sigma}^{n}\in L \), dann gilt, 
+        dass die Orientierung in einer Umgebeung \( U_{\varepsilon}(p) \subset M \) konstant ist, mit \( p \) im Inneren von \( |\sigma^{(n-1)}|\subset M \) (vgl.\cite{jaenich}).
+        Folglich ist die Orientierung auf beiden seiten der Kante gleich und damit sind beide \( n \)-Simplizes gleichorientiert.
+        Da \( \sigma^{n} \) und \( \tilde{\sigma}^{n} \) beliebig benachbarte Simplizes sind, ist \( L \) orientiert.
+      \end{proof}
+    \end{satz}
+
+    Damit ist es uns nun möglich eine Mannigfaltigkeit mit obigen Vorraussetzungen mittels Primärgitter linear zu triangulieren.
+
+    \begin{bemerkung}[zur Implementierung]
+      Da später alle computergestützten Rechnungen mit AMDiS gemacht werden ist es wichtig, dass die dortigen Gitter die Anforderungen
+      eines Primärgitters erfüllen. 
+      Ob ein mannigfaltigartiger Simplizialkomplex als Eingangsgröße vorliegt, liegt in der Verantwotung des Benutzers.
+      Die Orientiertheit eines 2D-Gitters, also für Simplizialkomplexe der Dimension 2, ist mit Folgerung \ref{folgOrientierungImR3} 
+      automatisch gegeben, da in AMDiS die Ecken eines Dreieckelemets immer gegen den Uhrzeigersinn aufgetragen werden, siehe \cite{tutorial}.
+    \end{bemerkung}
+
+
+
+
+  \subsection{Umkreismittelpunktunterteilung}
+    Eine sehr wichtige Zutat für das DEC ist das Dualgitter. 
+    Es erlaubt uns später die Definition des Sternoperators \( \star \), das geometrische Analogon zum Hodge-Stern-Operators \( * \).
+    Liegt der Simplizialkomplex zum Beispiel als Delaunaytriangulierung vor, so ist der duale Zellkomplex gerade das zugehörige Voronoidiagramm. \todo{quelle}
+    Dieser ist im allgemeinen natürlich kein Simplizialkomplex. Des Weiteren teilt im nichtflachen Fall, das Voronoidiagramm und die Delaunaytriangulierung nicht einmal den selben zugrunde
+    liegenden Raum.
+    Unter gewissen Vorraussetzungen ist es aber möglich ein Primärgitter so simplizial zuverfeinern um so ein Gitter zubekommen welches wieder die Primärgittereigenschaften erfüllt und
+    zudem Gruppierungen von \( n \)-Simplizes enthalten, die den zugehörigen Voronoizellen ähneln, als eine Art "`Voronoizellen mit Knicken"'.
+
+    \begin{definition}
+      \label{defUmkreismittelpunkt}
+      Der Umkreismittelpunkt \( c(\sigma^{p}) \) eines Simplexes \( \sigma^{p} := v_{0}v_{1} \ldots v_{p} \) ist der Mittelpunkt der \( (p-1) \)-Sphäre \( \mathds{S}_{r}^{p-1}(c(\sigma^{p})) \),
+      mit Radius \( r\in [0,\infty) \), die durch
+      \begin{align}
+        \label{formSphere}
+        \forall i = 0,1, \ldots, p:\quad \left\| v_{i} - c(\sigma^{p}) \right\|^{2} &= r^{2} 
+      \end{align}
+      bestimmt ist. Speziell für \( p = 0 \) definieren wir formal
+      \begin{align}
+        \mathds{S}^{-1}(c(\sigma^{0})) &:= \left\{ c(\sigma^{0}) \right\} \formkomma
+      \end{align}
+      und damit ist
+      \begin{align}
+        c(\sigma^{0}) &= \sigma^{0} \formpunkt
+      \end{align}
     \end{definition}
 
     \begin{bemerkung}
-      Da später alle computergestützten Rechnungen mit AMDiS gemacht werden ist es wichtig, dass die dortigen Gitter die Anforderungen
-      eines Primärgitters erfüllen. 
-      Ob ein mannigfaltigartiger Simplizialkomplex als Eingangsgröße vorliegt entscheidet der Benutzer selbst.
-      Die Orientiertheit eines 2D-Gitters, also für Simplizialkomplexe der Dimension 2, ist mit Folgerung \ref{folgOrientierungImR3} 
-      automatisch gegeben, da in AMDiS die Ecken eines Dreieckelemet immer gegen den Uhrzeigersinn aufgetragen werden, siehe \cite{tutorial}.
+      Obige Definition, stellt ein Spezialfall des Kleinste-Sphäre-Problems dar.
+      Die Ecken von \( \sigma^{p} \) sind nach Vorraussetzung geometrisch linear unabhängig, demnach ist nach \cite{converingSphere}  die Sphäre \( \mathds{S}_{r}^{p-1}(c(\sigma^{p})) \) existent
+      und eindeutig bestimmt. Der Umkreismittelpunkt \( c(\sigma^{p}) \) nach Definition \ref{defUmkreismittelpunkt} ist somit wohldefiniert.
     \end{bemerkung}
 
-    \begin{definition}
-      Für einen Simplizialkomplex \( K \) heißt
+    \begin{bemerkung}[zur Implementierung]
+      Im \( \R^{3} \) ist die Berechnung der Umkreismittelpunkte für \( 0 \)- und \( 1 \)-Simplizes einfach:
       \begin{align}
-        K^{(p)} &:= \left\{ \sigma^{p} \in K \right\}
+        c(v_{0}) &= v_{0} \formtext{und}\\
+        c(v_{0}v_{1}) &= \frac{1}{2} \left(v_{0} + v_{1} \right) \formpunkt
       \end{align}
-      das \( p \)-Skelett von \( K \).  \todo{brauche ich das eigentlich noch?}
-    \end{definition}
-
+      Für ein \( 2 \)-Simplex nutzen wir die Formel
+      \begin{align}
+        \begin{aligned}
+          c(v_{0}v_{1}v_{2}) &= v_{0} + a_{1}\left( v_{0} - v_{1} \right) + a_{2} \left( v_{0} - v_{2} \right) \formtext{mit} \\
+          a_{1} &= \frac{\left\| v_{0} - v_{2} \right\|^{2}}{2 D^{2}} \left(v_{1} - v_{0} \right) \cdot \left(v_{2} - v_{1} \right) \formtext{und} \\ 
+          a_{2} &= \frac{\left\| v_{0} - v_{1} \right\|^{2}}{2 D^{2}} \left(v_{0} - v_{2} \right) \cdot \left(v_{2} - v_{1} \right) \formpunkt
+        \end{aligned}
+      \end{align}
+      \( D \) ist die Determinante des Simplexes, also dessen doppeltes Volumen. 
+      Einsetzen in \eqref{formSphere} für z.B. \( r = \left\| v_{0} - c(v_{0}v_{1}v_{2}) \right\| \) und nachrechnen ergibt die Korrektheit der Formel.
+    \end{bemerkung}
 
 
 
@@ -807,4 +874,6 @@
                        %% \overset{i\rightarrow\infty}{\longrightarrow}  \vec{x}^{*}
       \end{align}
       auf.
-      \textcolor{red}{näher darauf eingehen? Konvergenz etc. beweisen?}
+
+
+\section{Kettenkomplexe}
