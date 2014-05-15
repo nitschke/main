@@ -521,6 +521,8 @@
                                                                           \sigma_{0} \prec \ldots \prec \sigma_{k} \text { für } 0 \le k < n \right\}
       \end{align}
       die Umkreismittelpunktunterteilung von \( K \).
+      (Dabei ist zu beachten, dass die Indizierung unten vorgenommen wurde und nicht mit der Dimension der Simplizes verwchselt werden
+      sollte. Gefordert wird einzig, dass die Dimension der Simplizes in der 
       \todo{evtl. Bild, falls noc ein 2. dazu kommt oder kurzes erklärendes bsp. falls noch platz ist}
     \end{definition}
 
@@ -530,6 +532,26 @@
       Jedoch approximiert \(\text{csd}K\) nicht mehr die Mannigfaltigkeit \( M \) im Sinne von Definition \ref{defManniApprox}, weil neu enstandene Knoten im Algemeinen nicht auf der Mannigfaltigkeit
       liegen. 
     \end{bemerkung}
+
+    Wie wir im vorhergehenden Absatz gesehen haben, spielt die Orientierung eines Simplizialkomplexes eine große Rolle. Die Frage ist nur,
+    wie lässt sich auf sinnvoller Art und Weise eine Orientierung von dem ausgehenden Simplizialkomplex induzieren, konkret, wenn wir von
+    einem Primärgitter ausgehen.
+    Für Volumenelemente ist intuitiv klar, was sinnvoll ist, nämlich, dass die Orientierung der \( n \)-Simplizes des  \( \text{csd}K \),
+    welche die \( n \)-Simplizes aus  \( K \) verfeinern, übernommen werden kann. Schließlich ist das Polytop beider Komplexe gleich und
+    sollte als \( n \)-Mannigfaltigkeit auch ihre Orientierung beibehalten.
+    Allgemein definieren wir
+
+    \begin{definition}
+      Es sei \( \hat{\sigma}^{p} \in \text{csd}K \), \( \sigma^{p} \in K \) mit \( \hat{\sigma}^{p} \subseteq \sigma^{p}\), dann ist durch
+      \begin{align}
+        \sgn_{\sigma^{p}}\left( \hat{\sigma}^{p} \right) &:= \sgn\left( \sigma^{p} \right)
+      \end{align}
+      die von \( \sigma^{p}\in K \) (duale) induzierte Orientierung gegeben. 
+    \end{definition}
+
+    \begin{definition}
+      Die Umkreismittelpunktunterteilung \( \text{csd}K \) eines wohlzentrierten Primärgitters \( K \)...
+    \end{definition}
 
 
 
