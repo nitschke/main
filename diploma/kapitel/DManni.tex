@@ -132,6 +132,7 @@
     Mannigfaltigkeit approximieren, d.h.
     
     \begin{definition}
+      \label{defManniApprox}
       Sei \( K \) ein mannigfaltigartiger Simplizialkomplex und \( M \) eine \( C^{\infty} \)-Mannigfaltigkeit, dann
       \begin{align}
         K \sim M &:\Leftrightarrow \forall \sigma^{0}\in K : \sigma^{0} \in M \formpunkt
@@ -354,9 +355,8 @@
       Im \( \R^{3} \) ist ein Paar von \( 2 \)-Simplizes, die sich eine Kante teilen, genau dann gleichorientiert, wenn die Ecken beider
       gegen den Uhrzeigersinn gezählt werden.
       \begin{proof}
-        \leavevmode\\
+        Es seien 2 Simplizes gegeben mit \( \sigma_{1} := v v_{1} v_{2} \) und \( \sigma_{2} := w v_{1} v_{2} \).
         \begin{minipage}{0.65\textwidth}
-        Es seien 2 Simplizes gegeben mit \( \sigma_{1} := v v_{1} v_{2} \) und \( \sigma_{2} := w v_{1} v_{2} \). 
         Da für 3-elementige Mengen jede zyklische Permutation eine gerade Permutation ist, lässt auch jede zyklische Vertauschung der
         Ecken das jeweilige Simplex in der gleichen Äquivalenzklasse bleiben. 
         Sind die Ecken im mathematisch positiven Drehsinn gezählt, so ist es deshalb auch keine Einschränkung der Allgemeinheit, wenn
@@ -456,7 +456,7 @@
       \end{align}
       bestimmt ist. Speziell für \( p = 0 \) definieren wir formal
       \begin{align}
-        \mathds{S}^{-1}(c(\sigma^{0})) &:= \left\{ c(\sigma^{0}) \right\} \formkomma
+        \mathds{S}^{-1}(c(\sigma^{0})) &:= \left\{ c(\sigma^{0}) \right\}
       \end{align}
       und damit ist
       \begin{align}
@@ -486,6 +486,49 @@
       \end{align}
       \( D \) ist die Determinante des Simplexes, also dessen doppeltes Volumen. 
       Einsetzen in \eqref{formSphere} für z.B. \( r = \left\| v_{0} - c(v_{0}v_{1}v_{2}) \right\| \) und nachrechnen ergibt die Korrektheit der Formel.
+    \end{bemerkung}
+
+    \begin{definition}
+      Leigt der Umkreismittelpunkt eines Simplexes \( \sigma^{p} \) im Inneren dieses Simplexes, das heißt \( c(\sigma^{p}) \in \text{Int}(\sigma^{p}) \),
+      dann nennen wir \( \sigma^{p} \) ein wohlzentriertes Simplex.
+
+      Sind alle \( \sigma \in K \) wohlzentriert, dann heißt \( K \) ein wohlzentrierter Simplizialkomplex.
+    \end{definition}
+
+    \( 1 \)-Simplizes sind natürlich immer wohlzentriert. 
+    Für \( 0 \)-Simplizes legen wir hier eine topologische Besonderheit fest: \(\text{Int}(\sigma^{0}) := \sigma^{0}\).
+    Folglich soll die Ecke \( \sigma^{0} \) eine offene Menge sein (mit leerem Rand).
+    Es sei hier explizit darauf hingewiesen, dass das einen deutlichen Unterschied zu der Topologie des Polytopes eines Simplizialkomplexes darstellt,
+    wo einzelne Punkte keine offenen Mengen sind.
+    Bei \( 2 \)-Simplizes lassen sich verschieden äquivalente Kriterien für die Wohlzentriertheit finden.
+    Die populärsten sind zum Beispiel:
+    \begin{itemize}
+      \item Alle Innenwinkel sind kleiner als \( \frac{\pi}{2} \), oder
+      \item bilden wir einen Kreis in der aufgespannten Ebene des Dreieckes mit zwei Ecken auf dem Rand und Mittelpunkt auf der sich ergebenen Kante beider Ecken, 
+      dann liegt die dritte Ecke außerhalb dieses Kreises, das heißt
+        \begin{align}
+          \forall \sigma^{1} := \left[ v_{\tau(0)},v_{\tau(1)}\right] \prec \left[v_{0},v_{1},v_{2}\right]:\quad \|v_{\tau(2)} - c(\sigma^{1})\| > \|v_{\tau(0)} - c(\sigma^{1})\|
+          \formpunkt
+        \end{align}
+    \end{itemize}
+    Wie dem auch sei, mit der Wohlzentriertheit eines Simplizialkomplexes ist es nun möglich eine Verfeinerung durchzuführen, die alle Umkreismittelpunkte als neue Knoten enthällt und zudem
+    wieder ein Simplizialkomplex ist.
+
+    \begin{definition}
+      Für einen wohlzentrierten Simplizialkomplex \( K \) der Dimension \( n \), ist
+      \begin{align}
+        \text{csd}K := \left\{ c(\sigma_{0}) \ldots c(\sigma_{k}) \middle| \sigma_{i}\in K \text { für } 0 \le i \le k \text{ und }
+                                                                          \sigma_{0} \prec \ldots \prec \sigma_{k} \text { für } 0 \le k < n \right\}
+      \end{align}
+      die Umkreismittelpunktunterteilung von \( K \).
+      \todo{evtl. Bild, falls noc ein 2. dazu kommt oder kurzes erklärendes bsp. falls noch platz ist}
+    \end{definition}
+
+    \begin{bemerkung}
+      Da alle \( n \)-Simplizes des \(\text{csd}K  \) jeweils Teilmengen eines \( n \)-Simplexes aus \( K \) sind, ändert sich am zugrundeliegenden Raum nichts, das heißt
+      \( |\text{csd}K| = |K| \). 
+      Jedoch approximiert \(\text{csd}K\) nicht mehr die Mannigfaltigkeit \( M \) im Sinne von Definition \ref{defManniApprox}, weil neu enstandene Knoten im Algemeinen nicht auf der Mannigfaltigkeit
+      liegen. 
     \end{bemerkung}
 
 
