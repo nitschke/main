@@ -521,8 +521,8 @@
                                                                           \sigma_{0} \prec \ldots \prec \sigma_{k} \text { für } 0 \le k < n \right\}
       \end{align}
       die Umkreismittelpunktunterteilung von \( K \).
-      (Dabei ist zu beachten, dass die Indizierung unten vorgenommen wurde und nicht mit der Dimension der Simplizes verwchselt werden
-      sollte. Gefordert wird einzig, dass die Dimension der Simplizes in der 
+      (Dabei ist zu beachten, dass die Indizierung unten vorgenommen wurde und nicht mit der Dimension der Simplizes verwechselt werden
+      sollte. Gefordert wird, dass die Dimension der Simplizes von links nach rechts streng monoton steigend sein soll)
       \todo{evtl. Bild, falls noc ein 2. dazu kommt oder kurzes erklärendes bsp. falls noch platz ist}
     \end{definition}
 
@@ -542,18 +542,94 @@
     Allgemein definieren wir
 
     \begin{definition}
+      \label{defDualInduzierteOrientierung}
       Es sei \( \hat{\sigma}^{p} \in \text{csd}K \), \( \sigma^{p} \in K \) mit \( \hat{\sigma}^{p} \subseteq \sigma^{p}\), dann ist durch
       \begin{align}
         \sgn_{\sigma^{p}}\left( \hat{\sigma}^{p} \right) &:= \sgn\left( \sigma^{p} \right)
       \end{align}
-      die von \( \sigma^{p}\in K \) (duale) induzierte Orientierung gegeben. 
+      die von \( \sigma^{p}\in K \) (dual) induzierte Orientierung gegeben. 
     \end{definition}
 
     \begin{definition}
-      Die Umkreismittelpunktunterteilung \( \text{csd}K \) eines wohlzentrierten Primärgitters \( K \)...
+      \label{defDualgitter}
+      Es sei \( \text{csd}K \) die Umkreismittelpunktunterteilung eines wohlzentrierten Primärgitters \( K \) versehen mit einer Orientierung.
+      Ist die Orientierung der \( n \)-Simplizes aus \( \csd K \) von den \( n \)-Simplizes aus \( K \) induziert, dann nennen wir \( \csd K \) das Dualgitter (von \( K \)).
     \end{definition}
+    Dass sich überhaupt erst eine Orientierung für die Volumenelemente nach Definition \ref{defDualInduzierteOrientierung} induzieren lässt, 
+    also die dortige Bedingung \( \hat{\sigma}^{n} \subseteq \sigma^{n}\) erfüllt ist, erhalten wir durch folgendes Lemma für
+    \( p = n \) und der Tatsache, dass 
+    \begin{align}
+      \left( \csd K \right)^{(n)} = \left\{ c\left( \sigma^{0} \right) c\left( \sigma^{1} \right) \ldots c\left( \sigma^{n} \right) \middle|
+                                                                              \sigma^{i}\in K \text { für } 0 \le i \le n    \right\} \formpunkt
+    \end{align}
+    \begin{lemma}
+      Ist \( K \) ein wohlzentrierter Simplizialkomplex, dann gilt für \( \sigma^{p}\in K \)
+      \begin{align}
+        c\left( \sigma^{0} \right) c\left( \sigma^{1} \right) \ldots c\left( \sigma^{p} \right) &\subseteq \sigma^{p} \formkomma
+      \end{align}
+      \begin{proof}
+        Es sei \( x\in c\left( \sigma^{0} \right) c\left( \sigma^{1} \right) \ldots c\left( \sigma^{p} \right)\) 
+        und \( \sigma^{p} = v_{0}v_{1}\ldots v_{p} \), dann
+        \begin{align}
+          x &= \sum_{i=0}^{p} \tilde{\mu}^{i}c(\sigma^{i}) \formtext{mit} \sum_{i=0}^{p}\tilde{\mu}^{i} = 1 \formtext{und} \tilde{\mu}^{i} \ge 0 \\
+            &= \sum_{i=0}^{p} \tilde{\mu}^{i} \sum_{k=0}^{i}\mu_{i}^{k} v_{k} \formtext{, da \( c(\sigma^{i})\in\sigma^{i} \), wobei}  \sum_{k=0}^{i}\mu_{i}^{k} = 1 \formtext{und} \mu_{i}^{k} \ge 0 \\
+            &= \sum_{k=0}^{p} \left( \sum_{i=k}^{p} \tilde{\mu}^{i} \mu_{i}^{k} \right) v_{k}
+             =: \sum_{k=0}^{p} \lambda^{k} v_{k} \formpunkt \label{eqProofKonvex}
+        \end{align}
+        Bleibt noch zu zeigen, dass \eqref{eqProofKonvex} die Bedingung einer Konvexkombination der Ecken von \( \sigma^{p} \) erfüllt:
+        \begin{align}
+           \sum_{k=0}^{p} \lambda^{k} = \sum_{k=0}^{p} \sum_{i=k}^{p} \tilde{\mu}^{i} \mu_{i}^{k}
+                                      = \sum_{i=0}^{p} \tilde{\mu}^{i} \sum_{k=0}^{i}\mu_{i}^{k}
+                                      = \sum_{i=0}^{p} \tilde{\mu}^{i}
+                                      = 1 \formkomma
+        \end{align}
+        zudem ist \( \lambda^{k} = \sum_{i=k}^{p} \tilde{\mu}^{i} \mu_{i}^{k}  \ge 0\), da alle Summanden nicht negativ sind, also ist \( x \in \sigma^{p} \).
+      \end{proof}
+    \end{lemma}
+    Somit ist Definition \ref{defDualgitter} sinnvoll und das Dualgitter existiert unter den getroffenen Voraussetzungen.
 
+    Nun wissen wir welches das zum wohlzentrierten Primärgitter duale Gitter sein soll.
+    Was ist aber konkret dual zu einen Element, also ein einzelnes Simplex,  aus dem Primärgitter?
+    Betrachten wir eine 2D Delaunaytriangulierung und das dazugehörige Voronoidiagramm, dann ist die Dualitätszugehörigkeit geometrisch klar.
+    Ecken sind dual zu den Voroinoizellen, Kanten zu den Kanten, der Zelle und Dreiecke zu den Ecken, der Zelle.
+    All diese, im allgemeinen Zellen, lassen sich nun auch innerhalb des \( \csd K \) als Vereinigungen von Simplexen darstellen.
+    In \cite{hirani} und \cite{munkres} werden die Dualzellen als offene Zellen eingeführt.
+    Das wollen wir hier nicht machen, da es für diese Arbeit nicht von nöten ist und weitere technische Kompliziertheiten beinhalten würde.
 
+    \begin{definition}
+      Es sei \( K \) ein wohlzentriertes Primärgitter, dann definieren wir die Dualzelle von \( \sigma^{p}\in K \) durch
+      \begin{align}
+        \D \left( \sigma^{p} \right) &:= \bigcup_{\sigma^{p} \prec \sigma^{p+1} \prec \ldots \prec \sigma^{n}}
+                                                    c(\sigma^{p}) c(\sigma^{p+1}) \ldots c(\sigma^{n}) \formpunkt
+      \end{align}
+      Wobei die Simplizes \( c(\sigma^{p}) c(\sigma^{p+1}) \ldots c(\sigma^{n}) \in \csd K \) die (elementaren) Dualsimplizes von \( \sigma^{p} \) sind.
+    \end{definition}
+    Auch hier lässt sich eine Orientierung für die elementaren Dualsimplizes induzieren.
+    \begin{definition}
+      \label{defIndOriElemDual}
+      Es sei \( K \) ein wohlzentriertes Primärgitter, dann induziert \( \sigma^{p}\in K \) eine Orientierung für 
+      \( \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right] \in \csd K \) durch
+      \begin{align}
+      \begin{aligned}
+        \sgn_{\sigma^{p}} \left( \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right] \right)
+          &:= \sgn_{\sigma^{p}}\left( \left[ c(\sigma^{0}), c(\sigma^{1}), \ldots, c(\sigma^{p}) \right] \right)\\
+          &\phantom{:=}\cdot \sgn_{\sigma^{n}}\left( \left[ c(\sigma^{0}), c(\sigma^{1}), \ldots, c(\sigma^{n}) \right] \right)
+      \end{aligned}
+      \end{align}
+      für beliebig gewählte \( \sigma^{0}\prec \sigma^{1} \prec \ldots \prec \sigma^{p} \), wobei \( \sgn_{\bullet}(\bullet) \) die induzierten Orientierungen aus Definition \ref{defIndOri} sind.
+    \end{definition}
+    Definition \ref{defIndOriElemDual} ist wohldefiniert, das heißt unabhängig von den gewählten \( \sigma^{i} \prec \sigma^{p} \), 
+    denn würden wir ein \( \sigma^{i} \) durch ein \( \tilde{\sigma}^{i} \prec \sigma^{p} \) austauschen und sich dabei die Orientierung für das resultierende
+    \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{p}) \right] \) ändern, dann auch bei 
+    \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{n}) \right] \). 
+    Induktiv gilt dieses dann auch für alle möglichen mehrmaligen Austauschungen. \question{formaler?}
+    \todo[inline]{evtl. noch folgern mit beweis, dass alle benachbarten elem. dualsimplizes gleichorientiert sind}
+
+  \begin{fazit}
+    \todo[inline]{evtl. noch mit baryzentrische dualität vergleichen, s. hirani 2.6}
+  \end{fazit}
+
+\section{Kettenkomplexe}
 
 \section{Gittergenerierung für Oberflächen}
 
@@ -941,4 +1017,3 @@
       auf.
 
 
-\section{Kettenkomplexe}
