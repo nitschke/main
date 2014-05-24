@@ -618,6 +618,108 @@
       \end{align}
       für beliebig gewählte \( \sigma^{0}\prec \sigma^{1} \prec \ldots \prec \sigma^{p} \), wobei \( \sgn_{\bullet}(\bullet) \) die induzierten Orientierungen aus Definition \ref{defIndOri} sind.
     \end{definition}
+    \begin{figure}
+      \begin{minipage}[t]{0.45\textwidth}
+        \begin{tikzpicture}[>=latex, scale=2]
+          % Coords
+          \coordinate (V0) at (0,0);
+          \coordinate (V1) at (2,0);
+          \coordinate (V2) at (1,2);
+          \coordinate (C01) at (1,0);
+          \coordinate (C02) at (0.5,1);
+          \coordinate (C12) at (1.5,1);
+          \coordinate (C) at (1,0.75);
+          % Arrows
+          \draw[line width=1pt]
+            (V0) -- (V1);
+          \draw[line width=1pt]
+            (V1) -- (V2);
+          \draw[line width=1pt]
+            (V2) -- (V0);
+          \draw[line width=1pt]
+            (V0) -- (C);
+          \draw[line width=1pt]
+            (V1) -- (C);
+          \draw[line width=1pt]
+            (V2) -- (C);
+          \draw[line width=1pt]
+            (C01) -- (C);
+          \draw[line width=1pt]
+            (C02) -- (C);
+          \draw[line width=1pt]
+            (C12) -- (C);
+          % Points
+          \fill (V0) node[below left] {\( v_{0} \)} circle (2pt);
+          \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
+          \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
+          \fill (C01) node[below] {\( c_{01} \)} circle (2pt);
+          \fill (C02) node[above left] {\( c_{02} \)} circle (2pt);
+          \fill (C12) node[above right] {\( c_{12} \)} circle (2pt);
+          \fill (C) node[left] {\( c_{012}\,\)} circle (2pt);
+        \end{tikzpicture}
+        \caption[Bsp. Umkreismittelpunktunterteilung]{Umkreismittelpunktunterteilung eines Dreieckelements \( v_{0}v_{1}v_{2} \) mit dessen Kanten und Ecken,
+                                                      wobei \( c_{\left( v_{i} \right)}:=c(\left( v_{i} \right)) \)}
+        \label{figCSDDreieck}
+      \end{minipage}
+      \begin{minipage}[t]{0.45\textwidth}
+        \begin{tikzpicture}[scale=2, >=latex]
+          % Coords
+          \coordinate (V0) at (0,0);
+          \coordinate (V1) at (2,0);
+          \coordinate (V2) at (1,2);
+          \coordinate (C01) at (1,0);
+          \coordinate (C) at (1,0.75);
+          \coordinate (VV0) at (0,-0.3);
+          \coordinate (VV1) at (2,-0.3);
+          % Arrows
+          \draw[line width=1pt, ->]
+            (V0) -- node[below]{\( +1 \)} (C01);
+          \draw[line width=1pt, ->]
+            (V1) -- node[below]{\( -1 \)} (C01);
+          \draw[line width=1pt, ->]
+            (V1) -- (V2);
+          \draw[line width=1pt, ->]
+            (V2) -- (V0);
+          \draw[line width=1pt, ->]
+            (V0) -- (C);
+          \draw[line width=1pt, ->]
+            (V1) -- (C);
+          \draw[line width=1pt, ->]
+            (C01) -- (C);
+          \draw[line width=1pt, ->]
+            (VV0) -- (VV1);
+          \draw[line width=1pt, style=dotted]
+            (V0) -- (VV0);
+          \draw[line width=1pt, style=dotted]
+            (V1) -- (VV1);
+          % Points
+          \fill (V0) node[left] {\( v_{0} \)} circle (2pt);
+          \fill (V1) node[right] {\( v_{1} \)} circle (2pt);
+          \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
+          \fill (C01) node[below] {\( c_{01} \)} circle (2pt);
+          \fill (C) node[above] {\( c_{012}\)} circle (2pt);
+          \fill (VV0) node[left] {\( v_{0} \)} circle (2pt);
+          \fill (VV1) node[right] {\( v_{1} \)} circle (2pt);
+          % circ arrow
+          \coordinate (CC) at (1,1.25);
+          \def\r{0.2} 
+          \draw[line width=1pt, ->] ($(CC)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+          % circ arrow
+          \coordinate (CC) at (0.75,0.25);
+          \fill (CC) node[] {\small\(+1\)};
+          \def\r{0.15} 
+          \draw[line width=1pt, ->] ($(CC)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
+          % circ arrow
+          \coordinate (CC) at (1.25,0.25);
+          \fill (CC) node[] {\small\(-1\)};
+          \def\r{0.15} 
+          \draw[line width=1pt, ->] ($(CC)+(405:\r)$) arc (405:135:\r) -- ++ (3pt,3pt);
+        \end{tikzpicture}
+        \caption[Bsp. Umkreismittelpunktunterteilung]{Umkreismittelpunktunterteilung eines Dreieckelements \( v_{0}v_{1}v_{2} \) mit dessen Kanten und Ecken,
+                                                      wobei \( c_{012}:=c(v_{0}v_{1}v_{2}) \)}
+        \label{figCSDDreieck}
+      \end{minipage}
+    \end{figure}
     Definition \ref{defIndOriElemDual} ist wohldefiniert, das heißt unabhängig von den gewählten \( \sigma^{i} \prec \sigma^{p} \), 
     denn würden wir ein \( \sigma^{i} \) durch ein \( \tilde{\sigma}^{i} \prec \sigma^{p} \) austauschen und sich dabei die Orientierung für das resultierende
     \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{p}) \right] \) ändern, dann auch bei 
@@ -626,6 +728,10 @@
     \todo[inline]{evtl. noch folgern mit beweis, dass alle benachbarten elem. dualsimplizes gleichorientiert sind}
 
   \begin{fazit}
+    Damit wäre nun das geometrische Fundament für ein DEC gelegt, welches für diese Arbeit hier vollkommen ausreichend ist.
+    Wenn wir genau hinschauen, dann ist zu bemerken, dass nicht alle Simplizes des Dualgitters vom Primärgitter nach unseren Definitionen eine induzierte Orientierung erhalten können.
+    Wohl aber für eine Teilmenge, genauer für den \( \star K \subset \csd K \), den wir in \todo{verweis} noch kennenlernen werden und mehr als diese Teilmenge wird auch für die
+    numerischen Schematas nicht von nöten sein.
     \todo[inline]{evtl. noch mit baryzentrische dualität vergleichen, s. hirani 2.6}
   \end{fazit}
 
