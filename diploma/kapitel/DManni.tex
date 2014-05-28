@@ -522,8 +522,8 @@
       \end{align}
       die Umkreismittelpunktunterteilung von \( K \).
       (Dabei ist zu beachten, dass die Indizierung unten vorgenommen wurde und nicht mit der Dimension der Simplizes verwechselt werden
-      sollte. Gefordert wird, dass die Dimension der Simplizes von links nach rechts streng monoton steigend sein soll)
-      \todo{evtl. Bild, falls noc ein 2. dazu kommt oder kurzes erklärendes bsp. falls noch platz ist}
+      sollte. Gefordert wird, dass die Dimension der Simplizes von links nach rechts streng monoton steigend sein soll. 
+      Vgl. dazu das erklärende Beispiel in Abbildung \ref{figCSDDreieck}.)
     \end{definition}
 
     \begin{bemerkung}
@@ -597,6 +597,7 @@
     Das wollen wir hier nicht machen, da es für diese Arbeit nicht von nöten ist und weitere technische Kompliziertheiten beinhalten würde.
 
     \begin{definition}
+      \label{defDualZelle}
       Es sei \( K \) ein wohlzentriertes Primärgitter, dann definieren wir die Dualzelle von \( \sigma^{p}\in K \) durch
       \begin{align}
         \D \left( \sigma^{p} \right) &:= \bigcup_{\sigma^{p} \prec \sigma^{p+1} \prec \ldots \prec \sigma^{n}}
@@ -620,6 +621,7 @@
     \end{definition}
     \begin{figure}
       \begin{minipage}[t]{0.45\textwidth}
+        \centering
         \begin{tikzpicture}[>=latex, scale=2]
           % Coords
           \coordinate (V0) at (0,0);
@@ -649,19 +651,21 @@
           \draw[line width=1pt]
             (C12) -- (C);
           % Points
-          \fill (V0) node[below left] {\( v_{0} \)} circle (2pt);
-          \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
-          \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
-          \fill (C01) node[below] {\( c_{01} \)} circle (2pt);
-          \fill (C02) node[above left] {\( c_{02} \)} circle (2pt);
-          \fill (C12) node[above right] {\( c_{12} \)} circle (2pt);
-          \fill (C) node[left] {\( c_{012}\,\)} circle (2pt);
+          \fill (V0) node[below left] {\( v_{0} \)} circle (1.5pt);
+          \fill (V1) node[below right] {\( v_{1} \)} circle (1.5pt);
+          \fill (V2) node[above] {\( v_{2} \)} circle (1.5pt);
+          \fill (C01) node[below] {\( c_{01} \)} circle (1.5pt);
+          \fill (C02) node[above left] {\( c_{02} \)} circle (1.5pt);
+          \fill (C12) node[above right] {\( c_{12} \)} circle (1.5pt);
+          \fill (C) node[left] {\( c_{012}\,\)} circle (1.5pt);
         \end{tikzpicture}
         \caption[Bsp. Umkreismittelpunktunterteilung]{Umkreismittelpunktunterteilung eines Dreieckelements \( v_{0}v_{1}v_{2} \) mit dessen Kanten und Ecken,
-                                                      wobei \( c_{\left( v_{i} \right)}:=c(\left( v_{i} \right)) \)}
+                                                      wobei \( c_{v_{1}\ldots v_{p}}:=c\left( v_{1}\ldots v_{p} \right) \)}
         \label{figCSDDreieck}
       \end{minipage}
+      \hfill
       \begin{minipage}[t]{0.45\textwidth}
+        \centering
         \begin{tikzpicture}[scale=2, >=latex]
           % Coords
           \coordinate (V0) at (0,0);
@@ -693,13 +697,13 @@
           \draw[line width=1pt, style=dotted]
             (V1) -- (VV1);
           % Points
-          \fill (V0) node[left] {\( v_{0} \)} circle (2pt);
-          \fill (V1) node[right] {\( v_{1} \)} circle (2pt);
-          \fill (V2) node[above] {\( v_{2} \)} circle (2pt);
-          \fill (C01) node[below] {\( c_{01} \)} circle (2pt);
-          \fill (C) node[above] {\( c_{012}\)} circle (2pt);
-          \fill (VV0) node[left] {\( v_{0} \)} circle (2pt);
-          \fill (VV1) node[right] {\( v_{1} \)} circle (2pt);
+          \fill (V0) node[left] {\( v_{0} \)} circle (1.5pt);
+          \fill (V1) node[right] {\( v_{1} \)} circle (1.5pt);
+          \fill (V2) node[above] {\( v_{2} \)} circle (1.5pt);
+          \fill (C01) node[below] {\( c_{01} \)} circle (1.5pt);
+          \fill (C) node[above] {\( c_{012}\)} circle (1.5pt);
+          \fill (VV0) node[left] {\( v_{0} \)} circle (1.5pt);
+          \fill (VV1) node[right] {\( v_{1} \)} circle (1.5pt);
           % circ arrow
           \coordinate (CC) at (1,1.25);
           \def\r{0.2} 
@@ -715,9 +719,11 @@
           \def\r{0.15} 
           \draw[line width=1pt, ->] ($(CC)+(405:\r)$) arc (405:135:\r) -- ++ (3pt,3pt);
         \end{tikzpicture}
-        \caption[Bsp. Umkreismittelpunktunterteilung]{Umkreismittelpunktunterteilung eines Dreieckelements \( v_{0}v_{1}v_{2} \) mit dessen Kanten und Ecken,
-                                                      wobei \( c_{012}:=c(v_{0}v_{1}v_{2}) \)}
-        \label{figCSDDreieck}
+        \caption[Bsp. induzierte Orientierung]{ Wie wir sehen ist
+                                               \( \sgn_{\left[ v_{0},v_{1} \right]}\left( [ c_{01},c_{012} ] \right) = +1 \),
+                                               dabei spielt es keine Rolle, ob wir \( v_{0} \prec \left[ v_{0},v_{1} \right] \)
+                                               oder \( v_{1} \prec \left[ v_{0}, v_{1} \right] \) für die Berechnung hinzuziehen.}
+        \label{figIndOrientDualKante}
       \end{minipage}
     \end{figure}
     Definition \ref{defIndOriElemDual} ist wohldefiniert, das heißt unabhängig von den gewählten \( \sigma^{i} \prec \sigma^{p} \), 
@@ -725,6 +731,8 @@
     \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{p}) \right] \) ändern, dann auch bei 
     \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{n}) \right] \). 
     Induktiv gilt dieses dann auch für alle möglichen mehrmaligen Austauschungen. \question{formaler?}
+    
+    In Abbildung \ref{figIndOrientDualKante} ist beispielhaft die Berechnung der induzierten Orientierung für eine elementare Dualkante in einem Dreieckelement dargestellt. 
     \todo[inline]{evtl. noch folgern mit beweis, dass alle benachbarten elem. dualsimplizes gleichorientiert sind}
 
   \begin{fazit}
@@ -735,7 +743,159 @@
     \todo[inline]{evtl. noch mit baryzentrische dualität vergleichen, s. hirani 2.6}
   \end{fazit}
 
+
+
+
+
+
+
+
+
 \section{Kettenkomplexe}
+
+  \begin{ziel}
+    blub  
+  \end{ziel}
+
+  \begin{definition}
+    Eine \( p \)-Kette ist eine formale Summe aus \( p \)-Simplizes mit Koeffizienten in \( \Z \),
+    das heißt für einen Simplizialkomplex \( K \) ist
+    \begin{align}
+      \label{eqKette}
+      C_{p}(K) &:= \left\{\sum_{\sigma\in K^{(p)}}a_{\sigma}\sigma \middle| a_{\sigma}\in\Z \right\}
+    \end{align}
+    die Menge aller \( p \)-Ketten über \( K \).
+  \end{definition}
+  Prinzipiell würde für das reine Rechnen mit \( p \)-Ketten Koeffizienten aus \( \left\{ +1, 0,  -1 \right\} \) ausreichen,
+  da wir Simplizes gleicher Dimension immer nur "`aneinander reihen"' (konkatieren) werden, das entspräche das reine Addieren (\( +1 \)) zweier benachbarter Simplizes.
+  Subtrahieren (\( -1 \)) erlaubt zudem die Orientierung, falls vorhanden, zu wechseln.
+  Auch Koeffizienten aus \( \R \) sind denkbar, dann wäre \( C_{p}(K) \) ein \( \R \)-Vektorraum.
+  Das wir hier jedoch \( \Z \) gewählt haben, hat den Vorteil, dass \( C_{p}(K) \) bezüglich der Addition eine freie abelsche Gruppe ist
+  (mit Erzeugendensystem \( K^{(p)} \), d.h.  \( \left\langle K^{(p)} \right\rangle_{C_{p}(K)} = C_{p}(K) \))
+  in der die Universaleigenschaft gilt.
+  Genauer \( C_{p}(K) \) ist frei bzgl jeder abelschen Gruppe \( \mathfrak{A} \), deswegen kommutiert das Diagramm
+  \begin{align}
+    \label{diagFreieAbelscheGruppe}
+    \begin{xy}
+      \xymatrix{
+        C_{p}(K) \ar[rd]^{\widehat{op}} & \\
+        K^{(p)} \ar@^{(->}[u] \ar[r]_{op}& \mathfrak{A}
+      }
+    \end{xy}
+  \end{align}
+  mit \( op = \widehat{op}|_{K^{(p)}} \), das heißt \( \widehat{op} \) ist der eindeutig bestimmte Homomorphismus, der \( op \) fortsetzt und zwar gilt
+  \begin{align}
+    \widehat{op}\left(\sum_{\sigma\in K^{(p)}}a_{\sigma}\sigma\right) = \sum_{\sigma\in K^{(p)}}a_{\sigma}op(\sigma) \formpunkt
+  \end{align}
+  Somit reicht es vollkommen aus, dass wir bestimmte Operatoren/Homomorphismen nur auf der Basis definieren und diese dann linear fortsetzen.
+  Speziell werden wir uns das noch für \( \mathfrak{A} = C_{q}(\csd K) \), \( C_{q}(K) \) oder \( \R \) zunutze machen. \todo{noch mehr?}
+
+  Geometrisch kann die in \eqref{eqKette} rein formale Addition als Vereinigung interpretiert werden. 
+  In Definition \ref{defDualZelle} wurde die Dualzelle eines \( p \)-Simplex eingeführt. 
+  Sie ist die geometrische Vereinigung von \( (n-p) \)-Simplizes.
+  Nun liegt es nahe, diese Dualzelle als \( (n-p) \)-Kette darzustelle.
+  Das führt uns zur Definition des Sternoperators.
+
+  \begin{definition}
+     Es sei \( K \) ein wohlzentriertes Primärgitter der Dimension \( n \).
+     Der Sternoperator \( \star: C_{p}(K) \rightarrow   C_{n-p}(\csd K) \) ist definiert durch
+     \begin{align}
+       \star\sigma^{p} := \sum_{\sigma^{p} \prec \sigma^{p+1} \prec \ldots \prec \sigma^{n}}
+                                                   s_{\sigma^{p}, \sigma^{p+1}, \ldots, \sigma^{n}} \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right]
+     \end{align}
+     mit \( s_{\sigma^{p}, \sigma^{p+1}, \ldots, \sigma^{n}}:= \sgn_{\sigma^{p}} \left( \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right] \right) \) die
+     durch \( \sigma^{p} \) induzierte Orientierung für das entsprechende elementare Dualsimplex.
+  \end{definition}
+  Wie man sieht besteht das Bild von \( \star \) nur aus Verkettungen von elementaren Dualsimplizes und freilich ist das eine Untergruppe des \( C_{n-p}(\csd K) \).
+  Wir definieren deshalb hier \( C_{n-p}(\star K) := Im(\star_{(p)}) = \star C_{p}(K) \).
+  Also gilt \( \star: C_{p}(K) \rightarrow   C_{n-p}(\star K) \).
+
+  Wir können somit Simplizes verketten und haben mit dem Sternoperator auch einen Isomorphismus
+  zwischen den Ketten des Primär- und elementaren Dualgitters.
+  Die Surjektivität ist per Definition gegeben, da \( C_{n-p}(\star K) \) Bild ist.
+  Für
+  \begin{align}
+    0 &= \star \sum_{\sigma \in K^{(p)}} a_{\sigma}\sigma = \sum_{\sigma \in K^{(p)}} a_{\sigma} \left( \star\sigma\right)
+  \end{align}
+  ergibt sich über Koeffizientenvergleich nur der triviale Kern \( \left\{ 0 \right\} \) für den Gruppenhomomorphismus \( \star \), 
+  folglich ist der Sternoperator auch injektiv.
+  
+  Desweiteren ist auch \( C_{n-p}(\star K) \) freie abelsche Gruppe mit Erzeugendensystem \( \star K^{(p)} := \star\left( K^{(p)} \right) \), 
+  denn für jedes \( \hat{c} = \star c \in C_{n-p}(\star K) \) mit \( c = \sum_{\sigma \in K^{(p)}} a_{\sigma}\sigma \in C_{p}(K) \) für gewisse \( a_{\sigma} \in \Z \) gilt
+  \begin{align}
+    \label{eqSternSigmaKette}
+    \hat{c} &= \star \sum_{\sigma \in K^{(p)}} a_{\sigma}\sigma
+             = \sum_{\sigma \in K^{(p)}} a_{\sigma} \left( \star\sigma\right)
+             = \sum_{\hat{\sigma}:=\left( \star\sigma\right) \in \star K^{(p)} } a_{\sigma} \hat{\sigma} \formpunkt
+  \end{align}
+  Somit ist \(\star K^{(p)}  \) Erzeugensystem und falls \( \hat{c} = \star c = 0 \), dann muss auch \( c = 0 \) gelten, weil der Sternoperator ein Gruppenisomorphismus ist,
+  das heißt es wären alle \( a_{\sigma} = 0 \) in \eqref{eqSternSigmaKette} als einzige (triviale) Lösung für \( \hat{c} = 0 \).
+  Genauso wie bei \eqref{diagFreieAbelscheGruppe} können wir nun Operatoren auf \( C_{n-p}(\star K) \) auf der Basis \( \star K^{(p)} \) definieren und fortsetzen, 
+  wenn der Operator auf eine abelsche Gruppe abbildet.
+
+  Da der Sternoperator das simpliziale Analogon zum Hodge-Stern-Operator \( * \) werden soll, sollten auch analoge, also auf syntaktischer Ebene gleiche, Bedingungen gelten.
+  Für eine Differentialform \( \alpha\in\Omega^{p}(M_{n}) \) gilt 
+  \( **\alpha = (-1)^{p(n-p)}\alpha \) (vgl. \cite{Marsden}, Kap.6.2.)\footnote{Der Index, der von uns behandelten Mannigfaltigkeiten, ist immer null.}.
+  Deswegen definieren wir den Sternoperator auf \( C_{p}(\star K) \) implizit über genau diese Bedingung.
+
+  \begin{definition}
+    Es sei \( K \) ein wohlzentriertes Primärgitter der Dimension \( n \).
+    Der (duale) Sternoperator \( \star: C_{p}(\star K) \rightarrow   C_{n-p}(K) \) definiert sich über
+    \begin{align}
+      \label{eqDoppelSternBedingung}
+      \star\star \sigma^{n-p} &= (-1)^{p(n-p)}\sigma^{n-p}
+    \end{align}
+    für alle \( \sigma^{n-p} \in C_{n-p}(K) \).
+  \end{definition}
+  Natürlich gilt Bedingung \eqref{eqDoppelSternBedingung} auch für alle Ketten \( \star\sigma^{n-p} := \hat{\sigma}^{p} \in C_{p}(\star K)\), denn
+  \begin{align}
+    \begin{aligned}
+    \star\star\hat{\sigma}^{p} &= \star\star\star\sigma^{n-p} = \star\left((-1)^{p(n-p)}\sigma^{n-p}\right)
+                                = (-1)^{p(n-p)}\star\sigma^{n-p} \\
+                                &=  (-1)^{p(n-p)}\hat{\sigma}^{p} \formpunkt
+    \end{aligned}
+  \end{align}
+
+  \begin{bemerkung}
+    Es sei \( K \) ein zweidimensionales wohlzentriertes Primärgitter ohne Rand,
+    dann wird mit dem Sternoperator
+    \begin{itemize}
+      \item ein Knoten auf eine 2-Kette abgebildet, so dass alle Dreiecke in dieser Verkettung vorkommen, die diesen Knoten als Facette haben, et vice versa.
+            Die Orientierung der Flächenelemente ist die aller Flächenelemente. Die sich ergebene 2-Kette nennen wir auch Voronoizelle.
+      \item eine Kante \( \sigma^{1} \) auf eine 1-Kette abgebildet, die aus genau den beiden dualen Kanten des \( \csd K \) besteht, die \( c(\sigma^{1}) \) als gemeinsamen Randpunkt
+            haben, et vice versa.
+            Die sich ergebene 1-Kette nennen wir auch Voronoikante. 
+            Die orientierte Kante bzw. Voronoikante wird somit immer in Richtung der Flächenorientierungen "`gedreht"'.
+      \item ein Dreieckelement auf dessen Umkreismittelpunkt abgebildet, et vice versa, deswegen nennen wir den Umkreismittelpunkt auch Voronoiknoten.
+    \end{itemize}
+    In Abbildung \ref{figBspSternoperator2D} ist dieser Zusammenhang für einen Auschnitt eines Primärgitters beispielhaft dargestellt.
+  \end{bemerkung}
+
+  \begin{figure}
+    \centering\includegraphics[width=0.8\textwidth]{bilder/dualSigma0.eps}
+    \caption[Bsp. Sternoperator in 2D]{Beispiel für den Sternoperator auf einem Primärgitter der Dimension 2.
+                                       Für Knoten und Volumenelemente ändert sich die Orientierung auch nach mehrmaliger Anwendung nicht,
+                                       dagegen muss bei Kanten immer gegen den Uhrzeigersinn "`gedreht"' werden, so dass z.B. \( \star\star\sigma^{1} = -\sigma^{1} \)}
+    \label{figBspSternoperator2D}
+  \end{figure}
+
+  Nun wird es Zeit der Überschrift Rechnung zutragen und einen Operator einzuführen, der die Komplexeigenschaft erfüllt. 
+  
+  \begin{definition}
+    Es sei \( K \) ein Simplizialkomplex und \( 0 < p \le n \).
+    Der Randoperator \( \partial_{p}: C_{p}(K) \rightarrow C_{p-1}(K) \) definiert sich durch
+    \begin{align}
+      \partial_{p}\sigma^{p} = \sum_{i=0}^{p} (-1)^{i} \left[ v_{0}, v_{1}, \ldots, \hat{v}_{i}, \ldots, v_{p} \right]
+    \end{align}
+    wobei \( \sigma^{p} = \left[ v_{0}, v_{1}, \ldots, v_{p} \right] \in K\). 
+    Das Dach bedeutet wieder, dass die entsprechende Ecke weggelassen wird.
+    Wenn kein Grund zur Verwirrung besteht, dann darf auch nur \( \partial \) statt \( \partial_{p} \) geschrieben werden.
+  \end{definition}
+
+  
+
+
+
 
 \section{Gittergenerierung für Oberflächen}
 
