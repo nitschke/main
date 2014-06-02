@@ -1,12 +1,39 @@
 \chapter{Diskretes Äußeres Kalkül (DEC)}
 \label{chapterDEC}
 
-\section{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
 see \cite{Lee} \cite{FirstCourse}
+
+\section{Diskrete Differentialformen}
+  
+  \begin{definition}
+    Eine diskrete \( p \)-Form ist ein Homomorphismus vom Kettenkomplex \( C_{p}(K) \) nach \( \R \).
+    Die Menge aller dieser Homomorphismen bezeichnen wir je nach Kontext mit \( C^{p}(K) \) (Koketten)
+    oder \( \Omega^{p}_{d}(K) \) (diskrete Differentialformen). 
+    Das heißt
+    \begin{align}
+      \hom(C_{p}(K),\R) =: C^{p}(K) =: \Omega^{p}_{d}(K) \formpunkt
+    \end{align}
+  \end{definition}
+  
+  \begin{folgerung}
+    Da \( \R \) mit der Addition eine abelsche Gruppe ist, können wir uns wieder die Universalitätseigenschaft \eqref{diagFreieAbelscheGruppe} des Kettenkomplexes zunutze machen.
+    Für \( p \)-Kette \( c = \sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma \in C_{p}(K)\) und diskrete \( p \)-Form \( \alpha_{d}\in\Omega^{p}_{d}(K) \) gilt
+    \begin{align}
+      \alpha_{d}(c) &= \alpha_{d}\left(\sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma\right) = \sum_{\sigma\in K^{(p)}} a_{\sigma} \alpha_{d}(\sigma) \formkomma
+    \end{align}
+    damit reicht es auch hier aus die diskreten \( p \)-Formen nur auf den \( p \)-Simplizes zu definieren.
+  \end{folgerung}
+
+
+  
+  
 
 \section{Äußere Ableitung}
   
-  \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}
+
+  
+
+  
 
 \section{Hodge-Operator}
 
@@ -14,6 +41,8 @@ see \cite{Lee} \cite{FirstCourse}
 
   \subsection{Beispiel: Laplace-Gleichung}
 
+  \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
+  \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}
   \subsection{Beispiel: Krümmung Teil 3: Krümmungsvektor}
 
 

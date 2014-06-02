@@ -738,9 +738,21 @@
   \begin{fazit}
     Damit wäre nun das geometrische Fundament für ein DEC gelegt, welches für diese Arbeit hier vollkommen ausreichend ist.
     Wenn wir genau hinschauen, dann ist zu bemerken, dass nicht alle Simplizes des Dualgitters vom Primärgitter nach unseren Definitionen eine induzierte Orientierung erhalten können.
-    Wohl aber für eine Teilmenge, genauer für den \( \star K \subset \csd K \), den wir in \todo{verweis} noch kennenlernen werden und mehr als diese Teilmenge wird auch für die
-    numerischen Schematas nicht von nöten sein.
+    Wohl aber für eine Teilmenge des \( \csd K \), mehr als diese Teilmenge wird auch für die
+    numerischen Schematas nicht von nöten sein, wie wir noch sehen werden.
     \todo[inline]{evtl. noch mit baryzentrische dualität vergleichen, s. hirani 2.6}
+    
+    Leider ist gerade die Wohlzentriertheit eine problematische Bedingung für zulässige Gitter.
+    Zum Beispiel in der FEM gibt es diese Anforderung nicht, obgleich wohlzentrierte Gitter die numerischen Eigenschaften sicherlich verbessern würden.
+    Wie dem auch sei, in \ref{secGittergenerierung} wird ein (ingeneursmäßiger) Ansatz geboten für den DEC brauchbare Triangulierungen aus nicht zulässigen Gittern zu generieren.
+    Jedoch setzt das auch einiges explizites oder implizites Wissen an die tatsächliche Geometrie der Mannigfaltigkeit voraus und es muss zusätzliche Rechnergestützte Arbeit in das Problem
+    gesteckt werden. Damit zeichnet sich schon hier das größte Manko eines DECs auf wohlzentrierten Primärgittern ab.
+    In zukünftigen Arbeiten muss die Wohlzentriertheit abgeschwächt werden.
+    Ein kleiner Sieg wäre zum Beispiel schon eine "`Wohlzentriertheit im Limes"', das heißt es wären auch Umkreismittelpunkte auf dem Rand eines Simplexes zulässig.
+    Damit wären auf zweidimensionalen Gittern auch Rechtecke möglich und folglich auch, selbst im planaren, Ecken mit nur 4 Dreickelementen, die sich diese Ecke teilen.
+    Prinzipiell könnte so auch der hier vorgestellte DEC in gleicher Art und Weise geführt werden, allerdings können sich so auch Kanten der Länge null ergeben und somit müssten wir auch
+    ständig aufpassen in den späteren Berechnungsschematas nicht durch null zuteilen. Deswegen sehen wir hier in dieser Arbeit davon ab.
+    In \ref{secImpliziteMannigfaltigkeiten} wird auch noch kurz gezeigt wie wir numerisch mit implizit gegeben Oberflächen umgehen können.
   \end{fazit}
 
 
@@ -788,7 +800,7 @@
     \widehat{op}\left(\sum_{\sigma\in K^{(p)}}a_{\sigma}\sigma\right) = \sum_{\sigma\in K^{(p)}}a_{\sigma}op(\sigma) \formpunkt
   \end{align}
   Somit reicht es vollkommen aus, dass wir bestimmte Operatoren/Homomorphismen nur auf der Basis definieren und diese dann linear fortsetzen.
-  Speziell werden wir uns das noch für \( \mathfrak{A} = C_{q}(\csd K) \), \( C_{q}(K) \) oder \( \R \) zunutze machen. \todo{noch mehr?}
+  Speziell werden wir uns das noch für \( \mathfrak{A} = C_{q}(\csd K) \), \( C_{q}(K) \), \( \R \) oder \( \hom(C_{p}(K),\R) \) zunutze machen. \todo{noch mehr?}
 
   Geometrisch kann die in \eqref{eqKette} rein formale Addition als Vereinigung interpretiert werden. 
   In Definition \ref{defDualZelle} wurde die Dualzelle eines \( p \)-Simplex eingeführt. 
@@ -878,6 +890,12 @@
                                        Für Knoten und Volumenelemente ändert sich die Orientierung auch nach mehrmaliger Anwendung nicht,
                                        dagegen muss bei Kanten immer gegen den Uhrzeigersinn "`gedreht"' werden, so dass z.B. \( \star\star\sigma^{1} = -\sigma^{1} \)}
     \label{figBspSternoperator2D}
+    \vspace{1cm}
+    \centering\includegraphics[width=0.8\textwidth]{bilder/dualSigmaRand.eps}
+    \caption[Bsp. Randoperator auf (dualen) 2-Kette]{Rand mit Orientierungen einer (dualen) 2-Kette, genauer, der Voronoizelle, der primären Ecke in der Mitte des Simplizialkomplexes.
+                                                     Es ergibt sich eine (duale) 1-Kette aus Voronoikanten, dual zu den primären Kanten, die sich im Mittelpunkt treffen.
+                                                     Die Orientierung dieser primären Kanten muss für die Berechnung so geändert werden, dass sie alle nach außen zeigen.}
+    \label{figBspRandAufDualZelle}
   \end{figure}
 
   Nun wird es Zeit der Überschrift Rechnung zutragen und einen Operator einzuführen, der die Komplexeigenschaft erfüllt. 
@@ -898,8 +916,11 @@
     Wenn kein Grund zur Verwirrung besteht, dann darf auch nur \( \partial \) statt \( \partial_{p} \) geschrieben werden.
   \end{definition}
 
+  \begin{figure}
+  \end{figure}
+
   \begin{folgerung}
-    Der (duale) Randoperator \( \partial_{p}: C_{p}(\star K) \rightarrow C_{p-1}(\star K) \) lässt sich vom obigen Randoperator ableiten, 
+    Der (duale) Randoperator \( \partial_{p}: C_{p}(\star K) \rightarrow C_{p-1}(\star K) \) lässt sich vom obigen Randoperator für einen wohlzentrierten Simplizialkomplex \( K \) ableiten, 
     in dem wir \( \csd K \) als Simplizialkomplex nutzen und den Operator auf \( C_{p}(\star K) \le C_{p}(\csd K) \) einschränken.
     Das bedeutet für \( \hat{\sigma}^{p} = \star\sigma^{n-p} \in \star K^{(n-p)} \) (\( \star K^{(n-p)} \) Erzeugendensystem für \(  C_{p}(\star K) \))
     \begin{align}
@@ -907,7 +928,7 @@
                                     &= \sum_{\sigma^{n-p+1} \succ \sigma^{n-p}} \star \left( s_{\sigma^{n-p+1}} \sigma^{n-p+1} \right) \formkomma
     \end{align}
     wobei \( s_{\sigma^{n-p+1}} \in \left\{ -1,+1 \right\} \) so gewählt wird, dass die durch \( s_{\sigma^{n-p+1}} \sigma^{n-p+1} \) induzierte Orientierung für
-    \( \sigma^{n-p} \) konsistent ist.
+    \( \sigma^{n-p} \) konsistent ist. (vergleiche Beispiel in Abbilddung \ref{figBspRandAufDualZelle})
   \end{folgerung}
   \begin{proof}
     Das \( \partial_{p} C_{p}(\star K) \le C_{p-1}(\csd K) \) gilt, ist klar wegen der Untergruppeneigenschaft von \( C_{p}(\star K) \) und weil der Randoperator ein Homomorphismus ist.
@@ -942,18 +963,77 @@
     In \eqref{eqproof3} schreiben wir die beiden Summanden für \( \sigma^{k}_{r} \) für \( r = 1,2 \) explizit aus. 
     Es gibt immer genau zwei solcher Folgen \( \sigma^{p}\prec\ldots\prec\sigma^{k-1}\prec\sigma^{k}\prec\sigma^{k+1}\prec\ldots\prec\sigma^{n} \),
     wenn bis auf \( \sigma^{k} \) und \( \sigma^{p} \) alle Simplizes fest gewählt sind. 
-    Die beiden sich ergeben dualen Simplizes sind gegensätzlich orientiert, da die "`Zählrichtung"' der Dualecken anders herum ist.
-    \eqref{eqproof4} folgt daraus, dass sich beide Summanden für \( i=k \) auifheben. 
+    Die beiden sich ergebenden dualen Simplizes sind gegensätzlich orientiert, da die "`Zählrichtung"' der Dualecken anders herum ist.
+    \eqref{eqproof4} folgt daraus, dass sich beide Summanden für \( i=k \) aufheben. 
     Das machen wir dann für alle \( p < k \le n \).
     Der Rest ergibt sich durch aufteilen der Summe und der Definition des Sternoperators.
+
+    Bemerkung:
+    In z.B. \cite{hirani} wurde der duale Randoperator einfach per Definition festgelegt ohne zu prüfen oder zu verweisen ob er den primären Randoperator auf dualen Gittern wiederspricht.
+    Dem wurde hier nun genüge getan. Es ist der gleiche Operator mit eingeschränketem Definitionbereich.
   \end{proof}
 
+  \begin{folgerung}
+    Die Folgen \( \left( C_{p}(K), \partial_{p} \right)_{0 \le p \le n} \) beziehungsweise \( \left( C_{p}(*K), \partial_{p} \right)_{0 \le p \le n} \) 
+    bilden einen (simplizialen) Kettenkomplex.
+    \begin{align}
+      \begin{xy}
+        \xymatrix{
+          0 \ar[r] & 
+          C_{n}(K) \ar[r]^{\partial_{n}} \ar[d]^{\star} & 
+          C_{n-1}(K) \ar[r]^{\partial_{n-1}} \ar[d]^{\star} & 
+          \ldots \ar[r]^{\partial_{1}} & 
+          C_{0}(K) \ar[r] \ar[d]^{\star} &
+          0 \\
+          0 \ar[r] & 
+          C_{n}(\star K) \ar[r]^{\partial_{n}} & 
+          C_{n-1}( \star K) \ar[r]^{\partial_{n-1}} & 
+          \ldots \ar[r]^{\partial_{1}} & 
+          C_{0}(\star K) \ar[r] &
+          0 
+        }
+      \end{xy}
+    \end{align}
+    Das heißt \( \partial_{p} \circ \partial_{p+1} = 0\), was sich einfach nachrechnen lässt.
+    Zudem sei noch der Isomorphismus \( \star \) im Diagramm mit angegeben.
+  \end{folgerung}
+
+    \todo[inline]{homologietheorie falls nötig, falls platz ist noch graphisches beispiel zum randoperator}
+
+    
+  \begin{fazit}
+    Wenn wir allgemein \( C_{p} \) als Funktor auf der Kategorie der Simplizialkomplexe sehen, also
+    \begin{align}
+      \begin{xy}
+        \xymatrix{
+          C_{p}(K) \ar[r]^{C_{p}(f)} & C_{p}(L) \\
+          K \ar@{|->}[u]^{C_{p}} \ar[r]_{f} & L \ar@{|->}[u]_{C_{p}}
+        }
+      \end{xy}
+    \end{align}
+    ist
+    \begin{align}
+      f_{p} &:= C_{p}(f): \sum_{\sigma\in K^{(p)}} a_{i}\sigma \mapsto \sum_{\sigma\in K^{(p)}} a_{i}f(\sigma)
+    \end{align}
+    kanonisch gegeben. 
+    Somit wäre zum einen eine Zuordnung zu den singulären Kettenkomplexen mit 
+    \begin{align}
+      f := \left\langle \bullet, \bullet \right\rangle := K \rightarrow K_{sing} 
+                                                           : \left[ v_{0},\ldots v_{p}\right] \mapsto \left\langle \bullet , \left[ v_{0},\ldots v_{p}\right] \right\rangle
+                                                           := \left( \left[ \mu^{0},\ldots,\mu^{p} \right] \mapsto \sum_{i=0}^{p} \mu^{i} v_{i}\right)
+    \end{align}
+    oder zu den abstrakten Kettenkomplexen mit \( f:=\pi \) (Projektion/Ankleben der Simplizes auf die Mannigfaltigkeit) gegeben.
+    Zum anderen haben wir in zukünftigen Arbeiten auch die Möglichkeit Oberflächen zubetrachten die sich zeitlich ändern 
+     \( f(t):K\rightarrow K(t) \) unter beibehalten der simplizialen Struktur, so es denn möglich ist.
+    Im Einzelnen muss dann noch geprüft werden unter welchen Vorraussetzungen \( f\circ\partial = \partial\circ f\) beziehungsweise \( f\circ\star = \star\circ f\) gilt.
+  \end{fazit}
   
 
 
 
 
 \section{Gittergenerierung für Oberflächen}
+\label{secGittergenerierung}
 
 
   \begin{ziel}
@@ -1255,6 +1335,7 @@
 
 
   \section{Implizit gegebene Oberflächen}
+    \label{secImpliziteMannigfaltigkeiten}
     Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Immersion 
     \begin{align}
       X:(u,v)\mapsto X(u,v)\in\R^{3}
