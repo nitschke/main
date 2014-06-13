@@ -7,22 +7,41 @@ see \cite{Lee} \cite{FirstCourse}
   
   \begin{definition}
     Eine diskrete \( p \)-Form ist ein Homomorphismus vom Kettenkomplex \( C_{p}(K) \) nach \( \R \).
-    Die Menge aller dieser Homomorphismen bezeichnen wir je nach Kontext mit \( C^{p}(K) \) (Koketten)
-    oder \( \Omega^{p}_{d}(K) \) (diskrete Differentialformen). 
+    Die Menge aller dieser Homomorphismen bezeichnen wir je nach Kontext mit \( C^{p}(K) \) (Menge der \( p \)-Koketten)
+    oder \( \Omega^{p}_{d}(K) \) (Menge der diskrete \( p- \)(Differential-)Formen). 
     Das heißt
     \begin{align}
       \hom(C_{p}(K),\R) =: C^{p}(K) =: \Omega^{p}_{d}(K) \formpunkt
     \end{align}
+    Desweiteren erfolgt die Addition punktweise, das heißt
+    \begin{align}
+      \left( \alpha + \beta \right)(c) &:= \alpha(c) + \beta(c)
+    \end{align}
+    für \( \alpha,\beta \in C^{p}(K) \) und \( c \in C_{p}(K) \).
   \end{definition}
   
   \begin{folgerung}
     Da \( \R \) mit der Addition eine abelsche Gruppe ist, können wir uns wieder die Universalitätseigenschaft \eqref{diagFreieAbelscheGruppe} des Kettenkomplexes zunutze machen.
-    Für \( p \)-Kette \( c = \sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma \in C_{p}(K)\) und diskrete \( p \)-Form \( \alpha_{d}\in\Omega^{p}_{d}(K) \) gilt
+    Für eine \( p \)-Kette \( c = \sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma \in C_{p}(K)\) und eine  \( p \)-Kokette \( \alpha\in C^{p}(K) \) gilt
     \begin{align}
-      \alpha_{d}(c) &= \alpha_{d}\left(\sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma\right) = \sum_{\sigma\in K^{(p)}} a_{\sigma} \alpha_{d}(\sigma) \formkomma
+      \alpha(c) &= \alpha\left(\sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma\right) = \sum_{\sigma\in K^{(p)}} a_{\sigma} \alpha(\sigma) \formkomma
     \end{align}
-    damit reicht es auch hier aus die diskreten \( p \)-Formen nur auf den \( p \)-Simplizes zu definieren.
+    damit reicht es auch hier aus die \( p \)-Koketten nur auf den \( p \)-Simplizes zu definieren.
   \end{folgerung}
+
+  Hätten wir die Menge der \( p \)-Ketten als \( \R \)-Vektoraum eingeführt, so hätte uns die Frage nach einem inneren Produkt zwischen den Ketten und den Koketten zur dualen Paarung
+  geführt und damit auch, dass \( C^{p}(K) = \left( C_{p}(K) \right)^{*}\) der Dualraum von \( C_{p}(K) \) ist.
+  Nun hält uns aber auch nichts davon ab, dies auch für die hier eingeführten Ketten analog zu machen.
+
+  \begin{definition}
+    \begin{align}
+      \begin{aligned}
+        \left\langle \bullet,\bullet \right\rangle : C^{p}(K) \times C_{p}(K)  &\rightarrow \R \\
+                                                     \left( \alpha, c  \right) &\mapsto \left\langle \alpha, c \right\rangle := \alpha(c)
+      \end{aligned}
+    \end{align}
+    heißt natürliche Paarung zwischen den \( p \)-Koketten (-Formen) und den \( p \)-Ketten.
+  \end{definition}
 
 
   

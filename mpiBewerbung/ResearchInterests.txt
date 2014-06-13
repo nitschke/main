@@ -1,0 +1,7 @@
+Science and Research (Research Interests)*
+Please write a short summary of the research area that you find most interesting, and why.
+
+Please do not exceed 3500 characters or 50 lines in length
+
+In general, I am interested in real world problems and to bring them into a mathematical context. This includes the choice of an appropriate algebraic structure, the development of the solution algorithm and its implementation, testing, evaluating and comparing results and, if necessary, to create an end-user interface.
+Because of my past research, I am very interested in fluid mechanics and problems in curved spaces. But I would also look forward to new scientific challenges.
