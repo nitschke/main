@@ -21,6 +21,7 @@ see \cite{Lee} \cite{FirstCourse}
   \end{definition}
   
   \begin{folgerung}
+    \label{folgUnikKoketten}
     Da \( \R \) mit der Addition eine abelsche Gruppe ist, können wir uns wieder die Universalitätseigenschaft \eqref{diagFreieAbelscheGruppe} des Kettenkomplexes zunutze machen.
     Für eine \( p \)-Kette \( c = \sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma \in C_{p}(K)\) und eine  \( p \)-Kokette \( \alpha\in C^{p}(K) \) gilt
     \begin{align}
@@ -42,6 +43,53 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     heißt natürliche Paarung zwischen den \( p \)-Koketten (-Formen) und den \( p \)-Ketten.
   \end{definition}
+
+  Die Verbindung zwschen diskreter Form und Differentialform ist die de-Rham-Abbildung.
+  Dazu nehmen wir zunächst an, dass wir einen abstrakten Simplizialkomplex \( L \) vorliegen haben, das heißt, dass alle Simplizes auf der zugehörigen Mannigfaltigkeit \( M \) liegen.
+  Das bringt erst einmal den Vorteil, dass Integration auf den Simplizes das gleiche Ergebinis auch auf der Mannigfaltigkeit liefert.
+
+  \begin{definition}
+    Die de-Rham-Abbildung bildet \( p \)-Differentialformen auf diskrete \( p \)-Formen (Koketten) ab. 
+    Genauer
+    \begin{align}
+      \begin{aligned}
+        \psi^{p}: \Omega^{p}(M) &\rightarrow C^{p}(L) = \Omega_{d}^{p}(L)\\
+                       \alpha   &\mapsto \left( \sigma^{p} \mapsto \int_{\sigma^{p}} \alpha =: \psi^{p}(\alpha)(\sigma^{p}) =  \left\langle \psi^{p}(\alpha), \sigma^{p} \right\rangle\right)
+                       \formkomma
+      \end{aligned}
+    \end{align}
+    das heißt die diskrete \( p \)-Form \( \psi^{p}(\alpha) \in \Omega_{d}^{p}(L)  \) ist auf den \( p \)-Simplizes definiert, was wegen Folgerung \ref{folgUnikKoketten} vollkommen ausreicht.
+  \end{definition}
+
+  Da das Integral ein lineares Funktional ist, ist auch \( \psi \) linear.
+  \todo{whitney abbildung noch ansprechen? Das heißt Interpolation im allgemeinen oder nur speziell?}
+
+  \begin{bemerkung}
+    Nun haben wir bei der Definition der de-Rham-Abbildung vorrausgesetzt, dass ein abstrakter Simplizialkomplex vorliegt.
+    Das entspricht aber nur für flache Mannigfaltigkeiten unseren Anfoderungen.
+    Im Allgemeinen ist die gegebene Triangulation nur eine lineare Approximation der Mannigfaltigkeit und damit auch des zugehörigen abstrakten Simplizialkomplexes.
+    Das bedeutet auch, dass für \( p \ge 1 \) die Differentialformen von \( M \) in einem anderen Raum "`leben"' als die Differentialformen des Polytopes \( |K| \).
+    Für die numerische Analysis ist das eine schwierige Situation, da vor der eigentlichen Diskretisierung (Diskretisierungsfehler) noch eine Approximation (geometrischer Fehler) auf einen stückweise
+    flachen Raum gemacht wird.
+
+    Für \( 0 \)-Formen (identisch zu Skalarfeldern) ergibt sich dieser geometrische Fehler nicht, da nach Vorraussetzung die Ecken des Simplizialkomplexes auf der Mannigfaltigkeit liegen.
+    Hier ist die Diskretisierung genauso wie wir das aus anderen Verfahren, wie die Finite-Differenzen-Methode, gewöhnt sind, da das "`Punktintegral"' nichts weiter als die Auswertung an
+    eben diesem Punkt ist.
+    Das heißt, liegt ein Skalarfeld \( u:M\rightarrow\R \) vor, so ist das diskrete Skalarfeld \( u_{d}:K^{(0)} \rightarrow \R \) an den Ecken definiert.
+    \begin{align}
+      u(v_{i}) &=  \psi(u)(v_{i}) = \left\langle \psi(u), v_{i} \right\rangle= u_{d}(v_{i}) =: u_{i} 
+    \end{align}
+    für alle \( v_{i} \in K^{(0)} \).
+    Die Interpolation zurück zur Mannigfaltigkeit kann dann mittels linearer Ansatzfuktionen erfolgen, die sich auf den abstrakten Volumenenelementen \( \pi(\sigma^{n}) \) definieren.
+    \( \pi \) ist hier wieder die Projektion.
+    \begin{figure}
+      \includegraphics[width=\textwidth]{bilder/EpsilonKette.eps}
+      \caption[Fehler bei der Auswertung diskreter 1-Form]{sadsad}
+      \label{figDiskrete1Form}
+    \end{figure}
+  \end{bemerkung}
+
+
 
 
   
