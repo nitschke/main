@@ -180,6 +180,49 @@ see \cite{Lee} \cite{FirstCourse}
 
 \section{Äußere Ableitung}
   
+  Wenn wir uns den de-Rham-Komplex anschauen, also die für eine \( n \)-Mannigfaltigkeit eindeutig festgelegte Sequenz
+    \begin{align}
+      \begin{xy}
+        \xymatrix{
+          0 \ar[r] & 
+          \Omega^{0}(M) \ar[r]^{\exd^{0}} &
+          \Omega^{1}(M) \ar[r]^{\exd^{1}} &
+          \ldots \ar[r]^{\exd^{n-1}} &
+          \Omega^{n}(M) \ar[r] &
+          0 \\
+        }
+      \end{xy}
+    \end{align}
+  mit den äußeren Ableitungen (Cartansche Ableitungen) \( \exd^{i} \), dann kommt uns das irgendwie bekannt vor.
+  Dieser Kokettenkomplex mit der Komplexeigenschaft \( \exd\circ\exd \equiv 0 \) (auf die Indizierung kann wieder verzichtet werden) ähnelt
+  doch sehr dem simplizialen Kettenkomplex aus Folgerung \ref{folgSimplizialerKettenkomplex} mit dem Unterschied, dass die lineare
+  Abbildung \( \exd \) "`in eine andere Richtung zeigt"' als der lineare Randoperator \( \partial \).
+  Und tatsächlich gibt es eine Verbindung zwischen diesen beiden Komplexen, der Satz von Stokes 
+  (\cite{Marsden}(Kap. 7.2), \cite{jaenich}(Kap. 9))
+  , den wir im vorherigen Abschnitt auch schon benutzt hatten.
+  Wir wollen ihn hier nochmal kurz niederschreiben.
+
+  \begin{satz}[Satz von Stokes]
+    Es sei \( U \) eine orientierte \( p \)-dimensionale berandete Mannigfaltigkeit und \( \alpha\in\Omega^{p-1}(U) \) eine \( (p-1)\)-Form
+    mit kompakten Träger.
+    Dann gilt
+    \begin{align}
+      \int_{U} \exd\alpha &= \int_{\partial U} \alpha \formpunkt
+    \end{align}
+    Dabei ist formal etwas Vorsicht geboten, denn \( \alpha \) ist eine Differentialform auf \( U \) und nicht auf dessen Rand.
+    Deshalb müssen wir uns die Inklusionsabbildung \( \iota:\partial U \rightarrow U \) dazu denken und nutzen die entlang dieser Abbildung
+    zurückgezogene Differentialform \( \iota^{*}\alpha\in\Omega^{p-1}(\partial U) \).
+    Das heißt
+    \begin{align}
+      \int_{\partial U} \alpha &:= \int_{\partial U} \iota^{*}\alpha \formpunkt
+    \end{align}
+    Diese Kurzschreibweise ist berechtigt, denn es gilt für alle \( x\in\partial U \), dass
+    \begin{align}
+      (\iota^{*}\alpha)_{x}(v_{1},v_{2},\ldots,v_{p-1}) = \alpha_{x}(v_{1},v_{2},\ldots,v_{p-1}) \formpunkt
+    \end{align}
+    und da beide Formen auf dem Rand lokal die gleichen Antworten in \( \R \) liefern, spielt das auch für die Integralauswertung keine Rolle.
+  \end{satz}
+  
 
   
 
