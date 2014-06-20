@@ -197,7 +197,8 @@ see \cite{Lee} \cite{FirstCourse}
   Dieser Kokettenkomplex mit der Komplexeigenschaft \( \exd\circ\exd \equiv 0 \) (auf die Indizierung kann wieder verzichtet werden) ähnelt
   doch sehr dem simplizialen Kettenkomplex aus Folgerung \ref{folgSimplizialerKettenkomplex} mit dem Unterschied, dass die lineare
   Abbildung \( \exd \) "`in eine andere Richtung zeigt"' als der lineare Randoperator \( \partial \).
-  Und tatsächlich gibt es eine Verbindung zwischen diesen beiden Komplexen, der Satz von Stokes 
+  Und tatsächlich gibt es eine Verbindung zwischen diesen beiden Komplexen.
+  Es ist der Satz von Stokes 
   (\cite{Marsden}(Kap. 7.2), \cite{jaenich}(Kap. 9))
   , den wir im vorherigen Abschnitt auch schon benutzt hatten.
   Wir wollen ihn hier nochmal kurz niederschreiben.
@@ -211,7 +212,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     Dabei ist formal etwas Vorsicht geboten, denn \( \alpha \) ist eine Differentialform auf \( U \) und nicht auf dessen Rand.
     Deshalb müssen wir uns die Inklusionsabbildung \( \iota:\partial U \rightarrow U \) dazu denken und nutzen die entlang dieser Abbildung
-    zurückgezogene Differentialform \( \iota^{*}\alpha\in\Omega^{p-1}(\partial U) \).
+    zurückgezogene Differentialform \( \iota^{*}\alpha\in\Omega^{p-1}(\partial U) \) (Pullback).
     Das heißt
     \begin{align}
       \int_{\partial U} \alpha &:= \int_{\partial U} \iota^{*}\alpha \formpunkt
@@ -222,6 +223,20 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     und da beide Formen auf dem Rand lokal die gleichen Antworten in \( \R \) liefern, spielt das auch für die Integralauswertung keine Rolle.
   \end{satz}
+
+  \begin{definition}
+    Für eine Mannigfalligkeit \( M \) und einem Primärgitter \( K \) heißt 
+    \begin{align}
+      \begin{aligned}
+        \exd : \Omega^{p}_{d}(K) &\rightarrow \Omega^{p+1}_{d}(K) \\
+               \psi(\alpha) &\mapsto \exd\psi(\alpha):=\psi(\exd \alpha)
+      \end{aligned}
+    \end{align}
+    Korandoperator.
+    \todo{begründung $ \psi(\Omega^{p}) = \Omega^{p}_{d} $  und wohldefiniertheit eigentlich nötig}
+  \end{definition}
+
+
   
 
   
