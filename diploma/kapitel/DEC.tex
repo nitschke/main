@@ -61,7 +61,36 @@ see \cite{Lee} \cite{FirstCourse}
     das heißt die diskrete \( p \)-Form \( \psi^{p}(\alpha) \in \Omega_{d}^{p}(L)  \) ist auf den \( p \)-Simplizes definiert, was wegen Folgerung \ref{folgUnikKoketten} vollkommen ausreicht.
   \end{definition}
 
-  Da das Integral ein lineares Funktional ist, ist auch \( \psi \) linear.
+  \begin{folgerung}
+    Zum einen ist \( \psi \) linear, da das Integral ein lineares Funktional ist.
+    Zum anderen ist die de-Rham-Abbildung surjektiv.
+    Das hat den Vorteil, dass sich jedes \( \alpha_{d}\in\Omega_{d}^{p}(L) \) auch als \( \psi(\alpha) = \alpha_{d} \) schreiben lässt, da
+    immer solch ein \( \alpha\in\Omega^{p}(M) \) existiert.
+    \begin{proof}
+      Da es ausreicht die Aussage für eine Basis von \( \Omega_{d}^{p}(L) \) zu zeigen, nehmen wir einfach die duale Basis 
+      \begin{align}
+        \left(L^{(p)}\right)^{*} 
+            &:= \left\{\sigma_{i}^{*} \in \Omega_{d}^{p}(L) \middle| \sigma_{i}^{*}(\sigma_{j}) = \delta_{i,j}
+                                ,\, i,j=1,\ldots,m \right\} \formkomma
+      \end{align}
+      wobei \( m \) die Anzahl der \( p \)-Simplizes in \( L^{(p)} \) ist und \( \delta_{ij} \) das Kronecker-Delta.
+      Nun brauchen wir für \(i=1,\ldots,m \) nur noch geeignete \( \alpha_{i}\in\Omega^{p}(M) \) finden, so dass
+      \begin{align}
+        \label{eq}
+        \int_{\sigma_{j}} \alpha_{i} &= \delta_{ij}
+      \end{align}
+      gilt. Es sei dazu eine auf \( \sigma_{i}\subset M \) lokale Basis \( \left( x^{1},\ldots,x^{p} \right) \) gegeben, dann definieren
+      wir eine \( p \)-Form auf dem Polytop von \( L^{(p)} \) (\( p \)-Skelett von \( L \))
+      \begin{align}
+        \alpha_{i} &:= \frac{1}{|\sigma_{i}|} \chi_{\sigma_{i}} dx^{1}\wedge\ldots\wedge dx^{p} \in \Omega^{p}(|L^{(p)}|) \formkomma
+      \end{align}
+      wobei \( \chi \) die Indikatorfunktion ist.
+      Mit der Inklusionsabbildung \( \iota: |L^{(p)}| \hookrightarrow M\) erfüllt gerade der Pullback (s.u.
+      \eqref{eqPullbackEntlangInklusion})
+      \( \iota^{*}\alpha_{i}\in\Omega^{p}(M) \) die Anforderung \eqref{eq} 
+      und damit auch \( \psi(\iota^{*}\alpha_{i}) = \sigma^{*}_{i} \).
+    \end{proof}
+  \end{folgerung}
   \todo{whitney abbildung noch ansprechen? Das heißt Interpolation im allgemeinen oder nur speziell?}
 
   \begin{bemerkung}
@@ -211,7 +240,7 @@ see \cite{Lee} \cite{FirstCourse}
       \int_{U} \exd\alpha &= \int_{\partial U} \alpha \formpunkt
     \end{align}
     Dabei ist formal etwas Vorsicht geboten, denn \( \alpha \) ist eine Differentialform auf \( U \) und nicht auf dessen Rand.
-    Deshalb müssen wir uns die Inklusionsabbildung \( \iota:\partial U \rightarrow U \) dazu denken und nutzen die entlang dieser Abbildung
+    Deshalb müssen wir uns die Inklusionsabbildung \( \iota:\partial U \hookrightarrow U \) dazu denken und nutzen die entlang dieser Abbildung
     zurückgezogene Differentialform \( \iota^{*}\alpha\in\Omega^{p-1}(\partial U) \) (Pullback).
     Das heißt
     \begin{align}
@@ -219,6 +248,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     Diese Kurzschreibweise ist berechtigt, denn es gilt für alle \( x\in\partial U \), dass
     \begin{align}
+    \label{eqPullbackEntlangInklusion}
       (\iota^{*}\alpha)_{x}(v_{1},v_{2},\ldots,v_{p-1}) = \alpha_{x}(v_{1},v_{2},\ldots,v_{p-1}) \formpunkt
     \end{align}
     und da beide Formen auf dem Rand lokal die gleichen Antworten in \( \R \) liefern, spielt das auch für die Integralauswertung keine Rolle.
@@ -233,7 +263,7 @@ see \cite{Lee} \cite{FirstCourse}
       \end{aligned}
     \end{align}
     Korandoperator.
-    \todo{begründung $ \psi(\Omega^{p}) = \Omega^{p}_{d} $  und wohldefiniertheit eigentlich nötig}
+    \todo[inline]{begründung $ \psi(\Omega^{p}) = \Omega^{p}_{d} $  und wohldefiniertheit eigentlich nötig}
   \end{definition}
 
 
