@@ -70,7 +70,7 @@ see \cite{Lee} \cite{FirstCourse}
       Da es ausreicht die Aussage für eine Basis von \( \Omega_{d}^{p}(L) \) zu zeigen, nehmen wir einfach die duale Basis 
       \begin{align}
         \left(L^{(p)}\right)^{*} 
-            &:= \left\{\sigma_{i}^{*} \in \Omega_{d}^{p}(L) \middle| \sigma_{i}^{*}(\sigma_{j}) = \delta_{i,j}
+            &:= \left\{\sigma_{i}^{*} \in \Omega_{d}^{p}(L) \middle| \sigma_{i}^{*}(\sigma_{j}) = \delta_{ij}
                                 ,\, i,j=1,\ldots,m \right\} \formkomma
       \end{align}
       wobei \( m \) die Anzahl der \( p \)-Simplizes in \( L^{(p)} \) ist und \( \delta_{ij} \) das Kronecker-Delta.
@@ -100,7 +100,7 @@ see \cite{Lee} \cite{FirstCourse}
     Das bedeutet auch, dass für \( p \ge 1 \) die Differentialformen von \( M \) in einem anderen Raum "`leben"' als die Differentialformen des Polytopes \( |K| \).
     Rein formal ließe sich die Situation entschärfen, in dem wir die Simplizes von \( K \) auf die Mannigfaltigkeit projizieren (vgl. \eqref{diagSingulaerAbstrakt}), also es wird
     \( \left\langle \psi^{p}(\alpha), \pi(\sigma^{p}) \right\rangle = \left( \psi^{p}(\alpha) \circ \pi \right)(\sigma^{p}) \) gerechnet für ein \( \sigma^{p}\in K \).
-    Nur ist in vielen praktischen Aufgaben weder die Projektion noch die Mannigfaltigkeit exakt bekannt, so bleibt also nur die approximative Auswertung des Integrals auf den Ecken.
+    Nur ist in vielen praktischen Aufgaben weder die Projektion noch die Mannigfaltigkeit exakt bekannt, so bleibt also nur die approximative Auswertung des Integrals.
     Wir werden deshalb auch einfach  \( \left\langle \alpha_{d}, \sigma^{p} \right\rangle \) statt \( \left\langle \alpha_{d}, \pi(\sigma^{p}) \right\rangle \) schreiben.
     Für die numerische Analysis ist das eine schwierige Situation, da vor der eigentlichen Diskretisierung (Diskretisierungsfehler) noch eine Approximation (geometrischer Fehler) auf einen stückweise
     flachen Raum gemacht wird.
@@ -255,23 +255,70 @@ see \cite{Lee} \cite{FirstCourse}
   \end{satz}
 
   \begin{definition}
-    \label{defKorandoperator}
+    \label{defAeussereAbleitung}
     Für eine Mannigfalligkeit \( M \) und einem Primärgitter \( K \) heißt 
     \begin{align}
+      \label{eqAeussereAbleitung}
       \begin{aligned}
         \exd : \Omega^{p}_{d}(K) &\rightarrow \Omega^{p+1}_{d}(K) \\
                \psi(\alpha) &\mapsto \exd\psi(\alpha):=\psi(\exd \alpha)
       \end{aligned}
     \end{align}
-    Korandoperator.
+    diskrete äußere Ableitung.
   \end{definition}
     
-  \begin{definition}
-    
-  \end{definition}
 
+  \begin{folgerung}
+    Die diskrete äußere Ableitung lässt sich mit Hilfe des Satzes von Stokes und den Randoperator berechnen.
+    Es sei \( \alpha_{d}=\psi(\alpha)\in\Omega_{d}^{p}(K) \) eine diskrete \( p \)-Form und \( \sigma\in K^{(p+1)} \) ein \( (p+1) \)-Simplex, dann gilt
+    \begin{align}
+      \left\langle \exd\alpha_{d} , \sigma \right\rangle &= \int_{\pi_{\sigma}(\sigma)} \exd\alpha 
+                                                          = \int_{\partial\pi_{\sigma}(\sigma)} \alpha
+                                                          = \int_{\pi_{\partial\sigma}(\partial\sigma)} \alpha
+                                                          = \left\langle \alpha_{d} , \partial\sigma \right\rangle
+    \end{align}
+    mit \( \pi_{\sigma}|_{\partial\sigma} = \pi_{\partial\sigma} \).
+    Deshalb bezeichnen wir \eqref{eqAeussereAbleitung} auch als Korandoperator.
+    Des Weiteren ist mit dieser Notation Definition \ref{defAeussereAbleitung} representantenunabhängig (Wohldefiniertheit).
+    Es sei \( \alpha_{1},\alpha_{2} \in \Omega^{p}(M) \) mit \( \psi(\alpha_{1}) = \psi(\alpha_{2}) \), 
+    dann gilt für alle \( \sigma\in K^{(p+1)} \), dass
+    \begin{align}
+      \left\langle \exd\psi(\alpha_{1}), \sigma \right\rangle &= \left\langle \psi(\alpha_{1}), \partial\sigma \right\rangle
+                                                               = \left\langle \psi(\alpha_{2}), \partial\sigma \right\rangle
+                                                               = \left\langle \exd\psi(\alpha_{2}), \sigma \right\rangle
+    \end{align}
+  \end{folgerung}
   
-
+  \begin{bemerkung}
+    fsadfsad\\
+    \begin{tabular}{|c|c|} \hline
+      Darstellung & Formel \\\hline
+      \begin{minipage}[c]{0.29\textwidth}
+        \centering\input{bilder/tikz/ableitungPrimal0Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.69\textwidth}
+        {\begin{align}
+          \left\langle \exd f , \sigma^{1} \right\rangle &= f(v_{1}) - f(v_{0})
+        \end{align}}
+      \end{minipage} \\\hline
+      \begin{minipage}[c]{0.29\textwidth}
+        \centering\input{bilder/tikz/ableitungPrimal1Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.69\textwidth}
+        {\begin{align}
+          \left\langle \exd \alpha , \sigma^{2} \right\rangle &= \sum_{i=0}^{2} \left\langle \alpha, \sigma_{i}^{1}\right\rangle
+        \end{align}}
+      \end{minipage} \\\hline
+      \begin{minipage}[c]{0.29\textwidth}
+        \centering\input{bilder/tikz/ableitungDual0Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.69\textwidth}
+        {\begin{align}
+          \left\langle \exd f , \star\sigma^{1} \right\rangle &= f(c(\sigma^{2}_{2})) - f(c(\sigma^{2}_{1}))
+        \end{align}}
+      \end{minipage} \\\hline
+    \end{tabular}
+  \end{bemerkung}
   
 
 

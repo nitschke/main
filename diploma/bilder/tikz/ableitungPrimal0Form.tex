@@ -1,0 +1,11 @@
+\begin{tikzpicture}[>=latex]
+  % Coords
+  \coordinate (V0) at (0,0);
+  \coordinate (V1) at (2,0);
+  \draw[line width=1pt, ->]
+    (V0) -- node[below] {\( \sigma^{1} \)} (V1);
+  % Points
+  \fill (V0) node[below left] {\( v_{0} \)} circle (2pt);
+  \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
+\end{tikzpicture}
+
