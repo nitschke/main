@@ -23,10 +23,18 @@
   %circumcenter
   \coordinate (CC0) at (1.333,1);
   \coordinate (CC1) at (2.666,1);
-  \fill (CC0) node[below right] {\( \sigma^{2}_{1} \)} circle (2pt);
-  \fill (CC1) node[below left] {\( \sigma^{2}_{2} \)} circle (2pt);
+  \coordinate (CCC) at (2,1);
+  \fill (CC0) circle (2pt);
+  \fill (CC1) circle (2pt);
+  \fill (CCC) circle (2pt);
   \draw[line width=1pt, ->]
     (CC0) -- node[above] {\( \,\,\,\star\,\sigma^{1} \)} (CC1);
-
+  % nodes
+  \draw[line width=1pt]
+    (0.666,1.666) -- node[above left] {\( \sigma^{2}_{0} \)} (1,1.333);
+  \draw[line width=1pt]
+    (3.333,1.666) -- node[above right] {\( \sigma^{2}_{1} \)} (3,1.333);
+	
+\useasboundingbox ([shift={(1mm,1mm)}]current bounding box.north east) rectangle ([shift={(-1mm,-1mm)}]current bounding box.south west);
 \end{tikzpicture}
 

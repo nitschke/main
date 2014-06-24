@@ -279,8 +279,8 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     mit \( \pi_{\sigma}|_{\partial\sigma} = \pi_{\partial\sigma} \).
     Deshalb bezeichnen wir \eqref{eqAeussereAbleitung} auch als Korandoperator.
-    Des Weiteren ist mit dieser Notation Definition \ref{defAeussereAbleitung} representantenunabhängig (Wohldefiniertheit).
-    Es sei \( \alpha_{1},\alpha_{2} \in \Omega^{p}(M) \) mit \( \psi(\alpha_{1}) = \psi(\alpha_{2}) \), 
+    Des Weiteren ist somit Definition \ref{defAeussereAbleitung} representantenunabhängig (Wohldefiniertheit),
+    denn wenn \( \alpha_{1},\alpha_{2} \in \Omega^{p}(M) \) mit \( \psi(\alpha_{1}) = \psi(\alpha_{2}) \), 
     dann gilt für alle \( \sigma\in K^{(p+1)} \), dass
     \begin{align}
       \left\langle \exd\psi(\alpha_{1}), \sigma \right\rangle &= \left\langle \psi(\alpha_{1}), \partial\sigma \right\rangle
@@ -290,21 +290,28 @@ see \cite{Lee} \cite{FirstCourse}
   \end{folgerung}
   
   \begin{bemerkung}
-    fsadfsad\\
+    Betrachten wir nun im speziellen wieder ein zweidimensionales Primärgitter \( K \) beziehungsweise dessen Dualgitter \( \csd K \), 
+    falls \( K \) wohlzentriert ist.
+    Da das Dualgitter wiederum auch ein Primärgitter ist, gelten obige Definitionen dieses Abschnittes auch auf diesem. 
+    \todo{verweis auf Koketten C(*K) }
+    Somit ergeben sich folgende Berechnungsformeln.\\
     \begin{tabular}{|c|c|} \hline
       Darstellung & Formel \\\hline
       \begin{minipage}[c]{0.29\textwidth}
         \centering\input{bilder/tikz/ableitungPrimal0Form}
       \end{minipage} &
       \begin{minipage}[c]{0.69\textwidth}
+        Für \( f\in\Omega_{d}^{0}(K) \) und \( \sigma^{1}=\left[ v_{0}, v_{1} \right]\in K \) gilt
         {\begin{align}
-          \left\langle \exd f , \sigma^{1} \right\rangle &= f(v_{1}) - f(v_{0})
+          \left\langle \exd f , \sigma^{1} \right\rangle &= f(v_{1}) - f(v_{0}) \formpunkt
         \end{align}}
       \end{minipage} \\\hline
       \begin{minipage}[c]{0.29\textwidth}
         \centering\input{bilder/tikz/ableitungPrimal1Form}
       \end{minipage} &
       \begin{minipage}[c]{0.69\textwidth}
+      Für \( \alpha\in\Omega_{d}^{1}(K) \) und \( \sigma^{2},\sigma^{1}_{0},\sigma^{1}_{1},\sigma^{1}_{2} \in K \) 
+      mit \( \partial\sigma^{2} = \sum_{i=0}^{2} \sigma^{1}_{i} \) gilt
         {\begin{align}
           \left\langle \exd \alpha , \sigma^{2} \right\rangle &= \sum_{i=0}^{2} \left\langle \alpha, \sigma_{i}^{1}\right\rangle
         \end{align}}
@@ -313,11 +320,26 @@ see \cite{Lee} \cite{FirstCourse}
         \centering\input{bilder/tikz/ableitungDual0Form}
       \end{minipage} &
       \begin{minipage}[c]{0.69\textwidth}
+        Für \( f\in\Omega_{d}^{0}(\csd K) \), \( \sigma^{2}_{0}, \sigma^{2}_{1} \in K \) und 
+        \( \star\sigma^{1} \in \star K \) gilt
         {\begin{align}
-          \left\langle \exd f , \star\sigma^{1} \right\rangle &= f(c(\sigma^{2}_{2})) - f(c(\sigma^{2}_{1}))
+          \left\langle \exd f , \star\sigma^{1} \right\rangle &= f(c(\sigma^{2}_{1})) - f(c(\sigma^{2}_{0})) \formpunkt
         \end{align}}
       \end{minipage} \\\hline
+      \begin{minipage}[c]{0.30\textwidth}
+        \centering\input{bilder/tikz/ableitungDual1Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.68\textwidth}
+        Für \( \alpha\in\Omega_{d}^{1}(\csd K) \) und \( \star v, \star\sigma_{i}^{1} \in \star K \) mit
+        \( \partial(\star v) = \sum_{i=0}^{m} \star\sigma_{i}^{1} \) gilt
+        {\begin{align}
+          \left\langle \exd \alpha , \star v \right\rangle &=  \sum_{i=0}^{m} \left\langle \alpha, \star\sigma_{i}^{1}\right\rangle
+          \formkomma
+        \end{align}}
+        wobei \( m \) die Anzahl der Dreieckelemente ist, die \( v \) als Ecke haben.
+      \end{minipage} \\\hline
     \end{tabular}
+    Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.
   \end{bemerkung}
   
 

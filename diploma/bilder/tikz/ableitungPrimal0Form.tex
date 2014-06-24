@@ -7,5 +7,7 @@
   % Points
   \fill (V0) node[below left] {\( v_{0} \)} circle (2pt);
   \fill (V1) node[below right] {\( v_{1} \)} circle (2pt);
+
+  \useasboundingbox ([shift={(1mm,1mm)}]current bounding box.north east) rectangle ([shift={(-1mm,-1mm)}]current bounding box.south west);
 \end{tikzpicture}
 

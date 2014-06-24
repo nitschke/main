@@ -17,5 +17,7 @@
   % center
   \coordinate (C) at (1,0.666);
   \node at (C) {\( \sigma^{2} \)};
+
+  \useasboundingbox ([shift={(1mm,1mm)}]current bounding box.north east) rectangle ([shift={(-1mm,-1mm)}]current bounding box.south west);
 \end{tikzpicture}
 
