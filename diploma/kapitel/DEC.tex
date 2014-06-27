@@ -197,6 +197,7 @@ see \cite{Lee} \cite{FirstCourse}
     Damit bleiben nur noch die \( 2 \)-Formen übrig und die unterscheiden sich wegen dem Hodge-Stern-Isomorphismus nur um einen geometrischen Faktor (und Syntax) von den \( 0 \)-Formen.
     Das heißt, wenn eine Riemannsche Mannigfaltigkeit vorliegt mit metrischen Tensor \( g \), dann gilt für alle \( 2 \)-Formen \( f \, dx^{1}\wedge dx^{2} \in \Omega^{2}(M)\), dass
     \begin{align}
+      \label{eqHodgeIso2Form}
       * \left( f \, dx^{1}\wedge dx^{2} \right) = \frac{f}{\sqrt{|\det(g)|}} \in \Omega^{0}(M) \formpunkt
     \end{align}
   \end{bemerkung}
@@ -331,18 +332,64 @@ see \cite{Lee} \cite{FirstCourse}
       \end{minipage} &
       \begin{minipage}[c]{0.68\textwidth}
         Für \( \alpha\in\Omega_{d}^{1}(\csd K) \) und \( \star v, \star\sigma_{i}^{1} \in \star K \) mit
-        \( \partial(\star v) = \sum_{i=0}^{m} \star\sigma_{i}^{1} \) gilt
+        \( \partial(\star v) = \sum_{i=0}^{m} \star\sigma_{i}^{1} \) und \( \sigma_{i}^{1} \succ v  \) gilt
         {\begin{align}
           \left\langle \exd \alpha , \star v \right\rangle &=  \sum_{i=0}^{m} \left\langle \alpha, \star\sigma_{i}^{1}\right\rangle
           \formkomma
         \end{align}}
-        wobei \( m \) die Anzahl der Dreieckelemente ist, die \( v \) als Ecke haben.
+        wobei \( m \) die Anzahl der Kanten ist, die \( v \) als Ecke haben.
       \end{minipage} \\\hline
     \end{tabular}
     Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.
   \end{bemerkung}
-  
 
+  Alleine mit der äußeren Ableitung ließe sich auf einer \( 2 \)-Mannigfaltigkeit schon einiges Rechnen.
+  Sie definiert uns nämlich den Gradienten eines (glatten) Skalarfeldes 
+  \begin{align}
+    \begin{aligned}
+      \nabla: C^{\infty}(M) &\rightarrow \mathcal{V}^{\infty}(M) \\
+                            f  &\mapsto \left( \exd f \right)^{\sharp}
+                                        = \left[ g^{1} \frac{\partial f}{\partial x^{1}}, g^{2} \frac{\partial f}{\partial x^{2}} \right]^{T}
+    \end{aligned}
+  \end{align}
+  und die Rotation eines (glatten) (Tangential-)Vektorfeldes
+  \begin{align}
+    \begin{aligned}
+      \text{rot}: \mathcal{V}^{\infty}(M) &\rightarrow C^{\infty}(M) \\
+                \vec{v} = \left[ v^{1}, v^{2} \right]^{T} &\mapsto * \exd (\vec{v})^{\flat}
+                                                           = \frac{1}{\sqrt{|\det g|}}\left( \frac{\partial g_{2}v^{2}}{\partial x^{1}} -  \frac{\partial g_{1}v^{1}}{\partial x^{2}}\right)
+    \end{aligned}
+  \end{align}
+  für ein lokales orthogonales\footnote{o.E.d.A, da die riemannsche Metrik \( g  \) lokal positiv definit und symetrisch ist, also auch diagonalisierbar} 
+  Koordinatensystem \( (x^{1}, x^{2}) \) mit Riemannmetrik \( g = \text{diag}(g_{1},g_{2}) \), wobei \( g^{i}=(g_{i})^{-1} \) (vgl. \cite{nitschke}). 
+  Damit ergibt sich folgendes kommutatives Diagramm:
+  \begin{align}
+    \begin{xy} \xymatrix{
+      \Omega^{0}(M) \ar[r]^{\exd} & \Omega^{1}(M) \ar[r]^{\exd} \ar@<-2pt>[d]_{\sharp} & \Omega^{2}(M) \ar[d]^{*}\\
+      C^{\infty}(M) \ar[r]_{\nabla} \ar[u]^{\text{id}} & \mathcal{V}^{\infty}(M) \ar[r]_{\text{rot}} \ar@<-2pt>[u]_{\flat} & C^{\infty}(M) }
+    \end{xy}
+  \end{align}
+  Die Übersetzungsisomorphismen \( \sharp \) (Sharp) zum "`hinaufziehen der Indizes"' und \( \flat \) (Flat) zum "'herunterziehen der Indizes"' sind gegeben durch
+  \begin{align}
+    \begin{aligned}
+      \sharp:&& \Omega^{1}(M) &\rightarrow \mathcal{V}^{\infty}(M) \\
+            &&   v_{1} dx^{1} + v_{2} dx^{2} &\mapsto \left[ g^{1}v_{1}, g^{2}v_{2} \right]^{T} = \left[ v^{1}, v^{2} \right]^{T}
+    \end{aligned}
+  \end{align}
+  und
+  \begin{align}
+    \begin{aligned}
+      \flat: \mathcal{V}^{\infty}(M) &\rightarrow \Omega^{1}(M) \\
+             \left[ v^{1}, v^{2} \right]^{T} &\mapsto g_{1}v^{1} dx^{1} + g_{2}v^{2} dx^{2} = v_{1} dx^{1} + v_{2} dx^{2} \formpunkt
+    \end{aligned}
+  \end{align}
+  (Der Hodge-Stern-Isomorphismus für \( 2 \)-Formen wurde schon in \eqref{eqHodgeIso2Form} angegeben.)
+  \todo{verweis auf diskrete vektorfelder in zukunftarbei}
+  
+  Um auch noch zwei weitere für die klassische Vektoranalysis wichtige Differentialoperatoren erster Ordnung zu diskretisieren,
+  nämlich die Rotation für Skalarfelder (Rot) und die Divergenz für Vektorfelder (Div), 
+  benötigen wir noch eine diskrete Version des Hodge-Stern-Operators.
+ 
 
   
 
