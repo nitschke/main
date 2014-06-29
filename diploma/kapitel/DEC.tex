@@ -136,6 +136,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     Mit \( |\sigma^{1}_{\eps}| = 2\eps \) folgt 
     \begin{align}
+    \label{eqApprox1Form}
       \frac{1}{|\sigma^{1}_{\eps}|} \alpha_{d}(\sigma_{\eps}^{1}) = \text{"`}\alpha_{d}(v)\text{"'} \approx \alpha(v)\formpunkt
     \end{align}
     \( \alpha_{d}(v) \) ist in Anführungszeichen gesetzt, da die diskreten Formen diese schreibweise nicht hergeben (\( v \cong \nicefrac{\sigma^{1}_{\eps}}{|\sigma^{1}_{\eps}|} \notin K \)), 
@@ -398,6 +399,78 @@ see \cite{Lee} \cite{FirstCourse}
   
 
 \section{Hodge-Operator}
+
+  \todo[inline]{motivation: kein dachprodukt}
+  Betrachten wir ein Vektorfeld \( \vec{v}:= \left[ v^{1}, v^{2} \right]^{T} \in \mathcal{V}^{\infty}(M) \) auf einer zweidimensionalen geschlossenen Riemannschen Mannigfaltigkeit \( M \)
+  mit lokalen orthogonalen Koordinaten \( \left( x^{1}, x^{2} \right) \) und metrischen Tensor \( g=\text{diag}(g_{1}, g_{2})\).
+  Werten wir nun die zu \( \vec{v} \) duale Differentialform \( \vecflat{v}\in\Omega^{1}(M) \) an dem tangentialen Basisvektor
+  \( \frac{\partial}{\partial x^{1}}\in T_{x}\)M am Punkt \( x\in M \) aus,
+  dann erhalten wir
+  \begin{align}
+    \vecflat{v}\left( \frac{\partial}{\partial x^{1}} \right) &= \left( v_{1}dx^{1} + v_{2}dx^{2} \right)\left(\frac{\partial}{\partial x^{1}}  \right)
+                                                                   = v_{1} = g_{1}v^{1}
+  \end{align}
+  als Antwort.
+  Der in der Orthoganalen \( \frac{\partial}{\partial x^{2}} \)-Richtung gedrehte Basisvektor \( \frac{\partial}{\partial x^{1}} \) 
+  (unter Beibehaltung der Länge \( \left\|\frac{\partial}{\partial x^{1}}\right\|_{g} = \sqrt{g_{1}}  \)) ist 
+  \( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \in T_{x}M\), 
+  was sich entweder durch Nachrechnen überprüfen lässt oder sich auch als Ergebnis von 
+  \( \left( * \left( \frac{\partial}{\partial x^{1}} \right)^{\flat} \right)^{\sharp} \) ergibt.
+  Hierbei merken wir schon, dass der Hodge-Stern-Operator durchaus auch eine anschauliche Seite hat.
+  Auf Oberflächen dreht er nämlich Vektorfelder in orthogonaler Richtung.
+  Wird auf die \( 1\)-Form \( \vecflat{v} \) ebenfall der Hodge-Stern-Operator angewenden erhalten wir
+  \begin{align}
+  \begin{aligned}
+    \left( *\vecflat{v} \right)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \right)
+                &= \left(\sqrt{|\det(g)|} \left(-v^{2}dx^{1} + v^{1}dx^{2}  \right) \right)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \right) \\
+                &= \sqrt{g_{1}g_{2}} \sqrt{g_{1}g^{2}} v^{1}
+                 = g_{1}v^{1} \\
+                &= \vecflat{v}\left( \frac{\partial}{\partial x^{1}} \right)
+  \end{aligned}
+  \end{align}
+  als Antwort auf den gedrehten Basisvektor.
+  Wie die diskreten \( 1 \)-Formen auf die Basisvektoren reagieren, dass wissen wir schon aus \eqref{eqApprox1Form}.
+  Also gilt für die diskrete \( 1 \)-Formen \( \psi\left( \vecflat{v} \right) \in \Omega^{1}_{d}(K)\) beziehungsweise
+  \( \psi\left( *\vecflat{v} \right) \in \Omega^{1}_{d}(\csd K)\)
+  \begin{align}
+  \label{eqIntegralMittelStern1Form}
+  \begin{aligned}
+    \frac{1}{|\sigma^{1}|} \psi\left( \vecflat{v} \right)(\sigma^{1}) 
+                      &\approx \vecflat{v}\left( \frac{\partial}{\partial x^{1}} \right)
+                       = \psi\left( *\vecflat{v} \right)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \right)\\
+                      &\approx  \frac{1}{|\star\sigma^{1}|} \psi\left( *\vecflat{v} \right)(\star\sigma^{1})
+  \end{aligned}
+  \end{align}
+  wobei \( \sigma^{1} \) ein \( 1 \)-Simplex aus dem wohlzentrierten Primärgitter \( K \) ist.
+  Der Punkt \( x\in M \), an dem die Basisvektoren definiert sind, ist der Schnittpunkt der zugehörigen abstrakten Simplizes,
+  das heißt \( \{x\} = \pi(\sigma^{1})\cap\pi(\star\sigma^{1}) \).
+  Die 2. Approximation auf der dualen Kante erhalten wir ähnlich, wie schon in \eqref{eqApprox1Form}.
+  Sei \( \alpha:=v_{1}dx^{1} + v_{2}dx^{2} = \vecflat{v} \), dann ergibt sich
+  \begin{align}
+    *\alpha &= -\sqrt{g_{1}g^{2}}v_{2}dx^{1} + \sqrt{g^{1}g_{2}}v_{1}dx^{2}
+  \end{align}
+  Da in \( \frac{\partial}{\partial x^{2}} \)-Richtung integriert wird, braucht auch nur der zweite Summand Beachtung finden.
+  \begin{align}
+    \psi\left( *\alpha \right)(\star\sigma^{1}) = \int_{\pi(\star\sigma^{1})} \sqrt{g^{1}g_{2}} v_{1} dx^{2}
+  \end{align}
+  Des Weiteren sei eine Kurve \( s_{\delta}:\left[ -\delta_{1}, \delta_{2} \right] \rightarrow \pi(\star\sigma^{1}) \subset M\) gegeben, so dass
+  \( s_{\delta}(-\delta_{1}) \) und \( s_{\delta}(\delta_{2}) \) die beiden Endpunkte der abstrakten dualen Kante sind (\( |\star\sigma^{1}| = \delta_{1}+\delta_{2} \))
+  und \( x = s_{\delta}(0) \) ist der 
+  Schnittpunkt mit der abstrakten Kante \( \pi(\sigma^{1}) \), wobei \( \dot{s}_{\delta}(0) = \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \) gelten soll.
+  Damit lässt sich auch hier wieder das Integral am Punkt \( x \) approximieren.
+  \begin{align}
+  \begin{aligned}
+    \psi\left( *\alpha \right)(\star\sigma^{1}) 
+            &= \int_{-\delta_{1}}^{\delta_{2}} \left( \sqrt{g^{1}g_{2}} v_{1} \right)(s_{\delta}(t)) dx^{2}(\dot{s}_{\delta}(t)) dt \\
+            &\approx |\star\sigma^{1}|v_{1} = |\star\sigma^{1}|(*\alpha)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}}\right)
+  \end{aligned}
+  \end{align}
+  
+  Die approximative Gleichung \eqref{eqIntegralMittelStern1Form} ließe sich auch so lesen: 
+  Im Integralmittel ist die Auswertung einer diskreten \( 1 \)-Form auf einer Kante ungefähr gleich der Auswertung der "`dualen"' diskreten Form auf der dualen Kante.\\
+  In \cite{desbrun} wird die Gleichheit als Bedingung gefordert und ist die Motivation für eine Verallgemeinerung auf diskrete \( p \)-Formen. 
+
+
 
 \section{Laplace-Operator}
 

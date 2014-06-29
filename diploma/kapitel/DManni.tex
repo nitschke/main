@@ -741,7 +741,6 @@
     Wenn wir genau hinschauen, dann ist zu bemerken, dass nicht alle Simplizes des Dualgitters vom Primärgitter nach unseren Definitionen eine induzierte Orientierung erhalten können.
     Wohl aber für eine Teilmenge des \( \csd K \), mehr als diese Teilmenge wird auch für die
     numerischen Schematas nicht von nöten sein, wie wir noch sehen werden.
-    \todo[inline]{evtl. noch mit baryzentrische dualität vergleichen, s. hirani 2.6}
     
     Leider ist gerade die Wohlzentriertheit eine problematische Bedingung für zulässige Gitter.
     Zum Beispiel in der FEM gibt es diese Anforderung nicht, obgleich wohlzentrierte Gitter die numerischen Eigenschaften sicherlich verbessern würden.
@@ -754,6 +753,17 @@
     Prinzipiell könnte so auch der hier vorgestellte DEC in gleicher Art und Weise geführt werden, allerdings können sich so auch Kanten der Länge null ergeben und somit müssten wir auch
     ständig aufpassen in den späteren Berechnungsschematas nicht durch null zuteilen. Deswegen sehen wir hier in dieser Arbeit davon ab.
     In \ref{secImpliziteMannigfaltigkeiten} wird auch noch kurz gezeigt wie wir numerisch mit implizit gegeben Oberflächen umgehen können.
+
+    \todo[inline]{evtl. noch mit baryzentrische dualität vergleichen, s. hirani 2.6}
+    Eine weitere Möglichkeit ist es auch einen ganz anderen Ansatz für die Dualtät der Gitter zu verfolgen.
+    In \cite{sensen} wird im Rahmen einer diskreten Chern-Simons Theory auf speziellen dreidimensionalen Mannigfaltigkeiten (Raumzeit) eine baryzentrische Unterteilung genutzt.
+    Das heißt der Mittelpunkt ist hier das "`Massezentrum"'.
+    So gilt zum Beispiel \( c\left( \left[ v_{0},v_{1},v_{2} \right] \right) = \frac{1}{3}\sum_{i=0}^{2}v_{i}\).
+    Die Diskretesierung des Hodge-Stern-Operators in einem allgemeinen DEC-Kontext würde somit aber ziemlich schwierig werden, da hier auch metrische Informationen mit eingehen.
+    Die Tatsache, dass bei einer Umkreismittelpunktunterteilung die zueinander dualen Simplizes im gewissen Sinne orthogonal sind macht uns es da später einfacher.
+    Für zukünftige Arbeiten sollte dennoch die baryzentrische Dualität ein paar Gedanken wert sein, denn jeder Simplizialkomplex ist mit dieser Unterteilung baryzentrisch wohlzentriert,
+    speziell auch das Dualgitter selbst, das gibt die Umkreismittelpunktunterteilung nicht her. 
+    Somit würde auch einer globalen und sogar lokalen Verfeinerung bzgl. der Zulässigkeit des Gitters nichts mehr im Wege stehen.
   \end{fazit}
 
 
