@@ -159,9 +159,21 @@ see \cite{Lee} \cite{FirstCourse}
                                            \( \pi \) klebt die Kante auf die Mannigfaltigkeit, d.h. \( \pi(\sigma_{\eps}^{1}) = s_{\eps} \)}
       \label{figDiskrete1Form}
     \end{figure}
-    Das soll nicht heißen, dass die \( 1 \)-Form \( \alpha\in\Omega^{1}(M) \) mit mindestens Ordnung 2 approximiert wird, denn im hinteren Faktor steckt noch immer die Größe \( \eps \).
+    Das soll nicht heißen, dass die \( 1 \)-Form \( \alpha\in\Omega^{1}(M) \) mit mindestens Ordnung 2 approximiert wird, denn im hinteren Faktor steckt noch immer die Größe \( \eps \)
+    und \( s_{\eps} \) hängt zudem stark von der Geometrie der Mannigfaltigkeit ab.
+    Wenn allerdings die Mannigfaltigkeit über der Kante \( \sigma^{1}_{\eps} \) flach wäre, dann ergibt sich \( s_{\eps}(t)=t v  \) für
+    \( x_{0} = c(\sigma^{1}_{\eps}) = \vec{0} \) (alle \( x_{0} \) erfüllen hier \( \dot{s}_{\eps}(x_{0}) \| \sigma_{\eps}^{1} \)).
+    Daraus folgt, dass
+    \begin{align}
+      \left| \text{"`}\alpha_{d}(v)\text{"'} - \alpha(v) \right| 
+            &\le \frac{\eps^{2}}{6} \max_{\tau\in(-\eps,\eps)} \left|\frac{\partial^{2}\alpha_{\xi}}{\partial\xi^{2}}(\tau v) \right| \formkomma
+    \end{align}
+    wobei \( \alpha_{\xi} = \alpha(\frac{\partial}{\partial\xi})=\alpha(v) \) die entsprechende (kovariante) Koordinatenfunktion von \( \alpha \) ist.
+    Somit hätten wir Konsistenz der Ordnung 2 für den flachen Fall.
+    In zukünftigen Arbeiten müsste also "`nur"' noch geklärt werden mit welcher Ordnung eine "`flache"' 1-Form aus \( \Omega^{1}(\sigma^{1}_{\eps}) \) eine
+    "`gekrümmte"' 1-Form aus \( \Omega^{1}(\pi(\sigma^{1}_{\eps}))\subset\Omega^{1}(M) \) approximiert.
     
-    Dagegen lässt sich für exakte \( 1 \)-Formen tatsächlich eine Ordnung von 2 abschätzen.
+    Dagegen lässt sich für exakte \( 1 \)-Formen tatsächlich eine Ordnung von 2 direkt abschätzen.
     Sei eine exakte Form \( \alpha\in\Omega^{1}(M) \) gegeben, das heißt es existiert ein \( f\in\Omega^{0}(M) \), sodass \( \alpha= \exd f \) gilt.
     Mit dem Stokes Theorem (\cite{Marsden}, Kapitel 7.2) erhalten wir
     \begin{align}
@@ -469,6 +481,18 @@ see \cite{Lee} \cite{FirstCourse}
   Die approximative Gleichung \eqref{eqIntegralMittelStern1Form} ließe sich auch so lesen: 
   Im Integralmittel ist die Auswertung einer diskreten \( 1 \)-Form auf einer Kante ungefähr gleich der Auswertung der "`dualen"' diskreten Form auf der dualen Kante.\\
   In \cite{desbrun} wird die Gleichheit als Bedingung gefordert und ist die Motivation für eine Verallgemeinerung auf diskrete \( p \)-Formen. 
+
+  \begin{definition}
+    Der diskrete Hodge-Stern-Operator \( *:\Omega_{d}^{p}(K)\rightarrow\Omega_{d}^{n-p}(\csd K) \) ist definiert durch
+    \begin{align}
+      (*\alpha^{p})(\star\sigma^{p}) &= \left\langle *\alpha^{p}, \star\sigma^{p} \right\rangle 
+                                        := \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \left\langle \alpha^{p}, \sigma^{p} \right\rangle
+                                         = \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \alpha^{p}(\sigma^{p})
+    \end{align}
+    für alle \( \sigma^{p}\in K \).
+    
+    Wir werden im Folgendem auch hier nur kurz \( \Omega_{d}^{n-p}(\star K)\) für das Bild \( *\Omega_{d}^{p}(K)\le \Omega_{d}^{n-p}(\csd K)\) schreiben.
+  \end{definition}
 
 
 
