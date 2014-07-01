@@ -410,7 +410,7 @@ see \cite{Lee} \cite{FirstCourse}
 
   
 
-\section{Hodge-Operator}
+\section{Hodge-Stern-Operator}
 
   \todo[inline]{motivation: kein dachprodukt}
   Betrachten wir ein Vektorfeld \( \vec{v}:= \left[ v^{1}, v^{2} \right]^{T} \in \mathcal{V}^{\infty}(M) \) auf einer zweidimensionalen geschlossenen Riemannschen Mannigfaltigkeit \( M \)
@@ -423,7 +423,7 @@ see \cite{Lee} \cite{FirstCourse}
                                                                    = v_{1} = g_{1}v^{1}
   \end{align}
   als Antwort.
-  Der in der Orthoganalen \( \frac{\partial}{\partial x^{2}} \)-Richtung gedrehte Basisvektor \( \frac{\partial}{\partial x^{1}} \) 
+  Der in der orthoganalen \( \frac{\partial}{\partial x^{2}} \)-Richtung gedrehte Basisvektor \( \frac{\partial}{\partial x^{1}} \) 
   (unter Beibehaltung der Länge \( \left\|\frac{\partial}{\partial x^{1}}\right\|_{g} = \sqrt{g_{1}}  \)) ist 
   \( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \in T_{x}M\), 
   was sich entweder durch Nachrechnen überprüfen lässt oder sich auch als Ergebnis von 
@@ -449,7 +449,7 @@ see \cite{Lee} \cite{FirstCourse}
   \begin{aligned}
     \frac{1}{|\sigma^{1}|} \psi\left( \vecflat{v} \right)(\sigma^{1}) 
                       &\approx \vecflat{v}\left( \frac{\partial}{\partial x^{1}} \right)
-                       = \psi\left( *\vecflat{v} \right)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \right)\\
+                       = \left( *\vecflat{v} \right)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \right)\\
                       &\approx  \frac{1}{|\star\sigma^{1}|} \psi\left( *\vecflat{v} \right)(\star\sigma^{1})
   \end{aligned}
   \end{align}
@@ -483,6 +483,7 @@ see \cite{Lee} \cite{FirstCourse}
   In \cite{desbrun} wird die Gleichheit als Bedingung gefordert und ist die Motivation für eine Verallgemeinerung auf diskrete \( p \)-Formen. 
 
   \begin{definition}
+    \label{defDiskreteHodgeStern}
     Der diskrete Hodge-Stern-Operator \( *:\Omega_{d}^{p}(K)\rightarrow\Omega_{d}^{n-p}(\csd K) \) ist definiert durch
     \begin{align}
       (*\alpha)(\star\sigma^{p}) &= \left\langle *\alpha, \star\sigma^{p} \right\rangle 
@@ -490,9 +491,20 @@ see \cite{Lee} \cite{FirstCourse}
                                          = \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \alpha(\sigma^{p})
     \end{align}
     für alle \( \sigma^{p}\in K \).
-    
     Wir werden im Folgendem auch hier nur kurz \( \Omega_{d}^{n-p}(\star K)\) für das Bild \( *\Omega_{d}^{p}(K)\le \Omega_{d}^{n-p}(\csd K)\) schreiben.
   \end{definition}
+
+  \begin{satz}
+    Definition \ref{defDiskreteHodgeStern} ist für \( M=|K| \) mit mindestens der Ordnung 1 konsistent.
+    Das heißt für alle \( \alpha\in\Omega^{p}(|K|) \) und \( \sigma^{p}\in K \) gilt
+    \begin{align}
+      \left| (*\psi(\alpha))(\star\sigma^{p}) - \psi(*\alpha)(\star\sigma^{p})\right| \le \mathcal{O}(h)
+    \end{align}
+    mit \( h:=\max_{x\in\sigma^{p}}\|x-c(\sigma^{p})\| \) (Umkreisradius).
+  \end{satz}
+  \begin{proof}
+    
+  \end{proof}
 
 
 
