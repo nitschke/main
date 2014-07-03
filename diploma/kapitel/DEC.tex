@@ -494,16 +494,84 @@ see \cite{Lee} \cite{FirstCourse}
     Wir werden im Folgendem auch hier nur kurz \( \Omega_{d}^{n-p}(\star K)\) für das Bild \( *\Omega_{d}^{p}(K)\le \Omega_{d}^{n-p}(\csd K)\) schreiben.
   \end{definition}
 
-  \begin{satz}
-    Definition \ref{defDiskreteHodgeStern} ist für \( M=|K| \) mit mindestens der Ordnung 1 konsistent.
-    Das heißt für alle \( \alpha\in\Omega^{p}(|K|) \) und \( \sigma^{p}\in K \) gilt
+  \begin{lemma}
+    \label{lemmaKonsistenzHodge}
+    Definition \ref{defDiskreteHodgeStern} ist für \( M=|K| \) mit wohlzentrierten Primärgitter \( K \) konsistent und
+    für alle \( \alpha\in\Omega^{p}(|K|) \) und \( \sigma^{p}\in K \) gilt die Abschätzung
     \begin{align}
-      \left| (*\psi(\alpha))(\star\sigma^{p}) - \psi(*\alpha)(\star\sigma^{p})\right| \le \mathcal{O}(h)
+      \label{eqKonsistenzHodge}
+      \left| (*\psi(\alpha))(\star\sigma^{p}) - \psi(*\alpha)(\star\sigma^{p})\right| \le \mathcal{O}(|\sigma^{p}||\star\sigma^{p}|) \formpunkt
     \end{align}
-    mit \( h:=\max_{x\in\sigma^{p}}\|x-c(\sigma^{p})\| \) (Umkreisradius).
+    \todo[inline]{mit h ändern}
+  \end{lemma}
+  \begin{proof}
+    Für \( 0 < p \le n \) sei die \( p \)-Form 
+    \begin{align}
+      \alpha := \sum_{i_{1}<\ldots<i_{p}} \alpha_{i_{1}\ldots i_{p}} dx^{i_{1}}\wedge\ldots\wedge dx^{i_{p}}
+    \end{align}
+    auf \( |K| \) gegeben mit den Koordinaten \(\alpha_{i_{1}\ldots i_{p}} \). 
+    Mit der Inklusionsabbildung \( \iota: \sigma^{p} \hookrightarrow |K| \) und dass o.E.d.A. \( \left( x^{1},\ldots,x^{p} \right) \) die rechtwinkligen Koordinaten des von
+    den Kante(n) von
+    \( \sigma^{p}\in K \) aufgespannten \( p\)-dimensionalen \( \R \)-Vektorraums ist, gilt somit
+    \begin{align}
+      \iota^{*}\alpha = \alpha_{1\ldots p}dx^{1}\wedge\ldots\wedge dx^{p}\in\Omega^{p}(\sigma^{p}) \formpunkt
+    \end{align}
+    Auch hier werden wir wieder, aus schon weiter oben genannten Gründen, nur \( \alpha \) statt \( \iota^{*}\alpha \) für die zurückgezogene Differentialform schreiben.
+    Zunächsten wollen wir überprüfen wie gut sich die Integralauswertungen im Punkt \( c:=c(\sigma^{p}) \) abschätzen lassen, da dies der einzige gemeinsame Punkt von
+    \( \sigma^{p} \) und \( \star\sigma^{p} \) ist.
+    Dazu nutzen wir ein Schritt Taylor für die Koordinatenfunktion: 
+    \begin{align}
+      &\left| |\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(\alpha)(\sigma^{p})\right| \\
+      &=  \left| |\sigma^{p}|\alpha_{1 \ldots p}(c) 
+                  - \int_{\sigma^{p}} \alpha_{1 \ldots p}(c) + (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) + \mathcal{O}(h_{\sigma^{p}}^{2}) dx^{1}\wedge\ldots\wedge dx^{p} \right| \\
+      &= \left| \int_{\sigma^{p}}  (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) dx^{1}\wedge\ldots\wedge dx^{p} + \mathcal{O}(h_{\sigma^{p}}^{2})\right| \\
+      &\le \int_{\sigma^{p}} \left| (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) \right| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(h_{\sigma^{p}}^{2})| \\
+      &\le \int_{\sigma^{p}} \|x-c\|\|\nabla\alpha_{1 \ldots p}(c)\| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(h_{\sigma^{p}}^{2})| \formtext{\footnotesize(Cauchy-Schwarz)}\\
+      &\le \|\nabla\alpha_{1 \ldots p}(c)\| \int_{\sigma^{p}} h_{\sigma^{p}}^{2}  dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(h_{\sigma^{p}}^{2})| \\
+      &\le |\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| h_{\sigma^{p}} + |\mathcal{O}(h_{\sigma^{p}}^{2})| \right) \label{eq1}
+    \end{align}
+    Für den diskreten Hodge-Stern erhalten wir somit
+    \begin{align}
+      \left| (*\psi(\alpha))(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c) \right|
+            &= \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \left| |\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(\alpha)(\sigma^{p}) \right| \\
+            &\le  |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| h_{\sigma^{p}} + |\mathcal{O}(h_{\sigma^{p}}^{2})| \right)
+    \end{align}
+    Für die Dualzelle \( \star\sigma^{p} \) können wir die Abschätzung \eqref{eq1} ebenfalls nutzen.
+    Dazu müssen wir erst \( \star\sigma^{p}\in C_{p}(\star K) \) in seine elementaren \( (n-p) \)-Simplizes \( \hat\sigma^{n-p} \) mit der passenden Orientierung zerlegen:
+    \begin{align}
+      S_{\sigma^{p}} &:= \left\{ \hat\sigma^{n-p}\in\csd K \middle| \sum_{\hat\sigma^{n-p}\cap\star\sigma^{p} \neq \emptyset}\hat\sigma^{n-p} = \star\sigma^{p} \right\}
+      \formpunkt
+    \end{align}
+    Damit ergibt sich für alle \( \hat\alpha\in\Omega(|K|)=\Omega(|\csd K|) \)
+    \begin{align}
+      \left| |\star\sigma^{p}|\hat\alpha_{1 \ldots p}(c) - \psi(\hat\alpha)(\star\sigma^{p})\right| 
+          &= \left| \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}}|\hat\sigma^{n-p}|\hat\alpha_{1 \ldots p}(c) 
+                  - \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} \int_{\hat\sigma^{n-p}}\hat\alpha\right| \\
+          &\le \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} \left||\hat\sigma^{n-p}|\hat\alpha_{1 \ldots p}(c) - \psi(\hat\alpha)(\hat\sigma^{n-p}) \right| \\
+          &\le \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} |\hat\sigma^{n-p}| \left( \|\nabla\hat\alpha_{1 \ldots p}(c)\| 2 h_{\hat\sigma^{n-p}} + |\mathcal{O}((2h_{\hat\sigma^{n-p}})^{2})|
+          \right) \\
+           &\le |\star\sigma^{p}| \left( \|\nabla\hat\alpha_{1 \ldots p}(c)\| h_{\d\sigma^{p}} + |\mathcal{O}(h_{\sigma^{p}}^{2})| \right) \formkomma
+    \end{align}
+  \end{proof}
+
+  \begin{satz}
+    Es sei \( K \) ein wohlzentriertes zweidimensionales Primärgitter mit \( |K| = M \), das heißt die Mannigfaltigkeit \( M \) ist ein Polyeder, dann gilt
+    \begin{itemize}
+      \item für alle \( \alpha\in\Omega^{0}(M) \) bzw. \( \alpha\in\Omega^{2}(M) \), dass
+              \begin{align}
+              \label{eqKonsistentzHodge0bzw2form}
+                *\psi(\alpha) &= \psi(*\alpha)
+              \end{align} \formpunkt
+      \item für alle \( \alpha\in\Omega^{1}(M) \), dass
+            \begin{align}
+              \left\| *\psi(\alpha) - \psi(*\alpha) \right\| &\le \mathcal{O}\left( h_{\sigma^{2},\max}^{2} \right)
+            \end{align}
+    \end{itemize}
   \end{satz}
   \begin{proof}
-    
+    Die Aussagen folgen direkt aus Lemma \ref{lemmaKonsistenzHodge}.
+    Für \( p=0 \) ist \( h_{\sigma^{p}} = 0 \), da \( \sigma^{0} \) nur aus einem Punkt besteht.
+    Für \( p=2 \) ist \( |\star\sigma^{p}| = 0 \), fuck nein! ... ich geh schlafen!
   \end{proof}
 
 

@@ -187,8 +187,8 @@ autocmd FileType tex inoremap \( \(  \)<LEFT><LEFT><LEFT>
 autocmd FileType tex inoremap {{ \left\{  \right\}<ESC>8hi
 autocmd FileType tex inoremap (( \left(  \right)<ESC>7hi
 autocmd FileType tex inoremap [[ \left[  \right]<ESC>7hi
+autocmd FileType tex inoremap \|\| \left\|  \right\|<ESC>7hi
 autocmd FileType tex inoremap << \left\langle  \right\rangle<ESC>13hi
-autocmd FileType tex inoremap $$ $$<LEFT>
 autocmd FileType tex inoremap ~ \tilde{}<LEFT>
 autocmd FileType tex inoremap $$ \frac{\partial }{\partial }<ESC>11hi
 autocmd FileType tex inoremap \textbf  \textbf{}<LEFT>
