@@ -500,9 +500,11 @@ see \cite{Lee} \cite{FirstCourse}
     für alle \( \alpha\in\Omega^{p}(|K|) \) und \( \sigma^{p}\in K \) gilt die Abschätzung
     \begin{align}
       \label{eqKonsistenzHodge}
-      \left| (*\psi(\alpha))(\star\sigma^{p}) - \psi(*\alpha)(\star\sigma^{p})\right| \le \mathcal{O}(|\sigma^{p}||\star\sigma^{p}|) \formpunkt
+      \left| (*\psi(\alpha))(\star\sigma^{p}) - \psi(*\alpha)(\star\sigma^{p})\right| \le \left| \star\sigma^{p} \right| \mathcal{O}\left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right) \formpunkt
     \end{align}
-    \todo[inline]{mit h ändern}
+    wobei \( \eps_{\sigma^{p}} \) der Umkreisradius von \( \sigma^{p} \) ist (speziell ist \( \eps_{\sigma^{0}} = 0 \)) 
+    und  \( \hat{l}_{\star\sigma^{p}} \) die Länge der längsten Kante aller \( (n-p) \)-Simplizes der Kette \( \star\sigma^{p} \), 
+    die \( c(\sigma^{p}) \) als Ecke haben. Für \( p=n \) setzen wir \( \hat{l}_{\star\sigma^{n}}:=0 \).
   \end{lemma}
   \begin{proof}
     Für \( 0 < p \le n \) sei die \( p \)-Form 
@@ -519,60 +521,202 @@ see \cite{Lee} \cite{FirstCourse}
     Auch hier werden wir wieder, aus schon weiter oben genannten Gründen, nur \( \alpha \) statt \( \iota^{*}\alpha \) für die zurückgezogene Differentialform schreiben.
     Zunächsten wollen wir überprüfen wie gut sich die Integralauswertungen im Punkt \( c:=c(\sigma^{p}) \) abschätzen lassen, da dies der einzige gemeinsame Punkt von
     \( \sigma^{p} \) und \( \star\sigma^{p} \) ist.
-    Dazu nutzen wir ein Schritt Taylor für die Koordinatenfunktion: 
+    Dazu nutzen wir den Umkreisradius des Simplexes  \( \sigma^{p} \)
+    \begin{align}
+      \eps_{\sigma^{p}} &:= \max_{x\in\sigma^{p}}\|x-c\| \ge \|x-c\| \qquad\left( \forall x \in \sigma^{p} \right)
+    \end{align}
+    und einen Schritt Taylor für die Koordinatenfunktion:
     \begin{align}
       &\left| |\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(\alpha)(\sigma^{p})\right| \\
       &=  \left| |\sigma^{p}|\alpha_{1 \ldots p}(c) 
-                  - \int_{\sigma^{p}} \alpha_{1 \ldots p}(c) + (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) + \mathcal{O}(h_{\sigma^{p}}^{2}) dx^{1}\wedge\ldots\wedge dx^{p} \right| \\
-      &= \left| \int_{\sigma^{p}}  (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) dx^{1}\wedge\ldots\wedge dx^{p} + \mathcal{O}(h_{\sigma^{p}}^{2})\right| \\
-      &\le \int_{\sigma^{p}} \left| (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) \right| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(h_{\sigma^{p}}^{2})| \\
-      &\le \int_{\sigma^{p}} \|x-c\|\|\nabla\alpha_{1 \ldots p}(c)\| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(h_{\sigma^{p}}^{2})| \formtext{\footnotesize(Cauchy-Schwarz)}\\
-      &\le \|\nabla\alpha_{1 \ldots p}(c)\| \int_{\sigma^{p}} h_{\sigma^{p}}^{2}  dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(h_{\sigma^{p}}^{2})| \\
-      &\le |\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| h_{\sigma^{p}} + |\mathcal{O}(h_{\sigma^{p}}^{2})| \right) \label{eq1}
+                  - \int_{\sigma^{p}} \alpha_{1 \ldots p}(c) + (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) + \mathcal{O}(\eps_{\sigma^{p}}^{2}) dx^{1}\wedge\ldots\wedge dx^{p} \right| \\
+      &= \left| \int_{\sigma^{p}}  (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) dx^{1}\wedge\ldots\wedge dx^{p} + \mathcal{O}(\eps_{\sigma^{p}}^{2})\right| \\
+      &\le \int_{\sigma^{p}} \left| (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) \right| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \\
+      &\le \int_{\sigma^{p}} \|x-c\|\|\nabla\alpha_{1 \ldots p}(c)\| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \formtext{\footnotesize(Cauchy-Schwarz)}\\
+      &\le \|\nabla\alpha_{1 \ldots p}(c)\| \int_{\sigma^{p}} \eps_{\sigma^{p}}  dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \\
+      &\le |\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| \eps_{\sigma^{p}} + |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \right) \label{eq1}
     \end{align}
     Für den diskreten Hodge-Stern erhalten wir somit
     \begin{align}
       \left| (*\psi(\alpha))(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c) \right|
             &= \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \left| |\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(\alpha)(\sigma^{p}) \right| \\
-            &\le  |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| h_{\sigma^{p}} + |\mathcal{O}(h_{\sigma^{p}}^{2})| \right)
+            &\le  |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| \eps_{\sigma^{p}} + |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \right)
     \end{align}
-    Für die Dualzelle \( \star\sigma^{p} \) können wir die Abschätzung \eqref{eq1} ebenfalls nutzen.
-    Dazu müssen wir erst \( \star\sigma^{p}\in C_{p}(\star K) \) in seine elementaren \( (n-p) \)-Simplizes \( \hat\sigma^{n-p} \) mit der passenden Orientierung zerlegen:
+    Wenn \( p = 0 \) ist, dann gilt für \( \alpha:= f \in C^{\infty}(M) \) die Gleichheit
     \begin{align}
-      S_{\sigma^{p}} &:= \left\{ \hat\sigma^{n-p}\in\csd K \middle| \sum_{\hat\sigma^{n-p}\cap\star\sigma^{p} \neq \emptyset}\hat\sigma^{n-p} = \star\sigma^{p} \right\}
+      (*\psi(f))(\star\sigma^{0}) = |\star\sigma^{0}|f(c) \formpunkt
+    \end{align}
+    Für die Dualkette \( \star\sigma^{p} \) mit \( 0\le p < n \) lässt sich die Abschätzung \eqref{eq1} ähnlich machen.
+    Dazu müssen wir erst \( \star\sigma^{p}\in C_{p}(\star K) \) in seine elementaren \( (n-p) \)-Simplizes \( \hat\sigma^{n-p} \) mit der passenden Orientierung zerlegen.
+    Es sei dazu eine Zerlegung \(  S_{\sigma^{p}} \subseteq \left( \csd K \right)^{(n-p)} \) gegeben, sodass
+    \begin{align}
+      \sum_{\hat\sigma^{n-p} \in S_{\sigma^{p}}} \hat\sigma^{n-p} = \star\sigma^{p}
       \formpunkt
     \end{align}
-    Damit ergibt sich für alle \( \hat\alpha\in\Omega(|K|)=\Omega(|\csd K|) \)
+    Für alle
     \begin{align}
-      \left| |\star\sigma^{p}|\hat\alpha_{1 \ldots p}(c) - \psi(\hat\alpha)(\star\sigma^{p})\right| 
-          &= \left| \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}}|\hat\sigma^{n-p}|\hat\alpha_{1 \ldots p}(c) 
-                  - \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} \int_{\hat\sigma^{n-p}}\hat\alpha\right| \\
-          &\le \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} \left||\hat\sigma^{n-p}|\hat\alpha_{1 \ldots p}(c) - \psi(\hat\alpha)(\hat\sigma^{n-p}) \right| \\
-          &\le \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} |\hat\sigma^{n-p}| \left( \|\nabla\hat\alpha_{1 \ldots p}(c)\| 2 h_{\hat\sigma^{n-p}} + |\mathcal{O}((2h_{\hat\sigma^{n-p}})^{2})|
-          \right) \\
-           &\le |\star\sigma^{p}| \left( \|\nabla\hat\alpha_{1 \ldots p}(c)\| h_{\d\sigma^{p}} + |\mathcal{O}(h_{\sigma^{p}}^{2})| \right) \formkomma
+      *\alpha&= \sum_{i_{p+1}<\ldots<i_{n}} (*\alpha)_{i_{p+1}\ldots i_{n}} dx^{i_{p+1}}\wedge\ldots\wedge dx^{i_{n}} \in\Omega^{n-p}(|K|)=\Omega^{n-p}(|\csd K|)
     \end{align}
+    gilt wegen der stückweisen flachen Metrik \( g|_{\hat\sigma^{n-p}} \equiv I \) auf allen \( \hat\sigma^{n-p} \in S_{\sigma^{p}} \), dass
+    \begin{align}
+      (*\alpha)_{i_{p+1}\ldots i_{n}} = \alpha_{i_{1}\ldots i_{p}} \formpunkt
+    \end{align}
+    Nun gilt weiter
+    \begin{align}
+      \left| |\star\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(*\alpha)(\star\sigma^{p})\right| 
+          &= \left| \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}}|\hat\sigma^{n-p}|\alpha_{1 \ldots p}(c) 
+                  - \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} \int_{\hat\sigma^{n-p}}*\alpha\right| \\
+          &\le \sum_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} \left||\hat\sigma^{n-p}|\alpha_{1 \ldots p}(c) - \psi(*\alpha)(\hat\sigma^{n-p}) \right| \formpunkt\label{eq2}
+    \end{align}
+    Anders als in \eqref{eq1} ist \( c \) eine Ecke von \( \hat\sigma^{n-p}=\left[ c,\hat{v}_{p+1},\ldots,\hat{v}_{n} \right] \), das heißt wir nutzen dessen längste Kante 
+    \begin{align}
+      l_{\hat\sigma^{n-p}} &:= \max_{p < i \le n}\|\hat{v}_{i}-c\| \ge \|x-c\| \qquad\left( \forall x \in \hat\sigma^{n-p} \right) \formpunkt
+    \end{align}
+    Somit gilt die Abschätzung
+    \begin{align}
+      \left||\hat\sigma^{n-p}|\alpha_{1 \ldots p}(c) - \psi(*\alpha)(\hat\sigma^{n-p}) \right|
+        &\le |\hat\sigma^{n-p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| l_{\hat\sigma^{n-p}} + |\mathcal{O}(l_{\hat\sigma^{n-p}}^{2})| \right) \label{eq3}
+    \end{align}
+    für die Summanden in \eqref{eq2}.
+    Mit der Länge, der längsten in der Dualkette \( \star\sigma^{p} \) enthalten Kante,
+    \begin{align}
+      \hat{l}_{\star\sigma^{p}} &:= \max_{\hat\sigma^{n-p}\in S_{\sigma^{p}}} l_{\hat\sigma^{n-p}} 
+      &\text{und}&&
+      \sum_{\hat\sigma^{n-p} \in S_{\sigma^{p}}} |\hat\sigma^{n-p}| = |\star\sigma^{p}|
+    \end{align}
+    folgt nun aus \eqref{eq2} und \eqref{eq3}, dass
+    \begin{align}
+       \left| |\star\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(*\alpha)(\star\sigma^{p})\right| 
+         &\le |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\|\hat{l}_{\star\sigma^{p}}  + |\mathcal{O}(\hat{l}_{\star\sigma^{p}}^{2})| \right) \formpunkt
+    \end{align}
+    Wenn \( p = n \) ist, dann gilt für \( *\alpha:= f  dx^{1}\wedge\ldots\wedge dx^{n} \) mit \( f \in C^{\infty}(M) \) die Gleichheit
+    \begin{align}
+      \psi(*\alpha)(\star\sigma^{n}) = f(c) \formpunkt
+    \end{align}
+    Somit erhalten wir insgesamt
+    \begin{align}
+      \left| (*\psi(\alpha))(\star\sigma^{p}) - \psi(*\alpha)(\star\sigma^{p})\right|
+          &\le \left| (*\psi(\alpha))(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c)\right| \\  
+          &\quad     +\left|\psi(*\alpha)(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c)\right| \\
+          &\le |\star\sigma^{p}| \|\nabla\alpha_{1 \ldots p}(c)\| \left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right)   \\
+          &\quad      + |\star\sigma^{p}||\mathcal{O}(\eps_{\sigma^{p}}^{2} + \hat{l}_{\star\sigma^{p}}^{2})|
+    \end{align}
+    (speziell auch für \( p=0 \) bzw. \( p=n \)) und damit die Behauptung.
   \end{proof}
 
   \begin{satz}
     Es sei \( K \) ein wohlzentriertes zweidimensionales Primärgitter mit \( |K| = M \), das heißt die Mannigfaltigkeit \( M \) ist ein Polyeder, dann gilt
-    \begin{itemize}
-      \item für alle \( \alpha\in\Omega^{0}(M) \) bzw. \( \alpha\in\Omega^{2}(M) \), dass
-              \begin{align}
-              \label{eqKonsistentzHodge0bzw2form}
-                *\psi(\alpha) &= \psi(*\alpha)
-              \end{align} \formpunkt
-      \item für alle \( \alpha\in\Omega^{1}(M) \), dass
-            \begin{align}
-              \left\| *\psi(\alpha) - \psi(*\alpha) \right\| &\le \mathcal{O}\left( h_{\sigma^{2},\max}^{2} \right)
-            \end{align}
-    \end{itemize}
+    für alle \( \alpha\in\Omega^{p}(M) \) mit \( 0\le p \le 2 \)
+    \begin{align}
+      \left| \left( *\psi(\alpha) - \psi(*\alpha) \right)(\star\sigma^{p})\right| \le \mathcal{O}\left(\hat{h}_{\sigma^{p}}^{3-p}\right)
+    \end{align}
+    wobei \(\hat{h}_{\sigma^{p}}:=\max_{\sigma^{2}\succ\sigma^{p}}h_{\sigma^{2}}  \) das Maximum aller Umkreisdurchmesser der anliegenden Dreieckelemente 
+    für \( p\in\left\{ 0,1 \right\} \) ist. Wenn \( p=2 \) ist,  dann setzen wir \(\hat{h}_{\sigma^{2}}:= h_{\sigma^{2}}  \).
   \end{satz}
   \begin{proof}
-    Die Aussagen folgen direkt aus Lemma \ref{lemmaKonsistenzHodge}.
-    Für \( p=0 \) ist \( h_{\sigma^{p}} = 0 \), da \( \sigma^{0} \) nur aus einem Punkt besteht.
-    Für \( p=2 \) ist \( |\star\sigma^{p}| = 0 \), fuck nein! ... ich geh schlafen!
+    Die Aussagen folgen direkt aus Lemma \ref{lemmaKonsistenzHodge} und den folgenden rein geometrischen Überlegungen:\\
+    \begin{align}
+      \label{tabGeometrischeGroessen}
+      \renewcommand{\arraystretch}{1.5}
+      \begin{array}{|l|l|l|l|} \hline
+         p  &  \eps_{\sigma^{p}}                  &  \hat{l}_{\star\sigma^{p}}              &   |\star\sigma^{p}|  \\\hline
+         =0  &  = 0                                &  = \frac{1}{2}\hat{h}_{\sigma^{0}}      &  \le \pi \hat{l}_{\star\sigma^{0}}^{2} = \frac{1}{4} \pi \hat{h}_{\sigma^{0}}^{2} \\\hline
+         =1  & \le \frac{1}{2}\hat{h}_{\sigma^{1}} & \le \frac{1}{2}\hat{h}_{\sigma^{1}}     & \le 2 \hat{l}_{\star\sigma^{1}} \le \hat{h}_{\sigma^{1}} \\\hline
+         =2  & = \frac{1}{2}\hat{h}_{\sigma^{2}}   & = 0                                     & = 1 \\\hline
+      \end{array}
+    \end{align}
   \end{proof}
+  Dieser lokale Fehler für den diskreten Hodge-Stern-Operator lässt sich natürlich auch global erweitern.
+  Also für die diskrete Maximumsnorm
+  \begin{align}
+    \left\| \alpha \right\|_{\infty} &:= \max_{\sigma^{p}\in K^{(p)}}\left| \alpha(\sigma^{p}) \right| \qquad (\forall\alpha\in\Omega^{p}_{d}(K))
+  \end{align}
+  auf dem Primärgitter \( K \) gilt im obigen Fall
+  \begin{align}
+    \left\| *\psi(\alpha) - \psi(*\alpha) \right\|_{\infty} &\le \mathcal{O}\left(h^{3-p}\right)
+  \end{align}
+  mit \( h:=\max_{\sigma^{2}\in K} h_{\sigma^{2}} \).
+  Wie schon in Definition \ref{defDoppelSternBedingung} kann der Sternoperator auf \( \Omega^{p}_{d}(\star K) \) implizit definiert werden,
+  sodass er die gleiche Eigenschaft wie sein stetiges Vorbild hat.
+
+  \begin{definition}
+    \label{defDualHodgeStern}
+    Der diskrete Hodge-Stern-Operator \(*:\Omega^{p}_{d}(\star K) \rightarrow \Omega^{(n-p)}_{d}(K)\) defiert sich implizit über
+    \begin{align}
+      **\alpha = (-1)^{p(n-p)}\alpha
+    \end{align}
+    für alle \( \alpha\in\Omega^{n-p}_{d}(K) \).
+  \end{definition}
+
+  Dabei sei nochmal hervorgehoben, dass \(\Omega^{p}_{d}(\star K)  \) gerade als surjektives Bild definiert wurde und damit macht obige definition auch Sinn,
+  das heißt sie beschreibt tatsächlich das Bild aller \( \hat\alpha\in\Omega^{p}_{d}(\star K) \).
+  Natürlich lässt sich daraus eine explizite Schreibweise ableiten.
+  
+  \begin{folgerung}
+    Für alle diskreten \( p \)-Formen \( \hat\alpha\in\Omega^{p}_{d}(\star K) \) und \( \hat\sigma^{p}=\star\sigma^{n-p}\in\star K \) gilt
+    \begin{align}
+      (*\hat\alpha)(\star\hat\sigma^{p}) &= \left\langle *\hat\alpha, \star\hat\sigma^{p} \right\rangle 
+                                        = \frac{|\sigma^{n-p}|}{|\star\sigma^{n-p}|} \left\langle \hat\alpha, \hat\sigma^{p} \right\rangle
+                                         = \frac{|\sigma^{n-p}|}{|\star\sigma^{n-p}|} \hat\alpha(\hat\sigma^{p}) \formpunkt
+    \end{align}
+  \end{folgerung}
+  \begin{proof}
+    Da für alle \( \hat\alpha\in\Omega^{p}_{d}(\star K) \) ein \( \alpha\in\Omega^{n-p}_{d}(\star K) \) existiert,
+    sodass \( \hat\alpha = \star\alpha \) gilt, können wir mit Hilfe der Definitionen \ref{defDiskreteHodgeStern} und \ref{defDoppelSternBedingung} rechnen
+    \begin{align}
+      \left\langle *\hat\alpha, \star\hat\sigma^{p} \right\rangle
+        &= (-1)^{p(n-p)} (-1)^{p(n-p)} \left\langle \alpha , \sigma^{n-p} \right\rangle
+         = \frac{|\sigma^{n-p}|}{|\star\sigma^{n-p}|} \left\langle \star\alpha, \star\sigma^{n-p} \right\rangle \formpunkt
+    \end{align}
+  \end{proof}
+  
+  \begin{folgerung}
+    Für \( M=|K| \) mit wohlzentrierten Primärgitter \( K \) ist der diskrete Hodge-Stern-Operator nach Definition \ref{defDualHodgeStern} ebenfalls konsistent mit
+    \begin{align}
+      \label{eqKonsistenzDualHodge}
+      \left| (*\psi(\hat\alpha))(\sigma^{p}) - \psi(*\hat\alpha)(\sigma^{p})\right| \le \left| \sigma^{p} \right| \mathcal{O}\left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right) \formpunkt
+    \end{align}
+    für alle \( \hat\alpha\in\Omega^{n-p}(M) \).
+  \end{folgerung}
+  \begin{proof}
+    Da der Hodge-Stern-Operator ein Isomorphismus auf den Differentialformen ist, existiert ein \( \alpha\in\Omega^{p}(M) \), sodass \( \hat\alpha = *\alpha \) gilt.
+    Somit können wir die Abschätzung \eqref{eqKonsistenzHodge} nutzen, denn es gilt
+    \begin{align}
+      \left| \left[ *\psi(\hat\alpha) - \psi(*\hat\alpha) \right](\sigma^{p}) \right|
+        &= \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \left[ **\psi(\hat\alpha) - *\psi(*\hat\alpha) \right](\star\sigma^{p}) \right| \\
+        &= \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \left[ \psi(*\alpha) - *\psi(\alpha) \right](\sigma^{p}) \right|\\
+        &\le  \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \star\sigma^{p} \right| \mathcal{O}\left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right) \formkomma
+    \end{align}
+    da \( *\hat\alpha = **\alpha = (-1)^{p(n-p)}\alpha \) und \( **\psi(\hat\alpha) =  (-1)^{p(n-p)}\psi(\hat\alpha)\).
+  \end{proof}
+
+  Auch hier können wir wieder den Spezialfall eines zweidimensionalen Polyeders betrachten.
+  
+  \begin{satz}
+    Es sei \( K \) ein wohlzentriertes Zweidimensionales Primärgitter mit \( |K| = M \),
+    dann gilt für alle \( \hat\alpha\in\Omega^{2-p}(M) \) mit \( 0 \le p \le 2\)
+    \begin{align}
+      \left| \left( *\psi(\hat\alpha) - \psi(*\hat\alpha) \right)(\sigma^{p})\right| \le \mathcal{O}\left(\hat{h}_{\sigma^{p}}^{1+p}\right)
+    \end{align}
+    für alle \( \sigma^{p}\in K \).
+  \end{satz}
+  \begin{proof}
+    Die Aussage folgt aus \eqref{eqKonsistenzDualHodge}. 
+    Die geometrischen Größen \( \eps_{\sigma^{p}} \) und \( \hat{l}_{\star\sigma^{p}} \) können aus der vorhergehenden Tabelle \eqref{tabGeometrischeGroessen} entnommen werden.
+    Die noch fehlenden (Abschätzungen der) Voluminas der Simplizes sind
+    \begin{align}
+    \begin{aligned}
+       \left| \sigma^{0} \right| &= 1 \\
+       \left| \sigma^{1} \right| &= 2\eps_{\sigma^{1}} \le \hat{h}_{\sigma^{1}} \\
+       \left| \sigma^{2} \right| &\le \frac{\pi}{4} \hat{h}_{\sigma^{2}}^{2} \formpunkt
+    \end{aligned}
+    \end{align}
+  \end{proof}
+
+  \begin{fazit}
+    \todo[inline]{die fage wie polyederform allgemeineform aprrox. bleiobt für zukunft}
+  \end{fazit}
+
 
 
 
