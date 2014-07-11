@@ -350,7 +350,7 @@ see \cite{Lee} \cite{FirstCourse}
           \left\langle \exd \alpha , \star v \right\rangle &=  \sum_{i=0}^{m} \left\langle \alpha, \star\sigma_{i}^{1}\right\rangle
           \formkomma
         \end{align}}
-        wobei \( m \) die Anzahl der Kanten ist, die \( v \) als Ecke haben.
+        wobei \( (m+1) \) die Anzahl der Kanten ist, die \( v \) als Ecke haben.
       \end{minipage} \\\hline
     \end{tabular}
     Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.
@@ -712,9 +712,84 @@ see \cite{Lee} \cite{FirstCourse}
     \end{aligned}
     \end{align}
   \end{proof}
+  Letztere Abschätzung liese sich auch so lesen, dass sich für eine \( \hat{p} \)-Form \( \alpha\in\Omega^{\hat{p}}(M) \) 
+  (lokal auf einem \( (2-\hat{p}) \)-Simplex) ebenfalls eine Ordnung von \( (3-\hat{p}) \) ergibt, wie schon in \eqref{eqKonsistenzHodge}.
+
+  Für eine allgemeine Definition der Rotation für Differentialformen 
+  \begin{align}
+    *\exd: \Omega^{p}(M) \rightarrow \Omega^{n-p-1}
+  \end{align} 
+  ist ersichtlich,
+  dass für die DEC-diskretisierte Rotation nur der Hodge-Stern-Operator dabei einen Diskretisierungsfehler\footnote{ohne den geometrischen Fehler, d.h. \( M = |K| \)}
+  auf der exakten Form \( \exd\alpha\in\Omega^{p+1} \) verursacht, da wir für die äußere Ableitung wegen dem Stokes-Theorem keinen Fehler machen.
+  Anders sieht die Situation für die Koableitung
+  \begin{align}
+    \label{eqKoableitungStetig}
+    \delta = (-1)^{np+1}*\exd *: \Omega^{p+1}(M) \rightarrow \Omega^{p}(M)
+  \end{align}
+  aus, bei dem wir uns zweimal den Fehler des Hodge-Stern-Operators beim diskretisieren einhandeln.
+  Im Übrigen ist bei dem Studium der Koableitung für Differentialformen Vorsicht geboten, denn bezüglich des inneren \( L^{2} \)-Produktes
+  \begin{align}
+  \begin{aligned}
+    \left\langle\left\langle \bullet, \bullet \right\rangle\right\rangle: \Omega^{p}(U)\times\Omega^{p}(U) &\rightarrow \R \\
+                            \left( \alpha, \beta \right) &\mapsto \left\langle\left\langle \alpha, \beta \right\rangle\right\rangle
+                                                                  = \int_{U} \alpha \wedge *\beta
+  \end{aligned}
+  \end{align}
+  ist hier gerade \( \delta \) der formal adjungierte Operator zu \( \exd \), 
+  das heißt es gilt 
+  \( \left\langle\left\langle \exd\alpha, \beta \right\rangle\right\rangle = \left\langle\left\langle \alpha, \delta\beta \right\rangle\right\rangle\).
+  In \cite{Marsden} ist die Koableitung so definiert, in anderen Lektüren, wie zum Beispiel \cite{jaenich}, ist \( -\delta \) der adjungierte Operator.
+  Das kann zu einiger Verwirrung führen, deshalb einigen wir uns hier den in \eqref{eqKoableitungStetig} angegeben Operator für die Koableitung zu verwenden.
+
+  \begin{definition}
+    Es sei \( K \) ein wohlzentriertes Primärgitter, dann ist mit \( T\in\left\{ K, \star K \right\} \) die diskrete Koableitung definiert durch
+    \begin{align}
+      \delta := (-1)^{np+1}*\exd *: \Omega^{p+1}(T) \rightarrow \Omega^{p}(T) \formpunkt
+    \end{align}
+  \end{definition}
+
+  \begin{beispiel}[Divergenz]
+    Die Divergenz eines Vektorfeldes \( \vec{w}\in\mathcal{V}^{\infty}(M) \) auf einer zweidimensionalen Mannigfaltigkeit \( M \) kann mit Hilfe 
+    der Koableitung berechnet werden (s.\cite{Marsden}), denn es gilt
+    \begin{align}
+      \text{Div}\vec{w} = -\delta\vecflat{w} \formpunkt
+    \end{align}
+    Wobei bei einer Dimension \( n=2 \), wie auch für alle anderen geraden Dimensionen, immer gilt, dass \( \delta = -*\exd * \) ist.
+    Wird nun \( M \) durch ein wohlzentriertes Primärgitter \( K \) approximiert, dann können wir die Divergenz an einer Ecke \( v\in K \) numerisch berechnen.
+    Sei dazu die diskrete \( 1 \)-Form 
+    \( \alpha:=\psi(\vecflat{v})\in\Omega_{d}^{1}(K) \)
+    gegeben.\\
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering\input{bilder/tikz/ableitungDual1Form}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.6\textwidth}
+    \begin{align}
+    \begin{aligned}
+      \left\langle -\delta\alpha,v \right\rangle
+          &= \left\langle *\exd * \alpha , v \right\rangle \\
+          &= \frac{1}{\left| \star v \right|} \left\langle \exd * \alpha , \star v \right\rangle \\
+          &= \frac{1}{\left| \star v \right|} \sum_{i=0}^{m} \left\langle *\alpha , \star\sigma^{1}_{i} \right\rangle \\
+          &= \frac{1}{\left| \star v \right|} \sum_{i=0}^{m} \frac{\left| \star\sigma^{1}_{i} \right|}{\left|\sigma^{1}_{i} \right|}
+                                                              \left\langle \alpha , \sigma^{1}_{i} \right\rangle
+    \end{aligned}
+    \end{align}
+    \end{minipage}
+
+
+  \end{beispiel}
 
   \begin{fazit}
-    \todo[inline]{die fage wie polyederform allgemeineform aprrox. bleiobt für zukunft}
+    Wir haben gezeigt, dass für ein immer feiner werdendes wohlzentriertes Primärgitter der diskrete Hodge-Stern-Operator gegen den Hodge-Stern-Operator für Differentialformen auf dem
+    zugehörigen Polytop konvergiert.
+    Offen für zukünftige Arbeiten bleibt die Frage wie gut denn überhaupt eine Differentialform auf einem Polytop eine Differentialform auf einer glatten Mannigfaltigkeit zu approximieren vermag
+    und in welchem Sinne.
+    Auf dem Primärgitter ließe sich diese Frage noch am einfachsten beantworten, da dort auf einem Simplex, nach dem Mittelwertsatz der Differentialrechnung, der Tangentialraum an
+    wenigstem einem Punkt auf dem zugehörigen abstrakten Simplex übereinstimmt, d.h. dort hätten wir zumindestens schonmal einen gemeinsamen Vektorraum zum vergleichen.
+    Für ein Simplex auf dem Dualgitter, wie wir es für den Hodge-Stern-Operator bräuchten, scheint die Situation schwieriger, da hier im allgemeinen die Ecken nicht auf der Mannigfaltigkeit
+    liegen und es somit noch unklar ist ob sich überhaupt ein gemeinsamer Tangentialraum finden lässt.
+    \todo[inline]{wedge aus hodge?}
   \end{fazit}
 
 
