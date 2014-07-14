@@ -377,6 +377,7 @@ see \cite{Lee} \cite{FirstCourse}
   Koordinatensystem \( (x^{1}, x^{2}) \) mit Riemannmetrik \( g = \text{diag}(g_{1},g_{2}) \), wobei \( g^{i}=(g_{i})^{-1} \) (vgl. \cite{nitschke}). 
   Damit ergibt sich folgendes kommutatives Diagramm:
   \begin{align}
+    \label{diag2DimAusAbleitung}
     \begin{xy} \xymatrix{
       \Omega^{0}(M) \ar[r]^{\exd} & \Omega^{1}(M) \ar[r]^{\exd} \ar@<-2pt>[d]_{\sharp} & \Omega^{2}(M) \ar[d]^{*}\\
       C^{\infty}(M) \ar[r]_{\nabla} \ar[u]^{\text{id}} & \mathcal{V}^{\infty}(M) \ar[r]_{\text{rot}} \ar@<-2pt>[u]_{\flat} & C^{\infty}(M) }
@@ -776,11 +777,65 @@ see \cite{Lee} \cite{FirstCourse}
     \end{aligned}
     \end{align}
     \end{minipage}
-
-
   \end{beispiel}
 
+  \begin{bemerkung}[zur Implementierung]
+    Prinzipiell können alle hier vorgestellten Operatoren als Matrizen implementiert werden, da sie linear sind, vergleiche \cite{siggraphKap7} und \cite{siggraphKap8}.
+    Das wollen wir hier nicht machen, da hier das Interface und die Methodik von AMDiS genutzt werden soll.
+    Das heißt FEM-typisch werden die Operatoren auf den Dreieckelementen aufgestellt und bilden somit Elementmatrizen, die dann erst zu einer Systemmatrix aufassembliert werden.
+    Da AMDiS von Haus aus eine geeignete Speicherstruktur für skalarwertige oder vektorisierte skalarwertige Probleme mitbringt, müssen intern nur die FEM-Operatoren durch geeignete
+    DEC-Operatoren ausgetauscht werden.
+    Die Problemformulierung, das aufaddieren der Elementmatrizen sowie das Lösen des Gleichungssystem bleibt somit im Ursprünglichen Zustand erhalten.
+    Es ist somit sogar möglich Differentialgleichungssysteme mit DEC und FEM in einer einzelnen Problemformulierung gemischt zulösen.
+  \end{bemerkung}
+
   \begin{fazit}
+    Auf einer 2-Mannigfalltigkeit lässt sich noch ein weiterer aus der klassischen Vektoranalysis bekannter Ableitungsoperator mit Hilfe der Koableitung darstellen.
+    Für \( f\in C^{\infty(M)} \) definiert sich die Rotation über
+    \begin{align}
+      \left( *\delta\left( *f \right) \right)^{\sharp} = -\left( *\exd f \right)^{\sharp} =: -\text{Rot} f \formpunkt
+    \end{align}
+    Damit können wir analog zu \eqref{diag2DimAusAbleitung} zusammenfassend den Kettenkomplex mit den zugehörigen Skalar-/Vektorfeldübersetzungsisomorphismen aufstellen:
+    \begin{align}
+      \begin{xy} \xymatrix{
+        \Omega^{0}(M) \ar[d]_{\text{id}} & \Omega^{1}(M) \ar[l]^{\delta} \ar@<2pt>[d]^{\sharp} & \Omega^{2}(M) \ar[l]^{\delta}\\
+        C^{\infty}(M) & \mathcal{V}^{\infty}(M) \ar[l]_{\text{Div}} \ar@<2pt>[u]^{\flat} & C^{\infty}(M) \ar[l]_{\text{-Rot}} \ar[u]_{*} }
+      \end{xy}
+    \end{align}
+    Nach dem Baukastenprinzip ließen sich somit alle linearen Differentialgleichungen endlicher Ordnung diskretisieren.
+    Um auch nichtlineare Terme wie die Kontraktion (inneres Produkt) \( i_{\vec{v}}\alpha\in\Omega^{p-1}(M) \) 
+    oder die Lie-Ableitung \( \mathcal{L}_{\vec{v}}\alpha\in\Omega^{p}(M) \) für \( \vec{v}\in\mathcal{V}^{\infty} \) und \( \alpha\in\Omega^{p}(M) \) darzustellen
+    benötigen wir noch das diskrete Dachprodukt \( \wedge \).
+    In \cite{desbrun} werden zwei diskretes Dachprodukt auf \( \Omega_{d}^{p}(K)\times\Omega_{d}^{q}(K) \) bzw. \( \Omega_{d}^{p}(\star K)\times\Omega_{d}^{q}(\star K) \)
+    für \( p+q\le n \) vorgestellt, welche, wie auch das Dachprodukt für Differentialformen, antikommutativ sind und die Leibnitzregel (Produktregel) bzgl. der äußeren Ableitung erfüllen.
+    Allerdings sind sie im Allgemeinen nicht assoziativ im Gegensatz zum stetigen Vorbild.
+    In \cite{diskreteLie} gibt es einen anschaulichen Ansatz zur Diskretisierung der Kontraktion.
+    Damit könnten wir auch ohne Dachprodukt über Cartans "`magische"' Formel
+    \begin{align}
+      \mathcal{L}_{\vec{v}}\alpha = i_{\vec{v}}\exd\alpha + \exd i_{\vec{v}}\alpha 
+    \end{align}
+    als algebraische Bedingung eine diskrete Lie-Ableitung erhalten.
+    Somit könnte zum Beispiel auch der Jacobian
+    \begin{align}
+      \mathcal{J}(\psi,\Delta\psi) = *\exd\mathcal{L}_{\vec{u}}\vecflat{u} 
+    \end{align}
+    mit dem Strömungsfeld \( u = \text{Rot}\psi\in\mathcal{V}^{\infty}(M) \) und der Stromfunktion \( \psi\in C^{\infty}(M) \),
+    wie er in der Wirbelgleichung in \cite{nitschke} vorkommt, numerisch mit Hilfe des DECs als skalarwertiges Problem behandelt werden.
+    Auch eine direkte Diskretisierung des Konvektionstermes \( \mathcal{L}_{\vec{u}}\vecflat{u} \) in den Navier-Stokes-Gleichungen (vgl. \cite{Marsden}, Kap.8) wäre denkbar.
+    Das Problem an dem resultierendem (Tangential-)Vektorproblem ist, dass wir noch keine diskreten Übersetzungisomorphismen \( \sharp \) und \( \flat \) haben.
+    Diese müssten in zukünftigen Arbeiten noch sinnvoll entwickelt werden.
+    Erste Ansätze dazu finden sich zum Beispiel in \cite{hirani}.
+    Vorher müssten allerdings noch fundamentale implementiertechnische Fragen gestellt werden.
+    Wollen wir mit \( 1 \)-Formen oder mit Vektorfeldern speicherintern arbeiten und bei Bedarf die Indizes rauf bzw. herunter ziehen?
+    Und wie wollen wir speichern?
+    Bei \( 1 \)-Formen ist es klar, im diskreten definieren sie sich über die Werte auf den Kanten, das heißt ein Freiheitsgrad auf jeder Kante.
+    Bei Vektorfeldern wird es da schon schwieriger. Am sichersten ist es diese auf den Dreieckelementen zu speichern (effektiv 2 Freiheitsgrade pro Element), da es dort einen eindeutigen
+    Tangentialraum auf dem Polytop gibt. 
+    Tangentialvektoren auf den Ecken zuspeichern, wie es im flachen Fall üblich ist, wird zu Problemen führen, da auf den Ecken kein eindeutiger Tangentialraum definiert ist.
+    Eine Mittelung der umliegenden Tangentialräume der anliegenden Dreiecke (oder auch Kanten) scheint doch recht wilkürlich zu sein und könnte zu einem nicht lösbaren Gleichungssystem
+    führen. Es müssen drei Freigheitsgrade für die Ecken angesetzt werden für ein eigentlich zweidimensionales Problem, was zu einem überbestimmten System führen könnte.
+    Auf jeden Fall würde es die (dünnbesetzte) Systemmatrix unnötig "`aufblähen"'.
+
     Wir haben gezeigt, dass für ein immer feiner werdendes wohlzentriertes Primärgitter der diskrete Hodge-Stern-Operator gegen den Hodge-Stern-Operator für Differentialformen auf dem
     zugehörigen Polytop konvergiert.
     Offen für zukünftige Arbeiten bleibt die Frage wie gut denn überhaupt eine Differentialform auf einem Polytop eine Differentialform auf einer glatten Mannigfaltigkeit zu approximieren vermag
@@ -789,23 +844,33 @@ see \cite{Lee} \cite{FirstCourse}
     wenigstem einem Punkt auf dem zugehörigen abstrakten Simplex übereinstimmt, d.h. dort hätten wir zumindestens schonmal einen gemeinsamen Vektorraum zum vergleichen.
     Für ein Simplex auf dem Dualgitter, wie wir es für den Hodge-Stern-Operator bräuchten, scheint die Situation schwieriger, da hier im allgemeinen die Ecken nicht auf der Mannigfaltigkeit
     liegen und es somit noch unklar ist ob sich überhaupt ein gemeinsamer Tangentialraum finden lässt.
-    \todo[inline]{wedge aus hodge?}
   \end{fazit}
 
 
 
 
 \section{Laplace-Operator}
+  
+  \begin{ziel}
+    Wenn es um Numerik partieller Differentialgleichungen geht, dann liegt der Schwerpunkt oftmals auf der Diskretisierung des Laplace-Operators bzw. Gleichungen der Form
+    \begin{align}
+      \label{eqAllgemeineLaplaceGleichung}
+      \Delta u &= F(u)
+    \end{align}
+    mit zum Beispiel linearem \( F \) und Skalarfeld oder Vektorfeld \( u \).
+    Auch Zeitabhängige Probleme sind denkbar, die durch eine Methode der Wahl in der Zeit diskretisiert werden 
+    und somit in jedem Zeitschritt auch in die Kategorie \eqref{eqAllgemeineLaplaceGleichung} passen.
+
+    Wir werden hier den Laplace-Operator für skalare Größen diskretisieren um einen diskreten Laplace-Beltrami-Operator zuerhalten und diesen in der Poisson-Gleichung als Minimalbeispiel
+    auch testen. Desweiteren kann der Laplace-Operator auch zur Bestimmung der mittleren Krümmung benutzt werden wie wir in \ref{subsecKruemmungsvektor} noch sehen werden.
+  \end{ziel}
 
   \subsection{Beispiel: Laplace-Gleichung}
 
+\section{Approximation der Krümmung}
   \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
   \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}
   \subsection{Beispiel: Krümmung Teil 3: Krümmungsvektor}
-
-
-\section{Lie-Ableitung und Jacobian}
-
-  \subsection{Beispiel: Wirbelgleichung}
+  \label{subsecKruemmungsvektor}
 
 
