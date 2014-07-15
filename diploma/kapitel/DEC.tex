@@ -317,6 +317,7 @@ see \cite{Lee} \cite{FirstCourse}
       \begin{minipage}[c]{0.69\textwidth}
         Für \( f\in\Omega_{d}^{0}(K) \) und \( \sigma^{1}=\left[ v_{0}, v_{1} \right]\in K \) gilt
         {\begin{align}
+          \label{eqAbleitungKante}
           \left\langle \exd f , \sigma^{1} \right\rangle &= f(v_{1}) - f(v_{0}) \formpunkt
         \end{align}}
       \end{minipage} \\\hline
@@ -374,7 +375,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{aligned}
   \end{align}
   für ein lokales orthogonales\footnote{o.E.d.A, da die riemannsche Metrik \( g  \) lokal positiv definit und symetrisch ist, also auch diagonalisierbar} 
-  Koordinatensystem \( (x^{1}, x^{2}) \) mit Riemannmetrik \( g = \text{diag}(g_{1},g_{2}) \), wobei \( g^{i}=(g_{i})^{-1} \) (vgl. \cite{nitschke}). 
+  Koordinatensystem \( (x^{1}, x^{2}) \) mit Riemannmetrik \( g = \diag{g_{1},g_{2}} \), wobei \( g^{i}=(g_{i})^{-1} \) (vgl. \cite{nitschke}). 
   Damit ergibt sich folgendes kommutatives Diagramm:
   \begin{align}
     \label{diag2DimAusAbleitung}
@@ -751,6 +752,7 @@ see \cite{Lee} \cite{FirstCourse}
   \end{definition}
 
   \begin{beispiel}[Divergenz]
+    \label{bspDivergenz}
     Die Divergenz eines Vektorfeldes \( \vec{w}\in\mathcal{V}^{\infty}(M) \) auf einer zweidimensionalen Mannigfaltigkeit \( M \) kann mit Hilfe 
     der Koableitung berechnet werden (s.\cite{Marsden}), denn es gilt
     \begin{align}
@@ -880,11 +882,35 @@ see \cite{Lee} \cite{FirstCourse}
     \)-Formen auf \( 0 \) abbildet.
     Das ist gerade der negative Laplace-Beltrami-Operator
     \begin{align}
+      \label{eqBeltramiAussenDef}
       \Delta_{B}f := \text{Div}\nabla f = -\delta\exd f = -\Delta_{dR} f
     \end{align}
     für eine Funktion \( f\in C^{\infty}(M) \).
     Wegen der unterschiedlichen Vorzeichen des Laplace-Beltrami-Operators und des Laplace-de-Rham-Operators
     für \( 0 \)-Formen ist Obacht geboten, da dies Grund zur Verwirrung sein könnte.
+    Mit einer Riemann-Metrik \( g \) ergibt sich somit
+    \begin{align}
+      \Delta_{B} f &= \frac{1}{\sqrt{\left| \det g \right|}} \sum_{i,j=1}^{n} \frac{\partial}{\partial x^{j}} \left( g^{ij}\sqrt{\left| \det g \right|} \frac{\partial f}{\partial x^{i}}
+      \right) \formpunkt
+    \end{align}
+    Für eine zweidimensionale Mannigfaltigkeit mit orthogonalen Koordinaten und Metrik \( g=\diag{g_{1},g_{2}} \) lässt sich die Formel vereinfachen zu
+    \begin{align}
+      \Delta_{B} f &=\sqrt{g^{1}g^{2}} \left(  \frac{\partial}{\partial x^{1}} \left( \sqrt{g^{1}g_{2}} \frac{\partial f}{\partial x^{1}} \right) 
+                                             + \frac{\partial}{\partial x^{2}} \left( \sqrt{g_{1}g^{2}} \frac{\partial f}{\partial x^{2}} \right) \right) \formpunkt
+    \end{align}
+    Der diskrete Laplace-Beltrami-Operator soll der durch \eqref{eqBeltramiAussenDef} DEC-diskretisierte Operator sein.
+    In Beispiel \ref{bspDivergenz} wurde die Divergenz an einer Ecke \( v\in K \) schon beschrieben, ebenso die Ableitung an einer Kante in \eqref{eqAbleitungKante}.
+    Damit ergibt sich zusammenfassend \\
+    \begin{align}
+    \begin{aligned}
+      \left\langle \Delta_{B} f, v \right\rangle 
+          &= \frac{1}{\left| \star v \right|} \sum_{\sigma^{1}\succ v} \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
+                       \left\langle \exd f , \sigma^{1} \right\rangle \\
+          &= \frac{1}{\left| \star v \right|} \sum_{\sigma^{1}=\left[ v,v_{i} \right]} \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
+                       \left( f(v_{i}) - f(v) \right) \formpunkt
+    \end{aligned}
+    \end{align}
+    
 
   \subsection{Beispiel: Poisson-Gleichung}
 
