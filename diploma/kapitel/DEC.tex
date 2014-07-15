@@ -863,9 +863,30 @@ see \cite{Lee} \cite{FirstCourse}
 
     Wir werden hier den Laplace-Operator für skalare Größen diskretisieren um einen diskreten Laplace-Beltrami-Operator zuerhalten und diesen in der Poisson-Gleichung als Minimalbeispiel
     auch testen. Desweiteren kann der Laplace-Operator auch zur Bestimmung der mittleren Krümmung benutzt werden wie wir in \ref{subsecKruemmungsvektor} noch sehen werden.
+    Da hier Oberflächen ohne Rand betrachtet werden, wird auch keine Behandlung von Randbedingungen
+    benötigt.
   \end{ziel}
 
-  \subsection{Beispiel: Laplace-Gleichung}
+  \subsection{Laplace-Beltrami-Operator}
+    Wer sich mit Differentialoperatoren auf Mannigfaltigkeiten beschäftigt wird bald feststellen, dass es
+    einen ganzen Zoo von Laplace-Operatoren gibt.
+    Da es hier um das äußere Kalkül geht, werden wir hier und im Folgenden den Laplace-de-Rham-Operator,
+    auch Hodge-Laplace-Operator genannt, benutzen, denn er definiert sich auf \( p \)-Formen und bildet
+    auch auf diese wieder ab.
+    \begin{align}
+      \Delta_{dR} := \exd\delta + \delta\exd: \Omega^{p}(M) \rightarrow \Omega^{p}(M)
+    \end{align}
+    Speziell für \( 0 \)-Formen ergibt sich \( \Delta_{dR} = \delta\exd \), da die Koableitung \( 0
+    \)-Formen auf \( 0 \) abbildet.
+    Das ist gerade der negative Laplace-Beltrami-Operator
+    \begin{align}
+      \Delta_{B}f := \text{Div}\nabla f = -\delta\exd f = -\Delta_{dR} f
+    \end{align}
+    für eine Funktion \( f\in C^{\infty}(M) \).
+    Wegen der unterschiedlichen Vorzeichen des Laplace-Beltrami-Operators und des Laplace-de-Rham-Operators
+    für \( 0 \)-Formen ist Obacht geboten, da dies Grund zur Verwirrung sein könnte.
+
+  \subsection{Beispiel: Poisson-Gleichung}
 
 \section{Approximation der Krümmung}
   \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
