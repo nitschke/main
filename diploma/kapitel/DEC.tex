@@ -900,9 +900,10 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     Der diskrete Laplace-Beltrami-Operator soll der durch \eqref{eqBeltramiAussenDef} DEC-diskretisierte Operator sein.
     In Beispiel \ref{bspDivergenz} wurde die Divergenz an einer Ecke \( v\in K \) schon beschrieben, ebenso die Ableitung an einer Kante in \eqref{eqAbleitungKante}.
-    Damit ergibt sich zusammenfassend \\
+    Damit ergibt sich zusammenfassend (vgl. Abbildung \ref{figSchemaLaplace})\\
     \begin{align}
     \begin{aligned}
+      \Delta_{B} f(v) =
       \left\langle \Delta_{B} f, v \right\rangle 
           &= \frac{1}{\left| \star v \right|} \sum_{\sigma^{1}\succ v} \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
                        \left\langle \exd f , \sigma^{1} \right\rangle \\
@@ -910,6 +911,24 @@ see \cite{Lee} \cite{FirstCourse}
                        \left( f(v_{i}) - f(v) \right) \formpunkt
     \end{aligned}
     \end{align}
+
+    \begin{figure}
+      \begin{minipage}{0.45\textwidth}
+        \centering\input{bilder/tikz/laplace}
+        \caption[Schema für Laplace]{1-Ring um \( v \) mit \( m+1 \) Dreieckelementen.
+                                     Die gepunkteten \( 1 \)-Simplizes sind die zu den Kanten 
+                                     \( \left[ v, v_{i} \right] \) dualen Kanten.}
+        \label{figSchemaLaplace}
+      \end{minipage}
+    \end{figure}
+
+    \begin{bemerkung}
+      ikosahedral-hexagonales Gitter auf der Sphere \cite{arakawa}
+
+      cotandorm \cite{meyer}
+
+      conv ord 2 \cite{xu}
+    \end{bemerkung}
     
 
   \subsection{Beispiel: Poisson-Gleichung}
