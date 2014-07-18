@@ -918,7 +918,8 @@ see \cite{Lee} \cite{FirstCourse}
         \centering\input{bilder/tikz/laplace}
         \caption[Schema für Laplace]{1-Ring um \( v \) mit \( m+1 \) Dreieckelementen.
                                      Die gepunkteten \( 1 \)-Simplizes sind die zu den Kanten 
-                                     \( \left[ v, v_{i} \right] \) dualen Kanten.}
+                                     \( \left[ v, v_{i} \right] \) dualen Kanten.
+                                     \( \alpha_{01} \) und \( \beta_{0m} \) sind die in \eqref{eqCotanFormel} verwendeten zur Ecke \( v_{0} \) gehörigen Winkel.}
         \label{figSchemaLaplace}
       \end{minipage}
     \end{figure}
@@ -943,10 +944,19 @@ see \cite{Lee} \cite{FirstCourse}
       Zudem ist er eine Approximation der Ordnung 2, welches in \cite{xu} gezeigt wird.
       In beiden Artikeln ist er allerdings als "`Cotan-Formel"' beschrieben, das heißt (vgl. Abbildung \ref{figSchemaLaplace})
       \begin{align}
+        \label{eqCotanFormel}
         \Delta_{B} f(v) \approx \frac{1}{\left| \star v \right|} \sum_{i=0}^{m} 
-                      \frac{\cot\alpha_{i,i_{+}} + \cot\beta_{i,i_{-}}}{2}
+                      \frac{\cot\alpha_{ii_{+}} + \cot\beta_{ii_{-}}}{2}
                             \left( f(v_{i}) - f(v) \right)
       \end{align}
+      wobei \( i_{+} \) und \( i_{-} \) der Nachfolger bzw. Vorgänger von \( i \) ist modulo \( (m+1) \).
+      Es lässt sich leicht geometrisch zeigen, dass im Dreieck \( \sigma^{2}:=\left[ v, v_{i}, v_{i_{+}} \right] \) 
+      \begin{align}
+        \cot\alpha_{ii_{+}} = \frac{\left| \star\sigma^{1} \cap \sigma^{2} \right|}{\frac{1}{2}\left| \sigma^{1} \right|}
+      \end{align}
+      gilt für \( \sigma^{1}:=\left[ v, v_{i} \right] \prec \sigma^{2}\),
+      analog für \( \beta_{ii_{-}} \).
+      Somit ist der diskrete Operator in \eqref{eqCotanFormel} auch wirklich gleich unserem hergeleiteten diskreten Laplace-Beltrami-Operator.
     \end{bemerkung}
     
 
