@@ -686,7 +686,7 @@ see \cite{Lee} \cite{FirstCourse}
     \begin{align}
       \left| \left[ *\psi(\hat\alpha) - \psi(*\hat\alpha) \right](\sigma^{p}) \right|
         &= \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \left[ **\psi(\hat\alpha) - *\psi(*\hat\alpha) \right](\star\sigma^{p}) \right| \\
-        &= \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \left[ \psi(*\alpha) - *\psi(\alpha) \right](\sigma^{p}) \right|\\
+        &= \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \left[ \psi(*\alpha) - *\psi(\alpha) \right](\star\sigma^{p}) \right|\\
         &\le  \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \star\sigma^{p} \right| \mathcal{O}\left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right) \formkomma
     \end{align}
     da \( *\hat\alpha = **\alpha = (-1)^{p(n-p)}\alpha \) und \( **\psi(\hat\alpha) =  (-1)^{p(n-p)}\psi(\hat\alpha)\).
@@ -846,6 +846,14 @@ see \cite{Lee} \cite{FirstCourse}
     wenigstem einem Punkt auf dem zugehörigen abstrakten Simplex übereinstimmt, d.h. dort hätten wir zumindestens schonmal einen gemeinsamen Vektorraum zum vergleichen.
     Für ein Simplex auf dem Dualgitter, wie wir es für den Hodge-Stern-Operator bräuchten, scheint die Situation schwieriger, da hier im allgemeinen die Ecken nicht auf der Mannigfaltigkeit
     liegen und es somit noch unklar ist ob sich überhaupt ein gemeinsamer Tangentialraum finden lässt.
+    Weitere Möglichkeiten zum Vergleichen für zweidimensionale Probleme sind zum einen den Ambienteraum \( \R^{3} \) zu nutzen in dem \( M \) und \( |K| \) liegen.
+    Hier ist die Schwierigkeit, dass zum Beispiel der Hodge-Operator \( 1 \)-Formen auf \( 2 \)-Formen abbildet, dass heißt es muss im Limes auch sichergestellt werden, dass \( * \) auch
+    die gleiche Wirkung im \( \R^{3} \) wie auch auf \( M \) und \( |K| \) hat.
+    Ist die Klebeabbildung \( \pi:|K|\rightarrow M \) bekannt, so ließe sich auch mit der zurückgezogenen Form \( \pi^{*}\alpha\in\Omega^{p}(|K|) \) argumentieren für ein \(
+    \alpha\in\Omega^{p}(M) \).
+    Für die äußere Ableitung spielt das keine Rolle da hier immer \( \exd\circ\pi^{*} = \pi^{*}\circ\exd \) gilt.
+    Die äußere Ableitung ist aber auch metrikunabgängig, der Hodge-Stern-Operator ist das im Allgemeinen nicht und damit haben wir solch eine Invariantz gegenüber den Pullback für eine 
+    nichtisometrische Abbildung \( \pi \) auch nicht.
   \end{fazit}
 
 
@@ -914,13 +922,22 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
 
     \begin{figure}
-      \begin{minipage}{0.45\textwidth}
+      \begin{minipage}[t]{0.45\textwidth}
         \centering\input{bilder/tikz/laplace}
         \caption[Schema für Laplace]{1-Ring um \( v \) mit \( m+1 \) Dreieckelementen.
                                      Die gepunkteten \( 1 \)-Simplizes sind die zu den Kanten 
                                      \( \left[ v, v_{i} \right] \) dualen Kanten.
                                      \( \alpha_{01} \) und \( \beta_{0m} \) sind die in \eqref{eqCotanFormel} verwendeten zur Ecke \( v_{0} \) gehörigen Winkel.}
         \label{figSchemaLaplace}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.45\textwidth}
+        \centering\input{bilder/tikz/5PunktStern}
+        \caption[5-Punkte-Stern]{Flacher 1-Ring um \( v \) mit \( 4 \) rechteckigen Dreieckelementen.
+                                     Die dicht gepunkteten \( 1 \)-Simplizes sind die zu den Kanten 
+                                     \( \left[ v, v_{i} \right] \) dualen Kanten.
+                                     Die dünn gepunkteten Linien deuten ein äquidistantes Rechteckgitter an.}
+        \label{fig5PunktStern}
       \end{minipage}
     \end{figure}
 
@@ -957,7 +974,27 @@ see \cite{Lee} \cite{FirstCourse}
       gilt für \( \sigma^{1}:=\left[ v, v_{i} \right] \prec \sigma^{2}\),
       analog für \( \beta_{ii_{-}} \).
       Somit ist der diskrete Operator in \eqref{eqCotanFormel} auch wirklich gleich unserem hergeleiteten diskreten Laplace-Beltrami-Operator.
+
+      Um die Nähe zur Finiten-Differenzen-Methode (FDM) zu zeigen lassen wir hier auch die wohlzentriertheit im Limes, also rechtwinklige Dreiecke, zu.
+      Betrachten wir nun einen flachen 1-Ring um \( v \) mit vier rechtwinkligen Dreiecken, die alle die Kathetenlänge \( l \) haben (vgl. Abbildung \ref{fig5PunktStern}).
+      Dann haben alle Kanten die \( v \) als Anfang haben und auch dessen Voronoikanten die Länge \( l \). 
+      Die Voronoizelle \( \star v \) hat den Flächeninhalt \( l^{2} \).
+      Somit ergibt sich
+      \begin{align}
+        \left\langle \Delta_{B} f, v \right\rangle 
+         &= \frac{1}{l^{2}}\left( f(v_{0}) + f(v_{1}) + f(v_{2}) + f(v_{3}) - 4f(v) \right) \formkomma
+      \end{align}
+      welches der aus der FDM wohlbekannte 5-Punkte-Stern zur Diskretisierung des Laplace-Operators auf äquidistanten Gittern ist. 
     \end{bemerkung}
+
+
+
+  \subsection{Implementierung}
+    ...
+    \begin{align}
+      \left\langle * \right\rangle
+    \end{align}
+
     
 
   \subsection{Beispiel: Poisson-Gleichung}
