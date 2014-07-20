@@ -24,6 +24,19 @@ public:
   }
 };
 
+class Sol : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  Sol(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x) const 
+  {
+    //return x[0];
+    return x[0] * x[2];
+  }
+};
+
 // ===========================================================================
 // ===== main program ========================================================
 // ===========================================================================
@@ -55,19 +68,19 @@ int main(int argc, char* argv[])
 					       adaptInfo);
   
   // ===== create matrix operator =====
-  //Operator matrixOperator(sphere.getFeSpace());
-  //matrixOperator.addTerm(new Simple_SOT(-1.0));
-  //sphere.addMatrixOperator(&matrixOperator, 0, 0);
+  Operator matrixOperator(sphere.getFeSpace());
+  matrixOperator.addTerm(new Simple_SOT(-1.0));
+  sphere.addMatrixOperator(&matrixOperator, 0, 0);
   
-  LBeltramiDEC decOperator(sphere.getFeSpace());
-  sphere.addMatrixOperator(&decOperator, 0, 0);
+  //LBeltramiDEC decOperator(sphere.getFeSpace());
+  //sphere.addMatrixOperator(&decOperator, 0, 0);
 
   int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
 
   // ===== create rhs operator =====
-  //Operator rhsOperator(sphere.getFeSpace());
-  //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
+  Operator rhsOperator(sphere.getFeSpace());
+  rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
+  //FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
 
   sphere.addVectorOperator(&rhsOperator, 0);
 
@@ -81,38 +94,31 @@ int main(int argc, char* argv[])
 
   sphere.writeFiles(adaptInfo, true);
 
-  DOFVector<double> vorvol = getDualVols(sphere.getFeSpace());
-  cout << "Vol      : " << vorvol.sum() << endl;
-  cout << "Vol_Error: " << abs(vorvol.sum() - 4.0 * M_PI) << endl;
-  VtkVectorWriter::writeFile(vorvol, string("output/vorvol.vtu"));
+  //DOFVector<double> vorvol = getDualVols(sphere.getFeSpace());
+  //cout << "Vol      : " << vorvol.sum() << endl;
+  //cout << "Vol_Error: " << abs(vorvol.sum() - 4.0 * M_PI) << endl;
+  //VtkVectorWriter::writeFile(vorvol, string("output/vorvol.vtu"));
 
-  DOFVector<double> radii = getVoronoiRadii(sphere.getFeSpace());
-  VtkVectorWriter::writeFile(radii, string("output/vorradii.vtu"));
+  //DOFVector<double> radii = getVoronoiRadii(sphere.getFeSpace());
+  //VtkVectorWriter::writeFile(radii, string("output/vorradii.vtu"));
 
-  DOFVector<int> nrOfCon = getConnections(sphere.getFeSpace());
-  VtkVectorWriter::writeFile(nrOfCon, string("output/connections.vtu"));
+  //DOFVector<int> nrOfCon = getConnections(sphere.getFeSpace());
+  //VtkVectorWriter::writeFile(nrOfCon, string("output/connections.vtu"));
 
-  DOFVector<double> vol = get1RingVols(sphere.getFeSpace());
-  VtkVectorWriter::writeFile(vol, string("output/vol1Ring.vtu"));
+  //DOFVector<double> vol = get1RingVols(sphere.getFeSpace());
+  //VtkVectorWriter::writeFile(vol, string("output/vol1Ring.vtu"));
 
-  DOFVector<WorldVector<double> > conForces = getConnectionForces(sphere.getFeSpace());
-  VtkVectorWriter::writeFile(conForces, string("output/conForces.vtu"));
+  //DOFVector<WorldVector<double> > conForces = getConnectionForces(sphere.getFeSpace());
+  //VtkVectorWriter::writeFile(conForces, string("output/conForces.vtu"));
 
-  MeshCorrector mc(sphere.getFeSpace());
-  int n = 1;
-  for (int i = 0; i < n; i++) {
-    mc.oneIteration(0.1);
-  }
-  sphere.setFeSpace(mc.getFeSpace());
-  DOFVector<double> vol2 = get1RingVols(mc.getFeSpace());
-  VtkVectorWriter::writeFile(vol2, string("output/newVol1Ring.vtu"));
-
-  int zv = 42;
-  const int *num = &zv;
-  cout << "num: " << (*num) << endl;
-  int *num2 = const_cast<int *>(num);
-  num2[0] = 73;
-  cout << "num: " << (*num) << endl;
+  //MeshCorrector mc(sphere.getFeSpace());
+  //int n = 1;
+  //for (int i = 0; i < n; i++) {
+  //  mc.oneIteration(0.1);
+  //}
+  //sphere.setFeSpace(mc.getFeSpace());
+  //DOFVector<double> vol2 = get1RingVols(mc.getFeSpace());
+  //VtkVectorWriter::writeFile(vol2, string("output/newVol1Ring.vtu"));
 
 
   AMDiS::finalize();

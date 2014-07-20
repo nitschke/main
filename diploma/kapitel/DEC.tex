@@ -992,12 +992,47 @@ see \cite{Lee} \cite{FirstCourse}
   \subsection{Implementierung}
     ...
     \begin{align}
-      \left\langle * \right\rangle
+      \left\langle *\Delta_{B} f , \star v_{i} \right\rangle
+          &= \sum_{\sigma^{1}=\left[ v_{i}, v_{j} \right]} 
+                       \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
+                       \left( f_{j} - f_{i} \right) \formpunkt \\
+          &= \sum_{\substack{\sigma^{2}=\left[ v^{\sigma^{2}}_{0},v^{\sigma^{2}}_{1},v^{\sigma^{2}}_{2} \right]\\
+                                               v^{\sigma^{2}}_{0} = v_{i}}}
+                  \sum_{l=1,2} C^{\sigma^{2}}_{0,l} 
+                          \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right)
     \end{align}
-
+    mit den Koeffizeinten
+    \begin{align}
+      C^{\sigma^{2}}_{k,l} &= C^{\sigma^{2}}_{l,k}
+                            = \frac{\left| \star \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] 
+                                            \cap \sigma^{2}\right|}
+                                   {\left| \left[ v^{\sigma^{2}_{k}}, v^{\sigma^{2}}_{l} \right] \right|}
+    \end{align}
+    für alle \( k,l = 0,1,2 \) und \( l\neq k \).
+    Das elementweise aufsummieren ist korrekt, da für \( \sigma^{1}=\left[ v_{i}, v_{j} \right]\),
+    \( \sigma^{2}_{0}\succ\sigma^{1} \) und \( \sigma^{2}_{1}\succ\sigma^{1} \) gilt
+    (vgl. Abbildung \ref{figLokaleNummerierung})
+    \begin{align}
+      \left| \star\sigma^{1} \right| 
+        &= \left| \star \left[ v^{\sigma^{2}_{0}}_{0}, v^{\sigma^{2}_{0}}_{1} \right] \cap \sigma^{2}\right|
+         + \left| \star \left[ v^{\sigma^{2}_{1}}_{0}, v^{\sigma^{2}_{1}}_{2} \right] \cap \sigma^{2}\right| \\
+      \left| \sigma^{1} \right| 
+          &= \left|  \left[ v^{\sigma^{2}_{0}}_{0}, v^{\sigma^{2}_{0}}_{1} \right] \right|
+           = \left|  \left[ v^{\sigma^{2}_{1}}_{0}, v^{\sigma^{2}_{1}}_{2} \right] \right| \formpunkt
+    \end{align}
+    \begin{figure}
+      \centering\input{bilder/tikz/elementSummeKante}
+      \caption[lokale Nummerierung]{Zwei benachbarte Dreiecke (links \( \sigma^{2}_{0} \), rechts \(
+          \sigma^{2}_{1} \)), die sich die gemeinsame Kante \( \sigma^{1}=\left[ v_{i}, v_{j} \right] \) teilen.
+          Die Ecken sind lokal nummeriert.
+          Die Länge von \( \star\sigma^{1} \) ergibt sich aus dessen beiden \( 1 \)-Simplizes.}
+      \label{figLokaleNummerierung}
+    \end{figure}
+    Wenn wir nun den Laplace-Beltrami an allen Ecken \( v_{i}\in K^{0} \) berechnen
     
 
   \subsection{Beispiel: Poisson-Gleichung}
+    gitter \cite{cinema4d}
 
 \section{Approximation der Krümmung}
   \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
