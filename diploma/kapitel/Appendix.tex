@@ -8,7 +8,8 @@
   
   \subsection{Element-Knotenkräfte}
     \label{AlgoForces}
-    Berechnung der Knotenkräfte \texttt{Force}\( \in\R^{3}\times\R^{3} \) für ein Element:
+    Berechnung der Knotenkräfte \texttt{Force}\( \in\R^{3}\times\R^{3} \) für ein Element 
+    \(\mathtt{T} \in K^{(2)}\):
 
     \begin{verbatim}
     for all v in T:
@@ -35,6 +36,22 @@
     Der andere Knoten der ebenfalls zu dieser Kante gehört bekommt die gleiche Kantenkraft aufdatiert, wenn die Knotenkräfte auf dem 2. Dreieckelement, das sich diese Kante teilt, berechnet
     werden.
 
+    
+  \subsection{Laplace-Beltrami-Operator}
+    \label{subsecAlgoLBeltrami}
+    Berechnung der Elementmatrix \( \mathtt{AT}\in\R^{3\times 3} \) für das Dreieckelement
+    \( \mathtt{T}\in K^{(2)} \):
+    \begin{verbatim}
+    for all k in {0,1,2}:
+      for all l in {k+1,k+2} mod 3:
+        C = T.dualLength(k,l) / T.length(k,l)
+        AT(k,k) -= C
+        AT(k,l) += C
+    \end{verbatim}
+    Wobei \texttt{T.length(k,l)} bzw. \texttt{T.dualLength(k,l)} die Länge von
+    \( \left[ v^{\mathtt{T}}_{k} , v^{\mathtt{T}}_{l} \right] \) bzw. dessen Dualkante eingeschränkt auf \(
+   \mathtt{T} \) ist.
+
 \section{Krümmungsgrößen für impliziten Oberflächen}
 
   Es sei \( \varphi\in C^{2}(\R^{3}) \) gegeben mit \( M = \left\{ \vec{x}\in\R^{3} \middle| \varphi(\vec{x}) = 0 \right\} \).
@@ -53,6 +70,64 @@
 
   \subsection{Einheitssphäre}
     \label{sphere}
+
+    \subsubsection{Parametrisierung}
+      \begin{align}
+      \begin{aligned}
+        \vec{x}: \left( 0, \pi \right) \times \left[ 0 , 2\pi \right)
+                    &\rightarrow \mathds{S}^{2} \subset \R^{3} \\
+             \left( u,v \right) 
+                    &\mapsto\begin{bmatrix}
+                              x(u,v) \\ y(u,v) \\ z(u,v)
+                            \end{bmatrix}
+                    := \begin{bmatrix}
+                        \sin u \cos v \\
+                        \sin u \sin v \\
+                        \cos u
+                      \end{bmatrix}
+      \end{aligned}
+      \end{align}
+      \( u \) heißt Breitengrad und \( v \) Längengrad.
+
+    \subsubsection{Riemannsche Metrik}
+      \begin{align}
+        \frac{\partial}{\partial u}\vec{x}
+              &=\begin{bmatrix}
+                  \cos u \cos v \\
+                  \cos u \sin v \\
+                  -\sin u
+                \end{bmatrix}
+              \quad\bot_{\R^{3}}\quad
+              \frac{\partial}{\partial v}\vec{x}
+              =\begin{bmatrix}
+                        -\sin u \sin v \\
+                        \sin u \cos v \\
+                        0
+                \end{bmatrix}
+      \end{align}
+      \begin{align}
+        \Rightarrow g = \begin{bmatrix}
+              1 & 0 \\ 0 & \sin^{2} u
+            \end{bmatrix}
+          =: \diag{g_{u}, g_{v}}
+      \end{align}
+
+    \subsubsection{Laplace-Beltrami}
+      \begin{align}
+        \Delta_{B} &\overset{\eqref{eqLaplaceBeltramiOrthogonal}}{=} \sqrt{g^{u}g^{v}} 
+                      \left(  \frac{\partial}{\partial u} 
+                             \left( \sqrt{g^{u}g_{v}} \frac{\partial}{\partial u} \right) 
+                                  + \frac{\partial}{\partial v} \left( \sqrt{g_{u}g^{v}} \frac{\partial}{\partial v} 
+                       \right) \right) \\
+                   &= \frac{1}{\sin u}
+                      \left(  \frac{\partial}{\partial u} 
+                             \left( \sin u \frac{\partial}{\partial u} \right) 
+                                  + \frac{\partial}{\partial v} \left( \frac{1}{\sin u} \frac{\partial}{\partial v} 
+                       \right) \right) \\
+                   &= \cot u \frac{\partial}{\partial u} 
+                        + \frac{\partial^{2}}{\partial u^{2}}
+                        + \frac{1}{\sin^{2} u} \frac{\partial^{2}}{\partial v^{2}}
+      \end{align}
 
     \subsubsection{Level-Set-Funktion}
       \begin{align}

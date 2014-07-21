@@ -2,6 +2,7 @@
 #include "decOperator.h"
 #include "MeshHelper.h"
 #include "meshCorrector.h"
+#include "DOFVHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -86,6 +87,11 @@ int main(int argc, char* argv[])
 
   // ===== start adaption loop =====
   adapt->adapt();
+
+  DOFVector<double> solDOFV(sphere.getFeSpace(),"solDOFV");
+  solDOFV.interpol(new Sol(0));
+  VtkVectorWriter::writeFile(solDOFV, string("output/sol.vtu"));
+  printError(*(sphere.getSolution(0)), solDOFV, "Error");
 
   //cout << sphere.getSystemMatrix(0,0)->getBaseMatrix() << endl;
   //cout << "NNZ: " << sphere.getSystemMatrix(0,0)->getNnz() << endl;

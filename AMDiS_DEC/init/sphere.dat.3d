@@ -12,10 +12,10 @@ sphere->dim:                     2
 sphere->polynomial degree[0]:    1
 sphere->components:              1
 
-sphere->solver:                bicgstab2 %tfqmr
-sphere->solver->max iteration: 100
+sphere->solver:                cgs %bicgstab2 %tfqmr
+sphere->solver->max iteration: 1000
 sphere->solver->info:          8
-sphere->solver->tolerance:     1.e-8
+sphere->solver->tolerance:     1.e-10
 sphere->solver->left precon:   no
 
 sphere->estimator[0]:          0

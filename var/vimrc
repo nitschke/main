@@ -197,3 +197,4 @@ autocmd FileType tex inoremap ,be <ESC>vawyi\begin{<ESC>ea}<CR>\end{<ESC>pa}<ESC
 
 let spell_auto_type = "de"
 
+autocmd FileType tex set complete+=k**/*

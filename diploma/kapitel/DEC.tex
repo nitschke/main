@@ -903,6 +903,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     Für eine zweidimensionale Mannigfaltigkeit mit orthogonalen Koordinaten und Metrik \( g=\diag{g_{1},g_{2}} \) lässt sich die Formel vereinfachen zu
     \begin{align}
+    \label{eqLaplaceBeltramiOrthogonal}
       \Delta_{B} f &=\sqrt{g^{1}g^{2}} \left(  \frac{\partial}{\partial x^{1}} \left( \sqrt{g^{1}g_{2}} \frac{\partial f}{\partial x^{1}} \right) 
                                              + \frac{\partial}{\partial x^{2}} \left( \sqrt{g_{1}g^{2}} \frac{\partial f}{\partial x^{2}} \right) \right) \formpunkt
     \end{align}
@@ -1085,10 +1086,58 @@ see \cite{Lee} \cite{FirstCourse}
     falls \( f_{h} \) unbekannt und die rechte Seite bekannt ist.
 
     Für die Implementierung in AMDiS müssen somit nur die Elementmatrizen \( A^{\sigma^{2}} \) berechnet
-    werden. Die Assemblierung der Systemmatrix übernimmt AMDiS von Haus aus. 
+    werden (siehe Algorithmus \ref{subsecAlgoLBeltrami}). 
+    Die Assemblierung der Systemmatrix übernimmt AMDiS von Haus aus. 
   
   \subsection{Beispiel: Poisson-Gleichung}
-    gitter \cite{cinema4d}
+    Wie wir im letzten Abschnitt gesehen haben führt uns das kontinuierliche Problem
+    \begin{align}
+      \Delta_{B} w = g
+    \end{align}
+    für \( w,g \in C^{\infty}(M) \) mit Hilfe eines DEC zum diskreten Problem
+    \begin{align}
+      A w_{h} = \tilde{g}_{h}
+    \end{align}
+    mit \( w_{h} \), dem Vektor der Freiheitsgrade, und der rechten Seite
+    \begin{align}
+      \left[ \tilde{g}_{h} \right]_{i} &= \left| \star v_{i} \right| g(v_{i})
+            = \sum_{\sigma^{2}\succ v_{i}} \left| \star v_{i} \cap \sigma^{2} \right| g(v_{i}) \formpunkt
+    \end{align}
+    Somit kann hier ebenfalls die rechte Seite elementweise ohne Kenntnisse der anderen Dreieckelementen
+    berechnet werden.
+    
+    \begin{beispiel}[Einheitssphäre]
+       Für die Parametrisierung der (Einheits)Sphäre, das heißt die Abbildung von lokalen Koordinaten
+       \( \left( u,v \right) \) in globalen \(\R^{3} \)-Koordinaten \( \left( x,y,z \right) \), 
+       und den Laplace-Beltrami-Operator in lokalen Koordinaten siehe Appendix \ref{sphere}.
+       Auf der Sphäre ist
+       \begin{align}
+         w &:= \sin u \cos u \cos v = x z
+       \end{align}
+       eine Lösung des Eigenwertproblems
+       \begin{align}
+         \Delta_{B} w = \lambda w
+       \end{align}
+       zum Eigenwert \( \lambda = -6 \), denn
+       \begin{align}
+         \Delta_{B} w &= \cot\left( \cos^{2}u - \sin^{2}u \right)\cos v
+                         - 4\sin u \cos u \cos v
+                         - \frac{1}{\sin^{2} u} \sin u \cos u \cos v \\
+                      &= \cos u \cos v \left( \frac{1}{\sin u} \left( 1 - 2\sin^{2} u \right)
+                                             - 4 \sin u - \frac{1}{\sin u} \right) \\
+                      &= -6 \sin u \cos u \cos v = -6 w \formpunkt
+       \end{align}
+       Das heißt wir kennen die exakte Lösung des Problems (in globalen Koordinaten)
+       \begin{align}
+         \Delta_{B} w &= -6 x z
+       \end{align}
+       auf der Sphäre zum vergleichen.
+       Als Primärgitter nutzen wir ein verfeinerten Ikosaeder.
+       Dabei werden die einzelnen Ikosaederflächen gleichmäßig unterteilt.
+       Es zeigt sich das Cinema4D (siehe \cite{cinema4d}), eine 3D-Grafiksoftware, hier sehr gute Gitter erstellt.
+       Der globale Verfeinerungsmechanismus von AMDiS kann leider nicht genutzt werden, da im Allgemeinen,
+       durch Halbierung der Dreieckelemente, keine wohlzentrierten und damit zulässigen Primärgitter entstehen.
+    \end{beispiel}
 
 \section{Approximation der Krümmung}
   \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
