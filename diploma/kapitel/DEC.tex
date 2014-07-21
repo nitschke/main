@@ -990,7 +990,17 @@ see \cite{Lee} \cite{FirstCourse}
 
 
   \subsection{Implementierung}
-    ...
+    Da \( \Delta_{B,d} f \) nichts weiter als eine Linearkombination der Auswertungen von \( f \) an den
+    Knoten von \( K \) ist, ließe sich der diskrete Laplace-Beltrami-Operator auch elementweise durch
+    Traversierung über alle Dreiecke berechnen.
+    Wenn wir zudem voraussetzen, dass wir rechentechnisch auf einem \( \sigma^{2}\in K \) nichts weiter
+    über alle anderen Dreiecke \( K^{(2)}\setminus\left\{ \sigma^{2} \right\} \) wissen, 
+    dann kennen wir auch den Flächeninhalt \( \left| \star v_{i} \right| \) für eine Ecke 
+    \( v_{i}\prec\sigma^{2} \) nicht.
+    Deshalb werden wir den Hodge-Operator auf den Laplace-Operator anwenden und somit \( \star\Delta_{B,d} f \)
+    auf der Voronoizelle \( v_{i} \) als duale Aufgabe berechnen, 
+    denn der Flächeninhalt von \( \star v_{i} \) kürzt sich
+    somit raus:
     \begin{align}
       \left\langle *\Delta_{B} f , \star v_{i} \right\rangle
           &= \sum_{\sigma^{1}=\left[ v_{i}, v_{j} \right]} 
@@ -999,9 +1009,14 @@ see \cite{Lee} \cite{FirstCourse}
           &= \sum_{\substack{\sigma^{2}=\left[ v^{\sigma^{2}}_{0},v^{\sigma^{2}}_{1},v^{\sigma^{2}}_{2} \right]\\
                                                v^{\sigma^{2}}_{0} = v_{i}}}
                   \sum_{l=1,2} C^{\sigma^{2}}_{0,l} 
-                          \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right)
+                          \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right) \formpunkt
+          \label{eqLaplaceElementSummanden}
     \end{align}
-    mit den Koeffizeinten
+    mit \( f_{i} := \left[ f_{h} \right]_{i} := f(v_{i}) \) (\( i=0,\ldots,\sharp K^{(0)}-1 \)) 
+    beziehungsweise 
+    \( f^{\sigma^{2}}_{l} := \left[ f^{\sigma^{2}} \right]_{l}:=f(v^{\sigma^{2}}_{l})\) 
+    (\( l=0,1,2 \))
+    und den Koeffizienten
     \begin{align}
       C^{\sigma^{2}}_{k,l} &= C^{\sigma^{2}}_{l,k}
                             = \frac{\left| \star \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] 
@@ -1028,9 +1043,50 @@ see \cite{Lee} \cite{FirstCourse}
           Die Länge von \( \star\sigma^{1} \) ergibt sich aus dessen beiden \( 1 \)-Simplizes.}
       \label{figLokaleNummerierung}
     \end{figure}
-    Wenn wir nun den Laplace-Beltrami an allen Ecken \( v_{i}\in K^{0} \) berechnen
-    
+    Wenn wir nun den Laplace-Beltrami an allen Ecken \( v^{\sigma^{2}}_{l} \) eines Dreieckelements 
+    \( \sigma^{2} \) berechnen, dann können wir den Anteil der rechten Seite
+    der Gleichung \eqref{eqLaplaceElementSummanden}
+    für die drei Ecken auf \( \sigma^{2} \) zusammenfassen zu
+    \begin{align}
+      \begin{bmatrix}
+        -\left( C^{\sigma^{2}}_{01} + C^{\sigma^{2}}_{02}\right) & C^{\sigma^{2}}_{01} & C^{\sigma^{2}}_{02} \\
+        C^{\sigma^{2}}_{01} & -\left( C^{\sigma^{2}}_{01} + C^{\sigma^{2}}_{12}\right) & C^{\sigma^{2}}_{12} \\
+        C^{\sigma^{2}}_{02} & C^{\sigma^{2}}_{12} & -\left( C^{\sigma^{2}}_{02} + C^{\sigma^{2}}_{12}\right)
+      \end{bmatrix}
+      \begin{bmatrix}
+        f^{\sigma^{2}}_{0} \\ f^{\sigma^{2}}_{1} \\ f^{\sigma^{2}}_{2}
+      \end{bmatrix}
+        &=: A^{\sigma^{2}} f^{\sigma^{2}}
+    \end{align}
+    mit der symetrischen Elementmatrix \( A^{\sigma^{2}} \in \R^{3 \times 3} \) 
+    und dem Elementvektor \( f^{\sigma^{2}}\in\R^{3} \).
+    Besteht das Primärgitter nun aus \( M \) Ecken, also \( \sharp K^{(0)} = M \),
+    dann lässt sich die Elementmatrix auf eine \( (M\times M) \)-Matrix \( \bar{A}^{\sigma^{2}} \)erweitern 
+    unter Beachtung
+    der lokalen und globalen Nummerierung der Ecken, so dass
+    \begin{align}
+      \left[ \bar{A}^{\sigma^{2}} \right]_{ij}
+        &= 
+          \begin{cases}
+            \left[ A^{\sigma^{2}} \right]_{kl} & \text{,falls } v_{i} = v^{\sigma^{2}}_{k}
+                                                 \text{ und }   v_{j} = v^{\sigma^{2}}_{l} \formkomma \\
+            0 & \text{sonst} \formpunkt
+          \end{cases}
+    \end{align}
+    Für die Systemmatrix
+    \begin{align}
+      A &:= \sum_{\sigma^{2}\in K} \bar{A}^{\sigma^{2}} \in \R^{M\times M}
+    \end{align}
+    gilt somit
+    \begin{align}
+      A f_{h} &= \left[ \Delta_{B,d} f(v_{i}) \right]_{i=0,\ldots,M-1} \formpunkt
+    \end{align}
+    Da \( A \) symmetrisch und dünnbesetzt ist, können geeignete Löser gewählt werden, 
+    falls \( f_{h} \) unbekannt und die rechte Seite bekannt ist.
 
+    Für die Implementierung in AMDiS müssen somit nur die Elementmatrizen \( A^{\sigma^{2}} \) berechnet
+    werden. Die Assemblierung der Systemmatrix übernimmt AMDiS von Haus aus. 
+  
   \subsection{Beispiel: Poisson-Gleichung}
     gitter \cite{cinema4d}
 
