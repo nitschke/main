@@ -1,5 +1,7 @@
 #include "AMDiS.h"
 #include "decOperator.h"
+#include "DOFVHelper.h"
+#include "torusProjection.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -21,11 +23,24 @@ public:
     double R = 2.0;
     double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
     if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
-    //if (!(zeta >= 0.0)) cout << zeta << " on y = " << x[1] << endl; 
+    if (!(zeta >= 0.0)) cout << zeta << " on y = " << x[1] << endl; 
     double eta = zeta / (R + zeta);
     return - x[0] * eta * (eta + 1.0) / r / r;
   }
 };
+
+class Sol : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  Sol(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x) const 
+  {
+    return x[0];
+  }
+};
+
 
 // ===========================================================================
 // ===== main program ========================================================
@@ -38,6 +53,7 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== no projection, use finalize meshes =====
+  new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
 
   // ===== create and init the scalar problem ===== 
   ProblemStat torus("torus");
@@ -77,6 +93,11 @@ int main(int argc, char* argv[])
   DOFVector<double> rhsDofVector(torus.getFeSpace(),"RHS");
   rhsDofVector.interpol(new F(degree));
   VtkVectorWriter::writeFile(rhsDofVector, string("output/torusRHS.vtu"));
+
+  DOFVector<double> solDOFV(torus.getFeSpace(),"solDOFV");
+  solDOFV.interpol(new Sol(0));
+  VtkVectorWriter::writeFile(solDOFV, string("output/sol.vtu"));
+  printError(*(torus.getSolution(0)), solDOFV, "Error");
 
   torus.writeFiles(adaptInfo, true);
 
