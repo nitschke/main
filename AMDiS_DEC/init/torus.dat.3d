@@ -10,11 +10,14 @@ torus->dim:                     2
 torus->polynomial degree[0]:    1
 torus->components:              1
 
-torus->solver:               tfqmr %tfqmr %bicgstab2
-torus->solver->max iteration: 1000
+torus->solver:                bicgstab_ell %tfqmr %bicgstab2
+torus->solver->ell:           8
+torus->solver->max iteration: 400
 torus->solver->info:          4
-torus->solver->tolerance:     1.e-3
+torus->solver->print cycle:   10
+torus->solver->tolerance:     1.e-10
 torus->solver->left precon:   no
+torus->solver->right precon:   no
 
 torus->estimator[0]:          0
 torus->marker[0]->strategy:   0
