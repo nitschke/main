@@ -32,9 +32,25 @@ public:
     //return (x[0]/(r*r)) * ( (x[1]*x[1] - r*r)/x2Pz2 + R/sqrt(x2Pz2) - 1.0);
     double x2 = x[0]*x[0];
     double z2 = x[2]*x[2];
-    double x2Mz2 = x2 - z2;
+    //double x2Mz2 = x2 - z2;
     double x2Pz2 = x2 + z2;
-    return - 2.0 * x2Mz2 / (x2Pz2 * x2Pz2); 
+    //return - 2.0 * x2Mz2 / (x2Pz2 * x2Pz2); 
+    return 2.0 * z2 / (x2Pz2 * x2Pz2); 
+  }
+};
+
+class G : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  G(int degree) : AbstractFunction<double, WorldVector<double> >(degree) {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x) const 
+  {
+    double x2 = x[0]*x[0];
+    double z2 = x[2]*x[2];
+    double x2Pz2 = x2 + z2;
+    return 2.0 / x2Pz2; 
   }
 };
 
@@ -50,7 +66,7 @@ public:
     double x2 = x[0]*x[0];
     double z2 = x[2]*x[2];
     double x2Pz2 = x2 + z2;
-    return x2 / x2Pz2 - 0.5;
+    return x2 / x2Pz2;
   }
 };
 
@@ -82,17 +98,22 @@ int main(int argc, char* argv[])
 					       adaptInfo);
   
   // ===== create matrix operator =====
-  Operator laplaceOperator(torus.getFeSpace());
-  laplaceOperator.addTerm(new Simple_SOT(-1.0));
-  //LBeltramiDEC laplaceOperator(torus.getFeSpace());
+  //Operator laplaceOperator(torus.getFeSpace());
+  //laplaceOperator.addTerm(new Simple_SOT(-1.0));
+  LBeltramiDEC laplaceOperator(torus.getFeSpace());
   torus.addMatrixOperator(&laplaceOperator, 0, 0);
 
   int degree = torus.getFeSpace()->getBasisFcts()->getDegree();
+  
+  //Operator functionOperator(torus.getFeSpace());
+  //functionOperator.addTerm(new CoordsAtQP_ZOT(new G(degree)));
+  FunctionDEC functionOperator(new G(degree), torus.getFeSpace());
+  torus.addMatrixOperator(&functionOperator, 0, 0);
 
   // ===== create rhs operator =====
-  Operator rhsOperator(torus.getFeSpace());
-  rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  //FunctionDEC rhsOperator(new F(degree), torus.getFeSpace());
+  //Operator rhsOperator(torus.getFeSpace());
+  //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
+  FunctionDEC rhsOperator(new F(degree), torus.getFeSpace());
   torus.addVectorOperator(&rhsOperator, 0);
 
 
