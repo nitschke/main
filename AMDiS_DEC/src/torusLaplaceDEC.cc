@@ -2,6 +2,7 @@
 #include "decOperator.h"
 #include "DOFVHelper.h"
 #include "torusProjection.h"
+#include "MeshHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -132,6 +133,9 @@ int main(int argc, char* argv[])
   solDOFV.interpol(new Sol(0));
   VtkVectorWriter::writeFile(solDOFV, string("output/sol.vtu"));
   printError(*(torus.getSolution(0)), solDOFV, "Error");
+
+  MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
+  mwriter.appendData(torus.getFeSpace(),true);  
 
   torus.writeFiles(adaptInfo, true);
 

@@ -308,7 +308,8 @@ see \cite{Lee} \cite{FirstCourse}
     falls \( K \) wohlzentriert ist.
     Da das Dualgitter wiederum auch ein Primärgitter ist, gelten obige Definitionen dieses Abschnittes auch auf diesem. 
     \todo{verweis auf Koketten C(*K) }
-    Somit ergeben sich folgende Berechnungsformeln.\\
+    Somit ergeben sich die Berechnungsformeln in Tabelle \ref{tabFormelAbleitung}.
+    \begin{table}[htbp]
     \begin{tabular}{|c|c|} \hline
       Darstellung & Formel \\\hline
       \begin{minipage}[c]{0.29\textwidth}
@@ -354,7 +355,10 @@ see \cite{Lee} \cite{FirstCourse}
         wobei \( (m+1) \) die Anzahl der Kanten ist, die \( v \) als Ecke haben.
       \end{minipage} \\\hline
     \end{tabular}
-    Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.
+    \caption[Formeln für Äußere Ableitung]{Formeln für die Äußere Ableitung. 
+                  Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.}
+    \label{tabFormelAbleitung}
+    \end{table}
   \end{bemerkung}
 
   Alleine mit der äußeren Ableitung ließe sich auf einer \( 2 \)-Mannigfaltigkeit schon einiges Rechnen.
@@ -631,6 +635,7 @@ see \cite{Lee} \cite{FirstCourse}
   Dieser lokale Fehler für den diskreten Hodge-Stern-Operator lässt sich natürlich auch global erweitern.
   Also für die diskrete Maximumsnorm
   \begin{align}
+    \label{eqDiskreteMaximumsnorm}
     \left\| \alpha \right\|_{\infty} &:= \max_{\sigma^{p}\in K^{(p)}}\left| \alpha(\sigma^{p}) \right| \qquad (\forall\alpha\in\Omega^{p}_{d}(K))
   \end{align}
   auf dem Primärgitter \( K \) gilt im obigen Fall
@@ -1129,15 +1134,104 @@ see \cite{Lee} \cite{FirstCourse}
        \end{align}
        Das heißt wir kennen die exakte Lösung des Problems (in globalen Koordinaten)
        \begin{align}
+         \label{eqLaplaceSphereProblem}
          \Delta_{B} w &= -6 x z
        \end{align}
        auf der Sphäre zum vergleichen.
+       Durch fehlende Randbedingungen lässt dieses Problem nicht eindeutig lösen, da jede beliebige harmonische Funktion
+       \( w_{H} \in C^{\infty}(M) \) (also \( \Delta_{B} w_{H} = 0 \)) zur Lösung hinzuaddiert werden könnte und die Summe immer noch
+       Lösung des Problems wäre. Hier im Speziellem heißt das
+       \begin{align}
+         \Delta_{B} \left( w + w_{H} \right) &= -6 x z \formpunkt
+       \end{align}
+       Es müssten also je nach Problemstellung ein oder mehrere zusätzliche Bedingungen gestellt werden um die Eindeutigkeit zu erzwingen.
+       Da das nicht Bestandteil dieser Arbeit sein soll, werden wir die Differentialgleichung \eqref{eqLaplaceSphereProblem} einfach umschreiben zu
+       \begin{align}
+          \label{eqLaplaceSphereProblemUmform}
+         \Delta_{B} w + w &= -5 x z \formpunkt
+       \end{align}
        Als Primärgitter nutzen wir ein verfeinerten Ikosaeder.
        Dabei werden die einzelnen Ikosaederflächen gleichmäßig unterteilt.
        Es zeigt sich das Cinema4D (siehe \cite{cinema4d}), eine 3D-Grafiksoftware, hier sehr gute Gitter erstellt.
        Der globale Verfeinerungsmechanismus von AMDiS kann leider nicht genutzt werden, da im Allgemeinen,
        durch Halbierung der Dreieckelemente, keine wohlzentrierten und damit zulässigen Primärgitter entstehen.
+       Das Problem wurde sowohl mit DEC als auch FEM numerisch berechnet (vgl. Abbildung \ref{figLaplaceSphereTorus}).
+       Wie wir sehen ist die DEC-Lösung etwas besser als die der FEM.
+       Auffällig bei der FEM-Lösung ist, dass die maximalen Fehler sich bei den Defekten\footnote{Als Defekt bezeichnen wir bei
+       hexagonal-dominierten Gittern die Ecken die nicht einen 1-Ring aus 6 Dreieckelementen besitzen.} 
+       befinden.
+       Dieses Lösungsverhalten ist bei einer naiven FEM-Diskretisierung häufiger zu beobachten und spiegelt sich auch im
+       Konvergenzverhalten bezüglich der Maximumsnorm wieder, wie wir in Tabelle \ref{tabLaplaceSphereFEM} sehen können.
+       \( h \) ist hierbei wieder der maximale Umkreisdurchmesser aller Dreiecke des Primärgitters.
+       DOFs\( = \sharp K^{(0)} \) bezeichnet die Anzahl der Freiheitsgrade und damit die Anzahl der Ecken.
+       \( \err_{\bullet} \) ist der relative Fehler, das heißt
+       \begin{align}
+         \err_{\bullet} &:= \frac{\left\| w_{h} - w \right\|_{\bullet}}{\left\| w \right\|_{\bullet}}
+       \end{align}
+       in der jeweiligen Norm.
+       Dabei wurde zum einen die Maximumsnorm (vgl. \ref{eqDiskreteMaximumsnorm}) als auch die diskrete \( L_{2} \)-Norm verwendet.
+
+
+       \begin{table}[htbp]
+       \begin{tabular}{|r|r|r|r|r|r|}
+       \hline
+       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
+       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        1002 & 0.152342 & 4.52E-03 & \multicolumn{1}{l|}{} & 4.67E-03 & \multicolumn{1}{l|}{} \\ \hline
+        1962 & 0.108972 & 2.30E-03 & 2.0087025407 & 2.37E-03 & 2.0225601077 \\ \hline
+        5292 & 0.0663925 & 8.54E-04 & 2.0038033504 & 8.81E-04 & 1.9995573186 \\ \hline
+        10242 & 0.0477329 & 4.41E-04 & 2.0017080311 & 4.55E-04 & 2.0002292995 \\ \hline
+        25002 & 0.0305541 & 1.81E-04 & 2.0007499329 & 1.86E-04 & 2.0008136244 \\ \hline
+        50412 & 0.0215183 & 8.96E-05 & 2.0003571238 & 9.25E-05 & 1.999641636 \\ \hline
+        100002 & 0.0152791 & 4.52E-05 & 2.0004212967 & 4.66E-05 & 2.0004803364 \\ \hline
+        249642 & 0.00967015 & 1.81E-05 & 1.9999410149 & 1.87E-05 & 1.9997695362 \\ \hline
+       \end{tabular}
+       \caption[Laplace auf Sphäre (DEC)]{Problem \eqref{eqLaplaceSphereProblemUmform} mit DEC numerisch gelöst.}
+       \label{tabLaplaceSphereDEC}
+       \end{table}
+       
+       \begin{table}[htbp]
+       \begin{tabular}{|r|r|r|r|r|r|}
+       \hline
+       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
+       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        1002 & 0.152342 & 7.01E-03 & \multicolumn{1}{l|}{} & 8.65E-03 & \multicolumn{1}{l|}{} \\ \hline
+        1962 & 0.108972 & 3.59E-03 & 1.9994601718 & 4.55E-03 & 1.9176164215 \\ \hline
+        5292 & 0.0663925 & 1.33E-03 & 1.9996567336 & 1.77E-03 & 1.9090696932 \\ \hline
+        10242 & 0.0477329 & 6.89E-04 & 1.9999112249 & 9.40E-04 & 1.9144389991 \\ \hline
+        25002 & 0.0305541 & 2.82E-04 & 1.9999058673 & 3.99E-04 & 1.9186042595 \\ \hline
+        50412 & 0.0215183 & 1.40E-04 & 1.9999668347 & 2.04E-04 & 1.9208126876 \\ \hline
+        100002 & 0.0152791 & 7.06E-05 & 2.0002360283 & 1.05E-04 & 1.9236661471 \\ \hline
+        249642 & 0.00967015 & 2.83E-05 & 1.9998409049 & 4.37E-05 & 1.9256432951 \\ \hline
+       \end{tabular}
+       \caption[Laplace auf Sphäre (FEM)]{Problem \eqref{eqLaplaceSphereProblemUmform} mit FEM numerisch gelöst.}
+       \label{tabLaplaceSphereFEM}
+       \end{table}
+      
     \end{beispiel}
+
+    \begin{figure}
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECSol1k.png}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/laplaceTorus/DECSol1k.png}
+      \end{minipage}\\
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECError1k.png}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/laplaceSphere/FEMError1k.png}
+      \end{minipage}
+      \caption[Laplace auf Sphäre und Torus]{Oben: Numerische Lösung des Problems \eqref{eqLaplaceSphereProblemUmform} auf der Sphäre
+                                             (1002 DOFs) 
+                                             und des Problems \eqref{eqLaplaceTorusProblemUmform} auf dem Torus (1360 DOFs).
+                                             Unten links: Lokaler Fehler der DEC-Lösung (Farben mit rechter Abbildung gleichskaliert).
+                                             Unten rechts: Lokaler Fehler der FEM-Lösung, auffällig ist der maximale Fehler am Defekt.}
+      \label{figLaplaceSphereTorus}
+    \end{figure}
 
 \section{Approximation der Krümmung}
   \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}

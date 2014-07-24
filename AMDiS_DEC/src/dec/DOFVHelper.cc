@@ -75,12 +75,13 @@ namespace AMDiS {
   }
 
 
+// alte berechnungen faelschlicherweise mit l2norm -_-
   void printError(const DOFVector<double> &dofv,const DOFVector<double> &sol, string name) {
     DOFVector<double> err = minus(dofv,sol);
     cout << "************ " << name << " ************" << endl;
-    cout << "L2Err_" << name << "....... " << err.l2norm() << endl;
+    cout << "L2Err_" << name << "....... " << err.L2Norm() << endl;
     cout << "MaxErr_" << name << "...... " << err.absMax() << endl;
-    cout << "L2ErrRel_" << name << ".... " << (err.l2norm() / sol.l2norm()) << endl;
+    cout << "L2ErrRel_" << name << ".... " << (err.L2Norm() / sol.L2Norm()) << endl;
     cout << "MaxErrRel_" << name << "... " << (err.absMax() / sol.absMax()) << endl << endl;
   }
 

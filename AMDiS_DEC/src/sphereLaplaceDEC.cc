@@ -21,7 +21,7 @@ public:
   double operator()(const WorldVector<double>& x) const 
   {
     //return -2.0 * x[0];
-    return -6.0 * x[0] * x[2];
+    return -5.0 * x[0] * x[2];
   }
 };
 
@@ -71,10 +71,13 @@ int main(int argc, char* argv[])
   // ===== create matrix operator =====
   //Operator matrixOperator(sphere.getFeSpace());
   //matrixOperator.addTerm(new Simple_SOT(-1.0));
-  //sphere.addMatrixOperator(&matrixOperator, 0, 0);
-  
-  LBeltramiDEC decOperator(sphere.getFeSpace());
-  sphere.addMatrixOperator(&decOperator, 0, 0);
+  LBeltramiDEC matrixOperator(sphere.getFeSpace());
+  sphere.addMatrixOperator(&matrixOperator, 0, 0);
+
+  //Operator simpleOperator(sphere.getFeSpace());
+  //simpleOperator.addTerm(new Simple_ZOT());
+  SimpleDEC simpleOperator(sphere.getFeSpace());
+  sphere.addMatrixOperator(&simpleOperator,0,0);
 
   int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
 
@@ -82,7 +85,6 @@ int main(int argc, char* argv[])
   //Operator rhsOperator(sphere.getFeSpace());
   //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
   FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
-
   sphere.addVectorOperator(&rhsOperator, 0);
 
   // ===== start adaption loop =====

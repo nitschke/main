@@ -1,7 +1,7 @@
 dimension of world:      3
 
 torusMesh->macro file name:       ./macro/torus1k.3d
-%torusFlavors: 1, 2, 5, 10, 25, 50, 100, 250, 500
+%torusFlavors: 500, (1, 2, 5, 10, 25, 50, 100, 250)k
 torusMesh->global refinements:    0
 torusMesh->check:                 0
 
@@ -12,7 +12,7 @@ torus->components:              1
 
 torus->solver:                bicgstab2 %bicgstab_ell %tfqmr %bicgstab2
 torus->solver->ell:           2
-torus->solver->max iteration: 400
+torus->solver->max iteration: 1000
 torus->solver->info:          4
 torus->solver->print cycle:   10
 torus->solver->tolerance:     1.e-10

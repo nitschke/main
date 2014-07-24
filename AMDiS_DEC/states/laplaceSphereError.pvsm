@@ -150,7 +150,7 @@
         <Domain name="bool" id="4679.IndexedLookup.bool"/>
       </Property>
       <Property name="LockScalarRange" id="4679.LockScalarRange" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="1"/>
         <Domain name="bool" id="4679.LockScalarRange.bool"/>
       </Property>
       <Property name="NanColor" id="4679.NanColor" number_of_elements="3">
@@ -163,11 +163,11 @@
         <Domain name="range" id="4679.NumberOfTableValues.range"/>
       </Property>
       <Property name="RGBPoints" id="4679.RGBPoints" number_of_elements="8">
-        <Element index="0" value="6.58147494836392e-11"/>
+        <Element index="0" value="0"/>
         <Element index="1" value="0"/>
         <Element index="2" value="0"/>
         <Element index="3" value="1"/>
-        <Element index="4" value="0.000404685735702515"/>
+        <Element index="4" value="0.00430582"/>
         <Element index="5" value="1"/>
         <Element index="6" value="0"/>
         <Element index="7" value="0"/>
@@ -438,11 +438,11 @@
         <Domain name="bool" id="4678.AllowDuplicateScalars.bool"/>
       </Property>
       <Property name="Points" id="4678.Points" number_of_elements="8">
-        <Element index="0" value="6.58147494836392e-11"/>
+        <Element index="0" value="0"/>
         <Element index="1" value="0"/>
         <Element index="2" value="0.5"/>
         <Element index="3" value="0"/>
-        <Element index="4" value="0.000404685735702515"/>
+        <Element index="4" value="0.00430582"/>
         <Element index="5" value="1"/>
         <Element index="6" value="0.5"/>
         <Element index="7" value="0"/>
@@ -778,12 +778,12 @@
         <Element index="2" value="0"/>
       </Property>
       <Property name="DataBounds" id="4457.DataBounds" number_of_elements="6">
-        <Element index="0" value="4.58986984986518e-321"/>
-        <Element index="1" value="3.98076121601606e-316"/>
-        <Element index="2" value="3.94670784018958e-316"/>
-        <Element index="3" value="1.58101006669199e-322"/>
-        <Element index="4" value="2.37151510003798e-322"/>
-        <Element index="5" value="3.94718846724985e-316"/>
+        <Element index="0" value="0"/>
+        <Element index="1" value="0"/>
+        <Element index="2" value="3.13241255786504e-316"/>
+        <Element index="3" value="1.69759663306866e-313"/>
+        <Element index="4" value="0"/>
+        <Element index="5" value="0"/>
       </Property>
       <Property name="Diffuse" id="4457.Diffuse" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -1376,12 +1376,12 @@
         <Element index="2" value="0"/>
       </Property>
       <Property name="DataBounds" id="4552.DataBounds" number_of_elements="6">
-        <Element index="0" value="2.49019520170428e-316"/>
+        <Element index="0" value="0"/>
         <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="0"/>
-        <Element index="5" value="0"/>
+        <Element index="2" value="4.94065645841247e-324"/>
+        <Element index="3" value="1.97626258336499e-321"/>
+        <Element index="4" value="3.16202013338398e-322"/>
+        <Element index="5" value="7.10490904375746e-316"/>
       </Property>
       <Property name="Diffuse" id="4552.Diffuse" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -1975,11 +1975,11 @@
         <Element index="2" value="0"/>
       </Property>
       <Property name="DataBounds" id="4645.DataBounds" number_of_elements="6">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="0"/>
+        <Element index="0" value="1.48219693752374e-323"/>
+        <Element index="1" value="1.23318785201975e-320"/>
+        <Element index="2" value="3.34410150549224e-316"/>
+        <Element index="3" value="8.48798316386109e-314"/>
+        <Element index="4" value="6.93198502702224e-310"/>
         <Element index="5" value="0"/>
       </Property>
       <Property name="Diffuse" id="4645.Diffuse" number_of_elements="1">
@@ -2574,11 +2574,11 @@
       </Property>
       <Property name="DataBounds" id="4740.DataBounds" number_of_elements="6">
         <Element index="0" value="3.16202013338398e-322"/>
-        <Element index="1" value="6.0334442924697e-316"/>
-        <Element index="2" value="6.03385535508704e-316"/>
-        <Element index="3" value="1.69759663306866e-313"/>
-        <Element index="4" value="9.88131291682493e-324"/>
-        <Element index="5" value="1.48219693752374e-323"/>
+        <Element index="1" value="5.35386213489778e-316"/>
+        <Element index="2" value="0"/>
+        <Element index="3" value="0"/>
+        <Element index="4" value="5.35388901206892e-316"/>
+        <Element index="5" value="5.35389059307898e-316"/>
       </Property>
       <Property name="Diffuse" id="4740.Diffuse" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -3009,8 +3009,8 @@
         <Element index="1" value="0.13"/>
       </Property>
       <Property name="PositionInfo" id="4756.PositionInfo" number_of_elements="2">
-        <Element index="0" value="0.266939799331104"/>
-        <Element index="1" value="0.0510477453580903"/>
+        <Element index="0" value="0.250116279069767"/>
+        <Element index="1" value="0.052724867724868"/>
       </Property>
       <Property name="Repositionable" id="4756.Repositionable" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -3620,8 +3620,8 @@
         <Element index="1" value="0"/>
       </Property>
       <Property name="ViewSize" id="4764.ViewSize" number_of_elements="2">
-        <Element index="0" value="898"/>
-        <Element index="1" value="755"/>
+        <Element index="0" value="904"/>
+        <Element index="1" value="757"/>
       </Property>
       <Property name="ViewTime" id="4764.ViewTime" number_of_elements="1">
         <Element index="0" value="0"/>
@@ -3684,8 +3684,8 @@
       </Property>
     </Proxy>
     <ProxyCollection name="animation">
-      <Item id="2166" name="AnimationScene4"/>
-      <Item id="2167" name="TimeAnimationCue4"/>
+      <Item id="2166" name="AnimationScene7"/>
+      <Item id="2167" name="TimeAnimationCue7"/>
     </ProxyCollection>
     <ProxyCollection name="layouts">
       <Item id="4801" name="ViewLayout1"/>
