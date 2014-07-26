@@ -1155,7 +1155,8 @@ see \cite{Lee} \cite{FirstCourse}
        Es zeigt sich das Cinema4D (siehe \cite{cinema4d}), eine 3D-Grafiksoftware, hier sehr gute Gitter erstellt.
        Der globale Verfeinerungsmechanismus von AMDiS kann leider nicht genutzt werden, da im Allgemeinen,
        durch Halbierung der Dreieckelemente, keine wohlzentrierten und damit zulässigen Primärgitter entstehen.
-       Das Problem wurde sowohl mit DEC als auch FEM numerisch berechnet (vgl. Abbildung \ref{figLaplaceSphereTorus}).
+       Das Problem wurde sowohl mit DEC als auch FEM (mit linearen Ansatzfunktionen) 
+       numerisch berechnet (vgl. Abbildung \ref{figLaplaceSphereTorus}).
        Wie wir sehen ist die DEC-Lösung etwas besser als die der FEM.
        Auffällig bei der FEM-Lösung ist, dass die maximalen Fehler sich bei den Defekten\footnote{Als Defekt bezeichnen wir bei
        hexagonal-dominierten Gittern die Ecken die nicht einen 1-Ring aus 6 Dreieckelementen besitzen.} 
@@ -1169,10 +1170,28 @@ see \cite{Lee} \cite{FirstCourse}
          \err_{\bullet} &:= \frac{\left\| w_{h} - w \right\|_{\bullet}}{\left\| w \right\|_{\bullet}}
        \end{align}
        in der jeweiligen Norm.
-       Dabei wurde zum einen die Maximumsnorm (vgl. \ref{eqDiskreteMaximumsnorm}) als auch die diskrete \( L_{2} \)-Norm verwendet.
-
+       Dabei wurde zum einen die Maximumsnorm (vgl. \ref{eqDiskreteMaximumsnorm}) als auch die diskrete \(
+       L_{2} \)-Norm verwendet,
+       die in AMDiS schon implementiert ist.
+       \todo{wesentl. untersch. bei assemblierungszeiten zw. dec u fem?}
+       EOC ist die experimentelle Konvergenzordnung (Experimental Order of Convergence)
+       \begin{align}
+         \text{EOC} &:= \frac{\log\frac{\err_{\bullet}^{h_{1}}}{\err_{\bullet}^{h_{2}}}}
+                             {\log\frac{h_{1}}{h_{2}}}
+       \end{align}
+       mit zwei verschiedenen maximalen Umkreisdurchmessern \( h_{1} < h_{2} \).
+       Wie in den Tabellen \ref{tabLaplaceSphereDEC} und \ref{tabLaplaceSphereFEM} beziehungsweise in der
+       Abbildung \ref{figFehlerPlotLaplaceSphere} zu sehen ist, liefert die DEC-Diskretisierung ein leicht
+       besseres Ergebnis als die der FEM.
+       In der \( L_{2} \)-Norm ist die experimentelle Konvergenzordung bei beiden Verfahren etwa 2.
+       Lediglich in der Maximumsnorm hat der DEC ein besseres Konvergenzverhalten als die FEM, 
+       was an den oben schon
+       angesprochenen FEM-Verhalten an den Gitterdefekten liegt.
+       Bei beiden Verfahren wurde BICGSTAB2-Algorithmus (s.\cite{bicgstab2}) zum lösen der linearen
+       Gleichungssysteme benutzt, mit einer Abbruchstoleranz von 1.0E-10.
 
        \begin{table}[htbp]
+       \centering
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
@@ -1191,6 +1210,7 @@ see \cite{Lee} \cite{FirstCourse}
        \end{table}
        
        \begin{table}[htbp]
+       \centering
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
@@ -1207,10 +1227,13 @@ see \cite{Lee} \cite{FirstCourse}
        \caption[Laplace auf Sphäre (FEM)]{Problem \eqref{eqLaplaceSphereProblemUmform} mit FEM numerisch gelöst.}
        \label{tabLaplaceSphereFEM}
        \end{table}
-      
     \end{beispiel}
 
     \begin{figure}
+          \centering\includegraphics[width=\textwidth]{bilder/laplaceSphere/errplot.eps}
+          \caption[Fehlerplot (Laplace auf Sphäre)]
+                  {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform}}
+          \label{figFehlerPlotLaplaceSphere}
       \begin{minipage}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECSol1k.png}
       \end{minipage}

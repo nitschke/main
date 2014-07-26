@@ -142,6 +142,78 @@
         \mathfrak{H} &\equiv 1
       \end{align}
 
+  \subsection{Torus}
+  \label{torus}
+
+    \subsubsection{Parametrisierung}
+      \begin{align}
+      \begin{aligned}
+        \vec{x}: \left[ 0, \pi \right)^{2}
+                    &\rightarrow \mathds{T}^{2} \subset \R^{3} \\
+             \left( t,p \right) 
+                    &\mapsto\begin{bmatrix}
+                              x(t,p) \\ y(t,p) \\ z(t,p)
+                            \end{bmatrix}
+                    :=R \begin{bmatrix}
+                          \cos t \\
+                          \sin t \\
+                            0
+                        \end{bmatrix}
+                      +r\begin{bmatrix}
+                        \cos t \cos p \\
+                        \sin t \cos p \\
+                        \sin p
+                      \end{bmatrix}
+      \end{aligned}
+      \end{align}
+      wobei alle Punkte des Torus von der Kreislinie mit Radius \( R \) den Abstand \( r < R \) haben,
+      das heißt \( r \) ist der Radius der Torusröhre. 
+
+    \subsubsection{Riemannsche Metrik}
+      \begin{align}
+        \frac{\partial}{\partial t}\vec{x}
+                   &=R \begin{bmatrix}
+                          -\sin t \\
+                          \cos t \\
+                            0
+                        \end{bmatrix}
+                      +r\begin{bmatrix}
+                        -\sin t \cos p \\
+                        \cos t \cos p \\
+                        0
+                      \end{bmatrix}
+              \quad\bot_{\R^{3}}\quad
+              \frac{\partial}{\partial p}\vec{x}
+              =r\begin{bmatrix}
+                        -\cos t \sin p \\
+                        -\sin t \sin p \\
+                        \cos p
+                \end{bmatrix}
+      \end{align}
+      \begin{align}
+        \Rightarrow g = \begin{bmatrix}
+                          \left( R + r\cos p \right)^{2} & 0 \\ 0 & r^{2}
+                        \end{bmatrix}
+          =: \diag{g_{t}, g_{p}}
+      \end{align}
+
+    \subsubsection{Laplace-Beltrami}
+      \begin{align}
+        \Delta_{B} &\overset{\eqref{eqLaplaceBeltramiOrthogonal}}{=} \sqrt{g^{t}g^{p}} 
+                      \left(  \frac{\partial}{\partial t} 
+                             \left( \sqrt{g^{t}g_{p}} \frac{\partial}{\partial t} \right) 
+                                  + \frac{\partial}{\partial p} \left( \sqrt{g_{t}g^{p}} \frac{\partial}{\partial p} 
+                       \right) \right) \\
+                   &= \frac{1}{r\left( R + r\cos p \right)}
+                      \left(  \frac{\partial}{\partial t} 
+                             \left( \frac{r}{R + r\cos p} \frac{\partial}{\partial t} \right) 
+                                  + \frac{\partial}{\partial p} \left( \frac{ R + r\cos p}{r} \frac{\partial}{\partial p} 
+                       \right) \right) \\
+                   &= \frac{1}{\left( R + r\cos p \right)^{2}} \frac{\partial^{2}}{\partial t^{2}}
+                       + \frac{1}{r^{2}} \frac{\partial^{2}}{\partial p^{2}}
+                       - \frac{\sin p}{r\left( R + r\cos p \right)} \frac{\partial}{\partial p}
+      \end{align}
+
   \subsection{Ellipsoid}
     \label{heineC}
     
