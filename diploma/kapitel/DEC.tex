@@ -1280,10 +1280,10 @@ see \cite{Lee} \cite{FirstCourse}
       Für das Primärgitter wurde ein Schlauch verwendet der um \( 4\pi \) verdrillt und am Anfang und Ende
       mit einander verbunden wurde.
       Somit konnte bezüglich des maximalen Winkels ein recht hochwertiges Torusgitter mit vollständig
-      hexagonaler Struktur erzeugt werden. \todo{plot oder in zahlen}
+      hexagonaler Struktur erzeugt werden.      
       Geben wir uns die Funktion
       \begin{align}
-        w := (\cos t)^{2} = \frac{x^{2}}{x^{2}+y^{2}}
+        w := \cos^{2} t = \frac{x^{2}}{x^{2}+y^{2}}
       \end{align}
       vor mit globalen kartesischen \( \R^{3} \)-Koordinaten \( (x,y,z) \).
       Für den Laplace-Operator ergibt sich nun
@@ -1303,7 +1303,16 @@ see \cite{Lee} \cite{FirstCourse}
         \label{eqLaplaceTorusProblemUmform}
         \Delta_{B} w + \frac{2}{x^{2}+y^{2}} w &= \frac{2 y^{2}}{\left( x^{2} + y^{2} \right)^{2}}
       \end{align}
-      sein.
+      sein (vgl. \ref{figLaplaceTorus}).
+      
+      Die FEM ergibt leicht bessere Ergebnisse als der DEC wie wir in den Tabellen \ref{tabLaplaceTorusFEM}
+      und \ref{tabLaplaceTorusDEC} und der Abbildung \ref{figFehlerPlotLaplaceTorus} erkennen können.
+      Allerdings weist das Primärgitter für den Torus auch keine Defekte in seiner hexagonalen Struktur
+      auf, welche die FEM-Diskretisierung vermutlich negativ beeinflussen würde.
+      Dass die experimentelle Konvergenzordnung beim DEC mit feineren Gitter besser wird, 
+      liegt wahrscheinlich daran, dass die Gitterqualität bezüglich der maximalen Winkel der Dreieckelemente zunimmt.
+      Wie schon im letzten Beispiel wurde auch hier wieder der BICGSTAB2 mit einer Abbruchstoleranz von
+      1.0E-10 verwendet um das resultierende Gleichungssystem für DEC und FEM zu lösen.
 
        \begin{table}[htbp]
        \centering
