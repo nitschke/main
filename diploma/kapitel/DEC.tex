@@ -1181,7 +1181,7 @@ see \cite{Lee} \cite{FirstCourse}
        \end{align}
        mit zwei verschiedenen maximalen Umkreisdurchmessern \( h_{1} < h_{2} \).
        Wie in den Tabellen \ref{tabLaplaceSphereDEC} und \ref{tabLaplaceSphereFEM} beziehungsweise in der
-       Abbildung \ref{figFehlerPlotLaplaceSphere} zu sehen ist, liefert die DEC-Diskretisierung ein leicht
+       Abbildung \ref{figFehlerPlotLaplace} zu sehen ist, liefert die DEC-Diskretisierung ein leicht
        besseres Ergebnis als die der FEM.
        In der \( L_{2} \)-Norm ist die experimentelle Konvergenzordung bei beiden Verfahren etwa 2.
        Lediglich in der Maximumsnorm hat der DEC ein besseres Konvergenzverhalten als die FEM, 
@@ -1230,10 +1230,16 @@ see \cite{Lee} \cite{FirstCourse}
     \end{beispiel}
 
     \begin{figure}
-          \centering\includegraphics[width=\textwidth]{bilder/laplaceSphere/errplot.eps}
-          \caption[Fehlerplot (Laplace auf Sphäre)]
-                  {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform}}
-          \label{figFehlerPlotLaplaceSphere}
+      \centering\includegraphics[width=\textwidth]{bilder/laplaceSphere/errplot.eps}
+      \centering\includegraphics[width=\textwidth]{bilder/laplaceTorus/errplot.eps}
+      \caption[Fehlerplot (Laplace auf Sphäre/Torus)]
+              {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform} (oben, Sphäre)
+               und \eqref{eqLaplaceTorusProblemUmform} (unten, Torus)
+               (Fehler \( \err_{2} \) und \( \err_{\max} \) für die DEC-Diskretisierung liegen 
+                in beiden Bildern übereinander.)}
+      \label{figFehlerPlotLaplace}
+    \end{figure}
+    \begin{figure}
       \begin{minipage}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECSol1k.png}
       \end{minipage}
@@ -1255,6 +1261,39 @@ see \cite{Lee} \cite{FirstCourse}
                                              Unten rechts: Lokaler Fehler der FEM-Lösung, auffällig ist der maximale Fehler am Defekt.}
       \label{figLaplaceSphereTorus}
     \end{figure}
+
+    \begin{beispiel}[Torus]
+      Die verwendete Parametrisierung für den Torus in lokalen Koordinaten \( (t,p) \) sowie der sich somit ergebende
+      Laplace-Beltrami-Operator kann im Appendix \ref{torus} nachgelesen werden.
+      Als Torusradii nutzen wir \( r=0.5 \) und \( R=2.0 \).
+      Für das Primärgitter wurde ein Schlauch verwendet der um \( 4\pi \) verdrillt und am Anfang und Ende
+      mit einander verbunden wurde.
+      Somit konnte bezüglich des maximalen Winkels ein recht hochwertiges Torusgitter mit vollständig
+      hexagonaler Struktur erzeugt werden. \todo{plot oder in zahlen}
+      Geben wir uns die Funktion
+      \begin{align}
+        w := (\cos t)^{2} = \frac{x^{2}}{x^{2}+y^{2}}
+      \end{align}
+      vor mit globalen kartesischen \( \R^{3} \)-Koordinaten \( (x,y,z) \).
+      Für den Laplace-Operator ergibt sich nun
+      \begin{align}
+        \Delta_{B} w &= -\frac{2 \left( \cos^{2} t - \sin^{2} t \right)}{\left( R + r\cos p \right)^{2}} 
+                      = -2 \frac{x^{2} - y^{2}}{\left( x^{2} + y^{2} \right)^{2}} \formpunkt
+      \end{align}
+      Wie schon im letzten Beispiel formulieren wir die Aufgabe etwas um, damit sich kein schlecht gestelltes
+      Problem ergibt.
+      Da
+      \begin{align}
+        -2 \frac{x^{2} - y^{2}}{\left( x^{2} + y^{2} \right)^{2}}
+            &= \frac{2 y^{2}}{\left( x^{2} + y^{2} \right)^{2}} - \frac{2}{x^{2}+y^{2}} w
+      \end{align}
+      gilt, soll unser hier behandeltes Problem
+      \begin{align}
+        \label{eqLaplaceTorusProblemUmform}
+        \Delta_{B} w + \frac{2}{x^{2}+y^{2}} w &= \frac{2 y^{2}}{\left( x^{2} + y^{2} \right)^{2}}
+      \end{align}
+      sein.
+    \end{beispiel}
 
 \section{Approximation der Krümmung}
   \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
