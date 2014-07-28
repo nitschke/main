@@ -1087,7 +1087,7 @@ see \cite{Lee} \cite{FirstCourse}
     \begin{align}
       A f_{h} &= \left[ \Delta_{B,d} f(v_{i}) \right]_{i=0,\ldots,M-1} \formpunkt
     \end{align}
-    Da \( A \) symmetrisch und dünnbesetzt ist, können geeignete Löser gewählt werden, 
+    Da \( A \) dünnbesetzt ist, können geeignete Löser gewählt werden, 
     falls \( f_{h} \) unbekannt und die rechte Seite bekannt ist.
 
     Für die Implementierung in AMDiS müssen somit nur die Elementmatrizen \( A^{\sigma^{2}} \) berechnet
@@ -1156,7 +1156,7 @@ see \cite{Lee} \cite{FirstCourse}
        Der globale Verfeinerungsmechanismus von AMDiS kann leider nicht genutzt werden, da im Allgemeinen,
        durch Halbierung der Dreieckelemente, keine wohlzentrierten und damit zulässigen Primärgitter entstehen.
        Das Problem wurde sowohl mit DEC als auch FEM (mit linearen Ansatzfunktionen) 
-       numerisch berechnet (vgl. Abbildung \ref{figLaplaceSphereTorus}).
+       numerisch berechnet (vgl. Abbildung \ref{figLaplaceSphere}).
        Wie wir sehen ist die DEC-Lösung etwas besser als die der FEM.
        Auffällig bei der FEM-Lösung ist, dass die maximalen Fehler sich bei den Defekten\footnote{Als Defekt bezeichnen wir bei
        hexagonal-dominierten Gittern die Ecken die nicht einen 1-Ring aus 6 Dreieckelementen besitzen.} 
@@ -1181,7 +1181,7 @@ see \cite{Lee} \cite{FirstCourse}
        \end{align}
        mit zwei verschiedenen maximalen Umkreisdurchmessern \( h_{1} < h_{2} \).
        Wie in den Tabellen \ref{tabLaplaceSphereDEC} und \ref{tabLaplaceSphereFEM} beziehungsweise in der
-       Abbildung \ref{figFehlerPlotLaplace} zu sehen ist, liefert die DEC-Diskretisierung ein leicht
+       Abbildung \ref{figFehlerPlotLaplaceSphere} zu sehen ist, liefert die DEC-Diskretisierung ein leicht
        besseres Ergebnis als die der FEM.
        In der \( L_{2} \)-Norm ist die experimentelle Konvergenzordung bei beiden Verfahren etwa 2.
        Lediglich in der Maximumsnorm hat der DEC ein besseres Konvergenzverhalten als die FEM, 
@@ -1227,25 +1227,24 @@ see \cite{Lee} \cite{FirstCourse}
        \caption[Laplace auf Sphäre (FEM)]{Problem \eqref{eqLaplaceSphereProblemUmform} mit FEM numerisch gelöst.}
        \label{tabLaplaceSphereFEM}
        \end{table}
+      \begin{figure}
+        \centering\includegraphics[width=\textwidth]{bilder/laplaceSphere/errplot.eps}
+        \caption[Fehlerplot (Laplace auf Sphäre/Torus)]
+                {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform}.
+                 (Fehler \( \err_{2} \) und \( \err_{\max} \) für die DEC-Diskretisierung liegen 
+                  in beiden Bildern übereinander.)}
+        \label{figFehlerPlotLaplaceSphere}
+      \end{figure}
     \end{beispiel}
 
-    \begin{figure}
-      \centering\includegraphics[width=\textwidth]{bilder/laplaceSphere/errplot.eps}
-      \centering\includegraphics[width=\textwidth]{bilder/laplaceTorus/errplot.eps}
-      \caption[Fehlerplot (Laplace auf Sphäre/Torus)]
-              {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform} (oben, Sphäre)
-               und \eqref{eqLaplaceTorusProblemUmform} (unten, Torus)
-               (Fehler \( \err_{2} \) und \( \err_{\max} \) für die DEC-Diskretisierung liegen 
-                in beiden Bildern übereinander.)}
-      \label{figFehlerPlotLaplace}
-    \end{figure}
+
     \begin{figure}
       \begin{minipage}[t]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECSol1k.png}
+        \includegraphics[width=\textwidth]{bilder/laplaceSphere/mesh.eps}
       \end{minipage}
       \hfill
       \begin{minipage}[t]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{bilder/laplaceTorus/DECSol1k.png}
+        \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECSol1k.png}
       \end{minipage}\\
       \begin{minipage}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{bilder/laplaceSphere/DECError1k.png}
@@ -1254,12 +1253,24 @@ see \cite{Lee} \cite{FirstCourse}
       \begin{minipage}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{bilder/laplaceSphere/FEMError1k.png}
       \end{minipage}
-      \caption[Laplace auf Sphäre und Torus]{Oben: Numerische Lösung des Problems \eqref{eqLaplaceSphereProblemUmform} auf der Sphäre
-                                             (1002 DOFs) 
-                                             und des Problems \eqref{eqLaplaceTorusProblemUmform} auf dem Torus (1360 DOFs).
+      \caption[Laplace auf Sphäre]{Oben links: Für eine Ikosaederfläche sind die maximalen Winkel sehen.
+                                             Oben rechts: Numerische Lösung des Problems \eqref{eqLaplaceSphereProblemUmform} auf der Sphäre
+                                             (1002 DOFs). 
                                              Unten links: Lokaler Fehler der DEC-Lösung (Farben mit rechter Abbildung gleichskaliert).
                                              Unten rechts: Lokaler Fehler der FEM-Lösung, auffällig ist der maximale Fehler am Defekt.}
-      \label{figLaplaceSphereTorus}
+      \label{figLaplaceSphere}
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/laplaceTorus/mesh.eps}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/laplaceTorus/DECSol1k.png}
+      \end{minipage}
+      \caption[Laplace auf Torus]{Links: Gitter mit maximalen Winkeln.
+                                         Die dicke schwarze geschlossene Kurve auf dem Torus soll die die Verdrillung des Torusschlauches um \( 4\pi \) andeuten.
+                                         Im Ursprungsgitter war diese Kurve "`gerade"', d.h. nur abhängig vom Winkel \( t \).
+                                  Rechts: Numerische Lösung des Problems \eqref{eqLaplaceTorusProblemUmform} auf dem Torus (1360 DOFs).}
+      \label{figLaplaceTorus}
     \end{figure}
 
     \begin{beispiel}[Torus]
@@ -1293,6 +1304,54 @@ see \cite{Lee} \cite{FirstCourse}
         \Delta_{B} w + \frac{2}{x^{2}+y^{2}} w &= \frac{2 y^{2}}{\left( x^{2} + y^{2} \right)^{2}}
       \end{align}
       sein.
+
+       \begin{table}[htbp]
+       \centering
+       \begin{tabular}{|r|r|r|r|r|r|}
+       \hline
+       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
+       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        432 & 0.484083 & 1.53E-02 & \multicolumn{1}{l|}{} & 1.43E-02 & \multicolumn{1}{l|}{} \\ \hline
+        1360 & 0.263248 & 5.26E-03 & 1.7487502806 & 5.13E-03 & 1.676583294 \\ \hline
+        2016 & 0.214754 & 3.64E-03 & 1.8124915763 & 3.58E-03 & 1.7722152372 \\ \hline
+        4752 & 0.138422 & 1.61E-03 & 1.8539424379 & 1.60E-03 & 1.827141796 \\ \hline
+        10192 & 0.0940568 & 7.72E-04 & 1.9033291206 & 7.74E-04 & 1.8875065925 \\ \hline
+        24640 & 0.0603108 & 3.27E-04 & 1.9367574278 & 3.29E-04 & 1.9269600665 \\ \hline
+        48832 & 0.0427842 & 1.67E-04 & 1.9577876987 & 1.68E-04 & 1.951624291 \\ \hline
+        100480 & 0.0297978 & 8.18E-05 & 1.9701256217 & 8.26E-05 & 1.9656343129 \\ \hline
+        250992 & 0.0188374 & 3.30E-05 & 1.9796579788 & 3.33E-05 & 1.9768600188 \\ \hline
+       \end{tabular}
+       \caption[Laplace auf Torus (DEC)]{Problem \eqref{eqLaplaceTorusProblemUmform} mit DEC numerisch gelöst.}
+       \label{tabLaplaceTorusDEC}
+       \end{table}
+       
+       \begin{table}[htbp]
+       \centering
+       \begin{tabular}{|r|r|r|r|r|r|}
+       \hline
+       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
+       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        432 & 0.484083 & 4.22E-03 & \multicolumn{1}{l|}{} & 6.60E-03 & \multicolumn{1}{l|}{} \\ \hline
+        1360 & 0.263248 & 6.97E-04 & 2.9550325517 & 1.12E-03 & 2.9086442442 \\ \hline
+        2016 & 0.214754 & 4.25E-04 & 2.4308893715 & 6.02E-04 & 3.0599695746 \\ \hline
+        4752 & 0.138422 & 1.98E-04 & 1.737972941 & 3.04E-04 & 1.5561979645 \\ \hline
+        10192 & 0.0940568 & 1.10E-04 & 1.5310189919 & 1.66E-04 & 1.5681290101 \\ \hline
+        24640 & 0.0603108 & 5.26E-05 & 1.6532303871 & 7.65E-05 & 1.739953836 \\ \hline
+        48832 & 0.0427842 & 2.87E-05 & 1.7679125643 & 4.07E-05 & 1.8354873743 \\ \hline
+        100480 & 0.0297978 & 1.47E-05 & 1.8393626791 & 2.06E-05 & 1.8877622847 \\ \hline
+        250992 & 0.0188374 & 6.18E-06 & 1.8946420182 & 8.51E-06 & 1.9266311481 \\ \hline
+       \end{tabular}
+       \caption[Laplace auf Torus (FEM)]{Problem \eqref{eqLaplaceTorusProblemUmform} mit FEM numerisch gelöst.}
+       \label{tabLaplaceTorusFEM}
+       \end{table}
+      \begin{figure}
+        \centering\includegraphics[width=\textwidth]{bilder/laplaceTorus/errplot.eps}
+        \caption[Fehlerplot (Laplace auf Torus)]
+                {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceTorusProblemUmform}.
+                 (Fehler \( \err_{2} \) und \( \err_{\max} \) für die DEC-Diskretisierung liegen 
+                  in beiden Bildern übereinander.)}
+        \label{figFehlerPlotLaplaceTorus}
+      \end{figure}
     \end{beispiel}
 
 \section{Approximation der Krümmung}

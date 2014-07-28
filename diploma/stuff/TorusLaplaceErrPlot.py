@@ -61,12 +61,14 @@ h = [
 0.0188374
 ]
 
+lineStyles = ['-','--', '-.', ':']
+
 plt.rc('text', usetex=True)
 #plt.rc('font', family='serif')
-plt.loglog(h, err2dec, label=r"$\mathrm{Err}_2$ (DEC)", linewidth=3);
-plt.loglog(h, errmaxdec, label=r"$\mathrm{Err}_{\mathrm{max}}$ (DEC)", linewidth=3);
-plt.loglog(h, err2fem, label=r"$\mathrm{Err}_2$ (FEM)", linewidth=3);
-plt.loglog(h, errmaxfem, label=r"$\mathrm{Err}_{\mathrm{max}}$ (FEM)", linewidth=3);
+plt.loglog(h, err2dec, 'k-', label=r"$\mathrm{Err}_2$ (DEC)", linewidth=4);
+plt.loglog(h, errmaxdec, 'k--', label=r"$\mathrm{Err}_{\mathrm{max}}$ (DEC)", linewidth=4);
+plt.loglog(h, err2fem, 'k-.', label=r"$\mathrm{Err}_2$ (FEM)", linewidth=4);
+plt.loglog(h, errmaxfem, 'k:', label=r"$\mathrm{Err}_{\mathrm{max}}$ (FEM)", linewidth=4);
 
 xlabel("h");
 ylabel("Err");
