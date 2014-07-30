@@ -1,0 +1,52 @@
+\chapter{Anwendung: Oberflächenkrümmung}
+  
+  \begin{ziel}
+    In vielen wissenschaftlichen Problemen kann die Krümmung
+    einer Oberfläche eine entscheidene Rolle spielen. 
+    Sie kann zum Beispiel ein wichtiger Bestandteil von Differentialgleichungen sein.
+    So kommt die mittlere Krümmung \( H \) bei fluidmechanischen Formulierungen auf bewegliche Membranen 
+    \( M_{t} \) in der
+    Kontinuitätsgleichung
+    \begin{align}
+      \dot{\rho} + \rho\div\vec{v} - \rho v_{\vec{\nu}} H &= 0
+    \end{align}
+    vor (siehe \cite{desimone}).
+    Ein weiteres einfaches Beispiel ist die Evolution von Oberflächen \( M_{t} \) über den mittleren
+    Krümmungsfluss
+    \begin{align}
+      \dot{\vec{x}} = 2 H \vec{\nu} 
+    \end{align}
+    oder die Bestimmung des topologisch invarianten Geschlechts
+    \begin{align}
+      \mathfrak{g} = 1 - \frac{1}{4\pi}\int_{M}KdA
+    \end{align}
+    einer orientierten Mannigfaltigkeit \( M \) ohne Rand mit Gaußscher Krümmung \( K \),
+    was dierekt aus dem Satz von Gauß-Bonnet 
+    und den Zusammenhang für die Euler-Charakeristik \( \chi = 2-2\mathfrak{g} \) folgt.
+    Unter den gewählten Voraussetzungen gibt \( \mathfrak{g} \) die Anzahl der "`Löcher"'/"`Poren"' an.
+    
+    Es ließen sich noch weitere Beispiele finden in dem diverse Krümmungsgrößen für die Behandlung von
+    Nöten wären.
+    Oftmals liegt die Oberfläche allerdings nur als diskrete Eingangsgröße vor. 
+    Somit sind viele
+    geometrische Werte nicht bekannt und müssen Approximiert werden.
+    Wir werden uns in diesem Kapitel speziell die Gaußsche und die mittlere Krümmung betrachten.
+    Diese werden wir mit hilfe des DECs approximieren und zum einen mit den Ergebnissen von C.-J. Heine 
+    \cite{heine} vergleichen und zum anderen, im Falle der Gauß-Krümmung, mit einer naiven 
+    Gauß-Bonnet-Diskretisierung.
+  \end{ziel}
+
+\section{Weingartenabbildung}
+
+\section{Gauß-Bonnet-Operator}
+
+\section{Krümmungsvektor}
+
+\section{Numerisches Experiment}
+
+%\section{Approximation der Krümmung}
+%  \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
+%  \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}
+%  \subsection{Beispiel: Krümmung Teil 3: Krümmungsvektor}
+%  \label{subsecKruemmungsvektor}
+

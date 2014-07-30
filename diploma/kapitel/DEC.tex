@@ -949,9 +949,12 @@ see \cite{Lee} \cite{FirstCourse}
 
     \begin{bemerkung}
       Der in \eqref{eqDiskreteLaplace} beschriebene diskrete Laplace-Operator ist nicht neu.
-      In \cite{arakawa} wurde er zum Beispiel schon auf einer quasi-uniform\footnote{uniform auf jeder Ikosaederfläche} 
-      triangulierten Sphäre benutzt.
-      Der Kontext dort ist allerdings nicht durch das Äußere Kalkül motiviert, sondern ist Folge eines eher anschaulicheren Ansatzes.
+      In \cite{arakawa} wurde er zum Beispiel schon auf einer quasi-uniform 
+      triangulierten Sphäre benutzt. 
+      Dort wird als Grundgitter ein Ikosaeder genutzt, der die Sphäre approximiert,
+      dann werden die 20 Dreiecke gleichmäßig unterteilt.
+      Solch eine Triangulation werden wir später auch verwenden, wenn wir auf der Sphäre rechnen wollen.
+      Der Kontext in \cite{arakawa} ist allerdings nicht durch das Äußere Kalkül motiviert, sondern ist Folge eines eher anschaulicheren Ansatzes.
       Denn der Laplace-Operator kann an \( v \) approximiert werden, als den Fluss von \( \nabla f \), der aus der Voronoizelle hinaus fließt.
       \begin{align}
       \begin{aligned}
@@ -996,6 +999,7 @@ see \cite{Lee} \cite{FirstCourse}
 
 
   \subsection{Implementierung}
+    \todo[inline]{änder M als bezeichner}
     Da \( \Delta_{B,d} f \) nichts weiter als eine Linearkombination der Auswertungen von \( f \) an den
     Knoten von \( K \) ist, ließe sich der diskrete Laplace-Beltrami-Operator auch elementweise durch
     Traversierung über alle Dreiecke berechnen.
@@ -1362,11 +1366,4 @@ see \cite{Lee} \cite{FirstCourse}
         \label{figFehlerPlotLaplaceTorus}
       \end{figure}
     \end{beispiel}
-
-\section{Approximation der Krümmung}
-  \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
-  \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}
-  \subsection{Beispiel: Krümmung Teil 3: Krümmungsvektor}
-  \label{subsecKruemmungsvektor}
-
 
