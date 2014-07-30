@@ -1,6 +1,6 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/sphereIko10k.3d
+sphereMesh->macro file name:       ./macro/sphereIko2k.3d
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
 sphereMesh->global refinements:    0
@@ -8,10 +8,10 @@ sphereMesh->global refinements:    0
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              8
+sphere->components:              3 %8
 
-sphere->solver:                tfqmr %bicgstab2 %tfqmr
-sphere->solver->max iteration: 10000
+sphere->solver:                bicgstab2 %tfqmr
+sphere->solver->max iteration: 1000
 sphere->solver->info:          8
 sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   no

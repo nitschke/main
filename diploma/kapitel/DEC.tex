@@ -999,6 +999,7 @@ see \cite{Lee} \cite{FirstCourse}
 
 
   \subsection{Implementierung}
+    \label{subsecLaplaceImplementierung}
     \todo[inline]{änder M als bezeichner}
     Da \( \Delta_{B,d} f \) nichts weiter als eine Linearkombination der Auswertungen von \( f \) an den
     Knoten von \( K \) ist, ließe sich der diskrete Laplace-Beltrami-Operator auch elementweise durch
@@ -1089,7 +1090,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     gilt somit
     \begin{align}
-      A f_{h} &= \left[ \Delta_{B,d} f(v_{i}) \right]_{i=0,\ldots,M-1} \formpunkt
+      A f_{h} &= \left[ \left\langle *\Delta_{B} f, \star v_{i}  \right\rangle\right]_{i=0,\ldots,M-1} \formpunkt
     \end{align}
     Da \( A \) dünnbesetzt ist, können geeignete Löser gewählt werden, 
     falls \( f_{h} \) unbekannt und die rechte Seite bekannt ist.
@@ -1109,11 +1110,12 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     mit \( w_{h} \), dem Vektor der Freiheitsgrade, und der rechten Seite
     \begin{align}
-      \left[ \tilde{g}_{h} \right]_{i} &= \left| \star v_{i} \right| g(v_{i})
+      \left[ \tilde{g}_{h} \right]_{i} &= \left\langle *g , \star v_{i} \right\rangle
+            = \left| \star v_{i} \right| g(v_{i})
             = \sum_{\sigma^{2}\succ v_{i}} \left| \star v_{i} \cap \sigma^{2} \right| g(v_{i}) \formpunkt
     \end{align}
     Somit kann hier ebenfalls die rechte Seite elementweise ohne Kenntnisse der anderen Dreieckelementen
-    berechnet werden.
+    berechnet werden. \todo{evtl elem vektor noch aufschreiben}
     
     \begin{beispiel}[Einheitssphäre]
        Für die Parametrisierung der (Einheits)Sphäre, das heißt die Abbildung von lokalen Koordinaten
@@ -1366,4 +1368,116 @@ see \cite{Lee} \cite{FirstCourse}
         \label{figFehlerPlotLaplaceTorus}
       \end{figure}
     \end{beispiel}
+
+
+
+\section{Primär-Dual-Gradient im Mittel}
+
+  In Abschnitt \ref{secWeingartenabbildung} werden wir den Gradienten einer Funktion \( f\in C^{\infty}(M) \) benötigen.
+  Nun können wir zwar die äußere Ableitung benutzen, aber es fehlt uns immernoch die Möglichkeit im Diskreten bei der resultierenden 
+  1-Form \( \exd f \) die Indizes hinauf zu ziehen um ein diskretes Tangentialvektorfeld zu erhalten.
+  Eine Abhandlung wie mit Vektorfeldern zuverfahren wäre um einen diskreten Sharp-Operator zuentwickeln würde den Rahmen dieser Arbeit
+  sprengen. Alleine schon wegen der noch offenen Fragen die oben schon gestellt wurden.
+  Wie schon erwähnt ist es prinzipiell erstmal eine sichere Sache den Gradienten im inneren eines Dreieckelements zu definieren, da hier
+  zumindest ein Tangentialraum für das Polytop \( |K| \) existiert und eindeutig ist.
+  Hirani schlägt in seiner Doktorarbeit \cite{hirani} folgenden Sharp-Operator vor:
+  
+  \begin{definition}
+    Es sei \( f\in\Omega^{0}_{d}(K) \), \( \sigma^{2}\in K \) und \( w\prec \sigma^{2} \) eine beliebig feste Ecke von \( \sigma^{2} \).
+    Dann ist der diskrete Primär-Dual-Sharp-Operator für die exakte 1-Form \( \exd f \in \Omega^{1}_{d}(K) \) an der dualen Ecke
+    \( \star\sigma^{2}\in \star K \) gegeben durch
+    \begin{align}
+      \label{eqPrimalDualGradient}
+      \left\langle \left( \exd f \right)^{\sharp_{pd}} , \star\sigma^{2}\right\rangle
+          &:= \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(w) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}} \formkomma
+    \end{align}
+    wobei \( \nabla\Phi_{\sigma^{0}}^{\sigma^{2}} \) der \( \R^{3} \)-Gradient 
+    der lineare Ansatzfunktion von \( \sigma^{0} \) eingeschränkt auf \( \sigma^{2} \) ist,
+    das heißt es gilt
+    \begin{align}
+      f|_{\sigma^{2}}(x) &\approx \sum_{\sigma^{0}\prec\sigma^{2}} f(\sigma^{0}) \Phi_{\sigma^{0}}^{\sigma^{2}}(x) \formpunkt
+    \end{align}
+    Für den sich ergebenen Primal-Dual-Gradienten
+    \begin{align}
+      \sharp_{pd}\circ\exd: \Omega^{0}_{d}(K) \rightarrow \mathcal{V}_{d}(\star K) \supset \left( \Omega^{0}_{d}(\star K) \right)^{3}
+    \end{align}
+    (mit dem diskreten dualen Tangentialvektorraum \( \mathcal{V}_{d}(\star K) \)) schrieben wir auch kurz \( \nabla^{pd} \).
+    Die Paarung \( \left\langle \bullet, \bullet  \right\rangle \) in \eqref{eqPrimalDualGradient} ist Komponenten weise zu verstehen, also
+    für ein \( N \)-dimensionalen Vektor von diskreten \( p \)-Form 
+    \( \vec\alpha=\left[ \alpha_{i} \right]_{i=1,\ldots,N}\in\left(\Omega^{p}_{d}(\mathcal{K})\right)^{N} \) 
+    gilt
+    \begin{align}
+      \left\langle \vec\alpha, \sigma^{p} \right\rangle 
+        := \left[ \left\langle \alpha_{i} , \sigma^{p} \right\rangle \right]_{i=1,\ldots,N}
+    \end{align}
+    mit \( \sigma^{p} \in \mathcal{K}:=\left\{ K, \star K \right\} \).
+  \end{definition}
+  Der große arbeitstechnische Vorteil ist, dass die hier angebenen Ansatzfunktionen und dessen Gradient auf den Dreieckelementen in AMDiS
+  schon implementiert sind und wir diese nutzen können.
+  Der Nachteil ist, dass die Problemformulierung auf den Ecken des Dualgitters zur Zeit noch Probleme in der Programmierung mit sich
+  bringen würde und auch später Vergleiche auf den Primärgitter fairerweise gemacht werden müssten.
+  Der in \cite{hirani} vorgeschlagene Primär-Primär-Gradient \( \nabla^{pp} \), der uns weiterhelfen würde, da er auf \( \mathcal{V}_{d}(K) \)
+  abbildet, kann leider nur für flache Primärgitter verwendet werden.
+  Ein einfacher Ausweg aus diesem Dilemma ist es die Primär-Dual-Gradienten für eine Ecke aus \( K \) zu mitteln.
+
+  \begin{definition}
+    Es sei \( f\in\Omega^{0}_{d}(K) \) und \( v\in K \), dann heißt
+    \begin{align}
+      \left\langle \nabla^{\overline{pd}} f, v \right\rangle
+          &:= \frac{1}{\left| \star v \right|} \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right| 
+                  \left\langle \nabla^{pd} f , \star\sigma^{2} \right\rangle
+    \end{align}
+    Primal-Dual-Gradient im Mittel von \( f \) an \( v \).
+  \end{definition}
+  Zu postulieren mit welcher Ordnung dieser diskrete Garadient einer Funktion \( f \) zum stetigen Vorbild 
+  \( \left( \exd f \right)^{\sharp}\in \mathcal{V}^{\infty}(M) \) konsistent ist, ist sehr schwierig, da nur im Inneren der Dreieckelemente 
+  \( T|K| \) überhaupt stetig ist. \todo{verweis auf beispiel}
+  
+  \subsection{Implementierung}
+    Wie schon beim diskreten Laplace-Beltrami-Operator lässt sich auch der gemitteltete Primal-Dual-Gradient elementweise Assemblieren.
+    Wir machen das wieder auf dem "`Dualraum"'. 
+    Damit ergibt sich
+    \begin{align}
+      \left\langle *\nabla^{\overline{pd}} f, \star v \right\rangle
+        &= \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right| 
+                  \left\langle \nabla^{pd} f , \star\sigma^{2} \right\rangle \\
+        &= \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right|
+                 \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(v) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}} \formkomma
+    \end{align}
+    da die Ecke \( w \prec \sigma^{2} \) in \eqref{eqPrimalDualGradient} beliebig aber fest gewählt werden durfte 
+    und \( v \) immer Ecke des 1-Rings um sich selbst ist.
+    Somit lässt sich die \( q \)-te Komponente des diskreten Garadienten an einer globalen Ecke \( v_{i} \) 
+    ebenfalls auf den Dreieckselementen mit lokaler Nummerierung
+    darstellen durch
+    \begin{align}
+      \left\langle *\left[ \nabla^{\overline{pd}} f \right]_{q}, \star v_{i} \right\rangle
+          &&= \sum_{\substack{\sigma^{2}=\left[ v^{\sigma^{2}}_{0},v^{\sigma^{2}}_{1},v^{\sigma^{2}}_{2} \right]\\
+                                               v^{\sigma^{2}}_{0} = v_{i}}}
+                  \sum_{l=1,2} C^{\sigma^{2}}_{0lq} 
+                      \left( f_{l}^{\sigma^{2}} - f_{0}^{\sigma^{2}}\right)
+    \end{align}
+    mit
+    \begin{align}
+      C^{\sigma^{2}}_{klq} &:= \left| \star v_{k}^{\sigma^{2}} \cap \sigma^{2} \right|
+                               \frac{\partial}{\partial x^{q}} \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}}
+    \end{align}
+    für \( k,l,q\in\left\{ 1,2,3 \right\} \) wobei \( \left( x^{1}, x^{2}, x^{3} \right) \) die gwöhnlichen kartesischen \( \R^{3} \)-Koordinaten sind.
+    \( \frac{\partial}{\partial x^{q}}\Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} = \left[ \nabla \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} \right]_{q} \)
+    wird von AMDiS für alle Elemente \( \sigma^{2} \) bereitgestellt.
+    Die zugehörige Elementmatrix ist dann
+    \begin{align}
+      A^{\sigma^{2}}_{q} &:=
+      \begin{bmatrix}
+        -\left( C^{\sigma^{2}}_{01l} + C^{\sigma^{2}}_{02l}\right) & C^{\sigma^{2}}_{01l} & C^{\sigma^{2}}_{02l} \\
+        C^{\sigma^{2}}_{10l} & -\left( C^{\sigma^{2}}_{10l} + C^{\sigma^{2}}_{12l}\right) & C^{\sigma^{2}}_{12l} \\
+        C^{\sigma^{2}}_{20l} & C^{\sigma^{2}}_{21l} & -\left( C^{\sigma^{2}}_{20l} + C^{\sigma^{2}}_{21l}\right)
+      \end{bmatrix} \formkomma
+    \end{align}
+    die sich in der gleichen Weise wie im Abschnitt \ref{subsecLaplaceImplementierung} zu einer Systemmatrix \( A_{q} \) aufsummieren lässt
+    , so dass
+    \begin{align}
+      \left[A_{q}f_{h} \right]_{i} =  \left\langle *\left[ \nabla^{\overline{pd}} f \right]_{q}, \star v_{i} \right\rangle
+    \end{align}
+    gilt für alle \( v_{i}\in K^{(0)} \).
+    Für die Implementierung der Elementmatrix in Pseudocode siehe Appendix \ref{subsecAlgoGradient}.
 
