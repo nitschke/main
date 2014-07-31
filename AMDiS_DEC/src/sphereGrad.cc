@@ -1,5 +1,6 @@
 #include "AMDiS.h"
 #include "decOperator.h"
+#include "DOFVHelper.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -20,6 +21,21 @@ public:
 
 protected:
   int i;
+};
+
+class GradX2 : public AbstractFunction< WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradX2() : AbstractFunction< WorldVector<double>, WorldVector<double> >(1) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& x) const
+  {
+    WorldVector<double> rval;
+    rval[0] = -x[0]*x[2];
+    rval[1] = -x[1]*x[2];
+    rval[2] = 1.0 - x[2]*x[2];
+    return rval;
+  }
 };
 
 // ===========================================================================
@@ -87,6 +103,10 @@ int main(int argc, char* argv[])
   // ===== start adaption loop =====
   adapt->adapt();
 
+  DOFVector<WorldVector<double> > solDOFV(sphere.getFeSpace(),"solDOFV");
+  solDOFV.interpol(new GradX2());
+  VtkVectorWriter::writeFile(solDOFV, string("output/sol.vtu"));  
+  printError(*(sphere.getSolution()),0,1,2, solDOFV, "Error");
 
   //sphere.getRhsVector()->print();
 

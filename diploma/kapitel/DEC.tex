@@ -1461,7 +1461,7 @@ see \cite{Lee} \cite{FirstCourse}
       C^{\sigma^{2}}_{klq} &:= \left| \star v_{k}^{\sigma^{2}} \cap \sigma^{2} \right|
                                \frac{\partial}{\partial x^{q}} \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}}
     \end{align}
-    für \( k,l,q\in\left\{ 1,2,3 \right\} \) wobei \( \left( x^{1}, x^{2}, x^{3} \right) \) die gwöhnlichen kartesischen \( \R^{3} \)-Koordinaten sind.
+    für \( k,l,q\in\left\{ 0,1,2 \right\} \) wobei \( \left( x^{0}, x^{1}, x^{2} \right) \) die gwöhnlichen kartesischen \( \R^{3} \)-Koordinaten sind.
     \( \frac{\partial}{\partial x^{q}}\Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} = \left[ \nabla \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} \right]_{q} \)
     wird von AMDiS für alle Elemente \( \sigma^{2} \) bereitgestellt.
     Die zugehörige Elementmatrix ist dann
@@ -1481,3 +1481,65 @@ see \cite{Lee} \cite{FirstCourse}
     gilt für alle \( v_{i}\in K^{(0)} \).
     Für die Implementierung der Elementmatrix in Pseudocode siehe Appendix \ref{subsecAlgoGradient}.
 
+  \subsection{Beispiele}
+    \begin{beispiel}[Sphäre]
+      Für einen kurzen Test des hier hergeleiteten diskreten Gradienten wollen wir die Koordinatenprojektion
+      \( p_{z}(x,y,z):= z \) auf der Sphäre ableiten in den standard \( \R^{3} \)-Koordinaten \( (x,y,z) \).
+      Für die Parametrisierung und dessen Ableitungen siehe Appendix \ref{sphere}.
+      \begin{align}
+        \nabla z &= \left( \exd z \right)^{\sharp} = \left( \exd \cos u \right)^{\sharp} \\
+                 &= \left( -\sin u du \right)^{\sharp} = - g^{u} \sin u \frac{\partial}{\partial u} 
+                  = -\sin u \frac{\partial}{\partial u} \vec{x} \\
+                  &= \left[ -\sin u \cos u \cos v ,
+                           -\sin u \cos u \sin v ,
+                           \sin^{2} u \right]^{T} \\
+                  &= \left[ -xz, -yz, 1-z^{2} \right]^{T}
+      \end{align}
+      In Tabelle \ref{tabGradSphere} und Abbildung \ref{figGradSphere} sehen wir die relativen Fehler des gemittelten Primal-Dual-Gradienten.
+      Für die Fehlerberechnung nutzen wir die schon eingeführten Normen auf der punktweisen euklidischen Norm, das heißt
+      für \( \vec{v} = \left[ v^{0}, v^{1}, v^{2} \right] \in \mathcal{V}_{d}(K) \)
+      \begin{align}
+        \left\|  \vec{v} \right\|_{\bullet} &:= \left\|  \sqrt{\sum_{q=0}^{2} \left( v^{q} \right)^{2}} \right\|_{\bullet}
+        \formpunkt
+      \end{align}
+      Auffällig ist, dass wir bis zu dem Gitter mit 25002 DOFs eine experimentelle Konvergenzrate von 2 haben. 
+      Bei feineren Gittern fällt die Konvergenzrate in der Maximumsnorm enorm ab wärent die in der \( L_{2} \)-Norm nur moderat abnimmt,
+      was darauf schließen lässt, dass nur wenige Gitterpunkte betroffen sind.
+      Und tatsächlich sehen wir in Abbildung \ref{figGradSphere}, dass sich die maximalen Fehler auf den Ikosaederecken
+      beziehungsweise auf dessen Kanten befinden.
+      Der Ikosaeder war das Grundgitter, das verfeinert wurde um alle anderen Primärgitter zu erzeugen.
+
+      \begin{table}[htbp]
+       \centering
+       \begin{tabular}{|r|r|r|r|r|r|}
+       \hline
+       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
+       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       1002 & 0.152342 & 5.66E-03 & \multicolumn{1}{l|}{} & 7.71E-03 & \multicolumn{1}{l|}{} \\ \hline
+        1962 & 0.108972 & 2.98E-03 & 1.9186534413 & 3.95E-03 & 1.9987732373 \\ \hline
+        5292 & 0.0663925 & 1.14E-03 & 1.9374175035 & 1.47E-03 & 1.991362152 \\ \hline
+        10242 & 0.0477329 & 6.00E-04 & 1.9442558734 & 7.61E-04 & 1.999043939 \\ \hline
+        25002 & 0.0305541 & 2.52E-04 & 1.945023907 & 3.12E-04 & 1.9967278866 \\ \hline
+        50412 & 0.0215183 & 1.27E-04 & 1.9442042884 & 2.27E-04 & 0.9077077757 \\ \hline
+        100002 & 0.0152791 & 6.56E-05 & 1.9398199601 & 1.74E-04 & 0.7821359392 \\ \hline
+        249642 & 0.00967015 & 2.72E-05 & 1.9274641706 & 1.18E-04 & 0.8378214011 \\ \hline
+       \end{tabular}
+       \caption[Gradient aud Sphäre]{Fehler des Primal-Dual-Gradienten im Mittel.}
+       \label{tabGradSphere}
+      \end{table}
+    \end{beispiel}
+
+    \begin{figure}
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/gradSphere/gradAndError1k.png}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{bilder/gradSphere/error50k.png}
+      \end{minipage}
+      \caption[Gradient auf Sphäre]
+              {Links: Diskreter Gradient und sein absoluter Fehler (1002 DOFs)
+               Rechts: Absoluter Fehler des diskreten Gradientens (50412 DOfs).
+                       Die maximalen Fehler befinden sich auf den ursprünglichen Ikosaederecken und -kanten.}
+      \label{figGradSphere}
+    \end{figure}
