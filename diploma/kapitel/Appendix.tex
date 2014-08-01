@@ -164,7 +164,7 @@
     \subsubsection{Parametrisierung}
       \begin{align}
       \begin{aligned}
-        \vec{x}: \left[ 0, \pi \right)^{2}
+        \vec{x}: \left[ 0, 2\pi \right)^{2}
                     &\rightarrow \mathds{T}^{2} \subset \R^{3} \\
              \left( t,p \right) 
                     &\mapsto\begin{bmatrix}
@@ -184,6 +184,16 @@
       \end{align}
       wobei alle Punkte des Torus von der Kreislinie mit Radius \( R \) den Abstand \( r < R \) haben,
       das heißt \( r \) ist der Radius der Torusröhre. 
+
+    \subsubsection{Nützliche Identitäten}
+      \begin{align}
+        \left( R - \sqrt{x^{2}+y^{2}} \right)^{2} + z^{2} &= r^{2} 
+        & \left( R + r\cos p \right)^{2} &= x^{2} + y^{2}
+      \end{align}
+      \begin{align}
+        \sin p &= \frac{z}{r} &                  \cos p &= \frac{1}{r}\left( \sqrt{x^{2}+y^{2}} - R \right)\\
+        \sin t &= \frac{y}{\sqrt{x^{2}+y^{2}}} & \cos t &= \frac{x}{\sqrt{x^{2}+y^{2}}}
+      \end{align}
 
     \subsubsection{Riemannsche Metrik}
       \begin{align}
