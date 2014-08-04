@@ -38,7 +38,105 @@
 
 \section{Weingartenabbildung}
 \label{secWeingartenabbildung}
-\cite{kimura} (Part 2, Kap 2)
+  Die Weingartenabbildung \( S \), auch Formoperator (Shapeoperator), ist im Prinzip die 2. Fundamentalform \( \II \) unter Beachtung der Metrik \(
+ g \) (1. Fundamentalform).
+  \( S \) gibt uns Informationen über die Gestalt von \( M \). 
+  Sie misst in einer gewissen Weise wie sehr sich die Oberfläche von einer Ebenene unterscheidet, speziell ist \( M \) eine flache Ebene
+  genau dann wenn die Weingartenabbildung identisch Null ist.
+  Des Weiteren lassen sich aus der Weingartenabbildung die Hauptkrümmungen \( k_{1} \) und \( k_{2} \) herleiten und damit auch die
+  Gaußkrümmung \( K = k_{1}*k_{2} \) und die mittlere Krümmung \( H = \frac{1}{2}\left( k_{1} + k_{2} \right) \).
+  Die 1. Fundamentalform ist eine Größe der inneren Geometry und kann somit alleine auf der Oberfläche selbst bestimmt werden
+  invariant gegenüber jeglicher Einbettungen/Parametrisierungen.
+  Das ist bei der Weingartenabbildung anders, sie hängt von der äußeren Geometrie ab, d.h. die der Einbettung in einem Ambienteraum.
+  In unserem Fall ist das der \( \R^{3} \) und die Weingartenabbildung lässt sich über das Normalenvektorfeld (Gaussabbildung)
+  \begin{align}
+    \vec{\nu} = \left[ \nu^{1}, \nu^{2}, \nu^{3} \right]^{T}: M &\rightarrow TN \subset \R^{3} \\
+                         \vec{x} &\mapsto \vec{\nu}_{\vec{x}} \in T_{\vec{x}}N \bot T_{\vec{x}}M
+  \end{align}
+  berechnen. 
+  Hierbei ist \( \vec{\nu}_{\vec{x}} \) der Normalenvektor im Punkt \( \vec{x} \) und \( T_{\vec{x}}N \) der eindimensionale Normalenraum
+  der orthogonal zum Tangentialraum ist. 
+  Da meistens klar ist, dass wir Punktweise arbeiten, kann auch hier die Indizierung weggelassen werden und wir schreiben nur 
+  \( \vec{\nu} \) statt \( \vec{\nu}_{\vec{x}} \).
+  \begin{definition}
+    Die Weingartenabbildung ist in jedem Punkt der Oberfläche eine lineare Abbildung und definiert sich dort durch
+    \begin{align}
+      S: T_{\vec{x}}M &\rightarrow T_{\vec{x}}M \\
+                    \vec{v} &\mapsto \exd\vec{\nu} \left( \vec{v} \right) \formkomma
+    \end{align}
+    wobei \( \exd\vec{\nu} \left( \vec{v} \right) \) der \( \R^{3} \)-Vektor der Richtungsableitungen in Richtung \( \vec{v}
+    \) ist, wie sich einfach nachrechnen ließe (\( \vec{\nu} \) ist eine \( \R^{3} \)-vektorisierte 0-Form).
+  \end{definition}
+  Bei der Definition von \( S \) ist etwas Obacht geboten, weil sie oft auch mit negativen Vorzeichen definiert wird.
+  Da wir uns aber vordergründig für dessen Eigenwerte interessieren spielt das Vorzeichen aber keine Rolle für uns.
+  Anders als in \cite{heine} angegeben ist die Weingartenabbildung (\( (1,1) \)-Tensor) nicht die 2. Fundamentalform
+  (\( (0,2) \)-Tensor). In der Matrixdarstellung unterscheiden sich beide in der Höhe der Indizes, das heißt
+  \( S = \left(h^{i}_{\phantom{i}j}\right)\) und \( \II = \left( h_{ij} \right) \) oder anders geschrieben   \( S = (g)^{-1} \II \)
+  (vgl. \cite{FirstCourse}).
+  Somit sind auch die Eigenwerte beider Matrizen im Allgemeinen nicht gleich.
+  Die Komponenten der Weingartenabbildung lassen sich für eine lokales orthogonales Koordinatensystem \( \left( x^{1},x^{2} \right) \)
+  mit Riemannmetrik \( g=\diag{g_{1},g_{2}} \) berechnen durch
+  \begin{align}
+    h^{i}_{\phantom{i}j} &=  g^{i}h_{ij} = g^{i} \exd\vec{\nu}\left(\frac{\partial}{\partial x^{i}}\right) 
+                                                  \cdot \frac{\partial}{\partial x^{j}} \\
+                          &= \nabla_{i} \vec{\nu} \cdot \frac{\partial}{\partial x^{j}}
+  \end{align}
+  für \( i,j\in\left\{ 1,2 \right\} \) und \( \nabla_{i} \vec{\nu} \), die \( i \)-ten Komponente (Zeile) des Gradiente des
+  Normalenvektors,
+  das heißt
+  \begin{align}
+    \nabla\vec{\nu} &= \left( \exd \vec{\nu}\right)^{\sharp}
+                     = \left( \sum_{k=1,2} \frac{\partial}{\partial x^{k}} \vec{\nu} dx^{k} \right)^{\sharp} \\
+                    &= \sum_{k=1,2} g^{k}\frac{\partial}{\partial x^{k}} \vec{\nu}\frac{\partial}{\partial x^{k}}  \\
+                    &=: \sum_{k=1,2} \nabla_{k}\vec{\nu}\frac{\partial}{\partial x^{k}} \formkomma
+  \end{align}
+  Zu beachten ist dabei, dass \( \nabla_{i} \) sich von der Richtungsableitung in der \( i \)-ten Basisrichtung um einen metrischen Faktor
+  unterscheidet.
+
+  Nun wollen wir aber nicht in lokalen sondern in globalen \( \R^{3} \)-Koordinaten rechnen in denen auch das Bild des Normalenvektorfeldes
+  definiert ist. 
+  Dazu definieren wir eine erweiterte Weingartenabbildung in diesen Koordinaten
+  \begin{definition}
+    Die erweiterte Weingartenabbildung \( \bar{S} \) sei an jedem Punkt der Oberfläche gegeben durch
+    \begin{align}
+      \bar{S}:= \nabla\vec{\nu} \in \R^{3 \times 3} \formpunkt
+    \end{align}
+    Dabei sei das Ableiten in Normalenrichtung zulässig ergibt jedoch den Wert Null (konstante Erweiterung in Normalenrichtung).
+  \end{definition}
+  Die erweiterte Weingartenabbildung eingeschränkt auf \( M \) in lokalen Koordinaten ist dann gerade \( S \),
+  wobei die Eigenwerten von \( \bar{S} \) gleich \( \left\{ k_{1},k_{2},0 \right\} \) sind.
+  Einen Beweis dazu findet sich in \cite{kimura} (Part 2, Kap. 2).
+  
+  \subsection{Implementierung}
+    Die Komponenten der erweiterte Weingartenabbildung können wir nun mit Hilfe des diskreten Primär-Dual-Gradienten im Mittel approximieren, das heißt
+    \begin{align}
+      \bar{h}^{i}_{\phantom{i}j} &= \left[ \nabla\vec{\nu} \right]_{ij} = \nabla_{j}\nu^{i}
+                                 \approx \left[ \nabla^{\overline{pd}}\nu^{i} \right]_{j}
+                                 =: \left[ S^{\overline{pd}} \vec{\nu} \right]_{ij}
+    \end{align}
+    mit \( i,j \in \left\{ 1,2,3 \right\} \).
+    Für die Berechnung der Eigenwerte \( \left\{ \lambda_{0}, \lambda_{1}, \lambda_{2} \right\} \) an jedem Gitterpunkt 
+    nutzen wir den von der MTL4 (Matrix Template Library 4) bereitgestellten QR-Algorithmus.
+    Der betragsmäßig kleinste Eigenwert, der annährend null ist, ist o.E.d.A. \( \lambda_{0} \).
+    Somit können die Gaußsche Krümmung und die mittlere Krümmung durch
+    \begin{align}
+      K &\approx \lambda_{1}*\lambda_{2} \formtext{bzw.} \\
+      H &\approx \frac{1}{2}\left( \lambda_{1}+\lambda_{2}\right)    
+    \end{align}
+    approximiert werden.
+    Mit dem Normalenraum auf den Gitterpunkten haben wir das gleiche Problem, wie schon mit dem Tangentialraum.
+    Es ist nicht klar wo der Normalenraum auf den Ecken des Polyeders \( |K| \) liegen soll, denn eindeutig ist er nur auf den Inneren der Dreiecke
+    bzw. auf den Voronoiecken.
+    Deshalb mitteln wir wieder über einen 1-Ring des \( i \)-ten Primärgitterpunktes zu
+    \begin{align}
+      \left\langle \vec{\nu}, v_{i} \right\rangle 
+          := \frac{1}{\left| \star v_{i} \right|} \sum_{\sigma^{2}\succ v_{i}} \left| \star v_{i} \cap \sigma^{2}\right| 
+                      \left\langle \vecover{\nu}{\sigma^{2}}, \star\sigma^{2} \right\rangle \formpunkt
+    \end{align}
+    Die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \) werden von AMDiS bereit gestellt.
+    \todo[inline]{verweis auf experiment}
+
+
 
 \section{Gauß-Bonnet-Operator}
 
