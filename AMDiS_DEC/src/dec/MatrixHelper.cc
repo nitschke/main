@@ -23,7 +23,8 @@ DOFVector<WorldVector<double> > getEigenVals(WorldMatrix< DOFVector<double> * > 
     dMat mat(3,3);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        mat[i][j] = *(*IIIter[i][j]);
+        //mat[i][j] = *(*IIIter[i][j]);
+        mat[i][j] = 0.5 * (*(*IIIter[i][j]) + *(*IIIter[j][i]));
       }
     }
 

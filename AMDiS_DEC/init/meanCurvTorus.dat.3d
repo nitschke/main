@@ -1,7 +1,6 @@
 dimension of world:      3
 
-%torusMesh->macro file name:       ./macro/torus60k.3d
-torusMesh->macro file name:       ./macro/torus250k.3d
+torusMesh->macro file name:       ./macro/torus50k.3d
 torusMesh->global refinements:    0
 torusMesh->check:                 0
 
@@ -10,10 +9,10 @@ torus->dim:                     2
 torus->polynomial degree[0]:    1
 torus->components:              16
 
-torus->solver:                tfqmr
+torus->solver:                bicgstab2 %tfqmr
 torus->solver->max iteration: 1000
 torus->solver->info:          8
-torus->solver->tolerance:     1.e-20
+torus->solver->tolerance:     1.e-16
 torus->solver->left precon:   diag
 
 torus->estimator[0]:          0

@@ -95,7 +95,7 @@
 
   Nun wollen wir aber nicht in lokalen sondern in globalen \( \R^{3} \)-Koordinaten rechnen in denen auch das Bild des Normalenvektorfeldes
   definiert ist. 
-  Dazu definieren wir eine erweiterte Weingartenabbildung in diesen Koordinaten
+  Dazu definieren wir die erweiterte Weingartenabbildung in diesen Koordinaten.
   \begin{definition}
     Die erweiterte Weingartenabbildung \( \bar{S} \) sei an jedem Punkt der Oberfläche gegeben durch
     \begin{align}
@@ -103,7 +103,8 @@
     \end{align}
     Dabei sei das Ableiten in Normalenrichtung zulässig ergibt jedoch den Wert Null (konstante Erweiterung in Normalenrichtung).
   \end{definition}
-  Die erweiterte Weingartenabbildung eingeschränkt auf \( M \) in lokalen Koordinaten ist dann gerade \( S \),
+  Die erweiterte Weingartenabbildung eingeschränkt auf \( T_{\vec{x}}M \)\ in lokalen Koordinaten ist dann gerade \( S \),
+  \todo{genauer}
   wobei die Eigenwerten von \( \bar{S} \) gleich \( \left\{ k_{1},k_{2},0 \right\} \) sind.
   Einen Beweis dazu findet sich in \cite{kimura} (Part 2, Kap. 2).
   
@@ -112,7 +113,7 @@
     \begin{align}
       \bar{h}^{i}_{\phantom{i}j} &= \left[ \nabla\vec{\nu} \right]_{ij} = \nabla_{j}\nu^{i}
                                  \approx \left[ \nabla^{\overline{pd}}\nu^{i} \right]_{j}
-                                 =: \left[ S^{\overline{pd}} \vec{\nu} \right]_{ij}
+                                 =: \left[ S^{\overline{pd}} \right]_{ij}
     \end{align}
     mit \( i,j \in \left\{ 1,2,3 \right\} \).
     Für die Berechnung der Eigenwerte \( \left\{ \lambda_{0}, \lambda_{1}, \lambda_{2} \right\} \) an jedem Gitterpunkt 
@@ -127,13 +128,45 @@
     Mit dem Normalenraum auf den Gitterpunkten haben wir das gleiche Problem, wie schon mit dem Tangentialraum.
     Es ist nicht klar wo der Normalenraum auf den Ecken des Polyeders \( |K| \) liegen soll, denn eindeutig ist er nur auf den Inneren der Dreiecke
     bzw. auf den Voronoiecken.
-    Deshalb mitteln wir wieder über einen 1-Ring des \( i \)-ten Primärgitterpunktes zu
+    Deshalb mitteln wir wieder über einen 1-Ring des Primärgitterpunktes \( v \) zu\footnote{Der obere Index \( pp \) steht für
+    Primär-Primär da die Auswertung einer vektorvertigen primären 0-Form auf einer primären Kante gemacht wird.}
     \begin{align}
-      \left\langle \vec{\nu}, v_{i} \right\rangle 
-          := \frac{1}{\left| \star v_{i} \right|} \sum_{\sigma^{2}\succ v_{i}} \left| \star v_{i} \cap \sigma^{2}\right| 
-                      \left\langle \vecover{\nu}{\sigma^{2}}, \star\sigma^{2} \right\rangle \formpunkt
+    \label{eqNormalMittel}
+    \begin{aligned}
+      \vecover{\nu}{pp}(v) &= \left\langle \vecover{\nu}{pp}, v \right\rangle 
+          := \frac{1}{\left| \star v \right|} \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2}\right| 
+                      \left\langle \vec{\nu}, \star\sigma^{2} \right\rangle \\
+          &= \frac{1}{\left| \star v \right|} \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2}\right| 
+                                          \vecover{\nu}{\sigma^{2}} \formpunkt
+    \end{aligned}
     \end{align}
     Die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \) werden von AMDiS bereit gestellt.
+    Wenn wir \( \vec{\nu}_{i} \) wieder im "`Dualem"' lösen wollen, das heißt anwenden des HodgeOperators auf die Gleichung
+    \eqref{eqNormalMittel} und damit durchmultiplizieren der Gleichung mit \( \left| \star v_{i} \right| \), dann können auch hier die
+    Eckennormalen elementweise bestimmt werden.
+    Dadurch ergibt sich das lineare Gleichungssystem
+    \begin{align}
+        \label{eqWeingartenEq1}
+        \left\langle *\bar{\nu}^{i} , \star v \right\rangle 
+                &= \left\langle *\left[ \vecover{\nu}{pp} \right]_{i}, \star v \right\rangle \\
+        \label{eqWeingartenEq2}
+        \left\langle *\left[ \nabla^{\overline{pd}}\bar{\nu}^{i} \right]_{j} , \star v \right\rangle
+            - \left\langle *\left[ S^{\overline{pd}} \right]_{ij} , \star v \right\rangle 
+                &= 0
+    \end{align}
+    für alle \( i,j\in\left\{ 1,2,3 \right\} \) und \( v\in K^{(0)} \) in dem alle Operatoren elementweise bestimmt werden können.
+    Zusammen ergibt das 12 DOFs pro Knoten \( v \).
+    Gleichung \eqref{eqWeingartenEq1} (3 Dofs pro Knoten) und \eqref{eqWeingartenEq2} (9 Dofs pro Knoten) 
+    könnenten zwar auch seperat gelöst werden wodurch wir
+    Speichervorteile hätten, aber das Lösen der beiden kleineren Gleichungssystem wäre nicht schneller, da der Lösungsaufwand für die
+    resultierenden dünnbesetzten Systeme mit angepassteen Lösern etwa linear ist.
+    Hinzu würden außerdem noch Initialisierungskosten kommen.
+    Die Weingartenabbildung \( S \) ist symmetrisch, das können wir von der numerisch ermittelten nicht exakt erwarten.
+    Deshalb berechnen wir auch alle Einträge von \( S^{\overline{pd}} \) und nicht nur die obere Dreicksmatrix. 
+    Die Eigenwerte können dann über die symmetrisch gemittelten Matrix erhalten werden, also von der Matrix
+    \begin{align}
+      \frac{1}{2} \left( S^{\overline{pd}} + \left( S^{\overline{pd}} \right)^{T} \right) \formpunkt
+    \end{align}
     \todo[inline]{verweis auf experiment}
 
 

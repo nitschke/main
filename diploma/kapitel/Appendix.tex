@@ -68,18 +68,20 @@
    \mathtt{T} \) ist und \texttt{T.Grad(l)} der von AMDiS bereitgestellte Gradient der linaren Ansatzfunktion zu \( v_{l} \)
    auf dem Element.
 
-\section{Krümmungsgrößen für impliziten Oberflächen}
+\section{Krümmungen für impliziten Oberflächen}
 
   Es sei \( \varphi\in C^{2}(\R^{3}) \) gegeben mit \( M = \left\{ \vec{x}\in\R^{3} \middle| \varphi(\vec{x}) = 0 \right\} \).
-  Die Gaußkrümmung \( \mathfrak{K} \) und die Mittlere Krümmung \( \mathfrak{H} \) von \( M \) berechnet sich wie folgt (siehe \cite{CurvatureFormulas}):
+  Die Gaußkrümmung \( K \) und die Mittlere Krümmung \( H \) von \( M \) berechnet sich im \( \R^{3} \) wie folgt (siehe \cite{CurvatureFormulas}):
   \begin{align}
-    \mathfrak{K} &= \frac{\nabla^{T}\varphi \cdot H^{*}[\varphi] \cdot \nabla\varphi}{ \|\nabla\varphi\|_{2}^{4}}
-                 = - \frac{\det \begin{bmatrix} H[\varphi] & \nabla\varphi \\ \nabla^{T}\varphi & 0 \end{bmatrix}}{\|\nabla\varphi\|_{2}^{4}} \\
-    \mathfrak{H} &= \frac{1}{2}\nabla \cdot \frac{\nabla\varphi}{\|\nabla\varphi\|}
-          = \frac{\|\nabla\varphi\|_{2}^{2}\cdot\trace(H[\varphi]) - \nabla^{T}\varphi \cdot H[\varphi] \cdot \nabla\varphi }
+    K &= \frac{\nabla^{T}\varphi \cdot \mathcal{H}^{*}[\varphi] \cdot \nabla\varphi}{ \|\nabla\varphi\|_{2}^{4}}
+                 = - \frac{\det \begin{bmatrix} \mathcal{H}[\varphi] & \nabla\varphi \\ \nabla^{T}\varphi & 0 \end{bmatrix}}{\|\nabla\varphi\|_{2}^{4}} \\
+    H &= \frac{1}{2}\nabla \cdot \frac{\nabla\varphi}{\|\nabla\varphi\|}
+          = \frac{\|\nabla\varphi\|_{2}^{2}\cdot\trace(\mathcal{H}[\varphi]) - \nabla^{T}\varphi \cdot \mathcal{H}[\varphi] \cdot \nabla\varphi }
                         {2\cdot\|\nabla\varphi\|_{2}^{3}}
   \end{align}
-  wobei \( H^{*}[\varphi] \) die Adjunkte\footnote{nicht Adjungierte!} des Hessian \( H[\varphi] \) ist.
+  wobei \( \mathcal{H}^{*}[\varphi] \) die Adjunkte\footnote{nicht Adjungierte!} der Hesse-Matrix \( \mathcal{H}[\varphi] \) ist.
+  Alle hier verwendeten Differentialoperatoren sind keine Oberflächenoperatoren sondern die aus dem flachen \( \R^{3} \), dass heißt z.B.
+  \( \nabla = \nabla_{\R^{3}} \).
 
 
 \section{Oberflächenbeispiele}
@@ -145,17 +147,10 @@
                         + \frac{1}{\sin^{2} u} \frac{\partial^{2}}{\partial v^{2}}
       \end{align}
 
-    \subsubsection{Level-Set-Funktion}
+     \subsubsection{Krümmungen}
       \begin{align}
-        \varphi(\vec{x}) &:= \frac{1}{2}\left( \|\vec{x}\|_{2}^{2} - 1 \right) \\
-        \nabla\varphi(\vec{x}) &= \vec{x} \\
-        H[\varphi] &\equiv I
-      \end{align}
-
-     \subsubsection{Krümmungsgrößen}
-      \begin{align}
-        \mathfrak{K} &\equiv 1 \\
-        \mathfrak{H} &\equiv 1
+        K &\equiv 1 \\
+        H &\equiv 1
       \end{align}
 
   \subsection{Torus}
@@ -183,7 +178,8 @@
       \end{aligned}
       \end{align}
       wobei alle Punkte des Torus von der Kreislinie mit Radius \( R \) den Abstand \( r < R \) haben,
-      das heißt \( r \) ist der Radius der Torusröhre. 
+      das heißt \( r \) ist der Radius der Torusröhre.
+
 
     \subsubsection{Nützliche Identitäten}
       \begin{align}
@@ -240,6 +236,28 @@
                        - \frac{\sin p}{r\left( R + r\cos p \right)} \frac{\partial}{\partial p}
       \end{align}
 
+    \subsubsection{Normalen}
+      \begin{align}
+        \vec{\nu} &=\begin{bmatrix}
+                      \cos t \cos p \\
+                      \sin t \cos p \\
+                      \sin p
+                    \end{bmatrix}
+                   =\frac{1}{r}\begin{bmatrix}
+                        x \left( 1 - \nicefrac{R}{\sqrt{x^{2}+y^{2}}} \right) \\
+                        y \left( 1 - \nicefrac{R}{\sqrt{x^{2}+y^{2}}} \right) \\
+                        z
+                    \end{bmatrix}
+      \end{align}
+
+    \subsubsection{Krümmungen}
+      \begin{alignat}{2}
+        K &= \frac{\cos p}{r\left( R + r \cos p \right)}
+          && = \frac{1}{r^{2}}\left( 1 - \frac{R}{\sqrt{x^{2}+y^{2}}} \right) \\
+        H &= \frac{R + 2r\cos p}{2r\left( R + r \cos p \right)}
+          && = \frac{1}{2r}\left( 2 - \frac{R}{\sqrt{x^{2}+y^{2}}} \right)
+      \end{alignat}
+
   \subsection{Ellipsoid}
     \label{heineC}
     
@@ -247,13 +265,13 @@
       \begin{align}
         \varphi(x,y,z) &:= \frac{1}{2}\left( (3x)^{2} + (6y)^{2} + (2z)^{2} - 9 \right) \\
         \nabla\varphi(x,y,z) &= \left[ 9x, 36y, 4z \right]^{T} \\
-        H[\varphi] &\equiv \begin{bmatrix} 9 & 0 & 0 \\
+        \mathcal{H}[\varphi] &\equiv \begin{bmatrix} 9 & 0 & 0 \\
                                              0 & 36 & 0 \\
                                              0 & 0 & 4 \end{bmatrix}
       \end{align}
 
      \subsubsection{Krümmungsgrößen}
       \begin{align}
-        \mathfrak{K}(x,y,z) &= \frac{11664}{(81+972y^{2}-20z^{2})^{2}} \\
-        \mathfrak{H}(x,y,z) &= \frac{36 \left(45+54 y^2-10 z^2\right)}{\left(81+972 y^2-20 z^2\right)^{3/2}}
+        K(x,y,z) &= \frac{11664}{(81+972y^{2}-20z^{2})^{2}} \\
+        H(x,y,z) &= \frac{36 \left(45+54 y^2-10 z^2\right)}{\left(81+972 y^2-20 z^2\right)^{3/2}}
       \end{align}

@@ -4,6 +4,7 @@
 #include "MeshHelper.h"
 #include "WorldVectorHelper.h"
 #include "DOFVHelper.h"
+#include "torusProjection.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -18,14 +19,21 @@ public:
   MC() : AbstractFunction<double, WorldVector<double> >(1) {}
 
   /// Implementation of AbstractFunction::operator().
-  double operator()(const WorldVector<double>& x) const 
+  //double operator()(const WorldVector<double>& x) const 
+  double operator()(const WorldVector<double>& coords) const 
   {
     double r = 0.5;
     double R = 2.0;
-    double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
-    if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
-    double eta = zeta / (R + zeta);
-    return 0.5 * (1.0 + eta) / r;
+    //double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
+    //if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
+    //double eta = zeta / (R + zeta);
+    //return 0.5 * (1.0 + eta) / r;
+
+    double x = coords[0];
+    double y = coords[2]; //coords change 2 <-> 1
+    double z = coords[1];    
+    double sx2py2 =  sqrt(x*x + y*y);
+    return 0.5 * (2.0 - R / sx2py2) / r;
   }
 };
 
@@ -35,15 +43,20 @@ public:
   GC() : AbstractFunction<double, WorldVector<double> >(1) {}
 
   /// Implementation of AbstractFunction::operator().
-  double operator()(const WorldVector<double>& x) const 
+  //double operator()(const WorldVector<double>& x) const 
+  double operator()(const WorldVector<double>& coords) const 
   {
     double r = 0.5;
     double R = 2.0;
-    //double zeta =  (abs(x[1]) < r) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
-    double zeta =  (true) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
-    if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
-    double eta = zeta / (R + zeta);
-    return eta / (r * r);
+    //double zeta =  (true) ? (sqrt(r*r - x[1]*x[1])) : 0.0;
+    //if (x[0]*x[0] + x[2]*x[2] < R*R) zeta *= -1.0;
+    //double eta = zeta / (R + zeta);
+    //return eta / (r * r);
+    double x = coords[0];
+    double y = coords[2]; //coords change 2 <-> 1
+    double z = coords[1];    
+    double sx2py2 =  sqrt(x*x + y*y);
+    return (1.0 - R / sx2py2) / (r*r);
   }
 };
 
@@ -63,37 +76,35 @@ protected:
   int i;
 };
 
-class TorusProject : public Projection
+class Normal : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  /// Constructor.
-  TorusProject(int id, 
-	ProjectionType type,
-	double R_= 2.0,
-  double r_= 0.5) 
-    : Projection(id, type),
-  R(R_),
-  r(r_)
-  {}
+  Normal(int i_) : AbstractFunction<double, WorldVector<double> >(1), i(i_) {}
 
-  /// Destructor.
-  virtual ~TorusProject() {}
-
-  /// Implementation of Projection::project();
-  void project(WorldVector<double> &x) 
+  double operator()(const WorldVector<double>& coords) const 
   {
-    WorldVector<double> uTilde= x;
-    uTilde[1]= 0.0;;
-    WorldVector<double> u= uTilde*(R/norm(uTilde));
-    WorldVector<double> xTilde= x - u;
-    WorldVector<double> yTilde= xTilde*(r/norm(xTilde));
-    x= u + yTilde;
+    double r = 0.5;
+    double R = 2.0;
+    double x = coords[0];
+    double y = coords[2]; //coords change 2 <-> 1
+    double z = coords[1];    
+    double rval;
+    if (i == 1) {
+      rval = z;
+    }
+    else {
+      double sx2py2 =  sqrt(x*x + y*y);
+      rval = (sx2py2 - R) / sx2py2;
+      rval *= (i==0) ? x : y;
+    }
+    return rval / r;
   }
 
-protected:
-  double R;
-  double r;
+private:
+  int i;
+  
 };
+
 
 
 // ===========================================================================
@@ -106,7 +117,7 @@ int main(int argc, char* argv[])
 
   AMDiS::init(argc, argv);
 
-  new TorusProject(1, VOLUME_PROJECTION);
+  new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
 
   // ===== create and init the scalar problem ===== 
   ProblemStat torus("torus");
@@ -149,7 +160,11 @@ int main(int argc, char* argv[])
        torus.addMatrixOperator(II, pos, pos);
        // [d(N_j)]_i
        PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, torus.getFeSpace(pos), torus.getFeSpace(j+oh));
-      torus.addMatrixOperator(dN, pos, j+oh);
+       torus.addMatrixOperator(dN, pos, j+oh);
+       // with known normal
+       //PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), torus.getFeSpace(pos), torus.getFeSpace(j+oh));
+       //dN->setFactor(-1.0);
+       //torus.addVectorOperator(dN, pos);
     }
   }
   
