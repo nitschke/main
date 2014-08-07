@@ -31,6 +31,9 @@ target_link_libraries(meanCurvTorus ${BASIS_LIBS} dec)
 add_executable(weingartenTorus src/torusWeingarten.cc)
 target_link_libraries(weingartenTorus ${BASIS_LIBS} dec)
 
+add_executable(simpleWeingartenTorus src/torusWeingartenSimple.cc)
+target_link_libraries(simpleWeingartenTorus ${BASIS_LIBS} dec)
+
 add_executable(platteTorus src/torusPlatteDEC.cc)
 target_link_libraries(platteTorus ${BASIS_LIBS} dec)
 

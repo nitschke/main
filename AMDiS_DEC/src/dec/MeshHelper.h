@@ -23,6 +23,8 @@ DOFVector<double> getVoronoiRadiiDualApprox(const FiniteElemSpace *feSpace);
 // weighted, not nomalized
 DOFVector<WorldVector<double> > getNormals(const FiniteElemSpace *feSpace);
 
+DOFVector<WorldVector<double> > getNormalsConnectionAverage(const FiniteElemSpace *feSpace);
+
 DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpace, bool constantRadii = false, double k = 0.75);
 
 double getMaxMagnitude(DOFVector<WorldVector<double> > F);

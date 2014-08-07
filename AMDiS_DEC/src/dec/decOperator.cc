@@ -98,6 +98,29 @@ namespace AMDiS {
     updateUserVec(userVec, opVec);
     }
 
+  void GradDofWorldVecDEC::getElementVector(const ElInfo *elInfo, 
+		    ElementVector& userVec, 
+				double factor) {
+
+    ElVolumesInfo2d volInfo(elInfo);
+    opVec = 0.0;
+
+    for (int i = 0; i < 3; i++) {
+      double c = volInfo.getDualVertexVol(i);
+      DegreeOfFreedom iGlob = elInfo->getElement()->getDof(i,0);
+      double vli = ((*v)[iGlob])[lV];
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        DegreeOfFreedom jGlob = elInfo->getElement()->getDof(j,0);
+        double vlj = ((*v)[jGlob])[lV]; 
+        opVec[i] += c * (elInfo->getGrdLambda()[j])[lGrad] * (vlj - vli);
+      }
+    }
+
+    //cout << opVec << endl;
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
+    }
+
   void PrimalPrimalGradDEC::getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
 				double factor) {

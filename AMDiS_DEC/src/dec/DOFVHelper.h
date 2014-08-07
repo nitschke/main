@@ -16,6 +16,8 @@ namespace AMDiS {
 
   DOFVector<WorldVector<double> > toWorld(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z);
 
+  DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v);
+
   void printError(const DOFVector<double> &dofv,const DOFVector<double> &sol, string name);
 
   void printError(SystemVector &sysv, int i0 ,int i1, int i2, const DOFVector<WorldVector<double> > &sol, string name);

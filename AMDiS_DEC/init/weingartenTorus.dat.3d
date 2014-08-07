@@ -7,7 +7,7 @@ torusMesh->check:                 0
 torus->mesh:                    torusMesh
 torus->dim:                     2
 torus->polynomial degree[0]:    1
-torus->components:              12
+torus->components:              9 %12
 
 torus->solver:                bicgstab2 %tfqmr
 torus->solver->max iteration: 1000

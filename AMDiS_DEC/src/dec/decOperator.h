@@ -122,7 +122,24 @@ namespace AMDiS {
      protected:
       
       int l;
+  };
 
+  //TODO: ensure compatibility (equal fespace or interpolating)
+  class GradDofWorldVecDEC : public DecOperator {
+    
+    public:
+      GradDofWorldVecDEC(int gradDirection, int vDirection, DOFVector<WorldVector<double> > *vec, const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), lGrad(gradDirection), lV(vDirection), v(vec) {}
+
+      void getElementVector(const ElInfo *elInfo, 
+		    ElementVector& userVec, 
+				double factor = 1.0);
+    
+     protected:
+      DOFVector<WorldVector<double> > *v;
+      
+      int lGrad;
+      int lV;
   };
 
   class DualPrimalNormalDEC : public DecOperator {

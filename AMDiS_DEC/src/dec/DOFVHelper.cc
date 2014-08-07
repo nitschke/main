@@ -130,6 +130,17 @@ namespace AMDiS {
     return rval;
   }
 
+//TODO: untested
+DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v){
+  DOFVector<WorldVector<double> >::Iterator vIterator(const_cast<DOFVector<WorldVector<double> >*>(&v), USED_DOFS);
+  DOFVector<double> rval(v.getFeSpace(), "v_i");
+  DOFVector<double>::Iterator rvalIterator(&rval, USED_DOFS);
+  for (vIterator.reset(), rvalIterator.reset(); !vIterator.end(); ++vIterator, ++rvalIterator) {
+    *rvalIterator = (*vIterator)[i];
+  }
+  return rval;
+}
+
 // alte berechnungen faelschlicherweise mit l2norm -_-
   void printError(const DOFVector<double> &dofv,const DOFVector<double> &sol, string name) {
     DOFVector<double> err = minus(dofv,sol);

@@ -137,6 +137,35 @@ DOFVector<WorldVector<double> > getNormals(const FiniteElemSpace *feSpace) {
   return normals;
 }
 
+DOFVector<WorldVector<double> > getNormalsConnectionAverage(const FiniteElemSpace *feSpace) {
+  
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
+  WorldVector<double> zero(DEFAULT_VALUE, 0.0);
+  normals = zero;
+
+  DOFVector<int> conn = getConnections(feSpace);
+  
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+    int numBasFcts = basFcts->getNumber();
+    std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+    DOFAdmin *admin = feSpace->getAdmin();
+    DegreeOfFreedom dof;
+
+  WorldVector<double> normal;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    el->getElementNormal(normal);
+    for (int i = 0; i < 3; i++) {
+      dof = localIndices[i];
+      normals[dof] += (1.0/(double)conn[dof]) * normal;
+    }
+  }
+
+  return normals;
+}
+
 DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpace, bool constantRadii, double k) {
   DOFVector<WorldVector<double> > F(feSpace, "ConnectionForces");
   WorldVector<double> zero(DEFAULT_VALUE, 0.0);
