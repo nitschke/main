@@ -125,15 +125,20 @@
       H &\approx \frac{1}{2}\left( \lambda_{1}+\lambda_{2}\right)    
     \end{align}
     approximiert werden.
+    Die Weingartenabbildung \( S \) ist symmetrisch, das können wir von der numerisch ermittelten nicht exakt erwarten.
+    Deshalb berechnen wir auch alle Einträge von \( S^{\overline{pd}} \) und nicht nur die obere oder untere Dreicksmatrix. 
+    Die Eigenwerte können dann über die symmetrisch gemittelten Matrix erhalten werden, also von der Matrix
+    \begin{align}
+      \frac{1}{2} \left( S^{\overline{pd}} + \left( S^{\overline{pd}} \right)^{T} \right) \formpunkt
+    \end{align}
     Mit dem Normalenraum auf den Gitterpunkten haben wir das gleiche Problem, wie schon mit dem Tangentialraum.
     Es ist nicht klar wo der Normalenraum auf den Ecken des Polyeders \( |K| \) liegen soll, denn eindeutig ist er nur auf den Inneren der Dreiecke
     bzw. auf den Voronoiecken.
-    Deshalb mitteln wir wieder über einen 1-Ring des Primärgitterpunktes \( v \) zu\footnote{Der obere Index \( pp \) steht für
-    Primär-Primär da die Auswertung einer vektorvertigen primären 0-Form auf einer primären Kante gemacht wird.}
+    Deshalb mitteln wir wieder über einen 1-Ring des Primärgitterpunktes \( v \) zu
     \begin{align}
     \label{eqNormalMittel}
     \begin{aligned}
-      \vecover{\nu}{pp}(v) &= \left\langle \vecover{\nu}{pp}, v \right\rangle 
+      \vecover{\nu}{\av}(v) &= \left\langle \vecover{\nu}{\av}, v \right\rangle 
           := \frac{1}{\left| \star v \right|} \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2}\right| 
                       \left\langle \vec{\nu}, \star\sigma^{2} \right\rangle \\
           &= \frac{1}{\left| \star v \right|} \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2}\right| 
@@ -148,7 +153,7 @@
     \begin{align}
         \label{eqWeingartenEq1}
         \left\langle *\bar{\nu}^{i} , \star v \right\rangle 
-                &= \left\langle *\left[ \vecover{\nu}{pp} \right]_{i}, \star v \right\rangle \\
+                &= \left\langle *\left[ \vecover{\nu}{\av} \right]_{i}, \star v \right\rangle \\
         \label{eqWeingartenEq2}
         \left\langle *\left[ \nabla^{\overline{pd}}\bar{\nu}^{i} \right]_{j} , \star v \right\rangle
             - \left\langle *\left[ S^{\overline{pd}} \right]_{ij} , \star v \right\rangle 
@@ -161,13 +166,153 @@
     Speichervorteile hätten, aber das Lösen der beiden kleineren Gleichungssystem wäre nicht schneller, da der Lösungsaufwand für die
     resultierenden dünnbesetzten Systeme mit angepassteen Lösern etwa linear ist.
     Hinzu würden außerdem noch Initialisierungskosten kommen.
-    Die Weingartenabbildung \( S \) ist symmetrisch, das können wir von der numerisch ermittelten nicht exakt erwarten.
-    Deshalb berechnen wir auch alle Einträge von \( S^{\overline{pd}} \) und nicht nur die obere Dreicksmatrix. 
-    Die Eigenwerte können dann über die symmetrisch gemittelten Matrix erhalten werden, also von der Matrix
+
+    Eine alternative Möglichkeit an die Normalen an einer Ecke \( v \) zu mitteln ist eine Mittelung über die Elementnormalen ohne
+    Wichtung, das heißt
     \begin{align}
-      \frac{1}{2} \left( S^{\overline{pd}} + \left( S^{\overline{pd}} \right)^{T} \right) \formpunkt
+      \label{eqNormalConnMittel}
+      \begin{aligned}
+      \vecover{\nu}{\conn}(v) &= \left\langle \vecover{\nu}{\conn}, v \right\rangle 
+          := \frac{1}{m_{v}} \sum_{\sigma^{2}\succ v}
+                      \left\langle \vec{\nu}, \star\sigma^{2} \right\rangle \\
+          &= \frac{1}{m_{v}} \sum_{\sigma^{2}\succ v}
+                                          \vecover{\nu}{\sigma^{2}} \formkomma
+     \end{aligned}
     \end{align}
+    wobei \( m_{v} = \sum_{\sigma^{2}\succ v} 1 \in \mathds{N}_{+}\) die Anzahl der \( 2 \)-Simplizes im 1-Ring um \( v \) ist.
+    Das Problem hierbei ist, dass \( m_{v} \) a priori auf einem einzelnen Dreieckselement nicht bekannt ist und damit vor dem Assemblieren
+    der Systemmatrix zusätzliche globale Arbeit in die Bestimmung aller \( m_{v} \) gesteckt werden muss.
+    
+    \begin{beispiel}[Torus]
+      Auf dem Torus sind die Gaußkrümmung \( K \), die mittlere Krümmung \( H \) und die Normalen \( \vec{\nu} \) bekannt (siehe Appendix
+      \ref{torus}) und stehen uns zum vergleichen bzw. als Eingangsgröße zur Verfügung.
+      Die Weingartenabbildung wurde als Gradient der exakten Normalen \( \vec{\nu} \) (Tab. \ref{tabWeingartenFehlerTorusExN})
+      und der beiden hier vorgestellten gemittelten Normalen 
+      \( \vecover{\nu}{\av} \) (Tab. \ref{tabWeingartenFehlerTorusAvN}) und 
+      \( \vecover{\nu}{\conn} \) (Tab. \ref{tabWeingartenFehlerTorusConnN}) berechnet.
+      Es werden wieder die relativen Fehler für die Auswertung benutzt.
+      Für die Approximation der Krümmungsgrößen mit den exakten Normalen bekommen wir etwa eine experimentelle Konvergenzordnung von 2.
+      Gerade in der Maximumsnorm überascht das ein wenig, da in Beispiel \ref{bspGradTorus} der diskrete Gradient auf feineren Gitter eine
+      schlechteres Konvergenzverhalten aufwies.
+      Bei den beiden Berechnungen mit den gemittelten Normalen bricht die Konvergenzrate bei feineren Gittern ein. 
+      Wobei die Approximation der Weingartenabbildung mit \( \vecover{\nu}{\conn} \) noch etwas besser ausfällt als mit \(
+      \vecover{\nu}{\av} \).
+      In Abbildung \ref{figWeingartenFehlerTorus} ist zudem noch der Fehler von \( \vecover{\nu}{\av} \) aufgetragen 
+      (der von \( \vecover{\nu}{\conn} \) ist ähnlich).
+      Wie wir sehen liegt das schlechte Konvergenzverhalten nicht primär an die Mittelung der Normalen an sich.
+      Vermutlich kommt es bei kleiner werdenen \( h \) zur starken Rundungsfehlern bei der Differenz in der Gradientenbildung, denn
+      hier werden zwei Werte von einander abgezogen, die auf überlappenden Bereichen gemittelt werden. 
+      In Abbildung \ref{figMeanTorus} ist die mittlere Krümmung und die lokalen absoluten Fehler für die Berechnung mit \(
+      \vecover{\nu}{\av} \) abgebildet.
+      Auch hier können wieder gewisse Strukturen im Fehlerbild erkannt werden, was darauf schließen lässt, dass der Fehler von der Gestalt
+      der Dreieckselemente und seinen Nachbarn abhängt, denn auf den Niveaulinien des Fehlers sind die Gitter nahezu gleich.
+      Hierbei konnte eine Verbindung zu diversen Gitterqualitätsmaßen
+      \footnote{die von ParaView zur Verfügung stehen, z.B. \texttt{Radius Ratio}, \texttt{Aspect Frobenius}, \texttt{Maximum Angle}, usw.}
+      nicht hergestellt werden.
+      \begin{table}[htbp]
+      \footnotesize
+      \centering
+      \begin{tabular}{|r|r|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+        \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        1360 & 0.263 & 4.21E-02 & \multicolumn{1}{l|}{} & 1.18E-01 & \multicolumn{1}{l|}{} & 1.59E-02 & \multicolumn{1}{l|}{} & 1.84E-02 & \multicolumn{1}{l|}{} \\ \hline
+2016 & 0.215 & 2.77E-02 & 2.06 & 7.85E-02 & 2.02 & 1.11E-02 & 1.76 & 1.28E-02 & 1.79 \\ \hline
+4752 & 0.138 & 1.16E-02 & 1.98 & 3.64E-02 & 1.75 & 4.97E-03 & 1.83 & 5.64E-03 & 1.86 \\ \hline
+10192 & 0.094 & 5.42E-03 & 1.97 & 1.72E-02 & 1.93 & 2.38E-03 & 1.90 & 2.71E-03 & 1.89 \\ \hline
+24640 & 0.060 & 2.26E-03 & 1.97 & 7.44E-03 & 1.89 & 1.01E-03 & 1.94 & 1.15E-03 & 1.93 \\ \hline
+48832 & 0.043 & 1.15E-03 & 1.98 & 3.71E-03 & 2.03 & 5.14E-04 & 1.96 & 5.91E-04 & 1.95 \\ \hline
+100480 & 0.030 & 5.61E-04 & 1.97 & 1.88E-03 & 1.88 & 2.52E-04 & 1.97 & 2.94E-04 & 1.93 \\ \hline
+250992 & 0.019 & 2.26E-04 & 1.98 & 7.04E-04 & 2.14 & 1.01E-04 & 1.98 & 1.25E-04 & 1.87 \\ \hline
+      \end{tabular}
+      \caption[Gauß-/mittlere Krümmung aus Weingartenabb. auf Torus (ExN)]{Fehler von \( K \) und \( H \) (aus Weingartenabb. und
+      exakten Normalen) (*ExN) auf dem Torus.}
+      \label{tabWeingartenFehlerTorusExN}
+      \vspace{10pt}
+      \begin{tabular}{|r|r|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+        \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      1360 & 0.263 & 6.01E-02 & \multicolumn{1}{l|}{} & 1.20E-01 & \multicolumn{1}{l|}{} & 2.68E-02 & \multicolumn{1}{l|}{} & 3.77E-02 & \multicolumn{1}{l|}{} \\ \hline
+      2016 & 0.215 & 4.06E-02 & 1.93 & 8.15E-02 & 1.90 & 1.87E-02 & 1.77 & 2.75E-02 & 1.55 \\ \hline
+      4752 & 0.138 & 1.77E-02 & 1.89 & 3.86E-02 & 1.71 & 8.33E-03 & 1.84 & 1.23E-02 & 1.84 \\ \hline
+      10192 & 0.094 & 8.65E-03 & 1.85 & 1.77E-02 & 2.02 & 4.07E-03 & 1.86 & 7.68E-03 & 1.21 \\ \hline
+      24640 & 0.060 & 4.13E-03 & 1.67 & 1.44E-02 & 0.46 & 2.14E-03 & 1.44 & 8.90E-03 & -0.33 \\ \hline
+      48832 & 0.043 & 2.79E-03 & 1.14 & 1.01E-02 & 1.03 & 2.02E-03 & 0.18 & 6.35E-03 & 0.98 \\ \hline
+      100480 & 0.030 & 2.18E-03 & 0.68 & 9.68E-03 & 0.11 & 1.82E-03 & 0.29 & 6.08E-03 & 0.12 \\ \hline
+      250992 & 0.019 & 1.61E-03 & 0.66 & 1.07E-02 & -0.22 & 1.29E-03 & 0.74 & 5.50E-03 & 0.22 \\ \hline
+      \end{tabular}
+      \caption[Gauß-/mittlere Krümmung aus Weingartenabb. auf Torus (AvN)]{Fehler von \( K \) und \( H \) (aus Weingartenabb. und
+      gemittelten Normalen nach \eqref{eqNormalMittel}) (*AvN) auf dem Torus.}
+      \label{tabWeingartenFehlerTorusAvN}
+      \vspace{10pt}
+      \begin{tabular}{|r|r|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+        \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        1360 & 0.263 & 5.90E-02 & \multicolumn{1}{l|}{} & 1.13E-01 & \multicolumn{1}{l|}{} & 2.48E-02 & \multicolumn{1}{l|}{} & 2.92E-02 & \multicolumn{1}{l|}{} \\ \hline
+2016 & 0.215 & 4.02E-02 & 1.89 & 7.77E-02 & 1.84 & 1.73E-02 & 1.76 & 2.11E-02 & 1.59 \\ \hline
+4752 & 0.138 & 1.75E-02 & 1.89 & 3.62E-02 & 1.74 & 7.75E-03 & 1.83 & 9.45E-03 & 1.83 \\ \hline
+10192 & 0.094 & 8.39E-03 & 1.91 & 1.71E-02 & 1.95 & 3.75E-03 & 1.88 & 5.73E-03 & 1.30 \\ \hline
+24640 & 0.060 & 3.64E-03 & 1.88 & 7.49E-03 & 1.85 & 1.78E-03 & 1.68 & 5.86E-03 & -0.05 \\ \hline
+48832 & 0.043 & 2.12E-03 & 1.58 & 4.81E-03 & 1.29 & 1.41E-03 & 0.68 & 3.94E-03 & 1.15 \\ \hline
+100480 & 0.030 & 1.39E-03 & 1.16 & 4.23E-03 & 0.36 & 1.19E-03 & 0.47 & 3.31E-03 & 0.48 \\ \hline
+250992 & 0.019 & 8.84E-04 & 0.99 & 3.73E-03 & 0.27 & 8.24E-04 & 0.80 & 2.51E-03 & 0.60 \\ \hline
+      \end{tabular}
+      \caption[Gauß-/mittlere Krümmung aus Weingartenabb. auf Torus (ConnN)]{Fehler von \( K \) und \( H \) (aus Weingartenabb. und
+      gemittelten Normalen nach \eqref{eqNormalConnMittel}) (*ConnN) auf dem Torus.}
+      \label{tabWeingartenFehlerTorusConnN}
+      \end{table}
+       
+      \begin{figure}
+        \begin{minipage}[t]{0.49\textwidth}
+          \centering\includegraphics[width=\textwidth]{bilder/Curvature/TorusKWein2Plot.eps}
+        \end{minipage} \hfill
+        \begin{minipage}[t]{0.49\textwidth}
+          \centering\includegraphics[width=\textwidth]{bilder/Curvature/TorusKWeinMaxPlot.eps}
+        \end{minipage}\\
+        \begin{minipage}[t]{0.49\textwidth}
+          \centering\includegraphics[width=\textwidth]{bilder/Curvature/TorusHWein2Plot.eps}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.49\textwidth}
+          \centering\includegraphics[width=\textwidth]{bilder/Curvature/TorusHWeinMaxPlot.eps}
+        \end{minipage}
+        \caption[Fehler Gauß-/mittlere Krümmung aus Weingartenabb. auf Torus]
+                {(LogLogPlot) Fehler in diskreter \( L_{2} \)- und Maximumsnorm für die Gaußkrümmung \( K \) bzw. mittlere Krümmung \( H \) berechnet aus
+                der Weingartenabbildung mit exakten Normalen (KExN)/(HExN), 
+                nach \eqref{eqNormalMittel} gemittelte Elementnormalen (KAvN)/(HAvN) 
+                und nach \eqref{eqNormalConnMittel} gemittelte Elementnormalen (KConnN)/(HConnN).
+                Zudem ist auch der Fehler der Normalenmittelung nach \eqref{eqNormalMittel} in der jeweiligen Norm zusehen (AvN).}
+        \label{figWeingartenFehlerTorus}
+      \end{figure}
+    \end{beispiel}
+
+    \begin{fazit}
+      Wenn die Normalvektoren an jedem Koten der Obeflächentriangulierung bekannt sind, zum Beispiel aus einer Parametrisierung
+      \( \vec{x}: \left( u,v \right) \mapsto \left( x,y,z \right)\) durch
+      \begin{align}
+        \vec{\nu} &= \frac{\frac{\partial\vec{x}}{\partial u} \times \frac{\partial\vec{x}}{\partial v}}
+                             {\left\| \frac{\partial\vec{x}}{\partial u} \times \frac{\partial\vec{x}}{\partial v} \right\|}
+      \end{align}
+      oder einer signierten Distanzfunktion \( \varphi \) durch
+      \begin{align}
+        \vec{\nu} &= \frac{\nabla_{\R^{3}}\varphi}{\left\| \nabla_{\R^{3}}\varphi \right\|} \formkomma
+      \end{align}
+      dann können mit der diskreten Weingartenabbildung gute Ergebnisse erziehlt werden.
+      Sind dagegen die Normalen nicht bekannt, so muss in zunkünftigen Arbeiten entweder eine angepasstere Möglichkeit bereitgestellt
+      werden die Normalen an den Ecken des Polyeders zu gewinnen oder ein für diese Problemstellung geeigneter diskreter Gradient,
+      zum Beispiel ein Dual-Primär-Gradient für eine diskrete duale \( 0 \)-Form ausgewerten auf den primären Gitterpunkten.
+      Hätten wir so einen Gradienten, dann könnten die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \)direkt auswerten für eine
+      Berechnung der diskreten Weingartenabbildung auf den Ecken.
+
+      In Abschnitt \ref{secNumEx} wird zudem die hier vorgestellte Krümmungsapproximation auch auf anderen Oberflächen getestet und mit den
+      Ergebnissen von \cite{heine} verglichen.
+    \end{fazit}
     \todo[inline]{verweis auf experiment}
+
 
 
 
@@ -176,6 +321,23 @@
 \section{Krümmungsvektor}
 
 \section{Numerisches Experiment}
+\label{secNumEx}
+  
+  \begin{figure}
+    \begin{minipage}[t]{0.49\textwidth}
+          \centering\includegraphics[width=\textwidth]{bilder/Curvature/WeinMeanTorus_25k.png}
+        \end{minipage} \hfill
+        \begin{minipage}[t]{0.49\textwidth}
+          \centering\includegraphics[width=\textwidth]{bilder/Curvature/WeinMeanTorusError_25k.png}
+        \end{minipage}
+        \caption[Mittlere Krümmung aus Weingartenabb. auf Torus]
+                {Links: Mittlere Krümmung \( H \)
+                 Rechts: Lokaler absoluter Fehler für die Bestimmung von \( H \) über die Weingartenabbildung mit gemittelten Normalen
+                 \eqref{eqNormalMittel}. Das Gitter hat 24640 DOFs (\( h\approx 0.06 \)). 
+                 Ab dieser Gitterauflösung fängt die Konvergenzrate an stark zu stagnieren.
+                 Deutlich sind wieder die Verdrillungsstrukturen des Torus zu sehen.}
+       \label{figMeanTorus}
+  \end{figure}
 
 %\section{Approximation der Krümmung}
 %  \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}

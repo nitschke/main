@@ -84,7 +84,7 @@
   \( \nabla = \nabla_{\R^{3}} \).
 
 
-\section{Oberflächenbeispiele}
+\section{Ausgewählte Oberflächen}
 
   \subsection{Einheitssphäre}
     \label{sphere}
@@ -257,6 +257,30 @@
         H &= \frac{R + 2r\cos p}{2r\left( R + r \cos p \right)}
           && = \frac{1}{2r}\left( 2 - \frac{R}{\sqrt{x^{2}+y^{2}}} \right)
       \end{alignat}
+
+  \subsection{Quartische Oberfläche}
+    \label{heineB}
+    
+    \subsubsection{Level-Set-Funktion}
+      \begin{align}
+        \varphi(x,y,z) &:= \frac{1}{2}\left( (x-z^{2})^{2} + (y-z^{2})^{2} + z^{2} - 1 \right) \\
+        \nabla\varphi(x,y,z) &=\begin{bmatrix}
+                                    x - z^{2} \\
+                                    y-z^{2}\\
+                                    z + 2z\left( 2z^{2}-x-y \right)
+                                \end{bmatrix} \\
+        \mathcal{H}[\varphi] &\equiv \begin{bmatrix} 1 & 0 & -2z \\
+                                             0 & 1 & -2z \\
+                                             -2z & -2z & 12z^{2} - 2x -2y + 1\end{bmatrix}
+      \end{align}
+
+     \subsubsection{Krümmungsgrößen}
+      \begin{align}
+        K(x,y,z) &= -\frac{1 + 2x - 2x^{2} + 2y - 2y^{2} + 2(-3 + x + y)z^{2}}
+                          {1 - 4(-2 + x + x^{2} + y - 2xy + y^{2})z^{2}} \\
+        H(x,y,z) &= -\frac{x - x^{2} + y - y^{2} + (-7 + 3x + 3y)z^{2}}
+                         {1 - 4(-2 + x + x^{2} + y - 2xy + y^{2})z^{2}}
+      \end{align}
 
   \subsection{Ellipsoid}
     \label{heineC}
