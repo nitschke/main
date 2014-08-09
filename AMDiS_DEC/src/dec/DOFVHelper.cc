@@ -45,7 +45,7 @@ namespace AMDiS {
 
     DOFVector<WorldVector<double> >::Iterator vIterator(const_cast<DOFVector<WorldVector<double> >*>(&v), USED_DOFS);
 
-    DOFVector<double> rval(v.getFeSpace(), "mag(v)");
+    DOFVector<double> rval(v.getFeSpace(), "MagV");
     DOFVector<double>::Iterator rvalIterator(&rval, USED_DOFS);
     
     for (vIterator.reset(), rvalIterator.reset(); !vIterator.end(); ++vIterator, ++rvalIterator) {
@@ -63,7 +63,7 @@ namespace AMDiS {
     DOFVector<double>::Iterator yIterator(const_cast<DOFVector<double>*>(&y), USED_DOFS);
     DOFVector<double>::Iterator zIterator(const_cast<DOFVector<double>*>(&z), USED_DOFS);
 
-    DOFVector<double> rval(x.getFeSpace(), "0.5*mag(x,y,z)");
+    DOFVector<double> rval(x.getFeSpace(), "HalfOfMagXYZ");
     DOFVector<double>::Iterator rvalIterator(&rval, USED_DOFS);
     
     for (xIterator.reset(), yIterator.reset(), zIterator.reset(), rvalIterator.reset(); !xIterator.end();

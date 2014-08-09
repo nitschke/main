@@ -1,6 +1,6 @@
 dimension of world:      3
 
-%sphereMesh->macro file name:       ./macro/heine51c_100k_improved.3d
+%sphereMesh->macro file name:       ./macro/heine51c_1k_improved.3d
 sphereMesh->macro file name:       ./macro/heine51c_250k_improved.3d
 %sphereMesh->macro file name:       ./macro/sphereIko25k.3d
 sphereMesh->global refinements:    0
@@ -8,12 +8,12 @@ sphereMesh->global refinements:    0
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              16
+sphere->components:              13 %16
 
-sphere->solver:                cg %tfqmr
+sphere->solver:                bicgstab2 %cg %tfqmr
 sphere->solver->max iteration: 1000
 sphere->solver->info:          8
-sphere->solver->tolerance:     1.e-20
+sphere->solver->tolerance:     1.e-10
 sphere->solver->left precon:   diag
 
 sphere->estimator[0]:          0
