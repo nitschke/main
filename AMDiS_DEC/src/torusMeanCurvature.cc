@@ -197,6 +197,7 @@ int main(int argc, char* argv[])
   printError(gcWeingarten, gcDOFV, "GaussWeingarten");
 
   DOFVector<double> mcMagY = halfMag(*(torus.getSolution(0)), *(torus.getSolution(1)), *(torus.getSolution(2)));
+  VtkVectorWriter::writeFile(mcMagY, "output/MeanMagY.vtu");
   printError(mcMagY, mcDOFV, "MeanMagY");
 
   DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
