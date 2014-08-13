@@ -338,8 +338,147 @@ see \cite{berger} (Kap. 10.5)
                  Ab dieser Gitterauflösung fängt die Konvergenzrate an stark zu stagnieren.
                  Deutlich sind wieder die Verdrillungsstrukturen des Torus zu sehen.}
        \label{figMeanTorus}
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrSK2k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrSH2k.png}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrGB2k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrLX2k.png}
+    \end{minipage}
+    \caption[Fehler (Krümmungen auf Sphäre)]
+            {Absolute lokale Fehler für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf der Sphäre
+             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (oben), dem
+             Gauß-Bonnet-Operator (unten links) bzw. dem Krümmungsvektor (unten rechts).
+             (1962 DOFs, \( h\approx0.11 \))}
+    \label{figErrCurvSphere}
   \end{figure}
 
+  \begin{figure}
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2.eps}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKLMax.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHLMax.eps}
+    \end{minipage}
+    \caption[Fehlerplot (Krümmungen auf Sphäre)]
+            {Log-Log-Plot der relativen diskreten \( L_{2} \)-Fehler (oben) und Maximumsfehler (unten) 
+             für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf der Sphäre.}
+    \label{figErrCompSphere}
+    \centering\includegraphics[width=\textwidth]{bilder/Curvature/HeineB2k250kMeshGaussError.png}
+    \caption[Gitterauflösung (quatrische Oberfläche)]
+            {Das Gitter mit 1962 DOFs (\( h\approx0.34 \)) löst die beiden Wölbungen mit starker Krümmung
+            nicht auf. Der Fehler (hier für \( K \) (Weingarten)) ist dort am größten. 
+            Zum Vergleich ist ein Gitter mit 249642 DOFs (\( h\approx0.04 \)) halbtransparent
+            dargestellt.}
+    \label{figHeineBResolution}
+  \end{figure}
+
+  \begin{figure}
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/K250k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/H250k.png}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/SK250k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/SH250k.png}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/GB250k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/LX250k.png}
+    \end{minipage}
+    \caption[Fehler (Krümmungen auf quatrischer Oberfläche)]
+            {Absolute lokale Fehler für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf
+            einer quatrischen Oberfläche
+             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (mitte), dem
+             Gauß-Bonnet-Operator (unten links) bzw. dem Krümmungsvektor (unten rechts).
+             (249642 DOFs, \( h\approx0.04 \))}
+    \label{figErrCurvHeineB}
+  \end{figure}
+
+  \todo[inline]{LX auf Torus (fehler bei neg. krümmung)}
+  \begin{figure}
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2.eps}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKMax.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHMax.eps}
+    \end{minipage}
+    \caption[Fehlerplot (Krümmungen auf quatrischer Oberfläche)]
+            {Log-Log-Plot der relativen diskreten \( L_{2} \)-Fehler (oben) und Maximumsfehler (unten) 
+             für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf einer quatrischen
+             Oberfläche.}
+    \label{figErrCompHeineB}
+  \end{figure}
+
+  \begin{figure}
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/K2k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/H2k.png}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/SK2k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/SH2k.png}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/GB2k.png}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/LX2k.png}
+    \end{minipage}
+    \caption[Fehler (Krümmungen auf Ellipsoid)]
+            {Absolute lokale Fehler für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf
+            einem Ellipsoid
+             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (mitte), dem
+             Gauß-Bonnet-Operator (unten links) bzw. dem Krümmungsvektor (unten rechts).
+             (1962 DOFs, \( h\approx0.18 \))}
+    \label{figErrCurvHeineC}
+  \end{figure}
+
+  \begin{figure}
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2.eps}
+    \end{minipage}\\
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKMax.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+       \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHMax.eps}
+    \end{minipage}
+    \caption[Fehlerplot (Krümmungen auf Ellipsoid)]
+            {Log-Log-Plot der relativen diskreten \( L_{2} \)-Fehler (oben) und Maximumsfehler (unten) 
+             für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf einem Ellipsoid.}
+    \label{figErrCompHeineC}
+  \end{figure}
 %\section{Approximation der Krümmung}
 %  \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
 %  \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}

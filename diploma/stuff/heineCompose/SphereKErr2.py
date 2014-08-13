@@ -123,7 +123,12 @@ errHeine4 = [
 lineStyles = ['-','--', '-.', ':','', ' ', 'None']
 
 plt.rc('text', usetex=True)
-#plt.rc('font', family='serif')
+
+plt.rc('xtick', labelsize=16)
+plt.rc('ytick', labelsize=16)
+plt.rc('axes', labelsize=16)
+plt.xlim([0.007,0.8]);
+
 #plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
 plt.loglog(hDEC, errSK, label=r"Weingarten", linewidth=4);
 plt.loglog(hDEC, errGB, label=r"Gauss-Bonnet", linewidth=4);
@@ -131,6 +136,7 @@ plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
 plt.loglog(hHeine2, errHeine2, label=r"FEM Degree 2", linewidth=4);
 plt.loglog(hHeine3, errHeine3, label=r"FEM Degree 3", linewidth=4);
 plt.loglog(hHeine4, errHeine4, label=r"FEM Degree 4", linewidth=4);
+
 
 xlabel("h");
 ylabel(r"$Err_{2}$");

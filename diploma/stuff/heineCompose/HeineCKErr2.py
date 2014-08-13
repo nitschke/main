@@ -117,6 +117,12 @@ errHeine4 = [
 lineStyles = ['-','--', '-.', ':','', ' ', 'None']
 
 plt.rc('text', usetex=True)
+
+plt.rc('xtick', labelsize=16)
+plt.rc('ytick', labelsize=16)
+plt.rc('axes', labelsize=16)
+plt.xlim([0.008,0.45]);
+
 #plt.rc('font', family='serif')
 #plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
 plt.loglog(hDEC, errSK, label=r"Weingarten", linewidth=4);
