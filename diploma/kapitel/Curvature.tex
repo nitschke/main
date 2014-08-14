@@ -315,10 +315,52 @@
 
 
 \section{Krümmungsvektor}
-see \cite{chen} (Kap. 4.5)
+  Der Krümmungsvektor \( \vec{H} \) ist die mittlere Krümmung in Normalenrichtung unter Beachtung der Dimension \( n \) der Oberfläche.
+  Das heißt in unserem Fall für eine \( 2 \)-Mannigfaltigkeit
+  \begin{align}
+    \label{eqDefKruemmungsvektor}
+    \vec{H} := 2 H \vec{\nu} \formpunkt
+  \end{align}
+  Nach \cite{chen} (Kap. 4.5) gilt für jede isometrische Immersion \( \vec{x}:M\rightarrow \R^{3} \)
+  \begin{align}
+    -\Delta_{B}\vec{x} = \vec{H} \formkomma
+  \end{align}
+  wobei auch hier wieder die Gleichung komponentenweise, also als vektorisiertes skalarwertiges Problem, zu sehen ist.
+  Da wir numerisch nicht in lokalen Koordinaten rechnen möchten (außer zur Verifizierung der Ergebnisse) und uns die Oberfläche als
+  Punktmenge im \( \R^{3} \) vorliegt, wählen wir als Abbildung zwischen der Oberfläche und dem \( \R^{3} \) einfach die Inklusion, das heißt
+  \begin{align}
+    \vec{x}:= \iota: \R^{3}\supset M \hookrightarrow \R^{3} \formpunkt
+  \end{align}
+  Es ist leicht zu sehen, dass die Inklusion als Identität eingeschrängt auf \( M \) eine isometrische Immersion ist 
+  (\( g\equiv I \) und der Pushforward \( \iota_{*}:T_{p}M \rightarrow T_{p}\R^{3} \) ist injektiv).
+  Mit Hilfe des DEC-diskretisiertem Laplace-Beltrami-Operators erhalten wir nun das diskreten Problem
+  \begin{align}
+    \left\langle \vec{H}, v \right\rangle = - \left\langle \Delta_{B}\iota , v \right\rangle
+  \end{align}
+  für alle Ecken \( v\in K^{(0)} \).
+  Durch anwenden des Hodge-Stern-Operators auf beiden Seiten können wir das resultierende "`duale"' Problem in gewohnter Weise in AMDiS
+  lösen (vgl. Abschnitt \ref{subsecLaplaceImplementierung}).
+  Als \( \R^{3} \)-vektorisierte Aufgabenstellung kann dabei auch jede der drei Komponenten unabhängig von einander gelöst werden.
+  Nach \eqref{eqDefKruemmungsvektor} lässt sich die mittlere Krümmung über die euklidische Norm des Krümmungsvektors erhalten, also
+  \begin{align}
+    H = \frac{1}{2}\left\| \vec{H} \right\|_{\R^{3}} \formpunkt
+  \end{align}
+  Numerische Beispiele dazu finden sich im Abschnitt \ref{secNumEx}.
 
 \section{Gauß-Bonnet-Operator}
-see \cite{berger} (Kap. 10.5)
+  Eine weitere Möglichkeit die Gaußsche Krümmung zu approximieren besteht aus einem einfachen geometrischen Ansatz, der aus dem Satz von
+  Gauß-Bonnet folgt. 
+  Dieser Satz besagt speziell für orientierte Riemannsche Mannigfaltigkeit \( P \) mit nur stückweise differenzierbaren Rand (vgl.
+  \cite{berger}, Kap. 10.5)
+  \begin{align}
+    \int_{P}K dA = 2\pi - \sum_{i=1}^{m}\beta_{i} - \int_{\partial P} k_{g} ds
+  \end{align}
+  wobei \( \beta_{i} \) die Außenwinkel an den \( m \) "`Knicken"' der Randkurve sind und \( k_{g} \) die geodätische Krümmung der
+  Randkurve.
+  Diese Formel können wir auch auf eine abstrakte Voronoizelle \( \star\pi(v)\in C_{2}(\star L) \) für die Ecke \( v \in K^{(0)}=L^{(0)} \)
+  anwenden. 
+  Da die "`Knicke"' immer genau im Umkreismittelpunkt der Dreieckelemte um \( v \) sind, 
+  ergibt sich \( m=m_{v} \), die Anzahl der \( 2 \)-Simplizes des 1-Ringes um \( v \).
 
 
 \section{Numerisches Experiment}
@@ -412,7 +454,6 @@ see \cite{berger} (Kap. 10.5)
     \label{figErrCurvHeineB}
   \end{figure}
 
-  \todo[inline]{LX auf Torus (fehler bei neg. krümmung)}
   \begin{figure}
     \begin{minipage}[t]{0.49\textwidth}
        \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2.eps}
@@ -431,6 +472,11 @@ see \cite{berger} (Kap. 10.5)
              für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf einer quatrischen
              Oberfläche.}
     \label{figErrCompHeineB}
+    \centering\includegraphics[width=\textwidth]{bilder/Curvature/LXDiameterTorus.png}
+    \caption[Diameter u. Fehler f. Krümmungsvektor (Torus)]
+            {Absolute lokale Fehler für die mittlere Krümmung berechnet aus dem Krümmungsvektor (links) und die Umkreisdurchmesser der
+            Dreieckselemente (rechts).}
+    \label{figLXDiameterTorus}
   \end{figure}
 
   \begin{figure}
