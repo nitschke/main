@@ -18,7 +18,7 @@
     \end{align}
     oder die Bestimmung des topologisch invarianten Geschlechts
     \begin{align}
-      \mathfrak{g} = 1 - \frac{1}{4\pi}\int_{M}KdA
+      \mathfrak{g} = 1 - \frac{1}{4\pi}\int_{M}Kd\mu
     \end{align}
     einer orientierten Mannigfaltigkeit \( M \) ohne Rand mit Gaußscher Krümmung \( K \),
     was dierekt aus dem Satz von Gauß-Bonnet 
@@ -350,18 +350,96 @@
 \section{Gauß-Bonnet-Operator}
   Eine weitere Möglichkeit die Gaußsche Krümmung zu approximieren besteht aus einem einfachen geometrischen Ansatz, der aus dem Satz von
   Gauß-Bonnet folgt. 
-  Dieser Satz besagt speziell für orientierte Riemannsche Mannigfaltigkeit \( P \) mit nur stückweise differenzierbaren Rand (vgl.
+  Dieser Satz besagt speziell für eine orientierte Riemannsche Mannigfaltigkeit \( P \) mit nur stückweise differenzierbaren Rand (vgl.
   \cite{berger}, Kap. 10.5)
   \begin{align}
-    \int_{P}K dA = 2\pi - \sum_{i=1}^{m}\beta_{i} - \int_{\partial P} k_{g} ds
+    \label{eqGaussBonnet}
+    \int_{P}K d\mu = 2\pi - \sum_{i=1}^{m}\beta_{i} - \int_{\partial P} k_{g} ds
   \end{align}
   wobei \( \beta_{i} \) die Außenwinkel an den \( m \) "`Knicken"' der Randkurve sind und \( k_{g} \) die geodätische Krümmung der
   Randkurve.
-  Diese Formel können wir auch auf eine abstrakte Voronoizelle \( \star\pi(v)\in C_{2}(\star L) \) für die Ecke \( v \in K^{(0)}=L^{(0)} \)
+  Diese Formel können wir auch auf eine abstrakte Voronoizelle \( P=\star\pi(v)\in C_{2}(\star L) \) für die Ecke \( v \in K^{(0)}=L^{(0)} \)
   anwenden. 
   Da die "`Knicke"' immer genau im Umkreismittelpunkt der Dreieckelemte um \( v \) sind, 
   ergibt sich \( m=m_{v} \), die Anzahl der \( 2 \)-Simplizes des 1-Ringes um \( v \).
+  Die Appriximation besteht nun darin \( \star v \in C_{2}(\star K) \) als Nährung für \( \star\pi(v) \) in Gleichung \eqref{eqGaussBonnet}
+  zu verwenden.
+  Da die Randkurve \( \partial(\star v) \) auf den differentierbaren Teilstücken gerade ist, verschwindet dort die geodätische Krümmung.
+  Weil nun die Volumenform \( d\mu = \sqrt{|g|} dx^{1} \wedge dx^{2} \) nichts weiter als das Hodge-Stern-Duale der Eins ist, das heißt 
+  \( d\mu = *1 \) und damit \(  K d\mu = *K \), ergibt sich folgende approximative Aufgabenstellung
+  \begin{align}
+      \label{eqDualGaussBonnet}
+      \left\langle *K , \star v \right\rangle &\approx 2\pi - \sum_{i=1}^{m_{v}}\beta_{i}
+  \end{align}
+  mit den Außenwinkeln an den Ecken von \( \star v \) (vgl. Abb. \ref{figGaussBonnetWinkel}).
+  Damit haben wir schon eine "`duale"' DEC-Formulierung der rechten Seite zur elementweisen Assemblierung über
+  \begin{align}
+    \left\langle *K , \star v \right\rangle = \left| \star v \right|\left\langle K, v \right\rangle
+                          = \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right| \left\langle K, v \right\rangle
+  \end{align}
+  automatisch erhalten mit dem Freiheitsgrad \( K \) am Knoten \( v \).
+  Der zugehörige "`primäre"' Gauss-Bonnet-Operator definiert sich dementsprechend in DEC-Notation
+  \begin{align}
+    \left\langle K^{GB},v \right\rangle := \frac{1}{\left| \star v \right|} \left( 2\pi - \sum_{i=1}^{m_{v}}\beta_{i} \right) \formpunkt
+  \end{align}
+  Der obere Index \( GB \) kann auch weggelassen werden, wenn klar ist, dass es sich um den Gauss-Bonnet-Operator handelt.
 
+  \subsection{Implementierung}
+    Um auch die rechte Seite von \eqref{eqDualGaussBonnet} elementweise zu berechnen müssen die Außenwinkel auf jedem Dreieck berechnet
+    werden.
+    \begin{figure}
+      \begin{minipage}[t]{0.49\textwidth}
+        \centering\input{bilder/tikz/GaussBonnet.tex}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.49\textwidth}
+        \centering\input{bilder/tikz/ElementGaussBonnet.tex}
+      \end{minipage}
+      \caption[Außenwinkel der Voronoizelle]{Die \( m = m_{v} =: \tilde{m}+1 \) Außenwinkel \( \beta_{i} \) an den Ecken der
+                                             Voronoizelle (links) 
+                                             und die zugehörigen Innenwinkel bzgl. der Primär- und Dualkanten für ein Dreieckelement 
+                                             \( \sigma^{2} \) (rechts).}
+      \label{figGaussBonnetWinkel}
+    \end{figure}
+    Nun ist der Außenwinkel \( \beta_{i} \) gleich dem Innenwinkel des \( i \)-ten Dreiecks an der Ecke \( v \), denn mit den Bezeichnern
+    aus Abbildung \ref{figGaussBonnetWinkel} gilt
+    \begin{align}
+      \gamma_{k} &= \frac{\pi}{2} - \alpha_{k} \quad (k = 0,1) \\
+      \beta_{i} &= \pi - \gamma_{0} - \gamma_{1}
+                 = \pi + \alpha_{0} - \frac{\pi}{2} + \alpha_{1} - \frac{\pi}{2} \\
+                &= \alpha_{0} + \alpha_{1} \formpunkt
+    \end{align}
+    Weiterhin lassen sich die Winkel \( \alpha_{k} \) über die Längen der Primärkanten und der auf
+    \( \sigma^{2}=\left[ v, v_{i}, v_{i+1} \right] \) eingeschränkten Voronoikanten bestimmen durch
+    \begin{align}
+      \alpha_{k} &= \arctan\left( \frac{\left|\star\left[ v, v_{i+k} \right] \cap \sigma^{2} \right|}
+                                    {\frac{1}{2}\left|\left[ v, v_{i+k} \right]\right|} \right)
+                  = \text{atan2}\left( 2\left|\star\left[ v, v_{i+k} \right] \cap \sigma^{2} \right|, 
+                                 \left|\left[ v, v_{i+k} \right]\right|\right) \formpunkt
+    \end{align}
+    Insgesamt erhalten wir also für die Summe der Außenwinkel der Voronoizelle \( \star v \)
+    \begin{align}
+      \label{eqAussenwinkelsummeAtan}
+      \sum_{i=1}^{m_{v}}\beta_{i} &= \sum_{\sigma^{2}\succ v} \sum_{\sigma^{2}\succ\sigma^{1}\succ v}
+                               \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
+                                 \left|\sigma^{1}\right|\right) \formkomma       
+    \end{align}
+    die somit immernoch elementweise Bestimmt werden kann.
+    Ein Problem stellt jedoch noch der Minuend \( 2\pi \) in der rechten Seite von \ref{eqDualGaussBonnet} dar.
+    Eine Möglichkeit wäre es den globalen Rechte-Seite-Vektor mit \( \left[ 2\pi \right]_{v\in K^{(0)}} \) statt wie
+    gewohnt mit \( \left[ 0 \right]_{v\in K^{(0)}} \) zu initialisieren und beim assemblieren die sich aus 
+    \eqref{eqAussenwinkelsummeAtan} ergebenden Elementvektoren abzuziehen.
+    Eine andere Möglichkeit ist es \( 2\pi \) selbst auch elementweise zu zerlegen, sodass wir
+    \begin{align}
+      2\pi - \sum_{i=1}^{m_{v}}\beta_{i} &=
+          \sum_{\sigma^{2}\succ v} \left( \frac{2\pi}{m_{v}} - \sum_{\sigma^{2}\succ\sigma^{1}\succ v}
+                               \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
+                                 \left|\sigma^{1}\right|\right) \right)\formkomma
+    \end{align}
+    für die Voronoizelle am Knoten \( v \) erhalten. 
+    Jedoch ist zu bedenken, dass \( m_{v} \) a priori auf einem Dreieckelement nicht bekannt ist, 
+    somit wäre es sinnvoll \( m_{v} \) für alle Ecken \( v\in K^{(0)} \) noch vor dem Aufstellen der Systemmatrix zu bestimmen falls eine
+    Parallisierung des Assemblierungsalgorithmus gewünscht ist.
 
 \section{Numerisches Experiment}
 \label{secNumEx}
@@ -401,6 +479,79 @@
       \end{tabular}
       \caption[Gauß-Bonnet und Krümmungsvektor auf der Sphäre]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator) und \( H \) (Krümmungsvektor) auf der Sphäre.}
       \label{tabSphereGBLX}
+   \end{table}
+
+   \begin{table}[htbp]
+      \centering
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.414 & 9.82E-01 & \multicolumn{1}{l|}{} & 1.24E+00 & \multicolumn{1}{l|}{} & 3.93E-01 & \multicolumn{1}{l|}{} & 5.09E-01 & \multicolumn{1}{l|}{} \\ \hline
+            0.340 & 1.02E+00 & -0.20 & 1.51E+00 & -1.02 & 3.60E-01 & 0.45 & 4.54E-01 & 0.57 \\ \hline
+            0.257 & 8.83E-01 & 0.52 & 9.39E-01 & 1.72 & 2.88E-01 & 0.80 & 3.74E-01 & 0.70 \\ \hline
+            0.109 & 2.21E-01 & 1.62 & 4.81E-01 & 0.78 & 1.11E-01 & 1.12 & 3.59E-01 & 0.05 \\ \hline
+            0.0786 & 2.25E-01 & -0.06 & 4.32E-01 & 0.32 & 1.01E-01 & 0.27 & 3.74E-01 & -0.13 \\ \hline
+            0.0598 & 2.10E-01 & 0.27 & 4.35E-01 & -0.02 & 8.46E-02 & 0.66 & 3.26E-01 & 0.50 \\ \hline
+            0.0391 & 1.40E-01 & 0.95 & 3.04E-01 & 0.83 & 5.33E-02 & 1.08 & 2.22E-01 & 0.89 \\ \hline
+      \end{tabular}
+      \caption[Weingarten auf einer quartischen Oberfläche]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung) auf einer quartischen Oberfläche.}
+      \label{tabHeineBWeingarten}
+      \vspace{10pt}
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.414 & 1.92E+00 & \multicolumn{1}{l|}{} & 3.24E+00 & \multicolumn{1}{l|}{} & 5.31E-01 & \multicolumn{1}{l|}{} & 7.99E-01 & \multicolumn{1}{l|}{} \\ \hline
+            0.340 & 1.87E+00 & 0.12 & 4.20E+00 & -1.30 & 4.76E-01 & 0.55 & 6.69E-01 & 0.90 \\ \hline
+            0.257 & 1.89E+00 & -0.03 & 3.21E+00 & 0.97 & 3.94E-01 & 0.68 & 6.50E-01 & 0.10 \\ \hline
+            0.109 & 4.42E-01 & 1.70 & 6.70E-01 & 1.83 & 1.18E-01 & 1.41 & 2.31E-01 & 1.21 \\ \hline
+            0.0786 & 1.75E-01 & 2.79 & 2.79E-01 & 2.64 & 8.76E-02 & 0.91 & 1.54E-01 & 1.22 \\ \hline
+            0.0598 & 1.04E-01 & 1.90 & 1.86E-01 & 1.49 & 8.02E-02 & 0.32 & 1.31E-01 & 0.59 \\ \hline
+            0.0391 & 5.18E-02 & 1.64 & 1.03E-01 & 1.38 & 7.48E-02 & 0.16 & 8.37E-02 & 1.05 \\ \hline
+      \end{tabular}
+      \caption[Gauß-Bonnet und Krümmungsvektor auf einer quartischen Oberfläche]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator) und \( H \) (Krümmungsvektor) auf einer quartischen Oberfläche.}
+      \label{tabHeineBGBLX}
+   \end{table}
+
+   \begin{table}[htbp]
+      \centering
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.25 & 2.10E-01 & \multicolumn{1}{l|}{} & 4.73E-01 & \multicolumn{1}{l|}{} & 9.68E-02 & \multicolumn{1}{l|}{} & 3.22E-01 & \multicolumn{1}{l|}{} \\ \hline
+            0.18 & 1.40E-01 & 1.22 & 3.27E-01 & 1.12 & 6.40E-02 & 1.25 & 2.19E-01 & 1.16 \\ \hline
+            0.11 & 6.90E-02 & 1.44 & 1.57E-01 & 1.49 & 3.08E-02 & 1.49 & 1.05E-01 & 1.49 \\ \hline
+            0.078 & 3.97E-02 & 1.66 & 9.15E-02 & 1.63 & 1.75E-02 & 1.70 & 6.10E-02 & 1.64 \\ \hline
+            0.050 & 1.77E-02 & 1.82 & 4.04E-02 & 1.84 & 7.76E-03 & 1.84 & 2.70E-02 & 1.84 \\ \hline
+            0.036 & 9.52E-03 & 1.92 & 2.17E-02 & 1.93 & 4.15E-03 & 1.93 & 1.44E-02 & 1.93 \\ \hline
+            0.026 & 4.82E-03 & 1.95 & 1.10E-02 & 1.95 & 2.10E-03 & 1.95 & 7.31E-03 & 1.95 \\ \hline
+            0.017 & 2.07E-03 & 1.97 & 4.71E-03 & 1.97 & 8.97E-04 & 1.98 & 3.14E-03 & 1.97 \\ \hline
+      \end{tabular}
+      \caption[Weingarten auf einem Ellipsoid]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung) auf einem Ellipsoid.}
+      \label{tabHeineCWeingarten}
+      \vspace{10pt}
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.25 & 6.06E-02 & \multicolumn{1}{l|}{} & 5.86E-02 & \multicolumn{1}{l|}{} & 3.77E-02 & \multicolumn{1}{l|}{} & 1.32E-01 & \multicolumn{1}{l|}{} \\ \hline
+            0.18 & 3.04E-02 & 2.08 & 5.53E-02 & 0.18 & 2.25E-02 & 1.56 & 8.20E-02 & 1.44 \\ \hline
+            0.11 & 1.17E-02 & 1.93 & 5.36E-02 & 0.06 & 1.04E-02 & 1.57 & 3.54E-02 & 1.71 \\ \hline
+            0.078 & 6.49E-03 & 1.79 & 5.17E-02 & 0.11 & 5.89E-03 & 1.71 & 1.98E-02 & 1.75 \\ \hline
+            0.050 & 3.08E-03 & 1.68 & 5.12E-02 & 0.02 & 2.61E-03 & 1.83 & 1.71E-02 & 0.33 \\ \hline
+            0.036 & 1.84E-03 & 1.59 & 5.22E-02 & -0.06 & 1.41E-03 & 1.91 & 1.65E-02 & 0.12 \\ \hline
+            0.026 & 1.12E-03 & 1.43 & 5.19E-02 & 0.02 & 7.27E-04 & 1.89 & 1.62E-02 & 0.04 \\ \hline
+            0.017 & 6.24E-04 & 1.36 & 5.35E-02 & -0.07 & 3.22E-04 & 1.90 & 1.57E-02 & 0.08 \\ \hline
+      \end{tabular}
+      \caption[Gauß-Bonnet und Krümmungsvektor auf einem Ellipsoid]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator) und \( H \)
+      (Krümmungsvektor) auf einem Ellipsoid.}
+      \label{tabHeineCGBLX}
    \end{table}
   
 
