@@ -68,6 +68,22 @@
    \mathtt{T} \) ist und \texttt{T.Grad(l)} der von AMDiS bereitgestellte Gradient der linaren Ansatzfunktion zu \( v_{l} \)
    auf dem Element.
 
+ \subsection{Gauss-Bonnet-Operator}
+  \label{subsecAlgoGaussBonnet}
+    Aufstellung des Elementvektors \( \mathtt{bT}\in\R^{3} \) für das Dreieckelement
+    \( \mathtt{T}\in K^{(2)} \):
+    \begin{verbatim}
+    for all k in {0,1,2}:
+      bT(k) += 2 * Pi / mv(T.globalIndex(k))
+      for all l in {k+1,k+2} mod 3:
+        bT(k) -= atan2(2 * T.dualLength(k,l), T.length(k,l))
+    \end{verbatim}
+    Wobei \texttt{T.length(k,l)} bzw. \texttt{T.dualLength(k,l)} die Länge von
+    \( \left[ v^{\mathtt{T}}_{k} , v^{\mathtt{T}}_{l} \right] \) bzw. dessen Dualkante eingeschränkt auf \(
+    \mathtt{T} \) ist. 
+    \( \mathtt{mv(i)}\in\mathds{N} \) gibt die Anzahl der Dreieckelemente des 1-Ringes um den Knoten \( v_{i} \) an.
+    Durch \texttt{T.globalIndex(k)} erhalten wir den globalen Index zum lokalen Index \texttt{k} auf \texttt{T}.
+
 \section{Krümmungen für impliziten Oberflächen}
 
   Es sei \( \varphi\in C^{2}(\R^{3}) \) gegeben mit \( M = \left\{ \vec{x}\in\R^{3} \middle| \varphi(\vec{x}) = 0 \right\} \).
