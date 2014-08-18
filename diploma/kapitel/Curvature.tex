@@ -500,15 +500,38 @@
   Dabei ist \( \vec{x}_{h} = \left[ x_{h}^{1}, x_{h}^{2}, x_{h}^{3}\right]^{T} \) die Identität 
   und \(\nabla_{M_{h}^{\gamma}} = \left( I - \vec{\nu}_{h} \vec{\nu}^{T}_{h} \right)\nabla_{\R^{3}} \) der Oberflächengradient auf \( M_{h}^{\gamma} \). 
   Weitere Einzelheiten dazu können in \cite{heine} nachgelesen werden.
+  
+  Als Oberflächen wählen wir drei, die auch in \cite{heine} genutzt werden. 
+  Dazu gehören die Einheitssphäre (Appendix \ref{sphere}), eine quartische Oberfläche, die sich als Null-Level-Sets eines Polynomes vierten
+  Grades beschreiben lässt (Appendix \ref{heineB}) und ein Ellipsoid (Appendix \ref{heineC}).
+  Für unsere Berechnungen, wie auch bei \cite{heine}, ist die Makrotriangulation ein Ikosaeder projeziert auf die Oberfläche.
+  Da für die DEC-Diskretisierung wohlzentriertheit an das Primärgitter gestellt wird, verfeinern wir zunächst die Ikosaederflächen.
+  Für die Sphäre ist bei den hier verwendeten Verfeinerungsmechanismus (Cinema4D) nichts weiter zu tun, da wir schon eine sehr gleichmäßige
+  Triangulierung erhalten.
+  Für die anderen beiden Oberflächen verwenden wir den in Abschnitt \ref{secGittergenerierung} vorgestellten Algorithmus um die
+  Triangulierung zu verbessern und Wohlzentriertheit zu gewährleisten.
+  Ein Nachteil dieser Prozedur ist es, dass gerade an Orten mit starker Krümmung das Gitter schlechter Aufgelöst wird als bei flacheren
+  Umgebungen. 
+  So war es zum Beispiel nicht möglich bei gröberen Gittern unter ca. 5300 Gitterpunkten (\( h\approx 0.26 \)) bei der quartischen
+  Oberfläche die beiden Wölbungen ordentlich darzustellen, wie wir in Abbildung \ref{figHeineBResolution} sehen können.
+
+  Für die Berechnung der Weingartenabbildung werden zum einen die gemittelten Normalen verwenden (S*AvN), das heißt es werden die
+  Gleichungen \eqref{eqWeingartenEq1}+\eqref{eqWeingartenEq2} gelöst (\( 3 \cdot (9+3) = 36 \) DOFs p. Element).
+  Zum anderem nutzen wir die exakten Normal (S*) an den Knoten, die wir durch die genormten Gradienten der signierten Distanzfunktion erhalten
+  und lösen nur Gleichung \eqref{eqWeingartenEq2} (\( 3 \cdot 9 = 27 \) DOFs p. Element).
+  Zum vergleich, bei \cite{heine} müssen zu den 9 Komponenten der Weingartenabbildung auch noch die 3 Komponenten des Krümmungsvektor
+  berechnet werden, das heißt für die linearen Elemente sind ebenfalls \( 3 \cdot (9+3) = 36 \) DOFs pro Element zu bestimmen, wie auch bei
+  unserem (S*AvN). Für den Grad 2, 3 bzw. 4 sind es dann schon \( 72 \), \( 120 \) bzw. \( 180 \) DOFs pro Element.
+  Für unsere Berechnung der mittleren Krümmung, direkt aus dem Krümmungsvektor aus ...
+
 
   
    \begin{table}[htbp]
-      \centering
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
       \hline
-      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{SK} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{SK} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{SH} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{SH} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
       0.152 & 4.93E-03 & \multicolumn{1}{l|}{} & 5.69E-03 & \multicolumn{1}{l|}{} & 2.47E-03 & \multicolumn{1}{l|}{} & 2.85E-03 & \multicolumn{1}{l|}{} \\ \hline
       0.109 & 2.53E-03 & 2.00 & 2.94E-03 & 1.97 & 1.26E-03 & 2.00 & 1.47E-03 & 1.98 \\ \hline
       0.0664 & 9.39E-04 & 2.00 & 1.10E-03 & 1.99 & 4.70E-04 & 2.00 & 5.49E-04 & 1.99 \\ \hline
@@ -518,14 +541,31 @@
       0.0153 & 4.98E-05 & 2.00 & 5.83E-05 & 2.00 & 2.49E-05 & 2.00 & 2.92E-05 & 2.00 \\ \hline
       0.00967 & 1.99E-05 & 2.00 & 2.34E-05 & 2.00 & 9.97E-06 & 2.00 & 1.17E-05 & 2.00 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung) auf der Sphäre.}
+      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf der Sphäre.}
       \label{tabSphereWeingarten}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
       \hline
-      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{SK} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{SK} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{SH} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{SH} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.152 & 2.63E-02 & \multicolumn{1}{l|}{} & 5.22E-02 & \multicolumn{1}{l|}{} & 1.32E-02 & \multicolumn{1}{l|}{} & 2.58E-02 & \multicolumn{1}{l|}{} \\ \hline
+            0.109 & 1.65E-02 & 1.38 & 3.35E-02 & 1.32 & 8.31E-03 & 1.39 & 1.66E-02 & 1.31 \\ \hline
+            0.0664 & 8.09E-03 & 1.44 & 1.81E-02 & 1.24 & 4.06E-03 & 1.45 & 9.07E-03 & 1.22 \\ \hline
+            0.0477 & 4.99E-03 & 1.47 & 1.45E-02 & 0.68 & 2.50E-03 & 1.47 & 7.25E-03 & 0.68 \\ \hline
+            0.0306 & 2.59E-03 & 1.47 & 2.31E-02 & -1.05 & 1.30E-03 & 1.47 & 1.16E-02 & -1.06 \\ \hline
+            0.0215 & 1.56E-03 & 1.45 & 2.95E-02 & -0.69 & 7.79E-04 & 1.45 & 1.48E-02 & -0.70 \\ \hline
+            0.0153 & 9.52E-04 & 1.44 & 3.38E-02 & -0.40 & 4.77E-04 & 1.43 & 1.70E-02 & -0.40 \\ \hline
+            0.00967 & 5.00E-04 & 1.41 & 3.78E-02 & -0.25 & 2.51E-04 & 1.40 & 1.91E-02 & -0.25 \\ \hline
+      \end{tabular}
+      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten Normalen(S*AvN)) auf der Sphäre.}
+      \label{tabSphereWeingartenAvN}
+      \vspace{10pt}
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{GB} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{GB} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{LX} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{LX} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
            0.152 & 3.10E-03 & \multicolumn{1}{l|}{} & 3.58E-03 & \multicolumn{1}{l|}{} & 4.55E-06 & \multicolumn{1}{l|}{} & 1.02E-05 & \multicolumn{1}{l|}{} \\ \hline
             0.109 & 1.58E-03 & 2.01 & 1.84E-03 & 1.98 & 1.35E-06 & 3.62 & 2.78E-06 & 3.87 \\ \hline
             0.0664 & 5.87E-04 & 2.00 & 6.87E-04 & 1.99 & 2.11E-07 & 3.75 & 4.16E-07 & 3.83 \\ \hline
@@ -535,17 +575,17 @@
             0.0153 & 3.10E-05 & 2.00 & 3.65E-05 & 2.00 & 1.55E-09 & 2.69 & 1.54E-08 & 1.47 \\ \hline
             0.00967 & 1.24E-05 & 2.00 & 1.46E-05 & 2.00 & 5.14E-10 & 2.41 & 7.13E-09 & 1.68 \\ \hline
       \end{tabular}
-      \caption[Gauß-Bonnet und Krümmungsvektor auf der Sphäre]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator) und \( H \) (Krümmungsvektor) auf der Sphäre.}
+      \caption[Gauß-Bonnet und Krümmungsvektor auf der Sphäre]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator(GB)) und \( H \)
+      (Krümmungsvektor(LX)) auf der Sphäre.}
       \label{tabSphereGBLX}
    \end{table}
 
    \begin{table}[htbp]
-      \centering
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
       \hline
-      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{SK} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{SK} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{SH} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{SH} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
            0.414 & 9.82E-01 & \multicolumn{1}{l|}{} & 1.24E+00 & \multicolumn{1}{l|}{} & 3.93E-01 & \multicolumn{1}{l|}{} & 5.09E-01 & \multicolumn{1}{l|}{} \\ \hline
             0.340 & 1.02E+00 & -0.20 & 1.51E+00 & -1.02 & 3.60E-01 & 0.45 & 4.54E-01 & 0.57 \\ \hline
             0.257 & 8.83E-01 & 0.52 & 9.39E-01 & 1.72 & 2.88E-01 & 0.80 & 3.74E-01 & 0.70 \\ \hline
@@ -554,14 +594,31 @@
             0.0598 & 2.10E-01 & 0.27 & 4.35E-01 & -0.02 & 8.46E-02 & 0.66 & 3.26E-01 & 0.50 \\ \hline
             0.0391 & 1.40E-01 & 0.95 & 3.04E-01 & 0.83 & 5.33E-02 & 1.08 & 2.22E-01 & 0.89 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf einer quartischen Oberfläche]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung) auf einer quartischen Oberfläche.}
+      \caption[Weingarten auf einer quartischen Oberfläche]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf einer quartischen Oberfläche.}
       \label{tabHeineBWeingarten}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
       \hline
-      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{SK} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{SK} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{SH} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{SH} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.414 & 7.66E-01 & \multicolumn{1}{l|}{} & 8.38E-01 & \multicolumn{1}{l|}{} & 3.26E-01 & \multicolumn{1}{l|}{} & 4.13E-01 & \multicolumn{1}{l|}{} \\ \hline
+            0.340 & 7.56E-01 & 0.07 & 1.02E+00 & -0.97 & 3.01E-01 & 0.41 & 4.45E-01 & -0.38 \\ \hline
+            0.257 & 6.22E-01 & 0.70 & 6.81E-01 & 1.44 & 2.55E-01 & 0.59 & 5.04E-01 & -0.45 \\ \hline
+            0.109 & 3.73E-01 & 0.60 & 6.46E-01 & 0.06 & 1.79E-01 & 0.42 & 5.00E-01 & 0.01 \\ \hline
+            0.0786 & 3.78E-01 & -0.04 & 6.38E-01 & 0.04 & 1.64E-01 & 0.27 & 5.11E-01 & -0.07 \\ \hline
+            0.0598 & 3.25E-01 & 0.55 & 5.72E-01 & 0.40 & 1.36E-01 & 0.68 & 4.46E-01 & 0.50 \\ \hline
+            0.0391 & 2.22E-01 & 0.89 & 4.24E-01 & 0.70 & 8.93E-02 & 0.99 & 3.23E-01 & 0.76 \\ \hline
+      \end{tabular}
+      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten
+      Normalen(S*AvN)) auf einer quartischen Oberfläche.}
+      \label{tabHeineBWeingartenAvN}
+      \vspace{10pt}
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{GB} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{GB} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{LX} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{LX} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
            0.414 & 1.92E+00 & \multicolumn{1}{l|}{} & 3.24E+00 & \multicolumn{1}{l|}{} & 5.31E-01 & \multicolumn{1}{l|}{} & 7.99E-01 & \multicolumn{1}{l|}{} \\ \hline
             0.340 & 1.87E+00 & 0.12 & 4.20E+00 & -1.30 & 4.76E-01 & 0.55 & 6.69E-01 & 0.90 \\ \hline
             0.257 & 1.89E+00 & -0.03 & 3.21E+00 & 0.97 & 3.94E-01 & 0.68 & 6.50E-01 & 0.10 \\ \hline
@@ -570,17 +627,17 @@
             0.0598 & 1.04E-01 & 1.90 & 1.86E-01 & 1.49 & 8.02E-02 & 0.32 & 1.31E-01 & 0.59 \\ \hline
             0.0391 & 5.18E-02 & 1.64 & 1.03E-01 & 1.38 & 7.48E-02 & 0.16 & 8.37E-02 & 1.05 \\ \hline
       \end{tabular}
-      \caption[Gauß-Bonnet und Krümmungsvektor auf einer quartischen Oberfläche]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator) und \( H \) (Krümmungsvektor) auf einer quartischen Oberfläche.}
+      \caption[Gauß-Bonnet und Krümmungsvektor auf einer quartischen Oberfläche]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator(GB))
+      und \( H \) (Krümmungsvektor(LX)) auf einer quartischen Oberfläche.}
       \label{tabHeineBGBLX}
    \end{table}
 
    \begin{table}[htbp]
-      \centering
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
       \hline
-      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{SK} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{SK} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{SH} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{SH} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
            0.25 & 2.10E-01 & \multicolumn{1}{l|}{} & 4.73E-01 & \multicolumn{1}{l|}{} & 9.68E-02 & \multicolumn{1}{l|}{} & 3.22E-01 & \multicolumn{1}{l|}{} \\ \hline
             0.18 & 1.40E-01 & 1.22 & 3.27E-01 & 1.12 & 6.40E-02 & 1.25 & 2.19E-01 & 1.16 \\ \hline
             0.11 & 6.90E-02 & 1.44 & 1.57E-01 & 1.49 & 3.08E-02 & 1.49 & 1.05E-01 & 1.49 \\ \hline
@@ -590,14 +647,32 @@
             0.026 & 4.82E-03 & 1.95 & 1.10E-02 & 1.95 & 2.10E-03 & 1.95 & 7.31E-03 & 1.95 \\ \hline
             0.017 & 2.07E-03 & 1.97 & 4.71E-03 & 1.97 & 8.97E-04 & 1.98 & 3.14E-03 & 1.97 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf einem Ellipsoid]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung) auf einem Ellipsoid.}
+      \caption[Weingarten auf einem Ellipsoid]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf einem Ellipsoid.}
       \label{tabHeineCWeingarten}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
       \hline
-      \multicolumn{1}{|c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-           \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{SK} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{SK} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{SH} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{SH} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+           0.25 & 3.22E-01 & \multicolumn{1}{l|}{} & 6.03E-01 & \multicolumn{1}{l|}{} & 1.61E-01 & \multicolumn{1}{l|}{} & 4.38E-01 & \multicolumn{1}{l|}{} \\ \hline
+            0.18 & 2.33E-01 & 0.98 & 4.65E-01 & 0.79 & 1.12E-01 & 1.09 & 3.27E-01 & 0.88 \\ \hline
+            0.11 & 1.26E-01 & 1.25 & 2.63E-01 & 1.16 & 5.77E-02 & 1.35 & 1.79E-01 & 1.22 \\ \hline
+            0.078 & 7.60E-02 & 1.52 & 1.66E-01 & 1.38 & 3.41E-02 & 1.58 & 1.12E-01 & 1.43 \\ \hline
+            0.050 & 3.54E-02 & 1.72 & 7.91E-02 & 1.67 & 1.56E-02 & 1.76 & 5.29E-02 & 1.69 \\ \hline
+            0.036 & 1.94E-02 & 1.85 & 6.26E-02 & 0.72 & 8.50E-03 & 1.88 & 4.72E-02 & 0.35 \\ \hline
+            0.026 & 1.00E-02 & 1.91 & 6.12E-02 & 0.06 & 4.35E-03 & 1.92 & 4.60E-02 & 0.08 \\ \hline
+            0.017 & 4.36E-03 & 1.93 & 5.93E-02 & 0.07 & 1.89E-03 & 1.95 & 4.34E-02 & 0.13 \\ \hline
+      \end{tabular}
+      \caption[Weingarten auf einem Ellipsoid]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten
+      Normalen (S*AvN)) auf einem Ellipsoid.}
+      \label{tabHeineCWeingartenAvN}
+      \vspace{10pt}
+      \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
+      \hline
+      \multicolumn{1}{|c|}{\rule{0pt}{11pt}\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{GB} \)} & \multicolumn{1}{c|}{EOC} & 
+           \multicolumn{1}{c|}{\( \err_{\infty}^{GB} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{LX} \)} &
+           \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{LX} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
            0.25 & 6.06E-02 & \multicolumn{1}{l|}{} & 5.86E-02 & \multicolumn{1}{l|}{} & 3.77E-02 & \multicolumn{1}{l|}{} & 1.32E-01 & \multicolumn{1}{l|}{} \\ \hline
             0.18 & 3.04E-02 & 2.08 & 5.53E-02 & 0.18 & 2.25E-02 & 1.56 & 8.20E-02 & 1.44 \\ \hline
             0.11 & 1.17E-02 & 1.93 & 5.36E-02 & 0.06 & 1.04E-02 & 1.57 & 3.54E-02 & 1.71 \\ \hline
@@ -607,8 +682,8 @@
             0.026 & 1.12E-03 & 1.43 & 5.19E-02 & 0.02 & 7.27E-04 & 1.89 & 1.62E-02 & 0.04 \\ \hline
             0.017 & 6.24E-04 & 1.36 & 5.35E-02 & -0.07 & 3.22E-04 & 1.90 & 1.57E-02 & 0.08 \\ \hline
       \end{tabular}
-      \caption[Gauß-Bonnet und Krümmungsvektor auf einem Ellipsoid]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator) und \( H \)
-      (Krümmungsvektor) auf einem Ellipsoid.}
+      \caption[Gauß-Bonnet und Krümmungsvektor auf einem Ellipsoid]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator(GB)) und \( H \)
+      (Krümmungsvektor(LX)) auf einem Ellipsoid.}
       \label{tabHeineCGBLX}
    \end{table}
   

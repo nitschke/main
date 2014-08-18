@@ -119,6 +119,16 @@ errHeine4 = [
 5.40E-006
 ]
 
+errSKAvN = [
+0.0522424,
+0.0335202,
+0.018113,
+0.0144858,
+0.023117,
+0.0294604,
+0.0337883,
+0.0378091
+]
 
 lineStyles = ['-','--', '-.', ':','', ' ', 'None']
 
@@ -133,6 +143,7 @@ plt.xlim([0.007,0.8]);
 #plt.rc('font', family='serif')
 #plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
 plt.loglog(hDEC, errSK, label=r"Weingarten", linewidth=4);
+plt.loglog(hDEC, errSKAvN, label=r"Weingarten (AvN)", linewidth=4);
 plt.loglog(hDEC, errGB, label=r"Gauss-Bonnet", linewidth=4);
 plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
 plt.loglog(hHeine2, errHeine2, label=r"FEM Degree 2", linewidth=4);
