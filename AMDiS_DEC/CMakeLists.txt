@@ -61,6 +61,15 @@ target_link_libraries(heine51b ${BASIS_LIBS} dec)
 add_executable(heine51c src/heine51c.cc)
 target_link_libraries(heine51c ${BASIS_LIBS} dec)
 
+add_executable(heine51cWeingarten src/heine51cWeingarten.cc)
+target_link_libraries(heine51cWeingarten ${BASIS_LIBS} dec)
+
+add_executable(heine51bWeingarten src/heine51bWeingarten.cc)
+target_link_libraries(heine51bWeingarten ${BASIS_LIBS} dec)
+
+add_executable(sphereWeingarten src/sphereWeingarten.cc)
+target_link_libraries(sphereWeingarten ${BASIS_LIBS} dec)
+
 #create the output dir
 #create the output dir
 #file(MAKE_DIRECTORY output)

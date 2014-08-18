@@ -365,6 +365,8 @@
   Die Appriximation besteht nun darin \( \star v \in C_{2}(\star K) \) als Nährung für \( \star\pi(v) \) in Gleichung \eqref{eqGaussBonnet}
   zu verwenden.
   Da die Randkurve \( \partial(\star v) \) auf den differentierbaren Teilstücken gerade ist, verschwindet dort die geodätische Krümmung.
+  An den Schnitten mit den Primärkanten \( \star\sigma^{1}\cap\sigma^{1} = c(\sigma^{1})\in \csd K \) ist die geodetische Krümmung ebenfalls null,
+  da dort die Randkurve einen Winkel von genau \( \pi \) auf dem Polytop \( |K| \) hat (vgl. \cite{polthier}).
   Weil nun die Volumenform \( d\mu = \sqrt{|g|} dx^{1} \wedge dx^{2} \) nichts weiter als das Hodge-Stern-Duale der Eins ist, das heißt 
   \( d\mu = *1 \) und damit \(  K d\mu = *K \), ergibt sich folgende approximative Aufgabenstellung
   \begin{align}
@@ -440,10 +442,65 @@
     Jedoch ist zu bedenken, dass \( m_{v} \) a priori auf einem Dreieckelement nicht bekannt ist, 
     somit wäre es sinnvoll \( m_{v} \) für alle Ecken \( v\in K^{(0)} \) noch vor dem Aufstellen der Systemmatrix zu bestimmen falls eine
     Parallisierung des Assemblierungsalgorithmus gewünscht ist.
+
     Ein Algorithmus zur Berechnung der Elementvektoren ist im Appendix \ref{subsecAlgoGaussBonnet} gegeben.
+    In Abschnitt \ref{secNumEx} werden wir den Operator als Vergleich zur diskreten Weingartenabbildung und den Ergebnissn von \cite{heine} testen. 
+    In \cite{meyer} wird der Gauss-Bonnet-Operator ebenfalls mit anderen Methoden verglichen.
 
 \section{Numerisches Experiment}
 \label{secNumEx}
+  
+  Zur Bestimmung der Gaußkrümmung \( K \) und der mittleren Krümmung \( H \) stehen uns nun jeweils zwei Methoden zur Verfügung.
+  Die Gaussche Krümmung kann aus der diskreten Weingartenabbildung berechnet werden (SK) oder mit Hilfe des Gauß-Bonnet-Operators (GB)
+  und die mittlere Krümmung ebenfalls aus der diskreten Weingartenabbildung (SH) oder aus dem Krümmungsvektor, der aus dem diskreten Laplace-Beltrami-Operators der Koordinatenabbildung
+  folgt (LX).
+
+  In \cite{heine} wird \( K \) und \( H \) auch aus einer Approximation der Weingartenabbildung gewonnen.
+  Hierbei wird ein isoparametrischer Finite-Elemente-Ansatz (FEM) genutzt. 
+  Die Oberfläche \( M \) wird elementweise Langrage-interpoliert zu \( M^{\gamma}_{h} \) mit dem Polynomgrad \( \gamma\in\left\{ 1,2,3,4 \right\} \).
+  Zunächst wird dabei \( M \) linear zu \(\mathcal{T}^{1}_{h}  \) trianguliert, so dass
+  \begin{align}
+     M_{h}^{1} = |K|  \formtext{und}
+     \mathcal{T}^{1}_{h} = K^{(2)}
+  \end{align}
+  gilt.
+  Für \( \gamma = 2,3,4 \) werden dann die noch übrigen \( 3 \), \( 7 \) bzw. \( 12 \) Langrange-Knoten \( Q_{i}\in\sigma^{2} \) durch \( \pi\left( Q_{i} \right)\in M \) orthogonal projiziert.
+  Der Raum der Ansatzfunktion definiert sich dann über
+  \begin{align}
+    W_{h}^{\gamma} 
+      &:= \left\{ w_{h}\in C^{0,1}\left( M_{h}^{\gamma} \right) \middle|\  
+                          \forall T_{h}^{\gamma} \in \mathcal{T}_{h}^{\gamma}:\  \left( w_{h} \circ \Phi_{T_{h}^{1}}^{\gamma}\right) \in \mathds{P}_{\gamma}\left(\hat{T}\right)\right\}
+                          \formkomma
+  \end{align}
+  wobei \( \hat{T}:=\Delta^{2}\in\R^{2} \) das Referenzdreieck ist und 
+  \( \Phi_{T_{h}^{1}}^{\gamma}: \hat{T} \rightarrow T_{h}^{1} \)
+  die polynomiale Parametrisierung vom Grad \( \gamma \).
+  Das diskrete Problem für die Weingartenabbildung lautete nun für alle \( \vec{\psi}_{h}\in \left( W_{h}^{\gamma} \right)^{3} \)
+  \begin{align}
+    \int_{M_{h}^{\gamma}} \II_{h}^{j} \cdot \vec{\psi}_{h} d\mu
+        &= -\int_{M_{h}^{\gamma}} \nu_{h}^{j} \left( \nabla_{M_{h}^{\gamma}} \cdot \vec{\psi}_{h} + \vec{H}_{h}\cdot\vec{\psi}_{h} \right) d\mu
+  \end{align}
+  mit der diskreten Weingartenabbildung 
+  \begin{align}
+    \II_{h} = \left[ \II_{h}^{1}, \II_{h}^{2}, \II_{h}^{3} \right] \in \left( W_{h}^{\gamma} \right)^{3 \times 3}
+  \end{align}
+  als Lösung.
+  \( \vec{\nu}_{h}=\left[ \nu_{h}^{1}, \nu_{h}^{2}, \nu_{h}^{3} \right]^{T} \) ist das äußere Normalenfeld von \( M_{h}^{\gamma} \).
+  Des Weiteren ist die Tangentialdivergenz der vektorisierten Ansatzfunktion \( \vec{\psi}_{h} = \left[ \psi_{h}^{1}, \psi_{h}^{2}, \psi_{h}^{3} \right]^{T} \) definiert als
+  \begin{align}
+    \nabla_{M_{h}^{\gamma}} \cdot \vec{\psi}_{h} := \nabla_{\R^{3}} \cdot \vec{\psi}_{h} 
+                          - \sum_{i=1}^{3 }\left( \nabla_{\R^{3}}\psi_{h}^{i} \cdot \vec{\nu}_{h} \right) \nu_{h}^{i} \formpunkt
+  \end{align}
+  Der diskrete Krümmungsvektor \( \vec{H}_{h} := \left[ H_{h}^{1}, H_{h}^{2}, H_{h}^{3} \right]^{T} \in\left( W_{h}^{\gamma} \right)^{3} \) ergibt sich als Lösung von
+  \begin{align}
+    \int_{M_{h}^{\gamma}} H_{h}^{i} \psi_{h}^{i} d\mu
+      &=  \int_{M_{h}^{\gamma}} \nabla_{M_{h}^{\gamma}} x_{h}^{i} \cdot \nabla_{M_{h}^{\gamma}}\psi_{h}^{i} d\mu
+  \end{align}
+  für alle \( i\in\left\{ 1,2,3 \right\} \) und \( \vec{\psi}_{h}\in \left( W_{h}^{\gamma} \right)^{3} \).
+  Dabei ist \( \vec{x}_{h} = \left[ x_{h}^{1}, x_{h}^{2}, x_{h}^{3}\right]^{T} \) die Identität 
+  und \(\nabla_{M_{h}^{\gamma}} = \left( I - \vec{\nu}_{h} \vec{\nu}^{T}_{h} \right)\nabla_{\R^{3}} \) der Oberflächengradient auf \( M_{h}^{\gamma} \). 
+  Weitere Einzelheiten dazu können in \cite{heine} nachgelesen werden.
+
   
    \begin{table}[htbp]
       \centering
