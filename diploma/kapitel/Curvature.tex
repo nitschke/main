@@ -146,7 +146,7 @@
     \end{aligned}
     \end{align}
     Die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \) werden von AMDiS bereit gestellt.
-    Wenn wir \( \vec{\nu}_{i} \) wieder im "`Dualem"' lösen wollen, das heißt anwenden des HodgeOperators auf die Gleichung
+    Wenn wir \( \vec{\nu}_{i} \) wieder im "`Dualem"' lösen wollen, das heißt anwenden des Hodge-Operators auf die Gleichung
     \eqref{eqNormalMittel} und damit durchmultiplizieren der Gleichung mit \( \left| \star v_{i} \right| \), dann können auch hier die
     Eckennormalen elementweise bestimmt werden.
     Dadurch ergibt sich das lineare Gleichungssystem
@@ -184,6 +184,7 @@
     der Systemmatrix zusätzliche globale Arbeit in die Bestimmung aller \( m_{v} \) gesteckt werden muss.
     
     \begin{beispiel}[Torus]
+    \label{bspWeinTorus}
       Auf dem Torus sind die Gaußkrümmung \( K \), die mittlere Krümmung \( H \) und die Normalen \( \vec{\nu} \) bekannt (siehe Appendix
       \ref{torus}) und stehen uns zum vergleichen bzw. als Eingangsgröße zur Verfügung.
       Die Weingartenabbildung wurde als Gradient der exakten Normalen \( \vec{\nu} \) (Tab. \ref{tabWeingartenFehlerTorusExN})
@@ -299,6 +300,7 @@
       \end{align}
       oder einer signierten Distanzfunktion \( \varphi \) durch
       \begin{align}
+        \label{eqNormalsFromSignDist}
         \vec{\nu} &= \frac{\nabla_{\R^{3}}\varphi}{\left\| \nabla_{\R^{3}}\varphi \right\|} \formkomma
       \end{align}
       dann können mit der diskreten Weingartenabbildung gute Ergebnisse erziehlt werden.
@@ -335,7 +337,8 @@
   (\( g\equiv I \) und der Pushforward \( \iota_{*}:T_{p}M \rightarrow T_{p}\R^{3} \) ist injektiv).
   Mit Hilfe des DEC-diskretisiertem Laplace-Beltrami-Operators erhalten wir nun das diskreten Problem
   \begin{align}
-    \left\langle \vec{H}, v \right\rangle = - \left\langle \Delta_{B}\iota , v \right\rangle
+    \label{eqProbLX}
+    \left\langle \vec{H}, v \right\rangle = - \left\langle \Delta_{B}\vec{x} , v \right\rangle
   \end{align}
   für alle Ecken \( v\in K^{(0)} \).
   Durch anwenden des Hodge-Stern-Operators auf beiden Seiten können wir das resultierende "`duale"' Problem in gewohnter Weise in AMDiS
@@ -433,10 +436,12 @@
     \eqref{eqAussenwinkelsummeAtan} ergebenden Elementvektoren abzuziehen.
     Eine andere Möglichkeit ist es \( 2\pi \) selbst auch elementweise zu zerlegen, sodass wir
     \begin{align}
-      2\pi - \sum_{i=1}^{m_{v}}\beta_{i} &=
+      \label{eqProbGB}
+      \left\langle *K^{GB} , \star v \right\rangle &=
+      2\pi - \sum_{i=1}^{m_{v}}\beta_{i} =
           \sum_{\sigma^{2}\succ v} \left( \frac{2\pi}{m_{v}} - \sum_{\sigma^{2}\succ\sigma^{1}\succ v}
                                \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
-                                 \left|\sigma^{1}\right|\right) \right)\formkomma
+                                 \left|\sigma^{1}\right|\right) \right)
     \end{align}
     für die Voronoizelle am Knoten \( v \) erhalten. 
     Jedoch ist zu bedenken, dass \( m_{v} \) a priori auf einem Dreieckelement nicht bekannt ist, 
@@ -514,15 +519,101 @@
   Umgebungen. 
   So war es zum Beispiel nicht möglich bei gröberen Gittern unter ca. 5300 Gitterpunkten (\( h\approx 0.26 \)) bei der quartischen
   Oberfläche die beiden Wölbungen ordentlich darzustellen, wie wir in Abbildung \ref{figHeineBResolution} sehen können.
+  
+  Die exakten mittleren Krümmungen und die Gaußschen Krümmungen für den Ellipsoiden und der quartischen Oberfläche
+  sind in Abbildung \ref{figErrCurvHeineB} bzw. \ref{figErrCurvHeineC} dargestellt.
+  Für die Sphäre sind beide Krümmungsgrößen konstant eins.
 
   Für die Berechnung der Weingartenabbildung werden zum einen die gemittelten Normalen verwenden (S*AvN), das heißt es werden die
-  Gleichungen \eqref{eqWeingartenEq1}+\eqref{eqWeingartenEq2} gelöst (\( 3 \cdot (9+3) = 36 \) DOFs p. Element).
-  Zum anderem nutzen wir die exakten Normal (S*) an den Knoten, die wir durch die genormten Gradienten der signierten Distanzfunktion erhalten
+  Gleichungen \eqref{eqWeingartenEq1}+\eqref{eqWeingartenEq2} gelöst 
+  (\( 3 \cdot (9+3) = 36 \) DOFs p. Element\footnote{lokale Freiheitsgrade}).
+  Zum anderem nutzen wir die exakten Normal (S*) an den Knoten, die wir durch die genormten Gradienten der
+  signierten Distanzfunktion erhalten (vgl. \eqref{eqNormalsFromSignDist})
   und lösen nur Gleichung \eqref{eqWeingartenEq2} (\( 3 \cdot 9 = 27 \) DOFs p. Element).
   Zum vergleich, bei \cite{heine} müssen zu den 9 Komponenten der Weingartenabbildung auch noch die 3 Komponenten des Krümmungsvektor
   berechnet werden, das heißt für die linearen Elemente sind ebenfalls \( 3 \cdot (9+3) = 36 \) DOFs pro Element zu bestimmen, wie auch bei
-  unserem (S*AvN). Für den Grad 2, 3 bzw. 4 sind es dann schon \( 72 \), \( 120 \) bzw. \( 180 \) DOFs pro Element.
-  Für unsere Berechnung der mittleren Krümmung, direkt aus dem Krümmungsvektor aus ...
+  unserem (S*AvN)-Problem. 
+  Für den Grad 2, 3 bzw. 4 sind es dann schon \( 72 \), \( 120 \) bzw. \( 180 \) DOFs pro Element.
+  Für unsere Berechnung der mittleren Krümmung direkt aus dem Krümmungsvektor (LX) nach Gleichung
+  \eqref{eqProbLX} erhalten wir nur \( 9 \) DOFs pro Element
+  und für die Ermittlung der Gaußkrümmung mit den Gauß-Bonnet-Operators nach Gleichung \eqref{eqProbGB}
+  sogar nur \( 3 \) Dofs pro Dreieckelement.
+  Prinzipiell sollte sich der Assemblierungsaufwand für einen einzelnen Freiheitsgrad asymptotisch nich von
+  der FEM-Diskretisierung unterscheiden,
+  da bei der FEM-Diskretisierung mit den Gittern in \cite{heine} im Mittel etwa genauso viele Elemente 
+  (ca. 6) für die Assemblierung eines globalen DOFs beteiligt sind.
+  Bei allen Problemen ließe sich im "`Primärraum"' auf das lösen eines linearen Gleichungssystem verzichten, 
+  da auch bei den 
+  (S*AvN)-Problemen sich die Gleichungen entkoppeln lassen, so dass alle zu berechnenden Größen auf
+  der rechten Seite stehen (Vektoroperatoren) und auf der linken Seite nur die Identität als Systemmatrix.
+  Da wir uns aber wegen dem Vorteil der einfacheren elementweisen Assemblierung dazu entschlossen hatten im
+  "`Dualraum"' zurechnen haben wir für die entkoppelten Probleme einen Eintrag pro Zeile in der
+  Systemmatrix der den metrischen Faktor \( \left| \star v \right| \) für jeden Knoten \( v\in K^{(0)} \)
+  enthält. 
+  Um auch zuzeigen, dass Differentialgleichungssysteme mit einem DEC möglich sind lösen wir die
+  (S*AvN)-Probleme (\eqref{eqWeingartenEq1}+\eqref{eqWeingartenEq2}) nicht entkoppelt, so dass in der
+  Systemmatrix, wegen der impliziten Berechnung der Normalen-Gradienten, 7 Nicht-Null-Einträge für Knoten
+  mit hexagonaler Struktur und 6 für die Defekte (Fünfer-1-Ring) pro Zeile stehen.
+  Da in \cite{heine} keine genaue Aussage getroffen wird, wie hoch der tatsächliche betriebene relative Aufwand ist,
+  können wir davon ausgehen, dass die Anzahl der Freiheitsgrade ein geeignetes Maß dafür ist.
+  Somit sind die Kosten für alle hier vorgestellten DEC-Probleme kleiner oder gleich (für (S*AvN)) dem der
+  isoparametrischen FEM vom Grade 1.
+  Für das Lösen der dünnbesetzten Gleichungssysteme wird in allen Fällen einheitlich der
+  BiCGStab-Algorithmus benutzt mit einer Abbruchstoleranz von \( 1.0E-10 \).
+  Wie zu erwarten übersteigt der Assemblierungsaufwand in den meißten Fällen den des Lösungsaufwandes.
+
+  In den Tabellen \ref{tabSphereWeingarten} - \ref{tabHeineCGBLX} sind die relativen Fehler 
+  und die sich ergebenden experimentellen Konvergenzordnungen der sechs
+  DEC-Probleme (SK, SH, SKAvN, SHAvN, GB, LX) zu unterschiedlichen maximalen Gitterweiten niedergeschrieben.
+  Tabellarische Ergebnisse der gleichen Form für die isoparametrische FEM können in \cite{heine} nachgelesen werden.
+  In den Abbildungen \ref{figErrCompSphere}, \ref{figErrCompHeineB} und \ref{figErrCompHeineC} sind die
+  relativen FEM-Fehler als Vergleich mit gezeichnet worden.
+  Dabei sei zu bemerken das der lineare FE-Ansatz gar nicht konvergierte.
+
+  Für (SK) und (SH) sind die Ergebnisse für die Sphäre und den Ellipsoiden mit denen der FEM vom Grad 2 und
+  3 in etwa vergleichbar. 
+  Dagegen fällt das Konvergenzverhalten auf der quartischen Oberfläche nicht so gut aus.
+  Jedoch liegt die Vermutung nahe, dass die Konvergenzordnung mit feiner werdenen Gitter, unter
+  Vernachlässigung von Rundungsfehlern, noch steigt, wie
+  wir das zum Beispiel auch auf dem Ellipsoiden sehen können.
+  Die größten Fehler kommen erwartungsgemäß dort vor, wo die Krümmung am größten ist wie wir in Abbildung
+  \ref{figErrCurvHeineB} für den Ellipsoiden und \ref{figErrCurvHeineC} für die quartische Oberfläche sehen
+  können.
+  Das liegt vermutlich zum größten Teil an die wesentlich schlechtere Gitterauflösung an diesen Stellen.
+  Für den Fall, dass die Normalen weder explizit nocht implizit an den Gitterknoten bekannt wären stehen
+  die Problemeformulierungen (SKAvN) und (SHAvN) zur Verfügung.
+  Dabei fallen die Konvergenztests schlechter aus als bei den (S*)-Problemen.
+  Vor allem in der Maximumsnorm bricht in den meisten Fällen die Konvergenzrate ab einer bestimmten
+  Gitterweite ein.
+  Dieses Verhalten war schon auf dem Torus im Beispiel \ref{bspWeinTorus} zu beochbachten.
+  
+  Das Verhalten der Fehler der gaußschen Krümmung mit dem Gauß-Bonnet-Operator (GB) überrascht ein wenig.
+  Wie wir sehen, konnten solide Ergebnisse erziehlt werden trotz des sehr geringen Aufwandes für die Berechnung.
+  Einzig in der Maximumsnorm auf dem Ellipsoiden war keine Konvergenz meßbar.
+  Hier hält sich vorallem der Fehler an den seitlichen Defekten hartnäckig (vgl. Abb.
+  \ref{figErrCurvHeineC}).
+
+  Das (LX)-Problem zur Berechnung der mittleren Krümmung brachte auf der Sphäre im Vergleich zu allen
+  anderen Verfahren die besten Ergebnisse hervor. 
+  Der Grund für das abnehmen der experimentellen Konvergenzordnung ist die Genauigkeit der Lösung des
+  linearen Gleichungssystem.
+  Mit einer kleineren Abbruchstoleranz für den BiCGStab ließe sich auch eine Konvergenzrate von über 3
+  beibehalten.
+  Auf der quartischen Oberfläche stagniert vor allem die Konvergenzrate in der \( L_{2} \)-Norm wobei sie
+  in der Maximumsnorm etwa linear bleibt. 
+  Das lässt darauf schließen, dass die größeren Fehler sich in einem festen Bereich der Oberfläche
+  befinden.
+  Wie wir in Abbildung \ref{figErrCurvHeineB} sehen können, sind die Fehler im Bereich der Sattelfläche
+  recht hoch, obwohl dort das Gitter vergleichsweise fein ist.
+  Auf einer Sattelfläche ist die eine Hauptkrümmung negativ und die andere positive, folglich ist die
+  Gaußsche Krümmung dort negativ. 
+  Solche eine Situation liegt auch im "`inneren Bereich"' des Torus vor und auch hier haben wir ein ähnliches
+  Fehlerverhalten, wie eine Vergleichsrechnung zeigt (siehe Abb. \ref{figLXDiameterTorus}).
+  Wärend auf dem Ellipsoiden die Konvergenzrate in der diskreten \( L_{2} \)-Norm etwas unter 2 bleibt,
+  bricht sie in der Maximumnorm ein.
+  Die maximalen Fehler befinden sich hier dort, wo die Krümmung am stärksten ist und zudem die
+  Gitterauflösung vergleichsweise schlecht (vgl. \ref{figErrCurvHeineC}).
+
 
 
   
