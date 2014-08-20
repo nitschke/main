@@ -611,11 +611,27 @@
   Fehlerverhalten, wie eine Vergleichsrechnung zeigt (siehe Abb. \ref{figLXDiameterTorus}).
   Wärend auf dem Ellipsoiden die Konvergenzrate in der diskreten \( L_{2} \)-Norm etwas unter 2 bleibt,
   bricht sie in der Maximumnorm ein.
-  Die maximalen Fehler befinden sich hier dort, wo die Krümmung am stärksten ist und zudem die
+  Die maximalen Fehler befinden sich dort, wo die Krümmung am stärksten ist und zudem die
   Gitterauflösung vergleichsweise schlecht (vgl. \ref{figErrCurvHeineC}).
 
+  Insgesamt schneiden alle DEC-Diskretisierung im Vergleich zu den FEM-Diskretisierungen in Hinblick auf den Aufwand ganz gut ab.
+  Denn unter der Annahme, dass bei beiden Ansätzen ähnlich gleichmäßige Gitter verwendet werden, lohnt sich ein Blick auf die zum Teil stark unterschiedlichen Anzahlen der Freiheitsgrade
+  pro Element, wie wir in Tabelle \ref{tabDOFsVergleich} sehen können. 
 
-
+  \begin{table}[htbp]
+    \centering
+    \begin{tabular}{|r|r|r|r|r|r|}
+      \hline
+       & lDOFs & FEM 1 & FEM 2 & FEM 3 & FEM 4 \\\hline
+       lDOFs & & 36 & 72 & 120 & 180 \\\hline
+       (S*AvN) & 36 & 100\% & 50\%   & 30\%   & 20\%  \\\hline
+       (S*)    & 27 & 75\%  & 37.5\% & 22.5\% & 15\% \\\hline
+       (LX)    & 9  & 25\%  & 12.5\% & 7.5\%  & 5\% \\\hline
+       (GB)    & 3  & 8.33\% & 4.17\% & 2.5\% & 1.67\% \\\hline
+    \end{tabular}
+    \caption[lDOFs Vergleich]{Verhältnis der Anzahl der lokalen Freiheitsgrade (lDOFs, DOFs pro Element) zwischen den DEC-Methoden und FEM.}
+    \label{tabDOFsVergleich}
+  \end{table}
   
    \begin{table}[htbp]
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
