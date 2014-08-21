@@ -189,12 +189,12 @@ autocmd FileType tex inoremap (( \left(  \right)<ESC>7hi
 autocmd FileType tex inoremap [[ \left[  \right]<ESC>7hi
 autocmd FileType tex inoremap \|\| \left\|  \right\|<ESC>7hi
 autocmd FileType tex inoremap << \left\langle  \right\rangle<ESC>13hi
-autocmd FileType tex inoremap ~ \tilde{}<LEFT>
+"autocmd FileType tex inoremap ~ \tilde{}<LEFT>
 autocmd FileType tex inoremap $$ \frac{\partial }{\partial }<ESC>11hi
 autocmd FileType tex inoremap \textbf  \textbf{}<LEFT>
 "Expandieren des Wortes underm Cursor zu einem \begin{<WORT>}...\end{<WORT>}
 autocmd FileType tex inoremap ,be <ESC>vawyi\begin{<ESC>ea}<CR>\end{<ESC>pa}<ESC>O<TAB>
 
-let spell_auto_type = "de"
+set spelllang=de
 
 autocmd FileType tex set complete+=k**/*
