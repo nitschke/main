@@ -1,14 +1,31 @@
 \chapter{Diskretes Äußeres Kalkül (DEC)}
 \label{chapterDEC}
 
-see \cite{Lee} \cite{FirstCourse}
+In diesem Kapitel werden wir die diskreten Differentialformen einführen und Operatoren für diese definieren.
+Eine Einführung in das Rechnen mit (stetigen) Differentialformen oder allgemein in moderner Vektoranalysis und Differentialgeometrie wird
+es nicht geben. 
+Grundlegende Kenntnisse in diesen Gebieten seien hier vorausgesetzt oder können in \cite{Marsden}, \cite{berger}, \cite{jaenich},
+\cite{Lee} und \cite{FirstCourse} nach gelesen werden.
+Ähnlich wie auch eine \( p \)-Form eine Abbildung des \( p \)-fachen Tangentialraumes \( \left( T_{\vec{x}}M \right)^{p} \) in \( \R \)
+ist, bildet eine diskrete \( p \)-Form, auch \( p \)-Kokette genannt,  eine \( p \)-Kette in \( \R \) ab.
+Dabei gilt es eine diskrete äußere Ableitung zu schaffen, die die Menge der diskreten Differentialformen zu einem Kokettenkomplex macht,
+genauso wie auch die äußere Ableitung die Menge der Differentialformen zu solch einen Komplex macht, dem de-Rham-Komplex.
+Hierbei werden wir den Satz von Stokes ausnutzen, der bewirkt, dass sich das Integral der äußere Ableitung als Randintegral ausdrücken
+lässt. 
+Da die genutzten Integrationsgebiete Ketten sind, ist nicht mehr viel zutun, da der Randoperator für Ketten schon im vorherigen Kapitel
+hergeleitet wurde.
+Speziell für Funktionen ist die äußere Ableitung eine \( 1 \)-Form.
+Hierbei werden wir einen diskreten Gradienten herleiten, der eben die resultierende exakte Form approximiert.
+Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auch den Laplace-Beltrami-Operator erhalten.
+
+                                                                        
 
 \section{Diskrete Differentialformen}
   
   \begin{definition}
     Eine diskrete \( p \)-Form ist ein Homomorphismus vom Kettenkomplex \( C_{p}(K) \) nach \( \R \).
     Die Menge aller dieser Homomorphismen bezeichnen wir je nach Kontext mit \( C^{p}(K) \) (Menge der \( p \)-Koketten)
-    oder \( \Omega^{p}_{d}(K) \) (Menge der diskrete \( p- \)(Differential-)Formen). 
+    oder \( \Omega^{p}_{d}(K) \) (Menge der diskrete \( p \)-(Differential"~)For\-men). 
     Das heißt
     \begin{align}
       \hom(C_{p}(K),\R) =: C^{p}(K) =: \Omega^{p}_{d}(K) \formpunkt
@@ -22,7 +39,8 @@ see \cite{Lee} \cite{FirstCourse}
   
   \begin{folgerung}
     \label{folgUnikKoketten}
-    Da \( \R \) mit der Addition eine abelsche Gruppe ist, können wir uns wieder die Universalitätseigenschaft \eqref{diagFreieAbelscheGruppe} des Kettenkomplexes zunutze machen.
+    Da \( \R \) mit der Addition eine abelsche Gruppe ist, können wir uns wieder die Universaleigenschaft \eqref{diagFreieAbelscheGruppe} des 
+    Kettenkomplexes zunutze machen.
     Für eine \( p \)-Kette \( c = \sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma \in C_{p}(K)\) und eine  \( p \)-Kokette \( \alpha\in C^{p}(K) \) gilt
     \begin{align}
       \alpha(c) &= \alpha\left(\sum_{\sigma\in K^{(p)}} a_{\sigma} \sigma\right) = \sum_{\sigma\in K^{(p)}} a_{\sigma} \alpha(\sigma) \formkomma
@@ -30,7 +48,7 @@ see \cite{Lee} \cite{FirstCourse}
     damit reicht es auch hier aus die \( p \)-Koketten nur auf den \( p \)-Simplizes zu definieren.
   \end{folgerung}
 
-  Hätten wir die Menge der \( p \)-Ketten als \( \R \)-Vektoraum eingeführt, so hätte uns die Frage nach einem inneren Produkt zwischen den Ketten und den Koketten zur dualen Paarung
+  Hätten wir die Menge der \( p \)-Ketten als \( \R \)-Vektorraum eingeführt, so hätte uns die Frage nach einem inneren Produkt zwischen den Ketten und den Koketten zur dualen Paarung
   geführt und damit auch, dass \( C^{p}(K) = \left( C_{p}(K) \right)^{*}\) der Dualraum von \( C_{p}(K) \) ist.
   Nun hält uns aber auch nichts davon ab, dies auch für die hier eingeführten Ketten analog zu machen.
 
@@ -44,9 +62,9 @@ see \cite{Lee} \cite{FirstCourse}
     heißt natürliche Paarung zwischen den \( p \)-Koketten (-Formen) und den \( p \)-Ketten.
   \end{definition}
 
-  Die Verbindung zwschen diskreter Form und Differentialform ist die de-Rham-Abbildung.
+  Die Verbindung zwischen diskreter Form und Differentialform ist die de-Rham-"|Abbildung.
   Dazu nehmen wir zunächst an, dass wir einen abstrakten Simplizialkomplex \( L \) vorliegen haben, das heißt, dass alle Simplizes auf der zugehörigen Mannigfaltigkeit \( M \) liegen.
-  Das bringt erst einmal den Vorteil, dass Integration auf den Simplizes das gleiche Ergebinis auch auf der Mannigfaltigkeit liefert.
+  Das bringt erst einmal den Vorteil, dass Integration auf den Simplizes das gleiche Ergebnis auch auf der Mannigfaltigkeit liefert.
 
   \begin{definition}
     Die de-Rham-Abbildung bildet \( p \)-Differentialformen auf diskrete \( p \)-Formen (Koketten) ab. 
@@ -71,10 +89,10 @@ see \cite{Lee} \cite{FirstCourse}
       \begin{align}
         \left(L^{(p)}\right)^{*} 
             &:= \left\{\sigma_{i}^{*} \in \Omega_{d}^{p}(L) \middle| \sigma_{i}^{*}(\sigma_{j}) = \delta_{ij}
-                                ,\, i,j=1,\ldots,m \right\} \formkomma
+                                ,\, i,j=1,\ldots,N_{\sigma^{p}} \right\} \formkomma
       \end{align}
-      wobei \( m \) die Anzahl der \( p \)-Simplizes in \( L^{(p)} \) ist und \( \delta_{ij} \) das Kronecker-Delta.
-      Nun brauchen wir für \(i=1,\ldots,m \) nur noch geeignete \( \alpha_{i}\in\Omega^{p}(M) \) finden, so dass
+      wobei \( N_{\sigma^{p}} \) die Anzahl der \( p \)-Simplizes in \( L^{(p)} \) ist und \( \delta_{ij} \) das Kronecker-Delta.
+      Nun brauchen wir für \(i=1,\ldots, N_{\sigma^{p}} \) nur noch geeignete \( \alpha_{i}\in\Omega^{p}(M) \) finden, so dass
       \begin{align}
         \label{eq}
         \int_{\sigma_{j}} \alpha_{i} &= \delta_{ij}
@@ -91,11 +109,10 @@ see \cite{Lee} \cite{FirstCourse}
       und damit auch \( \psi(\iota^{*}\alpha_{i}) = \sigma^{*}_{i} \).
     \end{proof}
   \end{folgerung}
-  \todo{whitney abbildung noch ansprechen? Das heißt Interpolation im allgemeinen oder nur speziell?}
 
   \begin{bemerkung}
-    Nun haben wir bei der Definition der de-Rham-Abbildung vorrausgesetzt, dass ein abstrakter Simplizialkomplex vorliegt.
-    Das entspricht aber nur für flache Mannigfaltigkeiten unseren Anfoderungen.
+    Nun haben wir bei der Definition der de-Rham-Abbildung vorausgesetzt, dass ein abstrakter Simplizialkomplex vorliegt.
+    Das entspricht aber nur für flache Mannigfaltigkeiten unseren Anforderungen.
     Im Allgemeinen ist die gegebene Triangulation nur eine lineare Approximation der Mannigfaltigkeit und damit auch des zugehörigen abstrakten Simplizialkomplexes.
     Das bedeutet auch, dass für \( p \ge 1 \) die Differentialformen von \( M \) in einem anderen Raum "`leben"' als die Differentialformen des Polytopes \( |K| \).
     Rein formal ließe sich die Situation entschärfen, in dem wir die Simplizes von \( K \) auf die Mannigfaltigkeit projizieren (vgl. \eqref{diagSingulaerAbstrakt}), also es wird
@@ -105,7 +122,7 @@ see \cite{Lee} \cite{FirstCourse}
     Für die numerische Analysis ist das eine schwierige Situation, da vor der eigentlichen Diskretisierung (Diskretisierungsfehler) noch eine Approximation (geometrischer Fehler) auf einen stückweise
     flachen Raum gemacht wird.
 
-    Für \( 0 \)-Formen (identisch zu Skalarfeldern) ergibt sich dieser geometrische Fehler nicht, da nach Vorraussetzung die Ecken des Simplizialkomplexes auf der Mannigfaltigkeit liegen.
+    Für \( 0 \)-Formen (identisch zu Skalarfeldern) ergibt sich dieser geometrische Fehler nicht, da nach Voraussetzung die Ecken des Simplizialkomplexes auf der Mannigfaltigkeit liegen.
     Hier ist die Diskretisierung genauso wie wir das aus anderen Verfahren, wie die Finite-Differenzen-Methode, gewöhnt sind, da das "`Punktintegral"' nichts weiter als die Auswertung an
     eben diesem Punkt ist.
     Das heißt, liegt ein Skalarfeld \( u:M\rightarrow\R \) vor, so ist das diskrete Skalarfeld \( u_{d}:K^{(0)} \rightarrow \R \) an den Ecken definiert.
@@ -113,12 +130,12 @@ see \cite{Lee} \cite{FirstCourse}
       u(v_{i}) &=  \psi(u)(v_{i}) = \left\langle \psi(u), v_{i} \right\rangle= u_{d}(v_{i}) =: u_{i} 
     \end{align}
     für alle \( v_{i} \in K^{(0)} \).
-    Die Interpolation zurück zur Mannigfaltigkeit kann dann mittels linearer Ansatzfunktionen erfolgen, die sich auf den Volumenenelementen \( \sigma^{n} \) in gewohnter
+    Die Interpolation zurück zur Mannigfaltigkeit kann dann mittels linearer Ansatzfunktionen erfolgen, die sich auf den Volumenelementen \( \sigma^{n} \) in gewohnter
     Weise definieren, das heißt 1 auf einer ausgezeichneten Ecke und 0 auf den übrigen Ecken.
-    In dieser Arbeit werden wir uns auf die Auswertung von \( 0 \)-Formen beschränken, das reicht aus um skalarwertige oder vektorisierte skalarwertige Differentialgleichungen höherer
+    In dieser Arbeit werden wir uns größtenteils auf die Auswertung von \( 0 \)-Formen beschränken, das reicht aus um skalarwertige oder vektorisierte skalarwertige Differentialgleichungen höherer
     Ordnung zu diskretisieren.
 
-    Dennoch sei hier auf die Auswertung von \( 1 \)-Formen (Pfaffsche Formen) eingegangen, 
+    Dennoch sei hier auf die Auswertung von \( 1 \)-Formen (Pfaffsche-Formen) eingegangen, 
     denn sie werden zum einen für spätere numerischen Betrachtungen und zum anderen für die Behandlung von (Tangential-)Vektorproblemen
     noch interessant werden, denn mittels \( \flat \) beziehungsweise \( \sharp \) ist ein Isomorphismus zwischen Vektorfeldern und \( 1 \)-Formen gegeben.
     Betrachten wir hierzu eine \( 1 \)-Form \( \alpha\in\Omega^{1}(M) \) und die zugehörige diskrete Form \( \alpha_{d} = \psi(\alpha)\in\Omega^{1}_{d}(M) \).
@@ -139,12 +156,11 @@ see \cite{Lee} \cite{FirstCourse}
     \label{eqApprox1Form}
       \frac{1}{|\sigma^{1}_{\eps}|} \alpha_{d}(\sigma_{\eps}^{1}) = \text{"`}\alpha_{d}(v)\text{"'} \approx \alpha(v)\formpunkt
     \end{align}
-    \( \alpha_{d}(v) \) ist in Anführungszeichen gesetzt, da die diskreten Formen diese schreibweise nicht hergeben (\( v \cong \nicefrac{\sigma^{1}_{\eps}}{|\sigma^{1}_{\eps}|} \notin K \)), 
+    \( \alpha_{d}(v) \) ist in Anführungszeichen gesetzt, da die diskreten Formen diese Schreibweise nicht hergeben (\( v \cong \nicefrac{\sigma^{1}_{\eps}}{|\sigma^{1}_{\eps}|} \notin K \)), 
     aber wir wollen hier auf unnötigen Formalismus verzichten und uns ist
     klar was damit gemeint ist.
-    Das Integral wurde an \( t=0 \) aproximiert, also mit der Mittelpunktsregel.
-    Daher können wir abschätzen (siehe \cite{einfNum}, Kapitel 7)
-    \todo{bei langeweile s mal explizit in lok.koords aufstellen um den Fehler besser abzuschätzen}
+    Das Integral wurde an \( t=0 \) approximiert, also mit der Mittelpunktsregel.
+    Daher können wir abschätzen (siehe \cite[Kap. 7]{einfNum})
     \begin{align}
     \begin{aligned}
       \left| \text{"`}\alpha_{d}(v)\text{"'} - \alpha(v) \right|
@@ -175,7 +191,7 @@ see \cite{Lee} \cite{FirstCourse}
     
     Dagegen lässt sich für exakte \( 1 \)-Formen tatsächlich eine Ordnung von 2 direkt abschätzen.
     Sei eine exakte Form \( \alpha\in\Omega^{1}(M) \) gegeben, das heißt es existiert ein \( f\in\Omega^{0}(M) \), sodass \( \alpha= \exd f \) gilt.
-    Mit dem Stokes Theorem (\cite{Marsden}, Kapitel 7.2) erhalten wir
+    Mit dem Stokes Theorem (s. \cite[Kap. 7.2]{Marsden}) erhalten wir
     \begin{align}
     \label{eqExakt1FormPart1}
       \frac{1}{|\sigma^{1}_{\eps}|} \alpha_{d}(\sigma_{\eps}^{1}) &= \frac{1}{|\sigma^{1}_{\eps}|}\int_{s_{\eps}}\alpha 
@@ -183,7 +199,7 @@ see \cite{Lee} \cite{FirstCourse}
                                                                    = \frac{(f\circ s_{\eps})(\eps) - (f\circ s_{\eps})(-\eps)}{2\eps} \formpunkt
     \end{align}
     Wenn wir \( \left( x^{1},\ldots,x^{n} \right) \) als lokale Koordinaten der \( n \)-Mannigfaltigkeit am Punkt \( x_{0} \) wählen, 
-    so dass \( x^{1} \) gerade die Standartkoordinate entlang der abstrakten Kante \( s_{\eps} \) ist mit \( v=\dot{s}_{\eps}(0) \) als tangentialer Einheitsvektor,
+    so dass \( x^{1} \) gerade die Standardkoordinate entlang der abstrakten Kante \( s_{\eps} \) ist mit \( v=\dot{s}_{\eps}(0) \) als tangentialer Einheitsvektor,
     also für die dualen Basisvektoren gilt 
     \begin{align}
       dx^{i}(v) &= \begin{cases}
@@ -201,7 +217,7 @@ see \cite{Lee} \cite{FirstCourse}
                    = \frac{d (f\circ s_{\eps})}{dt}(0) \formpunkt
       \end{aligned}
     \end{align}
-    Da \eqref{eqExakt1FormPart1} nichts weiter als der Zentrale Differenzenquotient von \eqref{eqExakt1FormPart2} ist gilt
+    Da \eqref{eqExakt1FormPart1} nichts weiter als der Zentrale Differenzenquotient von \eqref{eqExakt1FormPart2} ist, gilt
     \begin{align}
       \left| \text{"`}\alpha_{d}(v)\text{"'} - \alpha(v) \right| = \mathcal{O}(\eps^{2}) \formpunkt
     \end{align}
@@ -270,7 +286,7 @@ see \cite{Lee} \cite{FirstCourse}
 
   \begin{definition}
     \label{defAeussereAbleitung}
-    Für eine Mannigfalligkeit \( M \) und einem Primärgitter \( K \) heißt 
+    Für eine Mannigfaltigkeit \( M \) und einem Primärgitter \( K \) heißt 
     \begin{align}
       \label{eqAeussereAbleitung}
       \begin{aligned}
@@ -293,7 +309,7 @@ see \cite{Lee} \cite{FirstCourse}
     \end{align}
     mit \( \pi_{\sigma}|_{\partial\sigma} = \pi_{\partial\sigma} \).
     Deshalb bezeichnen wir \eqref{eqAeussereAbleitung} auch als Korandoperator.
-    Des Weiteren ist somit Definition \ref{defAeussereAbleitung} representantenunabhängig (Wohldefiniertheit),
+    Des Weiteren ist somit Definition \ref{defAeussereAbleitung} repräsentantenunabhängig (Wohldefiniertheit),
     denn wenn \( \alpha_{1},\alpha_{2} \in \Omega^{p}(M) \) mit \( \psi(\alpha_{1}) = \psi(\alpha_{2}) \), 
     dann gilt für alle \( \sigma\in K^{(p+1)} \), dass
     \begin{align}
@@ -306,9 +322,9 @@ see \cite{Lee} \cite{FirstCourse}
   \begin{bemerkung}
     Betrachten wir nun im speziellen wieder ein zweidimensionales Primärgitter \( K \) beziehungsweise dessen Dualgitter \( \csd K \), 
     falls \( K \) wohlzentriert ist.
-    Da das Dualgitter wiederum auch ein Primärgitter ist, gelten obige Definitionen dieses Abschnittes auch auf diesem. 
-    \todo{verweis auf Koketten C(*K) }
-    Somit ergeben sich die Berechnungsformeln in Tabelle \ref{tabFormelAbleitung}.
+    Da das Dualgitter wiederum auch ein Primärgitter ist, gelten obige Definitionen dieses Abschnittes auch auf diesem
+    (vgl. Abschnitt \ref{secHodgeStar}).
+    Somit ergeben sich Berechnungsformeln für 0- und 1-Formen, die in Tabelle \ref{tabFormelAbleitung} zusammengefasst sind.
     \begin{table}[htbp]
     \begin{tabular}{|c|c|} \hline
       Darstellung & Formel \\\hline
@@ -378,7 +394,7 @@ see \cite{Lee} \cite{FirstCourse}
                                                            = \frac{1}{\sqrt{|\det g|}}\left( \frac{\partial g_{2}v^{2}}{\partial x^{1}} -  \frac{\partial g_{1}v^{1}}{\partial x^{2}}\right)
     \end{aligned}
   \end{align}
-  für ein lokales orthogonales\footnote{o.E.d.A, da die riemannsche Metrik \( g  \) lokal positiv definit und symetrisch ist, also auch diagonalisierbar} 
+  für ein lokales orthogonales\footnote{o.E.d.A, da die riemannsche Metrik \( g  \) lokal positiv definit und symmetrisch ist, also auch diagonalisierbar} 
   Koordinatensystem \( (x^{1}, x^{2}) \) mit Riemannmetrik \( g = \diag{g_{1},g_{2}} \), wobei \( g^{i}=(g_{i})^{-1} \) (vgl. \cite{nitschke}). 
   Damit ergibt sich folgendes kommutatives Diagramm:
   \begin{align}
@@ -403,7 +419,6 @@ see \cite{Lee} \cite{FirstCourse}
     \end{aligned}
   \end{align}
   (Der Hodge-Stern-Isomorphismus für \( 2 \)-Formen wurde schon in \eqref{eqHodgeIso2Form} angegeben.)
-  \todo{verweis auf diskrete vektorfelder in zukunftarbei}
   
   Um auch noch zwei weitere für die klassische Vektoranalysis wichtige Differentialoperatoren erster Ordnung zu diskretisieren,
   nämlich die Rotation für Skalarfelder (Rot) und die Divergenz für Vektorfelder (Div), 
@@ -417,6 +432,7 @@ see \cite{Lee} \cite{FirstCourse}
   
 
 \section{Hodge-Stern-Operator}
+\label{secHodgeStar}
 
   \todo[inline]{motivation: kein dachprodukt}
   Betrachten wir ein Vektorfeld \( \vec{v}:= \left[ v^{1}, v^{2} \right]^{T} \in \mathcal{V}^{\infty}(M) \) auf einer zweidimensionalen geschlossenen Riemannschen Mannigfaltigkeit \( M \)
@@ -1163,8 +1179,8 @@ see \cite{Lee} \cite{FirstCourse}
        Der globale Verfeinerungsmechanismus von AMDiS kann leider nicht genutzt werden, da im Allgemeinen,
        durch Halbierung der Dreieckelemente, keine wohlzentrierten und damit zulässigen Primärgitter entstehen.
        Das Problem wurde sowohl mit DEC als auch FEM (mit linearen Ansatzfunktionen) 
-       numerisch berechnet (vgl. Abbildung \ref{figLaplaceSphere}).
-       Wie wir sehen ist die DEC-Lösung etwas besser als die der FEM.
+       numerisch berechnet.
+       Wie wir in Abbildung \ref{figLaplaceSphere} sehen ist die DEC-Lösung etwas besser als die der FEM.
        Auffällig bei der FEM-Lösung ist, dass die maximalen Fehler sich bei den Defekten\footnote{Als Defekt bezeichnen wir bei
        hexagonal-dominierten Gittern die Ecken die nicht einen 1-Ring aus 6 Dreieckelementen besitzen.} 
        befinden.

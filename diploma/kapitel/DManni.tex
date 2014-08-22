@@ -70,6 +70,22 @@
 
     Von nun an ist mit einem Simplex \( \sigma \) immer die geometrische Realisierung nach Definition \ref{defSimplex} gemeint solange nicht explizit auf
     etwas anderes hingewiesen wird.
+    
+    Eine Größe, die wir noch häufig benötigen werden ist das Volumen eines Simplexes.
+    \begin{definition}
+      Das Volumen eines \( p \)-Simplexes \( \sigma^{p} \) für \( p > 0 \) ist definiert durch
+      \begin{align}
+        \left| \sigma^{p} \right| &:= \int_{\sigma^{p}} dx^{1}\wedge dx^{2} \wedge \ldots \wedge dx^{p}\formkomma
+      \end{align}
+      wobei \( \left( x^{1}, x^{2}, \ldots, x^{p} \right) \) gerade die Koordinaten des \( p \)"~Dimensionalen Untervektorraumes des
+      \( \R^{N} \) sind in dem \( \sigma^{p} \) liegt.
+      Für \( p=0  \) definieren wir
+      \begin{align}
+        \left| \sigma^{0} \right| &:= 1 \formpunkt
+      \end{align}
+    \end{definition}
+    Damit ist das Volumen einer Ecke also 0, von einer Kante die Länge und von einem Dreieck der Flächeninhalt.
+
 
     \begin{definition}
       Für \( 0 \le r < p \) definiert sich eine Relation zwischen dem \( r- \)Simplex \(\sigma^{r}\) und dem \( p- \)Simplex \( \sigma^{p}:= v_{0} v_{1} \ldots v_{p} \) durch
@@ -1208,29 +1224,19 @@
     \begin{align}
       l^{*} &= 2 \sqrt{\frac{V(K)}{\sqrt{3}N_{\sigma^{2}}}}
     \end{align}
-   % \( l^{*} \) ist das Mittel aller 1-Ring Radii \(  l^{*}_{\circlearrowleft\sigma^{0}} \), das heißt
-   % \begin{align}
-   %   l^{*} &:= \frac{1}{N_{\left\{ \sigma^{0}\in K \right\}}} \sum_{\sigma^{0}\in K } l^{*}_{\circlearrowleft\sigma^{0}} \\
-   %   l^{*}_{\circlearrowleft\sigma^{0}} &:= \frac{1}{2V_{\circlearrowleft\sigma^{0}}} \sum_{\sigma^{1}\succ\sigma^{0}}
-   %                                           |\sigma^{1}| \sum_{\sigma^{2}\succ\sigma^{1}} |\sigma^{2}|      
-   % \end{align}
-   % wobei \( N_{\left\{ \sigma^{0}\in K \right\}} \) die Anzahl aller Knoten in K ist 
-   % und \( V_{\circlearrowleft\sigma^{0}}  \) die Fläche des 1-Rings \( \circlearrowleft\sigma^{0} \).
-   % Der Grund, warum hier der Radius \( l^{*}_{\circlearrowleft\sigma^{0}} \) gewichtet bezüglich der Dreieckflächen gemittelt wird,
-   % ist der, dass somit die Längen stumpfwinkliger Dreiecke weniger Beachtung bekommen.
-    Für \( k=1 \) kann man sich das so vorsellen, dass die beiden Knoten einer Kante \( \sigma^{1} \) sich abstoßen falls \( |\sigma^{1}| < l^{*}
+    Für \( k=1 \) kann man sich das so vorstellen, dass die beiden Knoten einer Kante \( \sigma^{1} \) sich abstoßen falls \( |\sigma^{1}| < l^{*}
     \), sich anziehen falls \( |\sigma^{1}| > l^{*}\) oder keine Kräfte wirken wenn \( |\sigma^{1}| = l^{*}\) gilt (siehe Abb. \ref{edgeLaw}).
     \( k = 0 \) würde für eine Gitter mit Rand und freien Randknoten\footnote{Randknoten dürfen auch nach innen wandern} bedeuten, 
     dass es immer weiter schrumpft. In unserem Fall, also Triangulierung von Oberflächen ohne Rand, zeigt sich, dass sich die Gitter vor allem dort
     zusammen ziehen, wo sich zum einen 1-Ringe aus 5 Dreieckelementen befinden und zum anderen wo die Krümmung der Mannigfaltigkeit klein ist.
-    Letzteres ist allerdings keine gute Eigenschaft, da gerade dort ein feineres Gitter von nöten wäre, wo die Oberfläche eine große Krümmung
+    Letzteres ist allerdings keine gute Eigenschaft, da gerade dort ein feineres Gitter vonnöten wäre, wo die Oberfläche eine große Krümmung
     aufweist.
-    Der andere Extremfall, \( k=1 \), würde zwar ein annährend gleich grobes Gitter erzeugen, aber in Experimenten zeigte sich, dass \eqref{euler}
-    dadurch instabil wird. Stabilisierend wirkt sich aber das Zuaddieren des folgenden Kraftansatzes aus.
+    Der andere Extremfall, \( k=1 \), würde zwar ein annähernd gleich grobes Gitter erzeugen, aber in Experimenten zeigte sich, dass \eqref{euler}
+    dadurch instabil wird. Stabilisierend wirkt sich aber das Hinzuaddieren des folgenden Kraftansatzes aus.
     \begin{figure}
       \begin{minipage}[t]{0.45\textwidth}
       \includegraphics[width=\textwidth]{bilder/meshCorrector/EdgeLaw.eps}
-      \caption[Kantenkräfte für optimale Kantenlängen]{Kantenkräfte für an einem Knoten \( k = 1 \). Die eingezeichneten Radii entsprechen \( \frac{l^{*}}{2} \).}
+      \caption[Kantenkräfte für optimale Kantenlängen]{Kantenkräfte für an einem Knoten \( k = 1 \). Die eingezeichneten Radien entsprechen \( \frac{l^{*}}{2} \).}
       \label{edgeLaw}
       \end{minipage}
       \hfill
@@ -1243,8 +1249,10 @@
 
   \subsubsection{Optimale Winkel}
     Ein weiterer heuristischer Ansatz bezieht sich direkt auf die inneren Winkel eines Dreieckelements. 
-    Wie in Abbildung \ref{angleLaw} angedeutet bewirkt eine Verschiebung entlang der Kante eine änderung des Winkels.
-    Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, dann wird der Winkel an dem zuverscheibenen Knoten kleiner, et vice versa. 
+    Wie in Abbildung \ref{angleLaw} angedeutet bewirkt eine Verschiebung entlang der Kante eine Änderung des Winkels.
+    Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, dann wird der Winkel an dem zu verschiebenden Knoten kleiner, et vice versa. 
+    Somit ist ein sinnvoller Ansatz für die Kraft an einem Knoten \( \sigma_{0} \) in Abhängigkeit 
+    zur Kante \( \sigma^{1}_{i}\succ\sigma^{0} \) und dem Dreieck \( \sigma^{2}\succ\sigma^{1}_{i} \) 
     \begin{align}
        F^{A}_{\sigma^{0}\prec\sigma^{1}_{i}\prec\sigma^{2}} &:= \cos\measuredangle(\vec{e}_{0},\vec{e}_{1}) - c \label{angleForce}\\
                               &= \frac{\vec{e}_{0} \cdot \vec{e}_{1}}{\|\vec{e}_{0}\|\|\vec{e}_{1}\|} - c \\
@@ -1258,7 +1266,7 @@
     Sie würde in einer flachen Triangulation mit hexagonaler Struktur bewirken, dass sich keine Kräfte entwickeln, falls alle Dreiecke bis auf Rotation und Translation gleich sind.
 
   \subsubsection{Kombination der Kantenkräfte}
-    Es hat sich gezeigt, dass \eqref{edgeForce} und \eqref{angleForce} gerade auf komplizierteren Gebieten einzeln entweder nicht das gewünschste Resultat liefern oder insatbil sind.
+    Es hat sich gezeigt, dass \eqref{edgeForce} und \eqref{angleForce} gerade auf komplizierteren Gebieten einzeln entweder nicht das gewünschte Resultat liefern oder instabil sind.
     Deshalb kombinieren wir die beiden Kräfte linear:
     \begin{align}
       F^{\text{Gesamt}}_{\sigma^{0}\prec\sigma^{1}} &:= D \cdot F^{L}_{\sigma^{0}\prec\sigma^{1}} + (1-D) \cdot F^{A}_{\sigma^{0}\prec\sigma^{1}}
@@ -1268,20 +1276,21 @@
     Um alle Knotenkräfte\footnote{d.h. \((\vec{F}_{i})_{i=1,\ldots, N_{\sigma^{0}}}\in (\R^{3})^{N_{\sigma^{0}}} \)} zu erhalten müssen wir nur noch diese Element-Knotenkräfte aufassemblieren. 
     
   \subsubsection{Projektion der Kraftvektoren}
-    Des Weiteren, wie im Algorithmus \ref{AlgoForces} zu sehen, wird der Kraftvektor \( \vec{F}_{i} \) in den Tangentialraum projeziert, das heißt
+    Des Weiteren, wie im Algorithmus \ref{AlgoForces} zu sehen, wird der Kraftvektor \( \vec{F}_{i} \) in den Tangentialraum projiziert, das heißt
     \begin{align}
-      \vec{F}_{T_{p}M,i} = \vec{F}_{i} - (\vec{F}_{i}\cdot\vec{\nu_{i}})\vec{\nu_{i}}
+      \vec{F}_{T_{p}M,i} = \vec{F}_{i} - (\vec{F}_{i}\cdot\vec{\nu_{i}})\vec{\nu_{i}} \formkomma
     \end{align}
-    wobei der Normalenvektor \( \vec{\nu_{i}}  \) am Knoten \( \sigma^{0}_{i} \) entweder als bekannt vorrausgesetzt ist,
-    über eine signierte Distanze Funktion \( \varphi \) ermittelt wird, also
+    wobei der Normalenvektor \( \vec{\nu_{i}}  \) am Knoten \( \sigma^{0}_{i} \) entweder als bekannt vorausgesetzt ist,
+    über eine signierte Distanzfunktion \( \varphi \) ermittelt wird, also
     \begin{align}
-      \vec{\nu_{i}} = \frac{\nabla\varphi}{\|\nabla\varphi\|}(\vec{x}_{i})
+      \vec{\nu_{i}} = \frac{\nabla\varphi}{\|\nabla\varphi\|}(\vec{x}_{i}) \formkomma
     \end{align}
     oder über die Elementnormalen approximiert wird
     \begin{align}
-      \vec{\nu_{i}} = \frac{1}{|\circlearrowleft\sigma^{0}_{i}|} \sum_{\sigma^{2}\succ\sigma^{0}_{i}} |\sigma^{2}|\cdot \vec{\nu}_{\sigma^{2}}
+      \vec{\nu_{i}} = \sum_{\sigma^{2}\succ\sigma^{0}_{i}} \frac{|\sigma^{2}|}
+                                                    {\sum_{\sigma^{2}\succ\sigma^{0}_{i}}|\sigma^{2}| } \vec{\nu}_{\sigma^{2}}
     \end{align}
-    Somit kann im expliziten Eulervefahren \eqref{euler} \( \vec{F}_{T_{p}M,i}\) statt \( \vec{F}_{i} \) verwendet werden.
+    Somit kann im expliziten Eulerverfahren \eqref{euler} \( \vec{F}_{T_{p}M,i}\) statt \( \vec{F}_{i} \) verwendet werden.
     Das müssen wir nicht machen, aber es bringt Vorteile. 
     Zum einen könnten Knoten soweit in Normalenrichtung verschoben werden, dass die nachfolgende Projektion den Knoten falsch abbildet und das Gitter zerstört wird 
     (vgl. Abb. \ref{AbbFatalEuler}), zum anderen wird die Projektion in \eqref{euler} oft iterativ gelöst (vgl. \ref{SubSubSecPhiProject}) und je weiter weg wir den Knoten von der
@@ -1305,7 +1314,7 @@
       Zur Verfügung steht uns eine Starttriangulierung der Einheitssphäre mit zirka 1000 Knoten.
       Es ist fast überall eine hexagonale Struktur vorhanden bis auf 12 Defekte, genauer, an 12 Knoten
       befinden sich pentagonale 1-Ringe. 
-      Dieses Startgitter wird nun auf den Ellipsoid projeziert (vgl. \ref{SubSubSecPhiProject}).
+      Dieses Startgitter wird nun auf den Ellipsoid projiziert (vgl. Abschnitt \ref{SubSubSecPhiProject}).
       
       Wie in Abbildung \ref{AbbEllipsoid} zu sehen, ist ein wohlzentrierter Simplizialkomplexe nach nur
       wenigen Eulerschritten \eqref{euler} erreicht. 
@@ -1313,15 +1322,15 @@
       Nach zirka 200 Schritten hat er sein Minimum erreicht und steigt danach wieder leicht.
       Das ist nicht verwunderlich, denn kleinere Winkel sind nicht das einzige Optimalitätskriterium.
       Geplottet wurde das Integralmittel \( \bar{\alpha}_{\max} \) (\texttt{AvMaxAngle}) der größten Winkel der Dreiecke
-      und der größte aller aximalen Winkel \(\alpha_{\max}^{\max} \) (\texttt{MaxMaxAngle}) nach jedem Iterationsschritt.
+      und der größte aller maximalen Winkel \(\alpha_{\max}^{\max} \) (\texttt{MaxMaxAngle}) nach jedem Iterationsschritt.
       \begin{align}
          \bar{\alpha}_{\max} &:= \frac{\int_{|K|}\alpha_{max}\mu}{\int_{|K|}\mu}
-                              = \frac{1}{V(K)} \sum_{\sigma^{2}\in K} |\sigma^{2}| \left< \alpha_{max}, \star\sigma^{2} \right> \\
-         \alpha_{\max}^{\max} &:= \max\left\{ \left< \alpha_{max}, \star\sigma^{2} \right> \middle| \sigma^{2} \in K \right\}
+                              = \frac{1}{V(K)} \sum_{\sigma^{2}\in K} |\sigma^{2}| \alpha_{max}^{\sigma^{2}} \\
+         \alpha_{\max}^{\max} &:= \max\left\{ \alpha_{max}^{\sigma^{2}} \middle| \sigma^{2} \in K \right\}
       \end{align}
       wobei \( |K| \) der zugrunde liegende Raum des Simplizialkomplexes \( K \) ist 
       und \( \mu\in\Lambda^{2}(|K|) \) die die stückweise konstante Volumenform auf \( |K| \).
-      \( \left< \alpha_{max}, \star\sigma^{2} \right> \) ist der größte Winkel auf dem Dreieck \( \sigma^{2} \).
+      \( \alpha_{max}^{\sigma^{2}} \) ist der größte Winkel auf dem Dreieck \( \sigma^{2} \).
 
       \begin{figure}
         \begin{minipage}[t]{0.45\textwidth}
@@ -1374,7 +1383,7 @@
       \end{figure}
 
       Die in der FEM häufig anzutreffende Verfeinerung, nämlich die Halbierung der Dreiecke, führt zu 1-Ringen aus 4 Flächenelementen an den neu
-      enstandenen Knoten und ist somit im Algemeinen nicht zulässig für unsere Triangulierung.
+      entstandenen Knoten und ist somit im Allgemeinen nicht zulässig für unsere Triangulierung.
       Eine Möglichkeit Dreiecke zu verfeinern und trotzdem eine Ausgangssituation für ein wohlzentriertes Gitter zu schaffen ist das Vierteln von
       Flächenelementen, wobei 3 neue Knoten an den Seitenhalbierenden enstehen (siehe Abb. \ref{AbbVerfeinerung} ganz links). 
       Die somit hängenden Knoten werden beseitigt indem die Nachbarelemente halbiert werden.
@@ -1382,16 +1391,22 @@
       pentagonale Struktur, wenn nur ein Dreieck markiert wurde. Für die alten Knoten an denen eine neue Kante hinzu kommt erhöht sich die Anzahl
       der umliegenden Flächenelemente um eins.
 
-      Nachdem die neuen Knoten auf die Mannigfaltigkeit projeziert werden ist im Allgemeinen noch nicht sichergestellt, dass ein wohlzentrierte
+      Nachdem die neuen Knoten auf die Mannigfaltigkeit projiziert werden ist im Allgemeinen noch nicht sichergestellt, dass ein wohlzentrierte
       Triangulation vorliegt. Deshalb wenden wir unseren Algorithmus \eqref{euler} darauf an.
-      Wenn vor der Verfeinerung ein zulässiges Gitter vorlag, dann zeigt sich, dass wir nur sehr wenige Iterationsschritte benötigen um ein
-      zulässiges Gitter wieder herzustellen. Abbildung \ref{AbbVerfeinerung} zeigt das Resultat nach nur einem Eulerschritt mit zwei verschiedenen
+      Wenn vor der Verfeinerung ein zulässiges Gitter vorlag, dann zeigt sich, dass wir nur sehr wenige Iterationsschritte benötigen um
+      wieder ein
+      zulässiges Gitter herzustellen. Abbildung \ref{AbbVerfeinerung} zeigt das Resultat nach nur einem Eulerschritt mit zwei verschiedenen
       Parameterkonfigurationen. Hier wurde ein Dreieck verfeinert (links). Das Gitterverbesserungsverfahren erzeugt zum einen wohlzentrierte
-      Dreiecke bei denen die Abmessungen weitestgehend gleich bleiben (mitte) und bei denen die neu entstandenen Elemente schrumpfen aber die Winkel
-      besser sind (rechts).
+      Dreiecke bei denen die Abmessungen weitestgehend gleich bleiben (Mitte) und bei denen die neu entstandenen Elemente schrumpfen,
+      jedoch die Winkel
+      besser sind (rechts) als bei der anderen Parameterkonfiguration.
 
      \begin{fazit}
-        blub
+        Prinzipiell ist es also möglich ein wohlzentriertes Gitter aus einer Ausgangstriangulation zu erzeugen, wenn genügend viele
+        Informationen über die stetige Oberfläche bekannt sind. 
+        Zum Teil reichen auch nur wenige Eulerschritte aus um Wohlzentriertheit zu erreichen, jedoch um in gewissen Sinne gleichmäßige
+        Gitter zu bekommen muss wesentlich mehr Aufwand betrieben werden, der unter Umständen den des eigentlichen Problems, wie das Lösen
+        einer Partiellen Differentialgleichung auf der Oberfläche, bei weitem übersteigt.
      \end{fazit}
 
 
@@ -1400,52 +1415,50 @@
 
   \section{Implizit gegebene Oberflächen}
     \label{secImpliziteMannigfaltigkeiten}
-    Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Immersion 
+    Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Parametrisierung 
     \begin{align}
       X:(u,v)\mapsto X(u,v)\in\R^{3}
     \end{align}
-    gegeben, sondern über den 0-Level-Set einer signierten Distanzfunktion
-    \begin{align}
-      \varphi = \pm\text{dist}(\cdot,M) = \pm\inf_{\vec{x}\in M} d(\cdot,\vec{x})
-    \end{align}
-    mit einer beliebigen (ausreichend glatten) Metrik \( d \) im \( \R^{3} \).
-    Die 2-Mannigfaltigkeit ist dann definiert durch 
+    gegeben, sondern über den 0-Level-Set einer signierten Distanzfunktion \( \varphi:\R^{3}\rightarrow\R \).
+    Die 2-Mannigfaltigkeit kann dann durch 
     \begin{align}
       M = \left\{ \vec{x}\in\R^{3} \middle| \varphi(\vec{x})=0 \right\} \text{.}
     \end{align}
-    Solche implizit beschriebenen Oberflächen liegen zum Beispiel bei 3D-Phasenfeldproblemen vor 
+    beschrieben werden.
+    Solche implizit beschriebenen Oberflächen liegen zum Beispiel bei dreidimensionalen Phasenfeldproblemen vor 
     (z.B. Allen-Cahn-, Cahn-Hilliard- oder Phase-Field-Crystal-Modell). 
-    Die Distanzfunktion\footnote{auch Phasen- oder Ordnungsfunktion genannt} \( \varphi:\R^{3}\rightarrow\R \) ist dort gerade die Lösung dieser Probleme
-    und das 0-Niveau dieser Funktion beschreibt die Phasengrenzen.
+    Die Distanzfunktion\footnote{auch Phasen- oder Ordnungsfunktion genannt} \( \varphi\) ist dort gerade die Lösung dieser Probleme
+    und das Null-Niveau dieser Funktion beschreibt die Phasengrenzen.
 
     Wir treffen hier die Konvention, dass "`außen"' \( \varphi > 0 \) gilt und "`innen"' \( \varphi < 0 \).
     Dadurch zeigt der Gradient \( \nabla\varphi(\vec{x}) \) für alle \( \vec{x}\in M \) in Richtung der äußeren Normalen.
-    "`Außen"' und "`innen"' ist durch die Orientierung der Mannnigfaltigkeit gegeben. 
-    In Falle von 2-Mannigfaltigkeiten ohne Rand, ist "`innen"' gerade das von der Oberfläche umschlossene Gebiet im \( \R^{3} \).
+    "`Außen"' und "`innen"' ist durch die Orientierung der Mannigfaltigkeit gegeben. 
+    In Falle von 2"~Mannigfaltigkeiten ohne Rand, ist "`innen"' gerade das von der Oberfläche umschlossene Gebiet im \( \R^{3} \).
 
     \subsection{Numerische Projektion}
       \label{SubSubSecPhiProject}
       Wenn bei einem Simplizialkomplex, welches die Oberfläche approximiert, neue Knoten enstehen oder vorhandene verschoben werden sollen,
-      dann ist es notwendig diese Knoten auf die Mannigfaltigkeit zu projezieren. 
-      Denn eine Bedingung an den Simplizialkomplex ist, dass die Knoten dort und auf dem abstrakten Simplizialkomplex übereinstimmen.
+      dann ist es notwendig diese Knoten auf die Mannigfaltigkeit zu projizieren, 
+      denn eine Bedingung an den Simplizialkomplex ist, dass die Knoten dort und auf dem abstrakten Simplizialkomplex übereinstimmen.
 
       Gesucht ist also das
       \begin{align}
         \argmin_{\vec{x}\in M} \|\vec{y} - \vec{x}\|
       \end{align}
-      für den Knoten mit den Koordinaten \( \vec{y} \), der sich noch nicht auf der Mannigfaltigkeit \( M \) befindet 
+      für den Knoten mit den Koordinaten \( \vec{y}\in\R^{3}\setminus M \), der sich noch nicht auf der Mannigfaltigkeit \( M \) befindet 
       und damit \( \varphi(\vec{y}) \neq 0 \) gilt.
 
       \begin{figure}
         \centering
         \includegraphics[width=0.5\textwidth]{bilder/projection/projection.eps}
-        \caption[Projektion]{Darstellung des Punktes \( \vec{y} \) und dessen projezierter Punkt \( \vec{x} \)}
+        \caption[Projektion]{Darstellung des Punktes \( \vec{y} \) und dessen projizierter Punkt \( \vec{x} \)}
         \label{AbbProjection}
       \end{figure}
       Der kürzeste Weg mit Länge \( \varepsilon \) steht im rechten Winkel zur Oberfläche am Punkt \( \vec{x} \) (siehe Abb. \ref{AbbProjection}).
+      Für den gesuchten Punkt \( \vec{x}\in M \subset \R^{3} \) folgt somit
       \begin{align}
-        \vec{x} &= \vec{y} + \frac{\varepsilon}{\|\nabla\varphi(\vec{x})\|} \nabla\varphi(\vec{x}) \\
-                &= \vec{y} + h \nabla\varphi(\vec{x}) \label{EqProjection}
+        \vec{x} &= \vec{y} + \frac{\varepsilon}{\|\nabla\varphi(\vec{x})\|} \nabla\varphi(\vec{x})
+                = \vec{y} + h \nabla\varphi(\vec{x}) \label{EqProjection}
       \end{align}
       für \( \varepsilon = h \|\nabla\varphi(\vec{x})\| \).
       Allerdings ist weder \( h \) noch \( \vec{x} \) bekannt. 
@@ -1471,7 +1484,7 @@
       \begin{align}
         \Phi_{\vec{y}}(h) := \varphi(\vec{x}^{*}) = \varphi(\vec{y} +  h \nabla\varphi(\vec{y})) = 0 \quad\text{.}
       \end{align}
-      Dieses Nullstellenproblem lösen wir in erster Nährung mittels Newton-Verfahren und Startlösung \( h=0 \).
+      Dieses Nullstellenproblem lösen wir in erster Näherung mittels Newton-Verfahren und Startlösung \( h=0 \).
       \begin{align}
         \hat{h} &= - \frac{\Phi_{\vec{y}}(0)}{\Phi'_{\vec{y}}(0)}
                 = - \frac{\varphi(\vec{y})}{\|\nabla\varphi(\vec{y})\|^{2}}
@@ -1482,5 +1495,8 @@
                        %% \overset{i\rightarrow\infty}{\longrightarrow}  \vec{x}^{*}
       \end{align}
       auf.
+      Diese numerische Projektion, die wir hier nun erhalten haben, ist für unsere Zwecke vollkommen ausreichend und lieferte in allen
+      Berechnungen, die im Rahmen dieser Arbeit gemacht wurden, ausgezeichnete Ergebnisse.
+      Als Abbruchskriterium wurde fast immer \( \varphi(\vec{y}) < 1.0E-8 \) gewählt, das nach wenigen Iterationsschritten erreicht wurde.
 
 
