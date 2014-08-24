@@ -2,7 +2,7 @@
   
   \begin{ziel}
     In vielen wissenschaftlichen Problemen kann die Krümmung
-    einer Oberfläche eine entscheidene Rolle spielen. 
+    einer Oberfläche eine entscheidende Rolle spielen. 
     Sie kann zum Beispiel ein wichtiger Bestandteil von Differentialgleichungen sein.
     So kommt die mittlere Krümmung \( H \) bei fluidmechanischen Formulierungen auf bewegliche Membranen 
     \( M_{t} \) in der
@@ -18,22 +18,30 @@
     \end{align}
     oder die Bestimmung des topologisch invarianten Geschlechts
     \begin{align}
-      \mathfrak{g} = 1 - \frac{1}{4\pi}\int_{M}Kd\mu
+      \mathfrak{g} = 1 - \frac{1}{4\pi}\int_{M}K\mu
     \end{align}
     einer orientierten Mannigfaltigkeit \( M \) ohne Rand mit Gaußscher Krümmung \( K \),
-    was dierekt aus dem Satz von Gauß-Bonnet 
-    und den Zusammenhang für die Euler-Charakeristik \( \chi = 2-2\mathfrak{g} \) folgt.
+    was direkt aus dem Satz von Gauß-Bonnet 
+    und den Zusammenhang für die Euler-Charakteristik \( \chi = 2-2\mathfrak{g} \) folgt.
     Unter den gewählten Voraussetzungen gibt \( \mathfrak{g} \) die Anzahl der "`Löcher"'/"`Poren"'/"`Henkel"' an.
     
-    Es ließen sich noch weitere Beispiele finden in dem diverse Krümmungsgrößen für die Behandlung von
-    Nöten wären.
+    Es ließen sich noch weitere Beispiele finden in dem diverse Krümmungsgrößen für die Behandlung vonnöten wären.
     Oftmals liegt die Oberfläche allerdings nur als diskrete Eingangsgröße vor. 
     Somit sind viele
     geometrische Werte nicht bekannt und müssen Approximiert werden.
-    Wir werden uns in diesem Kapitel speziell die Gaußsche und die mittlere Krümmung betrachten.
-    Diese werden wir mit hilfe des DECs approximieren und zum einen mit den Ergebnissen von C.-J. Heine 
+    Wir werden uns in diesem Kapitel speziell mit der Gaußsche und der mittlere Krümmung beschäftigen.
+    Diese werden wir mit Hilfe des DECs approximieren und zum einen mit den Ergebnissen von C.-J. Heine 
     \cite{heine} vergleichen und zum anderen, im Falle der Gauß-Krümmung, mit einer naiven 
     Gauß-Bonnet-Diskretisierung.
+    Insgesamt werden wir vier verschiedene Verfahren herleiten.
+    \begin{description}
+      \item[(S*)] Berechnung der Weingartenabbildung, wenn die Oberflächennormalen bekannt sind, zur
+              Bestimmung von \( K \) und \( H \)
+      \item[(S*AvN)] Berechnung der Weingartenabbildung, wenn die Oberflächennormalen nicht bekannt sind, zur
+              Bestimmung von \( K \) und \( H \)
+      \item[(LX)] Berechnung des Krümmungsvektors zur Bestimmung von \( H \)
+      \item[(GB)] Berechnung von \( K \) mit dem Gauß-Bonnet-Operator
+    \end{description}
   \end{ziel}
 
 \section{Weingartenabbildung}
@@ -41,14 +49,17 @@
   Die Weingartenabbildung \( S \), auch Formoperator (Shapeoperator), ist im Prinzip die 2. Fundamentalform \( \II \) unter Beachtung der Metrik \(
  g \) (1. Fundamentalform).
   \( S \) gibt uns Informationen über die Gestalt von \( M \). 
-  Sie misst in einer gewissen Weise wie sehr sich die Oberfläche von einer Ebenene unterscheidet, speziell ist \( M \) eine flache Ebene
-  genau dann wenn die Weingartenabbildung identisch Null ist.
+  Sie misst in einer gewissen Weise wie sehr sich die Oberfläche von einer Ebene unterscheidet, speziell ist \( M \) eine flache Ebene
+  genau dann, wenn die Weingartenabbildung identisch Null ist.
   Des Weiteren lassen sich aus der Weingartenabbildung die Hauptkrümmungen \( k_{1} \) und \( k_{2} \) herleiten und damit auch die
-  Gaußkrümmung \( K = k_{1}*k_{2} \) und die mittlere Krümmung \( H = \frac{1}{2}\left( k_{1} + k_{2} \right) \).
-  Die 1. Fundamentalform ist eine Größe der inneren Geometry und kann somit alleine auf der Oberfläche selbst bestimmt werden
+  Gaußkrümmung \( K = k_{1}\cdot k_{2} \) und die mittlere Krümmung \( H = \frac{1}{2}\left( k_{1} + k_{2} \right) \).
+  Die 1. Fundamentalform ist eine Größe der inneren Geometrie und kann somit alleine auf der Oberfläche
+  selbst bestimmt werden,
   invariant gegenüber jeglicher Einbettungen/Parametrisierungen.
-  Das ist bei der Weingartenabbildung anders, sie hängt von der äußeren Geometrie ab, d.h. die der Einbettung in einem Ambienteraum.
-  In unserem Fall ist das der \( \R^{3} \) und die Weingartenabbildung lässt sich über das Normalenvektorfeld (Gaussabbildung)
+  Das ist bei der Weingartenabbildung anders, sie hängt von der äußeren Geometrie ab, 
+  das heißt von der Einbettung in einem Ambienteraum.
+  In unserem Fall ist das der \( \R^{3} \) und die Weingartenabbildung lässt sich über das Normalenvektorfeld 
+  (Gaußabbildung)
   \begin{align}
     \vec{\nu} = \left[ \nu^{1}, \nu^{2}, \nu^{3} \right]^{T}: M &\rightarrow TN \subset \R^{3} \\
                          \vec{x} &\mapsto \vec{\nu}_{\vec{x}} \in T_{\vec{x}}N \bot T_{\vec{x}}M
@@ -68,7 +79,6 @@
     \) ist, wie sich einfach nachrechnen ließe (\( \vec{\nu} \) ist eine \( \R^{3} \)-vektorisierte 0-Form).
   \end{definition}
   Bei der Definition von \( S \) ist etwas Obacht geboten, weil sie oft auch mit negativen Vorzeichen definiert wird.
-  Da wir uns aber vordergründig für dessen Eigenwerte interessieren spielt das Vorzeichen aber keine Rolle für uns.
   Anders als in \cite{heine} angegeben ist die Weingartenabbildung (\( (1,1) \)-Tensor) nicht die 2. Fundamentalform
   (\( (0,2) \)-Tensor). In der Matrixdarstellung unterscheiden sich beide in der Höhe der Indizes, das heißt
   \( S = \left(h^{i}_{\phantom{i}j}\right)\) und \( \II = \left( h_{ij} \right) \) oder anders geschrieben   \( S = (g)^{-1} \II \)
@@ -104,9 +114,8 @@
     Dabei sei das Ableiten in Normalenrichtung zulässig ergibt jedoch den Wert Null (konstante Erweiterung in Normalenrichtung).
   \end{definition}
   Die erweiterte Weingartenabbildung eingeschränkt auf \( T_{\vec{x}}M \)\ in lokalen Koordinaten ist dann gerade \( S \),
-  \todo{genauer}
-  wobei die Eigenwerten von \( \bar{S} \) gleich \( \left\{ k_{1},k_{2},0 \right\} \) sind.
-  Einen Beweis dazu findet sich in \cite{kimura} (Part 2, Kap. 2).
+  wobei die Eigenwerten von \( \bar{S} \) gleich \( \left\{ 0, k_{1},k_{2} \right\} \) sind.
+  Einen Beweis dazu findet sich in \cite[Part 2, Kap.2]{kimura}.
   
   \subsection{Implementierung}
     Die Komponenten der erweiterte Weingartenabbildung können wir nun mit Hilfe des diskreten Primär-Dual-Gradienten im Mittel approximieren, das heißt
@@ -118,7 +127,7 @@
     mit \( i,j \in \left\{ 1,2,3 \right\} \).
     Für die Berechnung der Eigenwerte \( \left\{ \lambda_{0}, \lambda_{1}, \lambda_{2} \right\} \) an jedem Gitterpunkt 
     nutzen wir den von der MTL4 (Matrix Template Library 4) bereitgestellten QR-Algorithmus.
-    Der betragsmäßig kleinste Eigenwert, der annährend null ist, ist o.E.d.A. \( \lambda_{0} \).
+    Der betragsmäßig kleinste Eigenwert, der annähernd null ist, ist o.E.d.A. \( \lambda_{0} \).
     Somit können die Gaußsche Krümmung und die mittlere Krümmung durch
     \begin{align}
       K &\approx \lambda_{1}*\lambda_{2} \formtext{bzw.} \\
@@ -126,14 +135,15 @@
     \end{align}
     approximiert werden.
     Die Weingartenabbildung \( S \) ist symmetrisch, das können wir von der numerisch ermittelten nicht exakt erwarten.
-    Deshalb berechnen wir auch alle Einträge von \( S^{\overline{pd}} \) und nicht nur die obere oder untere Dreicksmatrix. 
+    Deshalb berechnen wir auch alle Einträge von \( S^{\overline{pd}} \) und nicht nur die obere oder
+    untere Dreiecksmatrix. 
     Die Eigenwerte können dann über die symmetrisch gemittelten Matrix erhalten werden, also von der Matrix
     \begin{align}
       \frac{1}{2} \left( S^{\overline{pd}} + \left( S^{\overline{pd}} \right)^{T} \right) \formpunkt
     \end{align}
     Mit dem Normalenraum auf den Gitterpunkten haben wir das gleiche Problem, wie schon mit dem Tangentialraum.
     Es ist nicht klar wo der Normalenraum auf den Ecken des Polyeders \( |K| \) liegen soll, denn eindeutig ist er nur auf den Inneren der Dreiecke
-    bzw. auf den Voronoiecken.
+    bzw. auf den Voronoi-Ecken.
     Deshalb mitteln wir wieder über einen 1-Ring des Primärgitterpunktes \( v \) zu
     \begin{align}
     \label{eqNormalMittel}
@@ -148,7 +158,7 @@
     Die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \) werden von AMDiS bereit gestellt.
     Wenn wir \( \vec{\nu}_{i} \) wieder im "`Dualem"' lösen wollen, das heißt anwenden des Hodge-Operators auf die Gleichung
     \eqref{eqNormalMittel} und damit durchmultiplizieren der Gleichung mit \( \left| \star v_{i} \right| \), dann können auch hier die
-    Eckennormalen elementweise bestimmt werden.
+    Ecken-Normalen elementweise bestimmt werden.
     Dadurch ergibt sich das lineare Gleichungssystem
     \begin{align}
         \label{eqWeingartenEq1}
@@ -161,10 +171,11 @@
     \end{align}
     für alle \( i,j\in\left\{ 1,2,3 \right\} \) und \( v\in K^{(0)} \) in dem alle Operatoren elementweise bestimmt werden können.
     Zusammen ergibt das 12 DOFs pro Knoten \( v \).
-    Gleichung \eqref{eqWeingartenEq1} (3 Dofs pro Knoten) und \eqref{eqWeingartenEq2} (9 Dofs pro Knoten) 
-    könnenten zwar auch seperat gelöst werden wodurch wir
-    Speichervorteile hätten, aber das Lösen der beiden kleineren Gleichungssystem wäre nicht schneller, da der Lösungsaufwand für die
-    resultierenden dünnbesetzten Systeme mit angepassteen Lösern etwa linear ist.
+    Gleichung \eqref{eqWeingartenEq1} (3 DOFs pro Knoten) und \eqref{eqWeingartenEq2} (9 DOFs pro Knoten) 
+    könnten zwar auch separat gelöst werden, wodurch wir
+    Speichervorteile hätten, aber das Lösen der beiden kleineren Gleichungssystem wäre nicht schneller, 
+    da der Lösungsaufwand für die
+    resultierenden dünnbesetzten Systeme mit angepassten Lösern etwa linear ist.
     Hinzu würden außerdem noch Initialisierungskosten kommen.
 
     Eine alternative Möglichkeit an die Normalen an einer Ecke \( v \) zu mitteln ist eine Mittelung über die Elementnormalen ohne
@@ -180,7 +191,7 @@
      \end{aligned}
     \end{align}
     wobei \( m_{v} = \sum_{\sigma^{2}\succ v} 1 \in \mathds{N}_{+}\) die Anzahl der \( 2 \)-Simplizes im 1-Ring um \( v \) ist.
-    Das Problem hierbei ist, dass \( m_{v} \) a priori auf einem einzelnen Dreieckselement nicht bekannt ist und damit vor dem Assemblieren
+    Das Problem hierbei ist, dass \( m_{v} \) a priori auf einem einzelnen Dreieckelement nicht bekannt ist und damit vor dem Assemblieren
     der Systemmatrix zusätzliche globale Arbeit in die Bestimmung aller \( m_{v} \) gesteckt werden muss.
     
     \begin{beispiel}[Torus]
@@ -193,20 +204,21 @@
       \( \vecover{\nu}{\conn} \) (Tab. \ref{tabWeingartenFehlerTorusConnN}) berechnet.
       Es werden wieder die relativen Fehler für die Auswertung benutzt.
       Für die Approximation der Krümmungsgrößen mit den exakten Normalen bekommen wir etwa eine experimentelle Konvergenzordnung von 2.
-      Gerade in der Maximumsnorm überascht das ein wenig, da in Beispiel \ref{bspGradTorus} der diskrete Gradient auf feineren Gitter eine
+      Gerade in der Maximumsnorm überrascht das ein wenig, da in Beispiel \ref{bspGradTorus} der diskrete Gradient auf feineren Gitter eine
       schlechteres Konvergenzverhalten aufwies.
       Bei den beiden Berechnungen mit den gemittelten Normalen bricht die Konvergenzrate bei feineren Gittern ein. 
       Wobei die Approximation der Weingartenabbildung mit \( \vecover{\nu}{\conn} \) noch etwas besser ausfällt als mit \(
       \vecover{\nu}{\av} \).
       In Abbildung \ref{figWeingartenFehlerTorus} ist zudem noch der Fehler von \( \vecover{\nu}{\av} \) aufgetragen 
       (der von \( \vecover{\nu}{\conn} \) ist ähnlich).
-      Wie wir sehen liegt das schlechte Konvergenzverhalten nicht primär an die Mittelung der Normalen an sich.
-      Vermutlich kommt es bei kleiner werdenen \( h \) zur starken Rundungsfehlern bei der Differenz in der Gradientenbildung, denn
-      hier werden zwei Werte von einander abgezogen, die auf überlappenden Bereichen gemittelt werden. 
+      Wie wir sehen liegt das schlechte Konvergenzverhalten nicht primär an der Mittelung der Normalen an sich.
+      Vermutlich kommt es bei kleiner werdenden \( h \) zur starken Rundungsfehlern bei den Differenzen in der 
+      Gradientenbildung, denn
+      hier werden lokal zwei Werte von einander abgezogen, die auf überlappenden Bereichen gemittelt werden. 
       In Abbildung \ref{figMeanTorus} ist die mittlere Krümmung und die lokalen absoluten Fehler für die Berechnung mit \(
       \vecover{\nu}{\av} \) abgebildet.
       Auch hier können wieder gewisse Strukturen im Fehlerbild erkannt werden, was darauf schließen lässt, dass der Fehler von der Gestalt
-      der Dreieckselemente und seinen Nachbarn abhängt, denn auf den Niveaulinien des Fehlers sind die Gitter nahezu gleich.
+      der Dreieckelemente und seinen Nachbarn abhängt, denn auf den Niveaulinien des Fehlers sind die Gitter nahezu gleich.
       Hierbei konnte eine Verbindung zu diversen Gitterqualitätsmaßen
       \footnote{die von ParaView zur Verfügung stehen, z.B. \texttt{Radius Ratio}, \texttt{Aspect Frobenius}, \texttt{Maximum Angle}, usw.}
       nicht hergestellt werden.
@@ -216,8 +228,8 @@
       \begin{tabular}{|r|r|r|r|r|r|r|r|r|r|}
       \hline
       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-        \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        \multicolumn{1}{c|}{\( \err_{\infty}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
         1360 & 0.263 & 4.21E-02 & \multicolumn{1}{l|}{} & 1.18E-01 & \multicolumn{1}{l|}{} & 1.59E-02 & \multicolumn{1}{l|}{} & 1.84E-02 & \multicolumn{1}{l|}{} \\ \hline
 2016 & 0.215 & 2.77E-02 & 2.06 & 7.85E-02 & 2.02 & 1.11E-02 & 1.76 & 1.28E-02 & 1.79 \\ \hline
 4752 & 0.138 & 1.16E-02 & 1.98 & 3.64E-02 & 1.75 & 4.97E-03 & 1.83 & 5.64E-03 & 1.86 \\ \hline
@@ -234,8 +246,8 @@
       \begin{tabular}{|r|r|r|r|r|r|r|r|r|r|}
       \hline
       \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2}^{K} \)} & \multicolumn{1}{c|}{EOC} & 
-        \multicolumn{1}{c|}{\( \err_{\max}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
-        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\max}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+        \multicolumn{1}{c|}{\( \err_{\infty}^{K} \)} & \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{2}^{H} \)} &
+        \multicolumn{1}{c|}{EOC} & \multicolumn{1}{c|}{\( \err_{\infty}^{H} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
       1360 & 0.263 & 6.01E-02 & \multicolumn{1}{l|}{} & 1.20E-01 & \multicolumn{1}{l|}{} & 2.68E-02 & \multicolumn{1}{l|}{} & 3.77E-02 & \multicolumn{1}{l|}{} \\ \hline
       2016 & 0.215 & 4.06E-02 & 1.93 & 8.15E-02 & 1.90 & 1.87E-02 & 1.77 & 2.75E-02 & 1.55 \\ \hline
       4752 & 0.138 & 1.77E-02 & 1.89 & 3.86E-02 & 1.71 & 8.33E-03 & 1.84 & 1.23E-02 & 1.84 \\ \hline
@@ -282,7 +294,7 @@
           \centering\includegraphics[width=\textwidth]{bilder/Curvature/TorusHWeinMaxPlot.eps}
         \end{minipage}
         \caption[Fehler Gauß-/mittlere Krümmung aus Weingartenabb. auf Torus]
-                {(LogLogPlot) Fehler in diskreter \( L_{2} \)- und Maximumsnorm für die Gaußkrümmung \( K \) bzw. mittlere Krümmung \( H \) berechnet aus
+                {(Log-Log-Plot) Fehler in diskreter \( L_{2} \)- und Maximumsnorm für die Gaußkrümmung \( K \) bzw. mittlere Krümmung \( H \) berechnet aus
                 der Weingartenabbildung mit exakten Normalen (KExN)/(HExN), 
                 nach \eqref{eqNormalMittel} gemittelte Elementnormalen (KAvN)/(HAvN) 
                 und nach \eqref{eqNormalConnMittel} gemittelte Elementnormalen (KConnN)/(HConnN).
@@ -292,7 +304,7 @@
     \end{beispiel}
 
     \begin{fazit}
-      Wenn die Normalvektoren an jedem Koten der Obeflächentriangulierung bekannt sind, zum Beispiel aus einer Parametrisierung
+      Wenn die Normalenvektoren an jedem Koten der Obeflächentriangulierung bekannt sind, zum Beispiel aus einer Parametrisierung
       \( \vec{x}: \left( u,v \right) \mapsto \left( x,y,z \right)\) durch
       \begin{align}
         \vec{\nu} &= \frac{\frac{\partial\vec{x}}{\partial u} \times \frac{\partial\vec{x}}{\partial v}}
@@ -303,12 +315,13 @@
         \label{eqNormalsFromSignDist}
         \vec{\nu} &= \frac{\nabla_{\R^{3}}\varphi}{\left\| \nabla_{\R^{3}}\varphi \right\|} \formkomma
       \end{align}
-      dann können mit der diskreten Weingartenabbildung gute Ergebnisse erziehlt werden.
-      Sind dagegen die Normalen nicht bekannt, so muss in zunkünftigen Arbeiten entweder eine angepasstere Möglichkeit bereitgestellt
+      dann können mit der diskreten Weingartenabbildung gute Ergebnisse erzielt werden.
+      Sind dagegen die Normalen nicht bekannt, so muss in zukünftigen Arbeiten entweder eine angepasstere Möglichkeit bereitgestellt
       werden die Normalen an den Ecken des Polyeders zu gewinnen oder ein für diese Problemstellung geeigneter diskreter Gradient,
-      zum Beispiel ein Dual-Primär-Gradient für eine diskrete duale \( 0 \)-Form ausgewerten auf den primären Gitterpunkten.
-      Hätten wir so einen Gradienten, dann könnten die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \)direkt auswerten für eine
-      Berechnung der diskreten Weingartenabbildung auf den Ecken.
+      zum Beispiel ein Dual-Primär-Gradient für eine diskrete duale \( 0 \)-Form ausgewertet auf den primären Gitterpunkten.
+      Hätten wir so einen Gradienten, dann könnten wir die Elementnormalen \( \vecover{\nu}{\sigma^{2}} \) direkt 
+      für eine
+      Berechnung der diskreten Weingartenabbildung auf den Ecken auswerten.
 
       In Abschnitt \ref{secNumEx} wird zudem die hier vorgestellte Krümmungsapproximation auch auf anderen Oberflächen getestet und mit den
       Ergebnissen von \cite{heine} verglichen.
@@ -317,13 +330,14 @@
 
 
 \section{Krümmungsvektor}
+  \label{secKruemmungsvektor}
   Der Krümmungsvektor \( \vec{H} \) ist die mittlere Krümmung in Normalenrichtung unter Beachtung der Dimension \( n \) der Oberfläche.
-  Das heißt in unserem Fall für eine \( 2 \)-Mannigfaltigkeit
+  Für eine \( 2 \)-Mannigfaltigkeit gilt
   \begin{align}
     \label{eqDefKruemmungsvektor}
     \vec{H} := 2 H \vec{\nu} \formpunkt
   \end{align}
-  Nach \cite{chen} (Kap. 4.5) gilt für jede isometrische Immersion \( \vec{x}:M\rightarrow \R^{3} \)
+  Nach \cite[Kap.4.5]{chen} gilt für jede isometrische Immersion \( \vec{x}:M\rightarrow \R^{3} \)
   \begin{align}
     -\Delta_{B}\vec{x} = \vec{H} \formkomma
   \end{align}
@@ -333,9 +347,9 @@
   \begin{align}
     \vec{x}:= \iota: \R^{3}\supset M \hookrightarrow \R^{3} \formpunkt
   \end{align}
-  Es ist leicht zu sehen, dass die Inklusion als Identität eingeschrängt auf \( M \) eine isometrische Immersion ist 
+  Es ist leicht zu sehen, dass die Inklusion als Identität eingeschränkt auf \( M \) eine isometrische Immersion ist 
   (\( g\equiv I \) und der Pushforward \( \iota_{*}:T_{p}M \rightarrow T_{p}\R^{3} \) ist injektiv).
-  Mit Hilfe des DEC-diskretisiertem Laplace-Beltrami-Operators erhalten wir nun das diskreten Problem
+  Mit Hilfe des DEC-diskretisiertem Laplace-Beltrami-Operators erhalten wir nun das diskrete Problem
   \begin{align}
     \label{eqProbLX}
     \left\langle \vec{H}, v \right\rangle = - \left\langle \Delta_{B}\vec{x} , v \right\rangle
@@ -354,24 +368,33 @@
   Eine weitere Möglichkeit die Gaußsche Krümmung zu approximieren besteht aus einem einfachen geometrischen Ansatz, der aus dem Satz von
   Gauß-Bonnet folgt. 
   Dieser Satz besagt speziell für eine orientierte Riemannsche Mannigfaltigkeit \( P \) mit nur stückweise differenzierbaren Rand (vgl.
-  \cite{berger}, Kap. 10.5)
+  \cite[Kap.10.5]{berger})
   \begin{align}
     \label{eqGaussBonnet}
-    \int_{P}K d\mu = 2\pi - \sum_{i=1}^{m}\beta_{i} - \int_{\partial P} k_{g} ds
+    \int_{P}K \mu = 2\pi - \sum_{i=1}^{m}\beta_{i} - \int_{\partial P} k_{g} ds
   \end{align}
   wobei \( \beta_{i} \) die Außenwinkel an den \( m \) "`Knicken"' der Randkurve sind und \( k_{g} \) die geodätische Krümmung der
   Randkurve.
-  Diese Formel können wir auch auf eine abstrakte Voronoizelle \( P=\star\pi(v)\in C_{2}(\star L) \) für die Ecke \( v \in K^{(0)}=L^{(0)} \)
+  Diese Formel können wir auch auf eine abstrakte Voronoi-Zelle \( P=\star\pi(v)\in C_{2}(\star L) \) für die Ecke \( v \in K^{(0)}=L^{(0)} \)
   anwenden. 
-  Da die "`Knicke"' immer genau im Umkreismittelpunkt der Dreieckelemte um \( v \) sind, 
+  Da die "`Knicke"' immer genau im Umkreismittelpunkt der Dreieckelemente um \( v \) sind, 
   ergibt sich \( m=m_{v} \), die Anzahl der \( 2 \)-Simplizes des 1-Ringes um \( v \).
-  Die Appriximation besteht nun darin \( \star v \in C_{2}(\star K) \) als Nährung für \( \star\pi(v) \) in Gleichung \eqref{eqGaussBonnet}
+  Die Approximation besteht nun darin \mbox{\( \star v \in C_{2}(\star K) \)} als Näherung für \( \star\pi(v) \) in Gleichung \eqref{eqGaussBonnet}
   zu verwenden.
-  Da die Randkurve \( \partial(\star v) \) auf den differentierbaren Teilstücken gerade ist, verschwindet dort die geodätische Krümmung.
-  An den Schnitten mit den Primärkanten \( \star\sigma^{1}\cap\sigma^{1} = c(\sigma^{1})\in \csd K \) ist die geodetische Krümmung ebenfalls null,
+  Da die Randkurve \( \partial(\star v) \) auf den differenzierbaren Teilstücken gerade ist, verschwindet dort die geodätische Krümmung.
+  An den Schnitten mit den Primärkanten 
+  \begin{align}
+    \star\sigma^{1}\cap\sigma^{1} = c(\sigma^{1})\in \csd K 
+  \end{align}
+  ist die 
+  geodetische Krümmung ebenfalls null,
   da dort die Randkurve einen Winkel von genau \( \pi \) auf dem Polytop \( |K| \) hat (vgl. \cite{polthier}).
-  Weil nun die Volumenform \( d\mu = \sqrt{|g|} dx^{1} \wedge dx^{2} \) nichts weiter als das Hodge-Stern-Duale der Eins ist, das heißt 
-  \( d\mu = *1 \) und damit \(  K d\mu = *K \), ergibt sich folgende approximative Aufgabenstellung
+  Weil nun die Volumenform 
+  \begin{align}
+    d\mu = \sqrt{|g|} dx^{1} \wedge dx^{2}
+  \end{align}
+  nichts weiter als das Hodge-Stern-Duale der Eins ist, das heißt 
+  \( d\mu = *1 \) und damit \(  K \mu = *K \), ergibt sich folgende approximative Aufgabenstellung
   \begin{align}
       \label{eqDualGaussBonnet}
       \left\langle *K , \star v \right\rangle &\approx 2\pi - \sum_{i=1}^{m_{v}}\beta_{i}
@@ -383,11 +406,11 @@
                           = \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right| \left\langle K, v \right\rangle
   \end{align}
   automatisch erhalten mit dem Freiheitsgrad \( K \) am Knoten \( v \).
-  Der zugehörige "`primäre"' Gauss-Bonnet-Operator definiert sich dementsprechend in DEC-Notation
+  Der zugehörige "`primäre"' Gauß-Bonnet-Operator definiert sich dementsprechend in DEC-Notation durch
   \begin{align}
     \left\langle K^{GB},v \right\rangle := \frac{1}{\left| \star v \right|} \left( 2\pi - \sum_{i=1}^{m_{v}}\beta_{i} \right) \formpunkt
   \end{align}
-  Der obere Index \( GB \) kann auch weggelassen werden, wenn klar ist, dass es sich um den Gauss-Bonnet-Operator handelt.
+  Der obere Index \( GB \) kann auch weggelassen werden, wenn klar ist, dass es sich um den Gauß-Bonnet-Operator handelt.
 
   \subsection{Implementierung}
     Um auch die rechte Seite von \eqref{eqDualGaussBonnet} elementweise zu berechnen müssen die Außenwinkel auf jedem Dreieck berechnet

@@ -1007,6 +1007,7 @@
 
     Für eine bessere Lesbarkeit substituieren wir den Grad der Simplizes \( (n-p) \leftrightarrow p \) und schreiben nur \( s \) für \( s_{\bullet} \in \left\{ +1,-1 \right\} \)
     und machen uns dabei bewusst, dass der Koeffizient \( s \) in jeder Zeile und Summanden etwas anderes bedeuten kann.
+    {\allowdisplaybreaks
     \begin{align}
       \partial_{n-p}\star\sigma^{p} &= \sum_{\sigma^{p}\prec\ldots\prec\sigma^{n}} s \partial_{n-p} \left[ c(\sigma^{p}), c(\sigma^{p+1}),\ldots, c(\sigma^{n})\right] \label{eqproof1}\\
                               &= \sum_{\sigma^{p}\prec\ldots\prec\sigma^{n}} s 
@@ -1027,10 +1028,13 @@
                               &= \sum_{\sigma^{p}\prec\sigma^{p+1}}
                                           \sum_{\sigma^{p+1}\prec\ldots\prec\sigma^{n}} s \left[ c(\sigma^{p+1}), c(\sigma^{p+1}),\ldots, c(\sigma^{n})\right]  \label{eqproof5}\\
                               &= \sum_{\sigma^{p+1} \succ \sigma^{p}} \star \left( s \sigma^{p+1} \right) \in C_{n-p-1}(\star K)
-    \end{align}
+    \end{align}}
     Dabei ergibt sich \eqref{eqproof1} aus der Homomorphie des Randoperators und \eqref{eqproof2} nach Definition \ref{defRandoperator}.
     In \eqref{eqproof3} schreiben wir die beiden Summanden für \( \sigma^{k}_{r} \) für \( r = 1,2 \) explizit aus. 
-    Es gibt immer genau zwei solcher Folgen \( \sigma^{p}\prec\ldots\prec\sigma^{k-1}\prec\sigma^{k}\prec\sigma^{k+1}\prec\ldots\prec\sigma^{n} \),
+    Es gibt immer genau zwei solcher Folgen 
+    \begin{align}
+      \sigma^{p}\prec\ldots\prec\sigma^{k-1}\prec\sigma^{k}\prec\sigma^{k+1}\prec\ldots\prec\sigma^{n}\formkomma
+    \end{align}
     wenn bis auf \( \sigma^{k} \) und \( \sigma^{p} \) alle Simplizes fest gewählt sind. 
     Die beiden sich ergebenden dualen Simplizes sind gegensätzlich orientiert, da die "`Zählrichtung"' der Dualecken anders herum ist.
     \eqref{eqproof4} folgt daraus, dass sich beide Summanden für \( i=k \) aufheben. 

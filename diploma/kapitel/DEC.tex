@@ -140,7 +140,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     noch interessant werden, denn mittels \( \flat \) beziehungsweise \( \sharp \) ist ein Isomorphismus zwischen Vektorfeldern und \( 1 \)-Formen gegeben.
     Betrachten wir hierzu eine \( 1 \)-Form \( \alpha\in\Omega^{1}(M) \) und die zugehörige diskrete Form \( \alpha_{d} = \psi(\alpha)\in\Omega^{1}_{d}(M) \).
     Wie sind diese beiden Formen zu vergleichen? 
-    Beide geben haben zwar Antworten in \( \R \) aber die Differentialform nimmt einen Tangentialvektor und die diskrete Form eine Kante als Eingabe. 
+    Beide geben zwar Antworten in \( \R \) aber die Differentialform nimmt einen Tangentialvektor und die diskrete Form eine Kante als Eingabe. 
     Dazu sei eine Kante \( \sigma^{1}_{\eps} \in K\) der Länge \( 2\eps \) gegeben und deren abstrakte Kante \( s_{\eps}\in L \), die auf der Mannigfaltigkeit liegt, 
     siehe Abbildung \ref{figDiskrete1Form}.
     \( s_{\eps}: (-\eps,\eps)\rightarrow M \) sei in Parameterform gegeben und zwar so, dass \( s_{\eps}(0)=x_{0}\in M \), \( \dot{s}_{\eps}(0) = v \in T_{x_{0}}M \) 
@@ -158,7 +158,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     \( \alpha_{d}(v) \) ist in Anführungszeichen gesetzt, da die diskreten Formen diese Schreibweise nicht hergeben (\( v \cong \nicefrac{\sigma^{1}_{\eps}}{|\sigma^{1}_{\eps}|} \notin K \)), 
     aber wir wollen hier auf unnötigen Formalismus verzichten und uns ist
-    klar was damit gemeint ist.
+    klar, was damit gemeint ist.
     Das Integral wurde an \( t=0 \) approximiert, also mit der Mittelpunktsregel.
     Daher können wir abschätzen (siehe \cite[Kap. 7]{einfNum})
     \begin{align}
@@ -199,7 +199,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
                                                                    = \frac{(f\circ s_{\eps})(\eps) - (f\circ s_{\eps})(-\eps)}{2\eps} \formpunkt
     \end{align}
     Wenn wir \( \left( x^{1},\ldots,x^{n} \right) \) als lokale Koordinaten der \( n \)-Mannigfaltigkeit am Punkt \( x_{0} \) wählen, 
-    so dass \( x^{1} \) gerade die Standardkoordinate entlang der abstrakten Kante \( s_{\eps} \) ist mit \( v=\dot{s}_{\eps}(0) \) als tangentialer Einheitsvektor,
+    sodass \( x^{1} \) gerade die Standardkoordinate entlang der abstrakten Kante \( s_{\eps} \) ist mit \( v=\dot{s}_{\eps}(0) \) als tangentialer Einheitsvektor,
     also für die dualen Basisvektoren gilt 
     \begin{align}
       dx^{i}(v) &= \begin{cases}
@@ -212,8 +212,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \label{eqExakt1FormPart2}
       \begin{aligned}
         \alpha(v) &= \left( \exd f \right)(v) = \sum_{i=1}^{n}\frac{\partial f}{\partial x^{i}} dx^{i}(v)
-                   = \nabla_{M}f \cdot v
-                   = \nabla_{M}f \cdot \dot{s}_{\eps}
+                   = \nabla f \cdot v
+                   = \nabla f \cdot \dot{s}_{\eps}
                    = \frac{d (f\circ s_{\eps})}{dt}(0) \formpunkt
       \end{aligned}
     \end{align}
@@ -258,8 +258,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
   Abbildung \( \exd \) "`in eine andere Richtung zeigt"' als der lineare Randoperator \( \partial \).
   Und tatsächlich gibt es eine Verbindung zwischen diesen beiden Komplexen.
   Es ist der Satz von Stokes 
-  (\cite{Marsden}(Kap. 7.2), \cite{jaenich}(Kap. 9))
-  , den wir im vorherigen Abschnitt auch schon benutzt hatten.
+  (\cite[Kap.7.2]{Marsden}, \cite[Kap.9]{jaenich}), der im vorherigen Abschnitt auch schon benutzt wurde.
   Wir wollen ihn hier nochmal kurz niederschreiben.
 
   \begin{satz}[Satz von Stokes]
@@ -300,7 +299,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
 
   \begin{folgerung}
     Die diskrete äußere Ableitung lässt sich mit Hilfe des Satzes von Stokes und den Randoperator berechnen.
-    Es sei \( \alpha_{d}=\psi(\alpha)\in\Omega_{d}^{p}(K) \) eine diskrete \( p \)-Form und \( \sigma\in K^{(p+1)} \) ein \( (p+1) \)-Simplex, dann gilt
+    Es sei \( \alpha_{d}=\psi(\alpha)\in\Omega_{d}^{p}(K) \) eine diskrete \( p \)"~Form und \( \sigma\in K^{(p+1)} \) ein \( (p+1) \)-Simplex, dann gilt
     \begin{align}
       \left\langle \exd\alpha_{d} , \sigma \right\rangle &= \int_{\pi_{\sigma}(\sigma)} \exd\alpha 
                                                           = \int_{\partial\pi_{\sigma}(\sigma)} \alpha
@@ -309,13 +308,15 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     mit \( \pi_{\sigma}|_{\partial\sigma} = \pi_{\partial\sigma} \).
     Deshalb bezeichnen wir \eqref{eqAeussereAbleitung} auch als Korandoperator.
-    Des Weiteren ist somit Definition \ref{defAeussereAbleitung} repräsentantenunabhängig (Wohldefiniertheit),
-    denn wenn \( \alpha_{1},\alpha_{2} \in \Omega^{p}(M) \) mit \( \psi(\alpha_{1}) = \psi(\alpha_{2}) \), 
+    Des Weiteren ist Definition \ref{defAeussereAbleitung} repräsentantenunabhängig (Wohldefiniertheit),
+    denn wenn wir \mbox{\( \alpha_{1},\alpha_{2} \in \Omega^{p}(M) \)} wählen 
+    mit \( \psi(\alpha_{1}) = \psi(\alpha_{2}) \), 
     dann gilt für alle \( \sigma\in K^{(p+1)} \), dass
     \begin{align}
       \left\langle \exd\psi(\alpha_{1}), \sigma \right\rangle &= \left\langle \psi(\alpha_{1}), \partial\sigma \right\rangle
                                                                = \left\langle \psi(\alpha_{2}), \partial\sigma \right\rangle
                                                                = \left\langle \exd\psi(\alpha_{2}), \sigma \right\rangle
+                                                               \formpunkt
     \end{align}
   \end{folgerung}
   
@@ -325,56 +326,6 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Da das Dualgitter wiederum auch ein Primärgitter ist, gelten obige Definitionen dieses Abschnittes auch auf diesem
     (vgl. Abschnitt \ref{secHodgeStar}).
     Somit ergeben sich Berechnungsformeln für 0- und 1-Formen, die in Tabelle \ref{tabFormelAbleitung} zusammengefasst sind.
-    \begin{table}[htbp]
-    \begin{tabular}{|c|c|} \hline
-      Darstellung & Formel \\\hline
-      \begin{minipage}[c]{0.29\textwidth}
-        \centering\input{bilder/tikz/ableitungPrimal0Form}
-      \end{minipage} &
-      \begin{minipage}[c]{0.69\textwidth}
-        Für \( f\in\Omega_{d}^{0}(K) \) und \( \sigma^{1}=\left[ v_{0}, v_{1} \right]\in K \) gilt
-        {\begin{align}
-          \label{eqAbleitungKante}
-          \left\langle \exd f , \sigma^{1} \right\rangle &= f(v_{1}) - f(v_{0}) \formpunkt
-        \end{align}}
-      \end{minipage} \\\hline
-      \begin{minipage}[c]{0.29\textwidth}
-        \centering\input{bilder/tikz/ableitungPrimal1Form}
-      \end{minipage} &
-      \begin{minipage}[c]{0.69\textwidth}
-      Für \( \alpha\in\Omega_{d}^{1}(K) \) und \( \sigma^{2},\sigma^{1}_{0},\sigma^{1}_{1},\sigma^{1}_{2} \in K \) 
-      mit \( \partial\sigma^{2} = \sum_{i=0}^{2} \sigma^{1}_{i} \) gilt
-        {\begin{align}
-          \left\langle \exd \alpha , \sigma^{2} \right\rangle &= \sum_{i=0}^{2} \left\langle \alpha, \sigma_{i}^{1}\right\rangle
-        \end{align}}
-      \end{minipage} \\\hline
-      \begin{minipage}[c]{0.29\textwidth}
-        \centering\input{bilder/tikz/ableitungDual0Form}
-      \end{minipage} &
-      \begin{minipage}[c]{0.69\textwidth}
-        Für \( f\in\Omega_{d}^{0}(\csd K) \), \( \sigma^{2}_{0}, \sigma^{2}_{1} \in K \) und 
-        \( \star\sigma^{1} \in \star K \) gilt
-        {\begin{align}
-          \left\langle \exd f , \star\sigma^{1} \right\rangle &= f(c(\sigma^{2}_{1})) - f(c(\sigma^{2}_{0})) \formpunkt
-        \end{align}}
-      \end{minipage} \\\hline
-      \begin{minipage}[c]{0.30\textwidth}
-        \centering\input{bilder/tikz/ableitungDual1Form}
-      \end{minipage} &
-      \begin{minipage}[c]{0.68\textwidth}
-        Für \( \alpha\in\Omega_{d}^{1}(\csd K) \) und \( \star v, \star\sigma_{i}^{1} \in \star K \) mit
-        \( \partial(\star v) = \sum_{i=0}^{m} \star\sigma_{i}^{1} \) und \( \sigma_{i}^{1} \succ v  \) gilt
-        {\begin{align}
-          \left\langle \exd \alpha , \star v \right\rangle &=  \sum_{i=0}^{m} \left\langle \alpha, \star\sigma_{i}^{1}\right\rangle
-          \formkomma
-        \end{align}}
-        wobei \( (m+1) \) die Anzahl der Kanten ist, die \( v \) als Ecke haben.
-      \end{minipage} \\\hline
-    \end{tabular}
-    \caption[Formeln für Äußere Ableitung]{Formeln für die Äußere Ableitung. 
-                  Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.}
-    \label{tabFormelAbleitung}
-    \end{table}
   \end{bemerkung}
 
   Alleine mit der äußeren Ableitung ließe sich auf einer \( 2 \)-Mannigfaltigkeit schon einiges Rechnen.
@@ -426,6 +377,56 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
  
 
   
+    \begin{table}[htbp]
+    \begin{tabular}{|c|c|} \hline
+      Darstellung & Formel \\\hline
+      \begin{minipage}[c]{0.29\textwidth}
+        \centering\input{bilder/tikz/ableitungPrimal0Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.69\textwidth}
+        Für \( f\in\Omega_{d}^{0}(K) \) und \( \sigma^{1}=\left[ v_{0}, v_{1} \right]\in K \) gilt
+        {\begin{align}
+          \label{eqAbleitungKante}
+          \left\langle \exd f , \sigma^{1} \right\rangle &= f(v_{1}) - f(v_{0}) \formpunkt
+        \end{align}}
+      \end{minipage} \\\hline
+      \begin{minipage}[c]{0.29\textwidth}
+        \centering\input{bilder/tikz/ableitungPrimal1Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.69\textwidth}
+      Für \( \alpha\in\Omega_{d}^{1}(K) \) und \( \sigma^{2},\sigma^{1}_{0},\sigma^{1}_{1},\sigma^{1}_{2} \in K \) 
+      mit \( \partial\sigma^{2} = \sum_{i=0}^{2} \sigma^{1}_{i} \) gilt
+        {\begin{align}
+          \left\langle \exd \alpha , \sigma^{2} \right\rangle &= \sum_{i=0}^{2} \left\langle \alpha, \sigma_{i}^{1}\right\rangle
+        \end{align}}
+      \end{minipage} \\\hline
+      \begin{minipage}[c]{0.29\textwidth}
+        \centering\input{bilder/tikz/ableitungDual0Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.69\textwidth}
+        Für \( f\in\Omega_{d}^{0}(\csd K) \), \( \sigma^{2}_{0}, \sigma^{2}_{1} \in K \) und 
+        \( \star\sigma^{1} \in \star K \) gilt
+        {\begin{align}
+          \left\langle \exd f , \star\sigma^{1} \right\rangle &= f(c(\sigma^{2}_{1})) - f(c(\sigma^{2}_{0})) \formpunkt
+        \end{align}}
+      \end{minipage} \\\hline
+      \begin{minipage}[c]{0.30\textwidth}
+        \centering\input{bilder/tikz/ableitungDual1Form}
+      \end{minipage} &
+      \begin{minipage}[c]{0.68\textwidth}
+        Für \( \alpha\in\Omega_{d}^{1}(\csd K) \) und \( \star v, \star\sigma_{i}^{1} \in \star K \) mit
+        \( \partial(\star v) = \sum_{i=0}^{m} \star\sigma_{i}^{1} \) und \( \sigma_{i}^{1} \succ v  \) gilt
+        {\begin{align}
+          \left\langle \exd \alpha , \star v \right\rangle &=  \sum_{i=0}^{m} \left\langle \alpha, \star\sigma_{i}^{1}\right\rangle
+          \formkomma
+        \end{align}}
+        wobei \( (m+1) \) die Anzahl der Kanten ist, die \( v \) als Ecke haben.
+      \end{minipage} \\\hline
+    \end{tabular}
+    \caption[Formeln für Äußere Ableitung]{Formeln für die Äußere Ableitung. 
+                  Die Orientierungen der Kanten wurden dabei so gewählt, dass möglichst wenig Vorzeichenwechsel entstehen.}
+    \label{tabFormelAbleitung}
+    \end{table}
 
   
 
@@ -434,7 +435,6 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
 \section{Hodge-Stern-Operator}
 \label{secHodgeStar}
 
-  \todo[inline]{motivation: kein dachprodukt}
   Betrachten wir ein Vektorfeld \( \vec{v}:= \left[ v^{1}, v^{2} \right]^{T} \in \mathcal{V}^{\infty}(M) \) auf einer zweidimensionalen geschlossenen Riemannschen Mannigfaltigkeit \( M \)
   mit lokalen orthogonalen Koordinaten \( \left( x^{1}, x^{2} \right) \) und metrischen Tensor \( g=\text{diag}(g_{1}, g_{2})\).
   Werten wir nun die zu \( \vec{v} \) duale Differentialform \( \vecflat{v}\in\Omega^{1}(M) \) an dem tangentialen Basisvektor
@@ -445,14 +445,14 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
                                                                    = v_{1} = g_{1}v^{1}
   \end{align}
   als Antwort.
-  Der in der orthoganalen \( \frac{\partial}{\partial x^{2}} \)-Richtung gedrehte Basisvektor \( \frac{\partial}{\partial x^{1}} \) 
+  Der in der orthogonalen \( \frac{\partial}{\partial x^{2}} \)-Richtung gedrehte Basisvektor \( \frac{\partial}{\partial x^{1}} \) 
   (unter Beibehaltung der Länge \( \left\|\frac{\partial}{\partial x^{1}}\right\|_{g} = \sqrt{g_{1}}  \)) ist 
   \( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \in T_{x}M\), 
   was sich entweder durch Nachrechnen überprüfen lässt oder sich auch als Ergebnis von 
   \( \left( * \left( \frac{\partial}{\partial x^{1}} \right)^{\flat} \right)^{\sharp} \) ergibt.
   Hierbei merken wir schon, dass der Hodge-Stern-Operator durchaus auch eine anschauliche Seite hat.
   Auf Oberflächen dreht er nämlich Vektorfelder in orthogonaler Richtung.
-  Wird auf die \( 1\)-Form \( \vecflat{v} \) ebenfall der Hodge-Stern-Operator angewenden erhalten wir
+  Wird auf die \( 1\)-Form \( \vecflat{v} \) ebenfalls der Hodge-Stern-Operator angewendet erhalten wir
   \begin{align}
   \begin{aligned}
     \left( *\vecflat{v} \right)\left( \sqrt{g_{1}g^{2}} \frac{\partial}{\partial x^{2}} \right)
@@ -478,7 +478,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
   wobei \( \sigma^{1} \) ein \( 1 \)-Simplex aus dem wohlzentrierten Primärgitter \( K \) ist.
   Der Punkt \( x\in M \), an dem die Basisvektoren definiert sind, ist der Schnittpunkt der zugehörigen abstrakten Simplizes,
   das heißt \( \{x\} = \pi(\sigma^{1})\cap\pi(\star\sigma^{1}) \).
-  Die 2. Approximation auf der dualen Kante erhalten wir ähnlich, wie schon in \eqref{eqApprox1Form}.
+  Die 2. Approximation in \eqref{eqIntegralMittelStern1Form} auf der dualen Kante erhalten wir ähnlich, wie schon in \eqref{eqApprox1Form}.
   Sei \( \alpha:=v_{1}dx^{1} + v_{2}dx^{2} = \vecflat{v} \), dann ergibt sich
   \begin{align}
     *\alpha &= -\sqrt{g_{1}g^{2}}v_{2}dx^{1} + \sqrt{g^{1}g_{2}}v_{1}dx^{2}
@@ -534,14 +534,15 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \alpha := \sum_{i_{1}<\ldots<i_{p}} \alpha_{i_{1}\ldots i_{p}} dx^{i_{1}}\wedge\ldots\wedge dx^{i_{p}}
     \end{align}
     auf \( |K| \) gegeben mit den Koordinaten \(\alpha_{i_{1}\ldots i_{p}} \). 
-    Mit der Inklusionsabbildung \( \iota: \sigma^{p} \hookrightarrow |K| \) und dass o.E.d.A. \( \left( x^{1},\ldots,x^{p} \right) \) die rechtwinkligen Koordinaten des von
+    Mit der Inklusionsabbildung \( \iota: \sigma^{p} \hookrightarrow |K| \) und dass o.E.d.A. \( \left(
+    x^{1},\ldots,x^{p} \right) \) die rechtwinkligen Koordinaten, des von
     den Kante(n) von
-    \( \sigma^{p}\in K \) aufgespannten \( p\)-dimensionalen \( \R \)-Vektorraums ist, gilt somit
+    \( \sigma^{p}\in K \) aufgespannten \( p\)-dimensionalen \( \R \)-Vektorraums sind, gilt somit
     \begin{align}
       \iota^{*}\alpha = \alpha_{1\ldots p}dx^{1}\wedge\ldots\wedge dx^{p}\in\Omega^{p}(\sigma^{p}) \formpunkt
     \end{align}
     Auch hier werden wir wieder, aus schon weiter oben genannten Gründen, nur \( \alpha \) statt \( \iota^{*}\alpha \) für die zurückgezogene Differentialform schreiben.
-    Zunächsten wollen wir überprüfen wie gut sich die Integralauswertungen im Punkt \( c:=c(\sigma^{p}) \) abschätzen lassen, da dies der einzige gemeinsame Punkt von
+    Zunächst wollen wir überprüfen wie gut sich die Integralauswertungen im Punkt \( c:=c(\sigma^{p}) \) abschätzen lassen, da dies der einzige gemeinsame Punkt von
     \( \sigma^{p} \) und \( \star\sigma^{p} \) ist.
     Dazu nutzen wir den Umkreisradius des Simplexes  \( \sigma^{p} \)
     \begin{align}
@@ -552,17 +553,18 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       &\left| |\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(\alpha)(\sigma^{p})\right| \\
       &=  \left| |\sigma^{p}|\alpha_{1 \ldots p}(c) 
                   - \int_{\sigma^{p}} \alpha_{1 \ldots p}(c) + (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) + \mathcal{O}(\eps_{\sigma^{p}}^{2}) dx^{1}\wedge\ldots\wedge dx^{p} \right| \\
-      &= \left| \int_{\sigma^{p}}  (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) dx^{1}\wedge\ldots\wedge dx^{p} + \mathcal{O}(\eps_{\sigma^{p}}^{2})\right| \\
-      &\le \int_{\sigma^{p}} \left| (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) \right| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \\
-      &\le \int_{\sigma^{p}} \|x-c\|\|\nabla\alpha_{1 \ldots p}(c)\| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \formtext{\footnotesize(Cauchy-Schwarz)}\\
-      &\le \|\nabla\alpha_{1 \ldots p}(c)\| \int_{\sigma^{p}} \eps_{\sigma^{p}}  dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \\
-      &\le |\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| \eps_{\sigma^{p}} + |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \right) \label{eq1}
+      &= \left| \int_{\sigma^{p}}  (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) dx^{1}\wedge\ldots\wedge dx^{p} 
+                    +|\sigma^{p}|\mathcal{O}(\eps_{\sigma^{p}}^{2})\right| \\
+      &\le \int_{\sigma^{p}} \left| (x-c)^{T}\nabla\alpha_{1 \ldots p}(c) \right| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| \mathcal{O}(\eps_{\sigma^{p}}^{2}) \\
+      &\le \int_{\sigma^{p}} \|x-c\|\|\nabla\alpha_{1 \ldots p}(c)\| dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| \mathcal{O}(\eps_{\sigma^{p}}^{2}) \formtext{\footnotesize(Cauchy-Schwarz)}\\
+      &\le \|\nabla\alpha_{1 \ldots p}(c)\| \int_{\sigma^{p}} \eps_{\sigma^{p}}  dx^{1}\wedge\ldots\wedge dx^{p} +|\sigma^{p}| \mathcal{O}(\eps_{\sigma^{p}}^{2}) \\
+      &\le |\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| \eps_{\sigma^{p}} + \mathcal{O}(\eps_{\sigma^{p}}^{2}) \right) \label{eq1}
     \end{align}
     Für den diskreten Hodge-Stern erhalten wir somit
     \begin{align}
       \left| (*\psi(\alpha))(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c) \right|
             &= \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \left| |\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(\alpha)(\sigma^{p}) \right| \\
-            &\le  |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| \eps_{\sigma^{p}} + |\mathcal{O}(\eps_{\sigma^{p}}^{2})| \right)
+            &\le  |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| \eps_{\sigma^{p}} + \mathcal{O}(\eps_{\sigma^{p}}^{2}) \right)
     \end{align}
     Wenn \( p = 0 \) ist, dann gilt für \( \alpha:= f \in C^{\infty}(M) \) die Gleichheit
     \begin{align}
@@ -597,7 +599,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Somit gilt die Abschätzung
     \begin{align}
       \left||\hat\sigma^{n-p}|\alpha_{1 \ldots p}(c) - \psi(*\alpha)(\hat\sigma^{n-p}) \right|
-        &\le |\hat\sigma^{n-p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| l_{\hat\sigma^{n-p}} + |\mathcal{O}(l_{\hat\sigma^{n-p}}^{2})| \right) \label{eq3}
+        &\le |\hat\sigma^{n-p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\| l_{\hat\sigma^{n-p}} + \mathcal{O}(l_{\hat\sigma^{n-p}}^{2}) \right) \label{eq3}
     \end{align}
     für die Summanden in \eqref{eq2}.
     Mit der Länge, der längsten in der Dualkette \( \star\sigma^{p} \) enthalten Kante,
@@ -609,7 +611,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     folgt nun aus \eqref{eq2} und \eqref{eq3}, dass
     \begin{align}
        \left| |\star\sigma^{p}|\alpha_{1 \ldots p}(c) - \psi(*\alpha)(\star\sigma^{p})\right| 
-         &\le |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\|\hat{l}_{\star\sigma^{p}}  + |\mathcal{O}(\hat{l}_{\star\sigma^{p}}^{2})| \right) \formpunkt
+         &\le |\star\sigma^{p}| \left( \|\nabla\alpha_{1 \ldots p}(c)\|\hat{l}_{\star\sigma^{p}}  + \mathcal{O}(\hat{l}_{\star\sigma^{p}}^{2}) \right) \formpunkt
     \end{align}
     Wenn \( p = n \) ist, dann gilt für \( *\alpha:= f  dx^{1}\wedge\ldots\wedge dx^{n} \) mit \( f \in C^{\infty}(M) \) die Gleichheit
     \begin{align}
@@ -621,7 +623,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
           &\le \left| (*\psi(\alpha))(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c)\right| \\  
           &\quad     +\left|\psi(*\alpha)(\star\sigma^{p}) - |\star\sigma^{p}|\alpha_{1 \ldots p}(c)\right| \\
           &\le |\star\sigma^{p}| \|\nabla\alpha_{1 \ldots p}(c)\| \left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right)   \\
-          &\quad      + |\star\sigma^{p}||\mathcal{O}(\eps_{\sigma^{p}}^{2} + \hat{l}_{\star\sigma^{p}}^{2})|
+          &\quad      + |\star\sigma^{p}|\mathcal{O}(\eps_{\sigma^{p}}^{2} + \hat{l}_{\star\sigma^{p}}^{2})
     \end{align}
     (speziell auch für \( p=0 \) bzw. \( p=n \)) und damit die Behauptung.
   \end{proof}
@@ -664,14 +666,14 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
 
   \begin{definition}
     \label{defDualHodgeStern}
-    Der diskrete Hodge-Stern-Operator \(*:\Omega^{p}_{d}(\star K) \rightarrow \Omega^{(n-p)}_{d}(K)\) defiert sich implizit über
+    Der diskrete Hodge-Stern-Operator \(*:\Omega^{p}_{d}(\star K) \rightarrow \Omega^{(n-p)}_{d}(K)\) definiert sich implizit über
     \begin{align}
       **\alpha = (-1)^{p(n-p)}\alpha
     \end{align}
     für alle \( \alpha\in\Omega^{n-p}_{d}(K) \).
   \end{definition}
 
-  Dabei sei nochmal hervorgehoben, dass \(\Omega^{p}_{d}(\star K)  \) gerade als surjektives Bild definiert wurde und damit macht obige definition auch Sinn,
+  Dabei sei nochmal hervorgehoben, dass \(\Omega^{p}_{d}(\star K)  \) gerade als surjektives Bild definiert wurde und damit macht obige Definition auch Sinn,
   das heißt sie beschreibt tatsächlich das Bild aller \( \hat\alpha\in\Omega^{p}_{d}(\star K) \).
   Natürlich lässt sich daraus eine explizite Schreibweise ableiten.
   
@@ -685,7 +687,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
   \end{folgerung}
   \begin{proof}
     Da für alle \( \hat\alpha\in\Omega^{p}_{d}(\star K) \) ein \( \alpha\in\Omega^{n-p}_{d}(\star K) \) existiert,
-    sodass \( \hat\alpha = \star\alpha \) gilt, können wir mit Hilfe der Definitionen \ref{defDiskreteHodgeStern} und \ref{defDoppelSternBedingung} rechnen
+    sodass \( \hat\alpha = \star\alpha \) gilt, können wir mit Hilfe der Definitionen
+    \ref{defDiskreteHodgeStern} und \ref{defDoppelSternBedingung} rechnen, dass
     \begin{align}
       \left\langle *\hat\alpha, \star\hat\sigma^{p} \right\rangle
         &= (-1)^{p(n-p)} (-1)^{p(n-p)} \left\langle \alpha , \sigma^{n-p} \right\rangle
@@ -710,7 +713,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         &= \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \left[ \psi(*\alpha) - *\psi(\alpha) \right](\star\sigma^{p}) \right|\\
         &\le  \frac{|\sigma^{p}|}{|\star\sigma^{p}|} \left| \star\sigma^{p} \right| \mathcal{O}\left(\eps_{\sigma^{p}} + \hat{l}_{\star\sigma^{p}}\right) \formkomma
     \end{align}
-    da \( *\hat\alpha = **\alpha = (-1)^{p(n-p)}\alpha \) und \( **\psi(\hat\alpha) =  (-1)^{p(n-p)}\psi(\hat\alpha)\).
+    da \( *\hat\alpha = **\alpha = (-1)^{p(n-p)}\alpha \) und \( **\psi(\hat\alpha) =  (-1)^{p(n-p)}\psi(\hat\alpha)\)
+    gilt.
   \end{proof}
 
   Auch hier können wir wieder den Spezialfall eines zweidimensionalen Polyeders betrachten.
@@ -726,7 +730,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
   \begin{proof}
     Die Aussage folgt aus \eqref{eqKonsistenzDualHodge}. 
     Die geometrischen Größen \( \eps_{\sigma^{p}} \) und \( \hat{l}_{\star\sigma^{p}} \) können aus der vorhergehenden Tabelle \eqref{tabGeometrischeGroessen} entnommen werden.
-    Die noch fehlenden (Abschätzungen der) Voluminas der Simplizes sind
+    Die noch fehlenden (Ab\-schät\-zun\-gen der) Volumina der Simplizes sind
     \begin{align}
     \begin{aligned}
        \left| \sigma^{0} \right| &= 1 \\
@@ -735,7 +739,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{aligned}
     \end{align}
   \end{proof}
-  Letztere Abschätzung liese sich auch so lesen, dass sich für eine \( \hat{p} \)-Form \( \alpha\in\Omega^{\hat{p}}(M) \) 
+  Letztere Abschätzung ließe sich auch so lesen, dass sich für eine \( \hat{p} \)-Form \( \alpha\in\Omega^{\hat{p}}(M) \) 
   (lokal auf einem \( (2-\hat{p}) \)-Simplex) ebenfalls eine Ordnung von \( (3-\hat{p}) \) ergibt, wie schon in \eqref{eqKonsistenzHodge}.
 
   Für eine allgemeine Definition der Rotation für Differentialformen 
@@ -780,10 +784,12 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \text{Div}\vec{w} = -\delta\vecflat{w} \formpunkt
     \end{align}
     Wobei bei einer Dimension \( n=2 \), wie auch für alle anderen geraden Dimensionen, immer gilt, dass \( \delta = -*\exd * \) ist.
-    Wird nun \( M \) durch ein wohlzentriertes Primärgitter \( K \) approximiert, dann können wir die Divergenz an einer Ecke \( v\in K \) numerisch berechnen.
+    Wird nun eine 2"~Mannigfaltigkeit \( M \) durch ein wohlzentriertes Primärgitter \( K \) approximiert, 
+    dann können wir die Divergenz an einer Ecke \( v\in K \) numerisch berechnen.
     Sei dazu die diskrete \( 1 \)-Form 
     \( \alpha:=\psi(\vecflat{v})\in\Omega_{d}^{1}(K) \)
-    gegeben.\\
+    gegeben.
+    Dann ergibt sich die diskrete Divergenz zu\\
     \begin{minipage}[b]{0.3\textwidth}
         \centering\input{bilder/tikz/ableitungDual1Form}
     \end{minipage}
@@ -797,6 +803,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
           &= \frac{1}{\left| \star v \right|} \sum_{i=0}^{m} \left\langle *\alpha , \star\sigma^{1}_{i} \right\rangle \\
           &= \frac{1}{\left| \star v \right|} \sum_{i=0}^{m} \frac{\left| \star\sigma^{1}_{i} \right|}{\left|\sigma^{1}_{i} \right|}
                                                               \left\langle \alpha , \sigma^{1}_{i} \right\rangle
+                                                              \formpunkt
     \end{aligned}
     \end{align}
     \end{minipage}
@@ -809,14 +816,16 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Da AMDiS von Haus aus eine geeignete Speicherstruktur für skalarwertige oder vektorisierte skalarwertige Probleme mitbringt, müssen intern nur die FEM-Operatoren durch geeignete
     DEC-Operatoren ausgetauscht werden.
     Die Problemformulierung, das aufaddieren der Elementmatrizen sowie das Lösen des Gleichungssystem bleibt somit im Ursprünglichen Zustand erhalten.
-    Es ist somit sogar möglich Differentialgleichungssysteme mit DEC und FEM in einer einzelnen Problemformulierung gemischt zulösen.
+    Es ist somit unter Umständen sogar möglich Differentialgleichungssysteme mit DEC und FEM in einer einzelnen 
+    hybriden Problemformulierung gemischt zu lösen.
   \end{bemerkung}
 
   \begin{fazit}
-    Auf einer 2-Mannigfalltigkeit lässt sich noch ein weiterer aus der klassischen Vektoranalysis bekannter Ableitungsoperator mit Hilfe der Koableitung darstellen.
-    Für \( f\in C^{\infty(M)} \) definiert sich die Rotation über
+    Auf einer 2-Mannigfaltigkeit lässt sich noch ein weiterer, aus der klassischen Vektoranalysis
+    bekannter, Ableitungsoperator mit Hilfe der Koableitung darstellen.
+    Für \( f\in C^{\infty}(M) \) definiert sich die Rotation über
     \begin{align}
-      \left( *\delta\left( *f \right) \right)^{\sharp} = -\left( *\exd f \right)^{\sharp} =: -\text{Rot} f \formpunkt
+      \left( \delta\left( *f \right) \right)^{\sharp} = -\left( *\exd f \right)^{\sharp} =: -\text{Rot} f \formpunkt
     \end{align}
     Damit können wir analog zu \eqref{diag2DimAusAbleitung} zusammenfassend den Kettenkomplex mit den zugehörigen Skalar-/Vektorfeldübersetzungsisomorphismen aufstellen:
     \begin{align}
@@ -827,7 +836,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     Nach dem Baukastenprinzip ließen sich somit alle linearen Differentialgleichungen endlicher Ordnung diskretisieren.
     Um auch nichtlineare Terme wie die Kontraktion (inneres Produkt) \( i_{\vec{v}}\alpha\in\Omega^{p-1}(M) \) 
-    oder die Lie-Ableitung \( \mathcal{L}_{\vec{v}}\alpha\in\Omega^{p}(M) \) für \( \vec{v}\in\mathcal{V}^{\infty} \) und \( \alpha\in\Omega^{p}(M) \) darzustellen
+    oder die Lie-Ableitung \( \mathcal{L}_{\vec{v}}\alpha\in\Omega^{p}(M) \) 
+    für \( \vec{v}\in\mathcal{V}^{\infty}(M) \) und \( \alpha\in\Omega^{p}(M) \) darzustellen
     benötigen wir noch das diskrete Dachprodukt \( \wedge \).
     In \cite{desbrun} werden zwei diskretes Dachprodukt auf \( \Omega_{d}^{p}(K)\times\Omega_{d}^{q}(K) \) bzw. \( \Omega_{d}^{p}(\star K)\times\Omega_{d}^{q}(\star K) \)
     für \( p+q\le n \) vorgestellt, welche, wie auch das Dachprodukt für Differentialformen, antikommutativ sind und die Leibnitzregel (Produktregel) bzgl. der äußeren Ableitung erfüllen.
@@ -838,25 +848,30 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \mathcal{L}_{\vec{v}}\alpha = i_{\vec{v}}\exd\alpha + \exd i_{\vec{v}}\alpha 
     \end{align}
     als algebraische Bedingung eine diskrete Lie-Ableitung erhalten.
-    Somit könnte zum Beispiel auch der Jacobian
+    Folglich wäre es zum Beispiel auch möglich den Jacobian
     \begin{align}
       \mathcal{J}(\psi,\Delta\psi) = *\exd\mathcal{L}_{\vec{u}}\vecflat{u} 
     \end{align}
     mit dem Strömungsfeld \( u = \text{Rot}\psi\in\mathcal{V}^{\infty}(M) \) und der Stromfunktion \( \psi\in C^{\infty}(M) \),
-    wie er in der Wirbelgleichung in \cite{nitschke} vorkommt, numerisch mit Hilfe des DECs als skalarwertiges Problem behandelt werden.
-    Auch eine direkte Diskretisierung des Konvektionstermes \( \mathcal{L}_{\vec{u}}\vecflat{u} \) in den Navier-Stokes-Gleichungen (vgl. \cite{Marsden}, Kap.8) wäre denkbar.
-    Das Problem an dem resultierendem (Tangential-)Vektorproblem ist, dass wir noch keine diskreten Übersetzungisomorphismen \( \sharp \) und \( \flat \) haben.
+    wie er in der Wirbelgleichung in \cite{nitschke} vorkommt, numerisch mit Hilfe des DECs als skalarwertiges Problem 
+    zu behandeln.
+    Auch eine direkte Diskretisierung des Konvektionstermes \( \mathcal{L}_{\vec{u}}\vecflat{u} \) in den
+    Navier-Stokes-Gleichungen (vgl. \cite[Kap.8]{Marsden}) wäre denkbar.
+    Das Problem an dem resultierendem (Tangential-)Vektorproblem ist, dass wir noch keine diskreten
+    Übersetzungsisomorphismen \( \sharp \) und \( \flat \) haben.
     Diese müssten in zukünftigen Arbeiten noch sinnvoll entwickelt werden.
     Erste Ansätze dazu finden sich zum Beispiel in \cite{hirani}.
     Vorher müssten allerdings noch fundamentale implementiertechnische Fragen gestellt werden.
     Wollen wir mit \( 1 \)-Formen oder mit Vektorfeldern speicherintern arbeiten und bei Bedarf die Indizes rauf bzw. herunter ziehen?
     Und wie wollen wir speichern?
-    Bei \( 1 \)-Formen ist es klar, im diskreten definieren sie sich über die Werte auf den Kanten, das heißt ein Freiheitsgrad auf jeder Kante.
+    Bei \( 1 \)-Formen ist das klar. 
+    Im diskreten definieren sie sich über die Werte auf den Kanten, das heißt ein Freiheitsgrad auf jeder Kante.
     Bei Vektorfeldern wird es da schon schwieriger. Am sichersten ist es diese auf den Dreieckelementen zu speichern (effektiv 2 Freiheitsgrade pro Element), da es dort einen eindeutigen
     Tangentialraum auf dem Polytop gibt. 
-    Tangentialvektoren auf den Ecken zuspeichern, wie es im flachen Fall üblich ist, wird zu Problemen führen, da auf den Ecken kein eindeutiger Tangentialraum definiert ist.
-    Eine Mittelung der umliegenden Tangentialräume der anliegenden Dreiecke (oder auch Kanten) scheint doch recht wilkürlich zu sein und könnte zu einem nicht lösbaren Gleichungssystem
-    führen. Es müssen drei Freigheitsgrade für die Ecken angesetzt werden für ein eigentlich zweidimensionales Problem, was zu einem überbestimmten System führen könnte.
+    Tangentialvektoren auf den Ecken zu speichern, wie es im flachen Fall üblich ist, wird zu Problemen führen, da auf den Ecken kein eindeutiger Tangentialraum definiert ist.
+    Eine Mittelung der umliegenden Tangentialräume der anliegenden Dreiecke (oder auch Kanten) scheint doch
+    recht willkürlich zu sein und könnte zu einem nicht lösbaren Gleichungssystem
+    führen. Es müssen drei Freiheitsgrade für die Ecken angesetzt werden für ein eigentlich zweidimensionales Problem, was zu einem überbestimmten System führen könnte.
     Auf jeden Fall würde es die (dünnbesetzte) Systemmatrix unnötig "`aufblähen"'.
 
     Wir haben gezeigt, dass für ein immer feiner werdendes wohlzentriertes Primärgitter der diskrete Hodge-Stern-Operator gegen den Hodge-Stern-Operator für Differentialformen auf dem
@@ -864,7 +879,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Offen für zukünftige Arbeiten bleibt die Frage wie gut denn überhaupt eine Differentialform auf einem Polytop eine Differentialform auf einer glatten Mannigfaltigkeit zu approximieren vermag
     und in welchem Sinne.
     Auf dem Primärgitter ließe sich diese Frage noch am einfachsten beantworten, da dort auf einem Simplex, nach dem Mittelwertsatz der Differentialrechnung, der Tangentialraum an
-    wenigstem einem Punkt auf dem zugehörigen abstrakten Simplex übereinstimmt, d.h. dort hätten wir zumindestens schonmal einen gemeinsamen Vektorraum zum vergleichen.
+    wenigstem einem Punkt auf dem zugehörigen abstrakten Simplex übereinstimmt, d.h. dort hätten wir zumindest 
+    schon mal einen gemeinsamen Vektorraum zum vergleichen.
     Für ein Simplex auf dem Dualgitter, wie wir es für den Hodge-Stern-Operator bräuchten, scheint die Situation schwieriger, da hier im allgemeinen die Ecken nicht auf der Mannigfaltigkeit
     liegen und es somit noch unklar ist ob sich überhaupt ein gemeinsamer Tangentialraum finden lässt.
     Weitere Möglichkeiten zum Vergleichen für zweidimensionale Probleme sind zum einen den Ambienteraum \( \R^{3} \) zu nutzen in dem \( M \) und \( |K| \) liegen.
@@ -873,7 +889,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Ist die Klebeabbildung \( \pi:|K|\rightarrow M \) bekannt, so ließe sich auch mit der zurückgezogenen Form \( \pi^{*}\alpha\in\Omega^{p}(|K|) \) argumentieren für ein \(
     \alpha\in\Omega^{p}(M) \).
     Für die äußere Ableitung spielt das keine Rolle da hier immer \( \exd\circ\pi^{*} = \pi^{*}\circ\exd \) gilt.
-    Die äußere Ableitung ist aber auch metrikunabgängig, der Hodge-Stern-Operator ist das im Allgemeinen nicht und damit haben wir solch eine Invariantz gegenüber den Pullback für eine 
+    Die äußere Ableitung ist aber auch metrikunabgängig, der Hodge-Stern-Operator ist das im Allgemeinen nicht und damit haben wir solch eine Invarianz gegenüber den Pullback für eine 
     nichtisometrische Abbildung \( \pi \) auch nicht.
   \end{fazit}
 
@@ -892,8 +908,9 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Auch Zeitabhängige Probleme sind denkbar, die durch eine Methode der Wahl in der Zeit diskretisiert werden 
     und somit in jedem Zeitschritt auch in die Kategorie \eqref{eqAllgemeineLaplaceGleichung} passen.
 
-    Wir werden hier den Laplace-Operator für skalare Größen diskretisieren um einen diskreten Laplace-Beltrami-Operator zuerhalten und diesen in der Poisson-Gleichung als Minimalbeispiel
-    auch testen. Desweiteren kann der Laplace-Operator auch zur Bestimmung der mittleren Krümmung benutzt werden wie wir in \ref{subsecKruemmungsvektor} noch sehen werden.
+    Wir werden hier den Laplace-Operator für skalare Größen diskretisieren um einen diskreten Laplace-Beltrami-Operator zu erhalten und diesen in der Poisson-Gleichung als Minimalbeispiel
+    auch testen. Desweiteren kann der Laplace-Operator auch zur Bestimmung der mittleren Krümmung benutzt
+    werden, wie wir in \ref{secKruemmungsvektor} noch sehen werden.
     Da hier Oberflächen ohne Rand betrachtet werden, wird auch keine Behandlung von Randbedingungen
     benötigt.
   \end{ziel}
@@ -923,7 +940,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \Delta_{B} f &= \frac{1}{\sqrt{\left| \det g \right|}} \sum_{i,j=1}^{n} \frac{\partial}{\partial x^{j}} \left( g^{ij}\sqrt{\left| \det g \right|} \frac{\partial f}{\partial x^{i}}
       \right) \formpunkt
     \end{align}
-    Für eine zweidimensionale Mannigfaltigkeit mit orthogonalen Koordinaten und Metrik \( g=\diag{g_{1},g_{2}} \) lässt sich die Formel vereinfachen zu
+    Für eine zweidimensionale Mannigfaltigkeit mit orthogonalen Koordinaten und 
+    positiv definiter Metrik \( g=\diag{g_{1},g_{2}} \) lässt sich die Formel vereinfachen zu
     \begin{align}
     \label{eqLaplaceBeltramiOrthogonal}
       \Delta_{B} f &=\sqrt{g^{1}g^{2}} \left(  \frac{\partial}{\partial x^{1}} \left( \sqrt{g^{1}g_{2}} \frac{\partial f}{\partial x^{1}} \right) 
@@ -943,14 +961,17 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
                        \left( f(v_{i}) - f(v) \right) \formpunkt
     \end{aligned}
     \end{align}
+    Der zusätzliche Index \( d \) soll hervorheben, dass der Operator diskret ist.
+    In der Schreibweise der dualen Paarung, ist diese zusätzliche Indizierung nicht notwendig.
 
     \begin{figure}
       \begin{minipage}[t]{0.45\textwidth}
         \centering\input{bilder/tikz/laplace}
-        \caption[Schema für Laplace]{1-Ring um \( v \) mit \( m+1 \) Dreieckelementen.
-                                     Die gepunkteten \( 1 \)-Simplizes sind die zu den Kanten 
+        \caption[Schema für Laplace]{1-Ring um \( v \) mit \mbox{\( m+1 \)} Dreieckelementen.
+                                     Die gepunkteten \( 1 \)"~Simplizes sind die zu den Kanten 
                                      \( \left[ v, v_{i} \right] \) dualen Kanten.
-                                     \( \alpha_{01} \) und \( \beta_{0m} \) sind die in \eqref{eqCotanFormel} verwendeten zur Ecke \( v_{0} \) gehörigen Winkel.}
+                                     \( \alpha_{01} \) und \( \beta_{0m} \) sind die in 
+                                     \eqref{eqCotanFormel} verwendeten und zur Ecke \( v_{0} \) gehörigen Winkel.}
         \label{figSchemaLaplace}
       \end{minipage}
       \hfill
@@ -968,11 +989,12 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       Der in \eqref{eqDiskreteLaplace} beschriebene diskrete Laplace-Operator ist nicht neu.
       In \cite{arakawa} wurde er zum Beispiel schon auf einer quasi-uniform 
       triangulierten Sphäre benutzt. 
-      Dort wird als Grundgitter ein Ikosaeder genutzt, der die Sphäre approximiert,
+      Dort wird als Grundgitter ein Ikosaeder heran gezogen, der die Sphäre approximiert,
       dann werden die 20 Dreiecke gleichmäßig unterteilt.
       Solch eine Triangulation werden wir später auch verwenden, wenn wir auf der Sphäre rechnen wollen.
       Der Kontext in \cite{arakawa} ist allerdings nicht durch das Äußere Kalkül motiviert, sondern ist Folge eines eher anschaulicheren Ansatzes.
-      Denn der Laplace-Operator kann an \( v \) approximiert werden, als den Fluss von \( \nabla f \), der aus der Voronoizelle hinaus fließt.
+      Denn der Laplace-Operator kann an \( v \) approximiert werden, als den Fluss von \( \nabla f \), 
+      der aus der Voronoi-Zelle hinaus fließt.
       \begin{align}
       \begin{aligned}
         \div\nabla f&= \lim_{\left| \star v \right| \rightarrow 0}
@@ -992,7 +1014,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
                       \frac{\cot\alpha_{ii_{+}} + \cot\beta_{ii_{-}}}{2}
                             \left( f(v_{i}) - f(v) \right)
       \end{align}
-      wobei \( i_{+} \) und \( i_{-} \) der Nachfolger bzw. Vorgänger von \( i \) ist modulo \( (m+1) \).
+      wobei \( i_{+} \) und \( i_{-} \) der Nachfolger bzw. Vorgänger von \( i \) modulo \( (m+1) \) ist.
       Es lässt sich leicht geometrisch zeigen, dass im Dreieck \( \sigma^{2}:=\left[ v, v_{i}, v_{i_{+}} \right] \) 
       \begin{align}
         \cot\alpha_{ii_{+}} = \frac{\left| \star\sigma^{1} \cap \sigma^{2} \right|}{\frac{1}{2}\left| \sigma^{1} \right|}
@@ -1001,10 +1023,10 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       analog für \( \beta_{ii_{-}} \).
       Somit ist der diskrete Operator in \eqref{eqCotanFormel} auch wirklich gleich unserem hergeleiteten diskreten Laplace-Beltrami-Operator.
 
-      Um die Nähe zur Finiten-Differenzen-Methode (FDM) zu zeigen lassen wir hier auch die wohlzentriertheit im Limes, also rechtwinklige Dreiecke, zu.
+      Um die Nähe zur Finiten-Differenzen-Methode (FDM) zu zeigen lassen wir hier auch die Wohlzentriertheit im Limes, also rechtwinklige Dreiecke, zu.
       Betrachten wir nun einen flachen 1-Ring um \( v \) mit vier rechtwinkligen Dreiecken, die alle die Kathetenlänge \( l \) haben (vgl. Abbildung \ref{fig5PunktStern}).
-      Dann haben alle Kanten die \( v \) als Anfang haben und auch dessen Voronoikanten die Länge \( l \). 
-      Die Voronoizelle \( \star v \) hat den Flächeninhalt \( l^{2} \).
+      Dann haben alle Kanten, die \( v \) als Anfang haben und auch dessen Voronoi-Kanten, die Länge \( l \). 
+      Die Voronoi-Zelle \( \star v \) hat den Flächeninhalt \( l^{2} \).
       Somit ergibt sich
       \begin{align}
         \left\langle \Delta_{B} f, v \right\rangle 
@@ -1017,16 +1039,15 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
 
   \subsection{Implementierung}
     \label{subsecLaplaceImplementierung}
-    \todo[inline]{änder M als bezeichner}
     Da \( \Delta_{B,d} f \) nichts weiter als eine Linearkombination der Auswertungen von \( f \) an den
     Knoten von \( K \) ist, ließe sich der diskrete Laplace-Beltrami-Operator auch elementweise durch
     Traversierung über alle Dreiecke berechnen.
     Wenn wir zudem voraussetzen, dass wir rechentechnisch auf einem \( \sigma^{2}\in K \) nichts weiter
-    über alle anderen Dreiecke \( K^{(2)}\setminus\left\{ \sigma^{2} \right\} \) wissen, 
+    über alle anderen Dreiecke \mbox{\( K^{(2)}\setminus\left\{ \sigma^{2} \right\} \)} wissen, 
     dann kennen wir auch den Flächeninhalt \( \left| \star v_{i} \right| \) für eine Ecke 
     \( v_{i}\prec\sigma^{2} \) nicht.
     Deshalb werden wir den Hodge-Operator auf den Laplace-Operator anwenden und somit \( \star\Delta_{B,d} f \)
-    auf der Voronoizelle \( v_{i} \) als duale Aufgabe berechnen, 
+    auf der Voronoi-Zelle \( v_{i} \) als duale Aufgabe berechnen, 
     denn der Flächeninhalt von \( \star v_{i} \) kürzt sich
     somit raus:
     \begin{align}
@@ -1040,10 +1061,10 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
                           \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right) \formpunkt
           \label{eqLaplaceElementSummanden}
     \end{align}
-    mit \( f_{i} := \left[ f_{h} \right]_{i} := f(v_{i}) \) (\( i=0,\ldots,\sharp K^{(0)}-1 \)) 
+    mit \( f_{i} := \left[ f_{h} \right]_{i} := f(v_{i}) \) (\( 0 \le i < N_{\sigma^{0}} \)) 
     beziehungsweise 
-    \( f^{\sigma^{2}}_{l} := \left[ f^{\sigma^{2}} \right]_{l}:=f(v^{\sigma^{2}}_{l})\) 
-    (\( l=0,1,2 \))
+    \mbox{\( f^{\sigma^{2}}_{l} := \left[ f^{\sigma^{2}} \right]_{l}:=f(v^{\sigma^{2}}_{l})\)}
+    \mbox{(\( l=0,1,2 \))}
     und den Koeffizienten
     \begin{align}
       C^{\sigma^{2}}_{k,l} &= C^{\sigma^{2}}_{l,k}
@@ -1053,7 +1074,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     für alle \( k,l = 0,1,2 \) und \( l\neq k \).
     Das elementweise aufsummieren ist korrekt, da für \( \sigma^{1}=\left[ v_{i}, v_{j} \right]\),
-    \( \sigma^{2}_{0}\succ\sigma^{1} \) und \( \sigma^{2}_{1}\succ\sigma^{1} \) gilt
+    \( \sigma^{2}_{0}\succ\sigma^{1} \) und \( \sigma^{2}_{1}\succ\sigma^{1} \) gilt, dass
     (vgl. Abbildung \ref{figLokaleNummerierung})
     \begin{align}
       \left| \star\sigma^{1} \right| 
@@ -1086,10 +1107,11 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \end{bmatrix}
         &=: A^{\sigma^{2}} f^{\sigma^{2}}
     \end{align}
-    mit der symetrischen Elementmatrix \( A^{\sigma^{2}} \in \R^{3 \times 3} \) 
+    mit der symmetrischen Elementmatrix \( A^{\sigma^{2}} \in \R^{3 \times 3} \) 
     und dem Elementvektor \( f^{\sigma^{2}}\in\R^{3} \).
-    Besteht das Primärgitter nun aus \( M \) Ecken, also \( \sharp K^{(0)} = M \),
-    dann lässt sich die Elementmatrix auf eine \( (M\times M) \)-Matrix \( \bar{A}^{\sigma^{2}} \)erweitern 
+    Da das Primärgitter aus \( N_{\sigma^{0}} \) Ecken besteht,
+    lässt sich die Elementmatrix auf eine \mbox{\( ( N_{\sigma^{0}} \times N_{\sigma^{0}} ) \)-Matrix}
+    \( \bar{A}^{\sigma^{2}} \)erweitern 
     unter Beachtung
     der lokalen und globalen Nummerierung der Ecken, so dass
     \begin{align}
@@ -1103,11 +1125,11 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     Für die Systemmatrix
     \begin{align}
-      A &:= \sum_{\sigma^{2}\in K} \bar{A}^{\sigma^{2}} \in \R^{M\times M}
+      A &:= \sum_{\sigma^{2}\in K} \bar{A}^{\sigma^{2}} \in \R^{N_{\sigma^{0}}\times N_{\sigma^{0}}}
     \end{align}
     gilt somit
     \begin{align}
-      A f_{h} &= \left[ \left\langle *\Delta_{B} f, \star v_{i}  \right\rangle\right]_{i=0,\ldots,M-1} \formpunkt
+      A f_{h} &= \left[ \left\langle *\Delta_{B} f, \star v_{i}  \right\rangle\right]_{0 \le i < N_{\sigma^{0}}} \formpunkt
     \end{align}
     Da \( A \) dünnbesetzt ist, können geeignete Löser gewählt werden, 
     falls \( f_{h} \) unbekannt und die rechte Seite bekannt ist.
@@ -1117,7 +1139,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     Die Assemblierung der Systemmatrix übernimmt AMDiS von Haus aus. 
   
   \subsection{Beispiel: Poisson-Gleichung}
-    Wie wir im letzten Abschnitt gesehen haben führt uns das kontinuierliche Problem
+    Wie wir im letzten Abschnitt gesehen haben, führt uns das kontinuierliche Problem
     \begin{align}
       \Delta_{B} w = g
     \end{align}
@@ -1132,7 +1154,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
             = \sum_{\sigma^{2}\succ v_{i}} \left| \star v_{i} \cap \sigma^{2} \right| g(v_{i}) \formpunkt
     \end{align}
     Somit kann hier ebenfalls die rechte Seite elementweise ohne Kenntnisse der anderen Dreieckelementen
-    berechnet werden. \todo{evtl elem vektor noch aufschreiben}
+    berechnet werden.
     
     \begin{beispiel}[Einheitssphäre]
        Für die Parametrisierung der (Einheits)Sphäre, das heißt die Abbildung von lokalen Koordinaten
@@ -1161,7 +1183,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
          \Delta_{B} w &= -6 x z
        \end{align}
        auf der Sphäre zum vergleichen.
-       Durch fehlende Randbedingungen lässt dieses Problem nicht eindeutig lösen, da jede beliebige harmonische Funktion
+       Durch fehlende Randbedingungen lässt sich dieses Problem nicht eindeutig lösen, da jede beliebige harmonische Funktion
        \( w_{H} \in C^{\infty}(M) \) (also \( \Delta_{B} w_{H} = 0 \)) zur Lösung hinzuaddiert werden könnte und die Summe immer noch
        Lösung des Problems wäre. Hier im Speziellem heißt das
        \begin{align}
@@ -1187,7 +1209,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        Dieses Lösungsverhalten ist bei einer naiven FEM-Diskretisierung häufiger zu beobachten und spiegelt sich auch im
        Konvergenzverhalten bezüglich der Maximumsnorm wieder, wie wir in Tabelle \ref{tabLaplaceSphereFEM} sehen können.
        \( h \) ist hierbei wieder der maximale Umkreisdurchmesser aller Dreiecke des Primärgitters.
-       DOFs\( = \sharp K^{(0)} \) bezeichnet die Anzahl der Freiheitsgrade und damit die Anzahl der Ecken.
+       DOFs\( = N_{\sigma^{0}} \) bezeichnet die Anzahl der Freiheitsgrade und damit die Anzahl der Ecken
+       bei nur einer gesuchten skalarwertigen Größe.
        \( \err_{\bullet} \) ist der relative Fehler, das heißt
        \begin{align}
          \err_{\bullet} &:= \frac{\left\| w_{h} - w \right\|_{\bullet}}{\left\| w \right\|_{\bullet}}
@@ -1196,7 +1219,6 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        Dabei wurde zum einen die Maximumsnorm (vgl. \ref{eqDiskreteMaximumsnorm}) als auch die diskrete \(
        L_{2} \)-Norm verwendet,
        die in AMDiS schon implementiert ist.
-       \todo{wesentl. untersch. bei assemblierungszeiten zw. dec u fem?}
        EOC ist die experimentelle Konvergenzordnung (Experimental Order of Convergence)
        \begin{align}
          \text{EOC} &:= \frac{\log\frac{\err_{\bullet}^{h_{1}}}{\err_{\bullet}^{h_{2}}}}
@@ -1206,11 +1228,11 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        Wie in den Tabellen \ref{tabLaplaceSphereDEC} und \ref{tabLaplaceSphereFEM} beziehungsweise in der
        Abbildung \ref{figFehlerPlotLaplaceSphere} zu sehen ist, liefert die DEC-Diskretisierung ein leicht
        besseres Ergebnis als die der FEM.
-       In der \( L_{2} \)-Norm ist die experimentelle Konvergenzordung bei beiden Verfahren etwa 2.
+       In der \( L_{2} \)-Norm ist die experimentelle Konvergenzordnung bei beiden Verfahren etwa 2.
        Lediglich in der Maximumsnorm hat der DEC ein besseres Konvergenzverhalten als die FEM, 
        was an den oben schon
        angesprochenen FEM-Verhalten an den Gitterdefekten liegt.
-       Bei beiden Verfahren wurde BICGSTAB2-Algorithmus (s.\cite{bicgstab2}) zum lösen der linearen
+       Bei beiden Verfahren wurde der BiCGStab2-Algorithmus (s.\cite{bicgstab2}) zum lösen der linearen
        Gleichungssysteme benutzt, mit einer Abbruchstoleranz von 1.0E-10.
 
        \begin{table}[htbp]
@@ -1218,7 +1240,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
-       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       \multicolumn{1}{c|}{ \( \err_{\infty} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
         1002 & 0.152342 & 4.52E-03 & \multicolumn{1}{l|}{} & 4.67E-03 & \multicolumn{1}{l|}{} \\ \hline
         1962 & 0.108972 & 2.30E-03 & 2.0087025407 & 2.37E-03 & 2.0225601077 \\ \hline
         5292 & 0.0663925 & 8.54E-04 & 2.0038033504 & 8.81E-04 & 1.9995573186 \\ \hline
@@ -1228,7 +1250,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         100002 & 0.0152791 & 4.52E-05 & 2.0004212967 & 4.66E-05 & 2.0004803364 \\ \hline
         249642 & 0.00967015 & 1.81E-05 & 1.9999410149 & 1.87E-05 & 1.9997695362 \\ \hline
        \end{tabular}
-       \caption[Laplace auf Sphäre (DEC)]{Problem \eqref{eqLaplaceSphereProblemUmform} mit DEC numerisch gelöst.}
+       \caption[Laplace auf Sphäre (DEC)]{(Sphäre) Problem \eqref{eqLaplaceSphereProblemUmform} mit DEC numerisch gelöst.}
        \label{tabLaplaceSphereDEC}
        \end{table}
        
@@ -1237,7 +1259,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
-       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       \multicolumn{1}{c|}{ \( \err_{\infty} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
         1002 & 0.152342 & 7.01E-03 & \multicolumn{1}{l|}{} & 8.65E-03 & \multicolumn{1}{l|}{} \\ \hline
         1962 & 0.108972 & 3.59E-03 & 1.9994601718 & 4.55E-03 & 1.9176164215 \\ \hline
         5292 & 0.0663925 & 1.33E-03 & 1.9996567336 & 1.77E-03 & 1.9090696932 \\ \hline
@@ -1247,14 +1269,14 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         100002 & 0.0152791 & 7.06E-05 & 2.0002360283 & 1.05E-04 & 1.9236661471 \\ \hline
         249642 & 0.00967015 & 2.83E-05 & 1.9998409049 & 4.37E-05 & 1.9256432951 \\ \hline
        \end{tabular}
-       \caption[Laplace auf Sphäre (FEM)]{Problem \eqref{eqLaplaceSphereProblemUmform} mit FEM numerisch gelöst.}
+       \caption[Laplace auf Sphäre (FEM)]{(Sphäre) Problem \eqref{eqLaplaceSphereProblemUmform} mit FEM numerisch gelöst.}
        \label{tabLaplaceSphereFEM}
        \end{table}
       \begin{figure}
         \centering\includegraphics[width=\textwidth]{bilder/laplaceSphere/errplot.eps}
         \caption[Fehlerplot (Laplace auf Sphäre/Torus)]
-                {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform}.
-                 (Fehler \( \err_{2} \) und \( \err_{\max} \) für die DEC-Diskretisierung liegen 
+                {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceSphereProblemUmform} auf der Sphäre.
+                 (Fehler \( \err_{2} \) und \( \err_{\max}=\err_{\infty} \) für die DEC-Diskretisierung liegen 
                   in beiden Bildern übereinander.)}
         \label{figFehlerPlotLaplaceSphere}
       \end{figure}
@@ -1276,7 +1298,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \begin{minipage}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{bilder/laplaceSphere/FEMError1k.png}
       \end{minipage}
-      \caption[Laplace auf Sphäre]{Oben links: Für eine Ikosaederfläche sind die maximalen Winkel sehen.
+      \caption[Laplace auf Sphäre]{Oben links: Für eine Ikosaederfläche sind die maximalen Winkel zu sehen.
                                              Oben rechts: Numerische Lösung des Problems \eqref{eqLaplaceSphereProblemUmform} auf der Sphäre
                                              (1002 DOFs). 
                                              Unten links: Lokaler Fehler der DEC-Lösung (Farben mit rechter Abbildung gleichskaliert).
@@ -1299,7 +1321,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \begin{beispiel}[Torus]
       Die verwendete Parametrisierung für den Torus in lokalen Koordinaten \( (t,p) \) sowie der sich somit ergebende
       Laplace-Beltrami-Operator kann im Appendix \ref{torus} nachgelesen werden.
-      Als Torusradii nutzen wir \( r=0.5 \) und \( R=2.0 \).
+      Als Torusradien nutzen wir \( r=0.5 \) und \( R=2.0 \).
       Für das Primärgitter wurde ein Schlauch verwendet der um \( 4\pi \) verdrillt und am Anfang und Ende
       mit einander verbunden wurde.
       Somit konnte bezüglich des maximalen Winkels ein recht hochwertiges Torusgitter mit vollständig
@@ -1326,15 +1348,15 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         \label{eqLaplaceTorusProblemUmform}
         \Delta_{B} w + \frac{2}{x^{2}+y^{2}} w &= \frac{2 y^{2}}{\left( x^{2} + y^{2} \right)^{2}}
       \end{align}
-      sein (vgl. \ref{figLaplaceTorus}).
+      sein (vgl. Abbildung \ref{figLaplaceTorus}).
       
-      Die FEM ergibt leicht bessere Ergebnisse als der DEC wie wir in den Tabellen \ref{tabLaplaceTorusFEM}
+      Die FEM ergibt leicht bessere Ergebnisse als der DEC, wie wir in den Tabellen \ref{tabLaplaceTorusFEM}
       und \ref{tabLaplaceTorusDEC} und der Abbildung \ref{figFehlerPlotLaplaceTorus} erkennen können.
       Allerdings weist das Primärgitter für den Torus auch keine Defekte in seiner hexagonalen Struktur
       auf, welche die FEM-Diskretisierung vermutlich negativ beeinflussen würde.
       Dass die experimentelle Konvergenzordnung beim DEC mit feineren Gitter besser wird, 
       liegt wahrscheinlich daran, dass die Gitterqualität bezüglich der maximalen Winkel der Dreieckelemente zunimmt.
-      Wie schon im letzten Beispiel wurde auch hier wieder der BICGSTAB2 mit einer Abbruchstoleranz von
+      Wie schon im letzten Beispiel wurde auch hier wieder der BiCGStab2 mit einer Abbruchstoleranz von
       1.0E-10 verwendet um das resultierende Gleichungssystem für DEC und FEM zu lösen.
 
        \begin{table}[htbp]
@@ -1342,7 +1364,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
-       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       \multicolumn{1}{c|}{ \( \err_{\infty} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
         432 & 0.484083 & 1.53E-02 & \multicolumn{1}{l|}{} & 1.43E-02 & \multicolumn{1}{l|}{} \\ \hline
         1360 & 0.263248 & 5.26E-03 & 1.7487502806 & 5.13E-03 & 1.676583294 \\ \hline
         2016 & 0.214754 & 3.64E-03 & 1.8124915763 & 3.58E-03 & 1.7722152372 \\ \hline
@@ -1353,16 +1375,17 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         100480 & 0.0297978 & 8.18E-05 & 1.9701256217 & 8.26E-05 & 1.9656343129 \\ \hline
         250992 & 0.0188374 & 3.30E-05 & 1.9796579788 & 3.33E-05 & 1.9768600188 \\ \hline
        \end{tabular}
-       \caption[Laplace auf Torus (DEC)]{Problem \eqref{eqLaplaceTorusProblemUmform} mit DEC numerisch gelöst.}
+       \caption[Laplace auf Torus (DEC)]{(Torus) Problem \eqref{eqLaplaceTorusProblemUmform} mit DEC numerisch gelöst.}
        \label{tabLaplaceTorusDEC}
-       \end{table}
-       
-       \begin{table}[htbp]
-       \centering
+       %\end{table}
+       %
+       %\begin{table}[htbp]
+       %\centering
+       \vspace{20pt}
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
-       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       \multicolumn{1}{c|}{ \( \err_{\infty} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
         432 & 0.484083 & 4.22E-03 & \multicolumn{1}{l|}{} & 6.60E-03 & \multicolumn{1}{l|}{} \\ \hline
         1360 & 0.263248 & 6.97E-04 & 2.9550325517 & 1.12E-03 & 2.9086442442 \\ \hline
         2016 & 0.214754 & 4.25E-04 & 2.4308893715 & 6.02E-04 & 3.0599695746 \\ \hline
@@ -1373,29 +1396,30 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         100480 & 0.0297978 & 1.47E-05 & 1.8393626791 & 2.06E-05 & 1.8877622847 \\ \hline
         250992 & 0.0188374 & 6.18E-06 & 1.8946420182 & 8.51E-06 & 1.9266311481 \\ \hline
        \end{tabular}
-       \caption[Laplace auf Torus (FEM)]{Problem \eqref{eqLaplaceTorusProblemUmform} mit FEM numerisch gelöst.}
+       \caption[Laplace auf Torus (FEM)]{(Torus) Problem \eqref{eqLaplaceTorusProblemUmform} mit FEM numerisch gelöst.}
        \label{tabLaplaceTorusFEM}
        \end{table}
-      \begin{figure}
+    \end{beispiel}
+      \begin{figure}[htbp]
         \centering\includegraphics[width=\textwidth]{bilder/laplaceTorus/errplot.eps}
         \caption[Fehlerplot (Laplace auf Torus)]
-                {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceTorusProblemUmform}.
-                 (Fehler \( \err_{2} \) und \( \err_{\max} \) für die DEC-Diskretisierung liegen 
+                {Log-Log-Fehlerplot für Problem \eqref{eqLaplaceTorusProblemUmform} auf dem Torus.
+                 (Fehler \( \err_{2} \) und \( \err_{\max}=\err_{\infty} \) für die DEC-Diskretisierung liegen 
                   in beiden Bildern übereinander.)}
         \label{figFehlerPlotLaplaceTorus}
       \end{figure}
-    \end{beispiel}
 
 
 
+\pagebreak
 \section{Primär-Dual-Gradient im Mittel}
 
   In Abschnitt \ref{secWeingartenabbildung} werden wir den Gradienten einer Funktion \( f\in C^{\infty}(M) \) benötigen.
-  Nun können wir zwar die äußere Ableitung benutzen, aber es fehlt uns immernoch die Möglichkeit im Diskreten bei der resultierenden 
+  Nun können wir zwar die äußere Ableitung benutzen, aber es fehlt uns immer noch die Möglichkeit im Diskreten bei der resultierenden 
   1-Form \( \exd f \) die Indizes hinauf zu ziehen um ein diskretes Tangentialvektorfeld zu erhalten.
-  Eine Abhandlung wie mit Vektorfeldern zuverfahren wäre um einen diskreten Sharp-Operator zuentwickeln würde den Rahmen dieser Arbeit
-  sprengen. Alleine schon wegen der noch offenen Fragen die oben schon gestellt wurden.
-  Wie schon erwähnt ist es prinzipiell erstmal eine sichere Sache den Gradienten im inneren eines Dreieckelements zu definieren, da hier
+  Eine Abhandlung, wie mit Vektorfeldern zu verfahren wäre um einen diskreten Sharp-Operator zu entwickeln, würde den Rahmen dieser Arbeit
+  sprengen. Allein schon wegen der noch offenen Fragen, die oben schon gestellt wurden.
+  Wie schon erwähnt ist es prinzipiell erstmal eine sichere Sache den Gradienten im Inneren eines Dreieckelements zu definieren, da hier
   zumindest ein Tangentialraum für das Polytop \( |K| \) existiert und eindeutig ist.
   Hirani schlägt in seiner Doktorarbeit \cite{hirani} folgenden Sharp-Operator vor:
   
@@ -1414,13 +1438,13 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \begin{align}
       f|_{\sigma^{2}}(x) &\approx \sum_{\sigma^{0}\prec\sigma^{2}} f(\sigma^{0}) \Phi_{\sigma^{0}}^{\sigma^{2}}(x) \formpunkt
     \end{align}
-    Für den sich ergebenen Primal-Dual-Gradienten
+    Für den sich ergebenen Primär-Dual-Gradienten
     \begin{align}
       \sharp_{pd}\circ\exd: \Omega^{0}_{d}(K) \rightarrow \mathcal{V}_{d}(\star K) \supset \left( \Omega^{0}_{d}(\star K) \right)^{3}
     \end{align}
     (mit dem diskreten dualen Tangentialvektorraum \( \mathcal{V}_{d}(\star K) \)) schrieben wir auch kurz \( \nabla^{pd} \).
-    Die Paarung \( \left\langle \bullet, \bullet  \right\rangle \) in \eqref{eqPrimalDualGradient} ist Komponenten weise zu verstehen, also
-    für ein \( N \)-dimensionalen Vektor von diskreten \( p \)-Form 
+    Die Paarung \( \left\langle \bullet, \bullet  \right\rangle \) in \eqref{eqPrimalDualGradient} ist komponentenweise zu verstehen, also
+    für einen \( N \)"~di\-men\-si\-o\-nalen Vektor von diskreten \( p \)"~Formen 
     \( \vec\alpha=\left[ \alpha_{i} \right]_{i=1,\ldots,N}\in\left(\Omega^{p}_{d}(\mathcal{K})\right)^{N} \) 
     gilt
     \begin{align}
@@ -1429,13 +1453,14 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     mit \( \sigma^{p} \in \mathcal{K}:=\left\{ K, \star K \right\} \).
   \end{definition}
-  Der große arbeitstechnische Vorteil ist, dass die hier angebenen Ansatzfunktionen und dessen Gradient auf den Dreieckelementen in AMDiS
+  Der große arbeitstechnische Vorteil ist, dass die hier angegebenen Ansatzfunktionen und dessen Gradienten auf den Dreieckelementen in AMDiS
   schon implementiert sind und wir diese nutzen können.
   Der Nachteil ist, dass die Problemformulierung auf den Ecken des Dualgitters zur Zeit noch Probleme in der Programmierung mit sich
-  bringen würde und auch später Vergleiche auf den Primärgitter fairerweise gemacht werden müssten.
+  bringen würde und wir deshalb lieber einen Gradienten verwenden möchten, der auf dem Primärgitter
+  definiert ist.
   Der in \cite{hirani} vorgeschlagene Primär-Primär-Gradient \( \nabla^{pp} \), der uns weiterhelfen würde, da er auf \( \mathcal{V}_{d}(K) \)
   abbildet, kann leider nur für flache Primärgitter verwendet werden.
-  Ein einfacher Ausweg aus diesem Dilemma ist es die Primär-Dual-Gradienten für eine Ecke aus \( K \) zu mitteln.
+  Ein einfacher Ausweg aus diesem Dilemma ist es den Primär-Dual-Gradienten für eine Ecke aus \( K \) zu mitteln.
 
   \begin{definition}
     Es sei \( f\in\Omega^{0}_{d}(K) \) und \( v\in K \), dann heißt
@@ -1446,12 +1471,12 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     Primal-Dual-Gradient im Mittel von \( f \) an \( v \).
   \end{definition}
-  Zu postulieren mit welcher Ordnung dieser diskrete Garadient einer Funktion \( f \) zum stetigen Vorbild 
-  \( \left( \exd f \right)^{\sharp}\in \mathcal{V}^{\infty}(M) \) konsistent ist, ist sehr schwierig, da nur im Inneren der Dreieckelemente 
-  \( T|K| \) überhaupt stetig ist. \todo{verweis auf beispiel}
+  Zu postulieren mit welcher Ordnung dieser diskrete Gradient einer Funktion \( f \) zum stetigen Vorbild 
+  \( \left( \exd f \right)^{\sharp}\in \mathcal{V}^{\infty}(|K|) \) konsistent ist, ist sehr schwierig, da nur im Inneren der Dreieckelemente 
+  \( T_{\vec{x}}|K| \) überhaupt stetig wäre.
   
   \subsection{Implementierung}
-    Wie schon beim diskreten Laplace-Beltrami-Operator lässt sich auch der gemitteltete Primal-Dual-Gradient elementweise Assemblieren.
+    Wie schon beim diskreten Laplace-Beltrami-Operator lässt sich auch der gemittelte Primär-Dual-Gradient elementweise Assemblieren.
     Wir machen das wieder auf dem "`Dualraum"'. 
     Damit ergibt sich
     \begin{align}
@@ -1463,8 +1488,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
     \end{align}
     da die Ecke \( w \prec \sigma^{2} \) in \eqref{eqPrimalDualGradient} beliebig aber fest gewählt werden durfte 
     und \( v \) immer Ecke des 1-Rings um sich selbst ist.
-    Somit lässt sich die \( q \)-te Komponente des diskreten Garadienten an einer globalen Ecke \( v_{i} \) 
-    ebenfalls auf den Dreieckselementen mit lokaler Nummerierung
+    Somit lässt sich die \( q \)-te Komponente des diskreten Gradienten an einer globalen Ecke \( v_{i} \) 
+    ebenfalls auf den Dreieckelementen mit lokaler Nummerierung
     darstellen durch
     \begin{align}
       \left\langle *\left[ \nabla^{\overline{pd}} f \right]_{q}, \star v_{i} \right\rangle
@@ -1478,7 +1503,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       C^{\sigma^{2}}_{klq} &:= \left| \star v_{k}^{\sigma^{2}} \cap \sigma^{2} \right|
                                \frac{\partial}{\partial x^{q}} \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}}
     \end{align}
-    für \( k,l,q\in\left\{ 0,1,2 \right\} \) wobei \( \left( x^{0}, x^{1}, x^{2} \right) \) die gwöhnlichen kartesischen \( \R^{3} \)-Koordinaten sind.
+    für \( k,l,q\in\left\{ 0,1,2 \right\} \) wobei \( \left( x^{0}, x^{1}, x^{2} \right) \) die gewöhnlichen kartesischen \( \R^{3} \)-Koordinaten sind.
     \( \frac{\partial}{\partial x^{q}}\Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} = \left[ \nabla \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} \right]_{q} \)
     wird von AMDiS für alle Elemente \( \sigma^{2} \) bereitgestellt.
     Die zugehörige Elementmatrix ist dann
@@ -1501,7 +1526,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
   \subsection{Beispiele}
     \begin{beispiel}[Sphäre]
       Für einen kurzen Test des hier hergeleiteten diskreten Gradienten wollen wir die Koordinatenprojektion
-      \( p_{z}(x,y,z):= z \) auf der Sphäre ableiten in den standard \( \R^{3} \)-Koordinaten \( (x,y,z) \).
+      \( p_{z}(x,y,z):= z \) auf der Sphäre in den Standard-\( \R^{3} \)-Koordinaten \( (x,y,z) \) ableiten.
       Für die Parametrisierung und dessen Ableitungen siehe Appendix \ref{sphere}.
       \begin{align}
         \nabla z &= \left( \exd z \right)^{\sharp} = \left( \exd \cos u \right)^{\sharp} \\
@@ -1512,7 +1537,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
                            \sin^{2} u \right]^{T} \\
                   &= \left[ -xz, -yz, 1-z^{2} \right]^{T}
       \end{align}
-      In Tabelle \ref{tabGradSphere} und Abbildung \ref{figGradSphere} sehen wir die relativen Fehler des gemittelten Primal-Dual-Gradienten.
+      In Tabelle \ref{tabGradSphere} und Abbildung \ref{figGradSphere} sehen wir die relativen Fehler des
+      gemittelten Primär-Dual-Gradienten.
       Für die Fehlerberechnung nutzen wir die schon eingeführten Normen auf der punktweisen euklidischen Norm, das heißt
       für \( \vec{v} = \left[ v^{0}, v^{1}, v^{2} \right] \in \mathcal{V}_{d}(K) \)
       \begin{align}
@@ -1520,7 +1546,8 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         \formpunkt
       \end{align}
       Auffällig ist, dass wir bis zu dem Gitter mit 25002 DOFs eine experimentelle Konvergenzrate von 2 haben. 
-      Bei feineren Gittern fällt die Konvergenzrate in der Maximumsnorm enorm ab wärent die in der \( L_{2} \)-Norm nur moderat abnimmt,
+      Bei feineren Gittern fällt die Konvergenzrate in der Maximumsnorm enorm ab während die in der 
+      diskreten \( L_{2} \)-Norm nur moderat abnimmt,
       was darauf schließen lässt, dass nur wenige Gitterpunkte betroffen sind.
       Und tatsächlich sehen wir in Abbildung \ref{figGradSphere}, dass sich die maximalen Fehler auf den Ikosaederecken
       beziehungsweise auf dessen Kanten befinden.
@@ -1531,7 +1558,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
-       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       \multicolumn{1}{c|}{ \( \err_{\infty} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
        1002 & 0.152342 & 5.66E-03 & \multicolumn{1}{l|}{} & 7.71E-03 & \multicolumn{1}{l|}{} \\ \hline
         1962 & 0.108972 & 2.98E-03 & 1.9186534413 & 3.95E-03 & 1.9987732373 \\ \hline
         5292 & 0.0663925 & 1.14E-03 & 1.9374175035 & 1.47E-03 & 1.991362152 \\ \hline
@@ -1541,7 +1568,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         100002 & 0.0152791 & 6.56E-05 & 1.9398199601 & 1.74E-04 & 0.7821359392 \\ \hline
         249642 & 0.00967015 & 2.72E-05 & 1.9274641706 & 1.18E-04 & 0.8378214011 \\ \hline
        \end{tabular}
-       \caption[Gradient auf Sphäre]{Fehler des Primal-Dual-Gradienten im Mittel auf der Sphäre.}
+       \caption[Gradient auf Sphäre]{Fehler des Primär-Dual-Gradienten im Mittel auf der Sphäre.}
        \label{tabGradSphere}
       \end{table}
     \end{beispiel}
@@ -1556,7 +1583,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
       \end{minipage}
       \caption[Gradient auf Sphäre]
               {Links: Diskreter Gradient und sein absoluter Fehler (1002 DOFs)
-               Rechts: Absoluter Fehler des diskreten Gradientens (50412 DOfs).
+               Rechts: Absoluter Fehler des diskreten Gradientens (50412 DOFs).
                        Die maximalen Fehler befinden sich auf den ursprünglichen Ikosaederecken und -kanten.}
       \label{figGradSphere}
       \centering\includegraphics[width=0.7\textwidth]{bilder/gradTorus/gradAndF_100k.png}
@@ -1616,7 +1643,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
        \begin{tabular}{|r|r|r|r|r|r|}
        \hline
        \multicolumn{1}{|c|}{DOFs} & \multicolumn{1}{c|}{\( h \)} & \multicolumn{1}{c|}{\( \err_{2} \)} & \multicolumn{1}{c|}{EOC} &
-       \multicolumn{1}{c|}{ \( \err_{\max} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
+       \multicolumn{1}{c|}{ \( \err_{\infty} \)} & \multicolumn{1}{c|}{EOC} \\ \hline
         432 & 0.484083 & 6.77E-02 & \multicolumn{1}{l|}{} & 5.56E-02 & \multicolumn{1}{l|}{} \\ \hline
         1360 & 0.263248 & 2.36E-02 & 1.7305079159 & 2.02E-02 & 1.6629554448 \\ \hline
         2016 & 0.214754 & 1.63E-02 & 1.8171490839 & 1.42E-02 & 1.7387209712 \\ \hline
@@ -1627,7 +1654,7 @@ Ebenfalls werden wir ein diskreten Hodge-Stern-Operator entwickeln und damit auc
         100480 & 0.0297978 & 3.78E-04 & 1.9243221883 & 5.04E-04 & 1.4401355577 \\ \hline
         250992 & 0.0188374 & 1.55E-04 & 1.9393211627 & 2.59E-04 & 1.4507979763 \\ \hline
        \end{tabular}
-       \caption[Gradient auf Torus]{Fehler des Primal-Dual-Gradienten im Mittel auf dem Torus.}
+       \caption[Gradient auf Torus]{Fehler des Primär-Dual-Gradienten im Mittel auf dem Torus.}
        \label{tabGradTorus}
       \end{table}
     \end{beispiel}
