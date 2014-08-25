@@ -423,8 +423,8 @@
       \begin{minipage}[t]{0.49\textwidth}
         \centering\input{bilder/tikz/ElementGaussBonnet.tex}
       \end{minipage}
-      \caption[Außenwinkel der Voronoizelle]{Die \( m = m_{v} =: \tilde{m}+1 \) Außenwinkel \( \beta_{i} \) an den Ecken der
-                                             Voronoizelle (links) 
+      \caption[Außenwinkel der Voronoi-Zelle]{Die \( m = m_{v} =: \tilde{m}+1 \) Außenwinkel \( \beta_{i} \) an den Ecken der
+                                             Voronoi-Zelle (links) 
                                              und die zugehörigen Innenwinkel bzgl. der Primär- und Dualkanten für ein Dreieckelement 
                                              \( \sigma^{2} \) (rechts).}
       \label{figGaussBonnetWinkel}
@@ -438,21 +438,21 @@
                 &= \alpha_{0} + \alpha_{1} \formpunkt
     \end{align}
     Weiterhin lassen sich die Winkel \( \alpha_{k} \) über die Längen der Primärkanten und der auf
-    \( \sigma^{2}=\left[ v, v_{i}, v_{i+1} \right] \) eingeschränkten Voronoikanten bestimmen durch
+    \( \sigma^{2}=\left[ v, v_{i}, v_{i+1} \right] \) eingeschränkten Voronoi-Kanten bestimmen durch
     \begin{align}
       \alpha_{k} &= \arctan\left( \frac{\left|\star\left[ v, v_{i+k} \right] \cap \sigma^{2} \right|}
                                     {\frac{1}{2}\left|\left[ v, v_{i+k} \right]\right|} \right)
                   = \text{atan2}\left( 2\left|\star\left[ v, v_{i+k} \right] \cap \sigma^{2} \right|, 
                                  \left|\left[ v, v_{i+k} \right]\right|\right) \formpunkt
     \end{align}
-    Insgesamt erhalten wir also für die Summe der Außenwinkel der Voronoizelle \( \star v \)
+    Insgesamt erhalten wir also für die Summe der Außenwinkel der Voronoi-Zelle \( \star v \)
     \begin{align}
       \label{eqAussenwinkelsummeAtan}
       \sum_{i=1}^{m_{v}}\beta_{i} &= \sum_{\sigma^{2}\succ v} \sum_{\sigma^{2}\succ\sigma^{1}\succ v}
                                \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
                                  \left|\sigma^{1}\right|\right) \formkomma       
     \end{align}
-    die somit immernoch elementweise Bestimmt werden kann.
+    die somit immer noch elementweise Bestimmt werden kann.
     Ein Problem stellt jedoch noch der Minuend \( 2\pi \) in der rechten Seite von \ref{eqDualGaussBonnet} dar.
     Eine Möglichkeit wäre es den globalen Rechte-Seite-Vektor mit \( \left[ 2\pi \right]_{v\in K^{(0)}} \) statt wie
     gewohnt mit \( \left[ 0 \right]_{v\in K^{(0)}} \) zu initialisieren und beim assemblieren die sich aus 
@@ -466,33 +466,34 @@
                                \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
                                  \left|\sigma^{1}\right|\right) \right)
     \end{align}
-    für die Voronoizelle am Knoten \( v \) erhalten. 
+    für die Voronoi-Zelle am Knoten \( v \) erhalten. 
     Jedoch ist zu bedenken, dass \( m_{v} \) a priori auf einem Dreieckelement nicht bekannt ist, 
     somit wäre es sinnvoll \( m_{v} \) für alle Ecken \( v\in K^{(0)} \) noch vor dem Aufstellen der Systemmatrix zu bestimmen falls eine
-    Parallisierung des Assemblierungsalgorithmus gewünscht ist.
+    Parallelisierung des Assemblierungsalgorithmus gewünscht ist.
 
     Ein Algorithmus zur Berechnung der Elementvektoren ist im Appendix \ref{subsecAlgoGaussBonnet} gegeben.
-    In Abschnitt \ref{secNumEx} werden wir den Operator als Vergleich zur diskreten Weingartenabbildung und den Ergebnissn von \cite{heine} testen. 
-    In \cite{meyer} wird der Gauss-Bonnet-Operator ebenfalls mit anderen Methoden verglichen.
+    In Abschnitt \ref{secNumEx} werden wir den Operator als Vergleich zur diskreten Weingartenabbildung und den Ergebnissen von \cite{heine} testen. 
+    In \cite{meyer} wird der Gauß-Bonnet-Operator ebenfalls mit anderen Methoden verglichen.
 
 \section{Numerisches Experiment}
 \label{secNumEx}
   
-  Zur Bestimmung der Gaußkrümmung \( K \) und der mittleren Krümmung \( H \) stehen uns nun jeweils zwei Methoden zur Verfügung.
-  Die Gaussche Krümmung kann aus der diskreten Weingartenabbildung berechnet werden (SK) oder mit Hilfe des Gauß-Bonnet-Operators (GB)
-  und die mittlere Krümmung ebenfalls aus der diskreten Weingartenabbildung (SH) oder aus dem Krümmungsvektor, der aus dem diskreten Laplace-Beltrami-Operators der Koordinatenabbildung
+  Zur Bestimmung der Gaußkrümmung \( K \) und der mittleren Krümmung \( H \) stehen uns nun jeweils drei Methoden zur Verfügung.
+  Die Gaußsche Krümmung kann aus der diskreten Weingartenabbildung berechnet werden mit (SK) und ohne (SKAvN) gegebenen Normalenfeld 
+  oder mit Hilfe des Gauß-Bonnet-Operators (GB)
+  und die mittlere Krümmung ebenfalls aus der diskreten Weingartenabbildung (SH)/(SHAvN) oder aus dem Krümmungsvektor, der aus dem diskreten Laplace-Beltrami-Operators der Koordinatenabbildung
   folgt (LX).
 
   In \cite{heine} wird \( K \) und \( H \) auch aus einer Approximation der Weingartenabbildung gewonnen.
   Hierbei wird ein isoparametrischer Finite-Elemente-Ansatz (FEM) genutzt. 
-  Die Oberfläche \( M \) wird elementweise Langrage-interpoliert zu \( M^{\gamma}_{h} \) mit dem Polynomgrad \( \gamma\in\left\{ 1,2,3,4 \right\} \).
+  Die Oberfläche \( M \) wird elementweise Lagrange-interpoliert zu \( M^{\gamma}_{h} \) mit dem Polynomgrad \( \gamma\in\left\{ 1,2,3,4 \right\} \).
   Zunächst wird dabei \( M \) linear zu \(\mathcal{T}^{1}_{h}  \) trianguliert, so dass
   \begin{align}
      M_{h}^{1} = |K|  \formtext{und}
      \mathcal{T}^{1}_{h} = K^{(2)}
   \end{align}
   gilt.
-  Für \( \gamma = 2,3,4 \) werden dann die noch übrigen \( 3 \), \( 7 \) bzw. \( 12 \) Langrange-Knoten \( Q_{i}\in\sigma^{2} \) durch \( \pi\left( Q_{i} \right)\in M \) orthogonal projiziert.
+  Für \( \gamma = 2,3,4 \) werden dann die noch übrigen \( 3 \), \( 7 \) bzw. \( 12 \) Lagrange-Knoten \( Q_{i}\in\sigma^{2} \) durch \( \pi\left( Q_{i} \right)\in M \) orthogonal projiziert.
   Der Raum der Ansatzfunktion definiert sich dann über
   \begin{align}
     W_{h}^{\gamma} 
@@ -504,9 +505,10 @@
   \( \Phi_{T_{h}^{1}}^{\gamma}: \hat{T} \rightarrow T_{h}^{1} \)
   die polynomiale Parametrisierung vom Grad \( \gamma \).
   Das diskrete Problem für die Weingartenabbildung lautete nun für alle \( \vec{\psi}_{h}\in \left( W_{h}^{\gamma} \right)^{3} \)
+  und \( j\in\left\{ 1,2,3 \right\} \)
   \begin{align}
-    \int_{M_{h}^{\gamma}} \II_{h}^{j} \cdot \vec{\psi}_{h} d\mu
-        &= -\int_{M_{h}^{\gamma}} \nu_{h}^{j} \left( \nabla_{M_{h}^{\gamma}} \cdot \vec{\psi}_{h} + \vec{H}_{h}\cdot\vec{\psi}_{h} \right) d\mu
+    \int_{M_{h}^{\gamma}} \II_{h}^{j} \cdot \vec{\psi}_{h} \mu
+        &= -\int_{M_{h}^{\gamma}} \nu_{h}^{j} \left( \nabla_{M_{h}^{\gamma}} \cdot \vec{\psi}_{h} + \vec{H}_{h}\cdot\vec{\psi}_{h} \right) \mu
   \end{align}
   mit der diskreten Weingartenabbildung 
   \begin{align}
@@ -521,8 +523,8 @@
   \end{align}
   Der diskrete Krümmungsvektor \( \vec{H}_{h} := \left[ H_{h}^{1}, H_{h}^{2}, H_{h}^{3} \right]^{T} \in\left( W_{h}^{\gamma} \right)^{3} \) ergibt sich als Lösung von
   \begin{align}
-    \int_{M_{h}^{\gamma}} H_{h}^{i} \psi_{h}^{i} d\mu
-      &=  \int_{M_{h}^{\gamma}} \nabla_{M_{h}^{\gamma}} x_{h}^{i} \cdot \nabla_{M_{h}^{\gamma}}\psi_{h}^{i} d\mu
+    \int_{M_{h}^{\gamma}} H_{h}^{i} \psi_{h}^{i} \mu
+      &=  \int_{M_{h}^{\gamma}} \nabla_{M_{h}^{\gamma}} x_{h}^{i} \cdot \nabla_{M_{h}^{\gamma}}\psi_{h}^{i} \mu
   \end{align}
   für alle \( i\in\left\{ 1,2,3 \right\} \) und \( \vec{\psi}_{h}\in \left( W_{h}^{\gamma} \right)^{3} \).
   Dabei ist \( \vec{x}_{h} = \left[ x_{h}^{1}, x_{h}^{2}, x_{h}^{3}\right]^{T} \) die Identität 
@@ -532,8 +534,8 @@
   Als Oberflächen wählen wir drei, die auch in \cite{heine} genutzt werden. 
   Dazu gehören die Einheitssphäre (Appendix \ref{sphere}), eine quartische Oberfläche, die sich als Null-Level-Sets eines Polynomes vierten
   Grades beschreiben lässt (Appendix \ref{heineB}) und ein Ellipsoid (Appendix \ref{heineC}).
-  Für unsere Berechnungen, wie auch bei \cite{heine}, ist die Makrotriangulation ein Ikosaeder projeziert auf die Oberfläche.
-  Da für die DEC-Diskretisierung wohlzentriertheit an das Primärgitter gestellt wird, verfeinern wir zunächst die Ikosaederflächen.
+  Für unsere Berechnungen, wie auch bei \cite{heine}, ist die Makrotriangulation ein Ikosaeder projiziert auf die Oberfläche.
+  Da für die DEC-Diskretisierung Wohlzentriertheit an das Primärgitter gestellt wird, verfeinern wir zunächst die Ikosaederflächen.
   Für die Sphäre ist bei den hier verwendeten Verfeinerungsmechanismus (Cinema4D) nichts weiter zu tun, da wir schon eine sehr gleichmäßige
   Triangulierung erhalten.
   Für die anderen beiden Oberflächen verwenden wir den in Abschnitt \ref{secGittergenerierung} vorgestellten Algorithmus um die
@@ -553,14 +555,14 @@
   Zum anderem nutzen wir die exakten Normal (S*) an den Knoten, die wir durch die genormten Gradienten der
   signierten Distanzfunktion erhalten (vgl. \eqref{eqNormalsFromSignDist})
   und lösen nur Gleichung \eqref{eqWeingartenEq2} (\( 3 \cdot 9 = 27 \) DOFs p. Element).
-  Zum vergleich, bei \cite{heine} müssen zu den 9 Komponenten der Weingartenabbildung auch noch die 3 Komponenten des Krümmungsvektor
+  Zum Vergleich, bei \cite{heine} müssen zu den 9 Komponenten der Weingartenabbildung auch noch die 3 Komponenten des Krümmungsvektor
   berechnet werden, das heißt für die linearen Elemente sind ebenfalls \( 3 \cdot (9+3) = 36 \) DOFs pro Element zu bestimmen, wie auch bei
   unserem (S*AvN)-Problem. 
   Für den Grad 2, 3 bzw. 4 sind es dann schon \( 72 \), \( 120 \) bzw. \( 180 \) DOFs pro Element.
   Für unsere Berechnung der mittleren Krümmung direkt aus dem Krümmungsvektor (LX) nach Gleichung
   \eqref{eqProbLX} erhalten wir nur \( 9 \) DOFs pro Element
   und für die Ermittlung der Gaußkrümmung mit den Gauß-Bonnet-Operators nach Gleichung \eqref{eqProbGB}
-  sogar nur \( 3 \) Dofs pro Dreieckelement.
+  sogar nur \( 3 \) DOFs pro Dreieckelement.
   Prinzipiell sollte sich der Assemblierungsaufwand für einen einzelnen Freiheitsgrad asymptotisch nich von
   der FEM-Diskretisierung unterscheiden,
   da bei der FEM-Diskretisierung mit den Gittern in \cite{heine} im Mittel etwa genauso viele Elemente 
@@ -570,10 +572,10 @@
   (S*AvN)-Problemen sich die Gleichungen entkoppeln lassen, so dass alle zu berechnenden Größen auf
   der rechten Seite stehen (Vektoroperatoren) und auf der linken Seite nur die Identität als Systemmatrix.
   Da wir uns aber wegen dem Vorteil der einfacheren elementweisen Assemblierung dazu entschlossen hatten im
-  "`Dualraum"' zurechnen haben wir für die entkoppelten Probleme einen Eintrag pro Zeile in der
-  Systemmatrix der den metrischen Faktor \( \left| \star v \right| \) für jeden Knoten \( v\in K^{(0)} \)
+  "`Dualraum"' zurechnen, haben wir für die entkoppelten Probleme einen Eintrag pro Zeile in der
+  Systemmatrix, der den metrischen Faktor \( \left| \star v \right| \) für jeden Knoten \( v\in K^{(0)} \)
   enthält. 
-  Um auch zuzeigen, dass Differentialgleichungssysteme mit einem DEC möglich sind lösen wir die
+  Um auch zu zeigen, dass Differentialgleichungssysteme mit einem DEC möglich sind lösen wir die
   (S*AvN)-Probleme (\eqref{eqWeingartenEq1}+\eqref{eqWeingartenEq2}) nicht entkoppelt, so dass in der
   Systemmatrix, wegen der impliziten Berechnung der Normalen-Gradienten, 7 Nicht-Null-Einträge für Knoten
   mit hexagonaler Struktur und 6 für die Defekte (Fünfer-1-Ring) pro Zeile stehen.
@@ -582,8 +584,8 @@
   Somit sind die Kosten für alle hier vorgestellten DEC-Probleme kleiner oder gleich (für (S*AvN)) dem der
   isoparametrischen FEM vom Grade 1.
   Für das Lösen der dünnbesetzten Gleichungssysteme wird in allen Fällen einheitlich der
-  BiCGStab-Algorithmus benutzt mit einer Abbruchstoleranz von \( 1.0E-10 \).
-  Wie zu erwarten übersteigt der Assemblierungsaufwand in den meißten Fällen den des Lösungsaufwandes.
+  BiCGStab2-Algorithmus benutzt mit einer Abbruchstoleranz von \( 1.0E-10 \).
+  Wie zu erwarten übersteigt der Assemblierungsaufwand in den meisten Fällen den des Lösungsaufwandes.
 
   In den Tabellen \ref{tabSphereWeingarten} - \ref{tabHeineCGBLX} sind die relativen Fehler 
   und die sich ergebenden experimentellen Konvergenzordnungen der sechs
@@ -596,31 +598,31 @@
   Für (SK) und (SH) sind die Ergebnisse für die Sphäre und den Ellipsoiden mit denen der FEM vom Grad 2 und
   3 in etwa vergleichbar. 
   Dagegen fällt das Konvergenzverhalten auf der quartischen Oberfläche nicht so gut aus.
-  Jedoch liegt die Vermutung nahe, dass die Konvergenzordnung mit feiner werdenen Gitter, unter
+  Jedoch liegt die Vermutung nahe, dass die Konvergenzordnung mit feiner werdenden Gitter, unter
   Vernachlässigung von Rundungsfehlern, noch steigt, wie
   wir das zum Beispiel auch auf dem Ellipsoiden sehen können.
-  Die größten Fehler kommen erwartungsgemäß dort vor, wo die Krümmung am größten ist wie wir in Abbildung
+  Die größten Fehler kommen erwartungsgemäß dort vor, wo die Krümmung am größten ist, wie wir in Abbildung
   \ref{figErrCurvHeineB} für den Ellipsoiden und \ref{figErrCurvHeineC} für die quartische Oberfläche sehen
   können.
   Das liegt vermutlich zum größten Teil an die wesentlich schlechtere Gitterauflösung an diesen Stellen.
-  Für den Fall, dass die Normalen weder explizit nocht implizit an den Gitterknoten bekannt wären stehen
-  die Problemeformulierungen (SKAvN) und (SHAvN) zur Verfügung.
+  Für den Fall, dass die Normalen weder explizit noch implizit an den Gitterknoten bekannt wären stehen
+  die Problemformulierungen (SKAvN) und (SHAvN) zur Verfügung.
   Dabei fallen die Konvergenztests schlechter aus als bei den (S*)-Problemen.
   Vor allem in der Maximumsnorm bricht in den meisten Fällen die Konvergenzrate ab einer bestimmten
   Gitterweite ein.
-  Dieses Verhalten war schon auf dem Torus im Beispiel \ref{bspWeinTorus} zu beochbachten.
+  Dieses Verhalten war schon auf dem Torus im Beispiel \ref{bspWeinTorus} zu beobachten.
   
-  Das Verhalten der Fehler der gaußschen Krümmung mit dem Gauß-Bonnet-Operator (GB) überrascht ein wenig.
-  Wie wir sehen, konnten solide Ergebnisse erziehlt werden trotz des sehr geringen Aufwandes für die Berechnung.
+  Das Verhalten der Fehler der Gaußschen Krümmung mit dem Gauß-Bonnet-Operator (GB) überrascht ein wenig.
+  Wie wir sehen, konnten solide Ergebnisse erzielt werden trotz des sehr geringen Aufwandes für die Berechnung.
   Einzig in der Maximumsnorm auf dem Ellipsoiden war keine Konvergenz meßbar.
-  Hier hält sich vorallem der Fehler an den seitlichen Defekten hartnäckig (vgl. Abb.
+  Hier hält sich vor allem der Fehler an den seitlichen Defekten hartnäckig (vgl. Abb.
   \ref{figErrCurvHeineC}).
 
   Das (LX)-Problem zur Berechnung der mittleren Krümmung brachte auf der Sphäre im Vergleich zu allen
   anderen Verfahren die besten Ergebnisse hervor. 
   Der Grund für das abnehmen der experimentellen Konvergenzordnung ist die Genauigkeit der Lösung des
   linearen Gleichungssystem.
-  Mit einer kleineren Abbruchstoleranz für den BiCGStab ließe sich auch eine Konvergenzrate von über 3
+  Mit einer kleineren Abbruchstoleranz für den BiCGStab2 ließe sich auch eine Konvergenzrate von über 3
   beibehalten.
   Auf der quartischen Oberfläche stagniert vor allem die Konvergenzrate in der \( L_{2} \)-Norm wobei sie
   in der Maximumsnorm etwa linear bleibt. 
@@ -632,8 +634,8 @@
   Gaußsche Krümmung dort negativ. 
   Solche eine Situation liegt auch im "`inneren Bereich"' des Torus vor und auch hier haben wir ein ähnliches
   Fehlerverhalten, wie eine Vergleichsrechnung zeigt (siehe Abb. \ref{figLXDiameterTorus}).
-  Wärend auf dem Ellipsoiden die Konvergenzrate in der diskreten \( L_{2} \)-Norm etwas unter 2 bleibt,
-  bricht sie in der Maximumnorm ein.
+  Während auf dem Ellipsoiden die Konvergenzrate in der diskreten \( L_{2} \)-Norm etwas unter 2 bleibt,
+  bricht sie in der Maximumsnorm ein.
   Die maximalen Fehler befinden sich dort, wo die Krümmung am stärksten ist und zudem die
   Gitterauflösung vergleichsweise schlecht (vgl. \ref{figErrCurvHeineC}).
 
@@ -672,7 +674,7 @@
       0.0153 & 4.98E-05 & 2.00 & 5.83E-05 & 2.00 & 2.49E-05 & 2.00 & 2.92E-05 & 2.00 \\ \hline
       0.00967 & 1.99E-05 & 2.00 & 2.34E-05 & 2.00 & 9.97E-06 & 2.00 & 1.17E-05 & 2.00 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf der Sphäre.}
+      \caption[Weingarten auf der Sphäre (S*)]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf der Sphäre.}
       \label{tabSphereWeingarten}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
@@ -689,7 +691,7 @@
             0.0153 & 9.52E-04 & 1.44 & 3.38E-02 & -0.40 & 4.77E-04 & 1.43 & 1.70E-02 & -0.40 \\ \hline
             0.00967 & 5.00E-04 & 1.41 & 3.78E-02 & -0.25 & 2.51E-04 & 1.40 & 1.91E-02 & -0.25 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten Normalen(S*AvN)) auf der Sphäre.}
+      \caption[Weingarten auf der Sphäre (S*AvN)]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten Normalen(S*AvN)) auf der Sphäre.}
       \label{tabSphereWeingartenAvN}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
@@ -706,7 +708,7 @@
             0.0153 & 3.10E-05 & 2.00 & 3.65E-05 & 2.00 & 1.55E-09 & 2.69 & 1.54E-08 & 1.47 \\ \hline
             0.00967 & 1.24E-05 & 2.00 & 1.46E-05 & 2.00 & 5.14E-10 & 2.41 & 7.13E-09 & 1.68 \\ \hline
       \end{tabular}
-      \caption[Gauß-Bonnet und Krümmungsvektor auf der Sphäre]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator(GB)) und \( H \)
+      \caption[Gauß-Bonnet und Krümmungsvektor auf der Sphäre]{Relative Fehler für \( K \) (Gauß-Bonnet-Operator(GB)) und \( H \)
       (Krümmungsvektor(LX)) auf der Sphäre.}
       \label{tabSphereGBLX}
    \end{table}
@@ -725,7 +727,7 @@
             0.0598 & 2.10E-01 & 0.27 & 4.35E-01 & -0.02 & 8.46E-02 & 0.66 & 3.26E-01 & 0.50 \\ \hline
             0.0391 & 1.40E-01 & 0.95 & 3.04E-01 & 0.83 & 5.33E-02 & 1.08 & 2.22E-01 & 0.89 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf einer quartischen Oberfläche]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf einer quartischen Oberfläche.}
+      \caption[Weingarten auf einer quartischen Oberfläche (S*)]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf einer quartischen Oberfläche.}
       \label{tabHeineBWeingarten}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
@@ -741,7 +743,7 @@
             0.0598 & 3.25E-01 & 0.55 & 5.72E-01 & 0.40 & 1.36E-01 & 0.68 & 4.46E-01 & 0.50 \\ \hline
             0.0391 & 2.22E-01 & 0.89 & 4.24E-01 & 0.70 & 8.93E-02 & 0.99 & 3.23E-01 & 0.76 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf der Sphäre]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten
+      \caption[Weingarten auf der Sphäre (S*AvN)]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten
       Normalen(S*AvN)) auf einer quartischen Oberfläche.}
       \label{tabHeineBWeingartenAvN}
       \vspace{10pt}
@@ -758,7 +760,7 @@
             0.0598 & 1.04E-01 & 1.90 & 1.86E-01 & 1.49 & 8.02E-02 & 0.32 & 1.31E-01 & 0.59 \\ \hline
             0.0391 & 5.18E-02 & 1.64 & 1.03E-01 & 1.38 & 7.48E-02 & 0.16 & 8.37E-02 & 1.05 \\ \hline
       \end{tabular}
-      \caption[Gauß-Bonnet und Krümmungsvektor auf einer quartischen Oberfläche]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator(GB))
+      \caption[Gauß-Bonnet und Krümmungsvektor auf einer quartischen Oberfläche]{Relative Fehler für \( K \) (Gauß-Bonnet-Operator(GB))
       und \( H \) (Krümmungsvektor(LX)) auf einer quartischen Oberfläche.}
       \label{tabHeineBGBLX}
    \end{table}
@@ -778,7 +780,7 @@
             0.026 & 4.82E-03 & 1.95 & 1.10E-02 & 1.95 & 2.10E-03 & 1.95 & 7.31E-03 & 1.95 \\ \hline
             0.017 & 2.07E-03 & 1.97 & 4.71E-03 & 1.97 & 8.97E-04 & 1.98 & 3.14E-03 & 1.97 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf einem Ellipsoid]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf einem Ellipsoid.}
+      \caption[Weingarten auf einem Ellipsoid (S*)]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung(S*)) auf einem Ellipsoid.}
       \label{tabHeineCWeingarten}
       \vspace{10pt}
       \begin{tabular}{|l|r|r|r|r|r|r|r|r|}
@@ -795,7 +797,7 @@
             0.026 & 1.00E-02 & 1.91 & 6.12E-02 & 0.06 & 4.35E-03 & 1.92 & 4.60E-02 & 0.08 \\ \hline
             0.017 & 4.36E-03 & 1.93 & 5.93E-02 & 0.07 & 1.89E-03 & 1.95 & 4.34E-02 & 0.13 \\ \hline
       \end{tabular}
-      \caption[Weingarten auf einem Ellipsoid]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten
+      \caption[Weingarten auf einem Ellipsoid (S*AvN)]{Relative Fehler für \( K \) und \( H \) (diskreten Weingartenabbildung mit gemittelten
       Normalen (S*AvN)) auf einem Ellipsoid.}
       \label{tabHeineCWeingartenAvN}
       \vspace{10pt}
@@ -813,7 +815,7 @@
             0.026 & 1.12E-03 & 1.43 & 5.19E-02 & 0.02 & 7.27E-04 & 1.89 & 1.62E-02 & 0.04 \\ \hline
             0.017 & 6.24E-04 & 1.36 & 5.35E-02 & -0.07 & 3.22E-04 & 1.90 & 1.57E-02 & 0.08 \\ \hline
       \end{tabular}
-      \caption[Gauß-Bonnet und Krümmungsvektor auf einem Ellipsoid]{Relative Fehler für \( K \) (Gauss-Bonnet-Operator(GB)) und \( H \)
+      \caption[Gauß-Bonnet und Krümmungsvektor auf einem Ellipsoid]{Relative Fehler für \( K \) (Gauß-Bonnet-Operator(GB)) und \( H \)
       (Krümmungsvektor(LX)) auf einem Ellipsoid.}
       \label{tabHeineCGBLX}
    \end{table}
@@ -827,7 +829,7 @@
           \centering\includegraphics[width=\textwidth]{bilder/Curvature/WeinMeanTorusError_25k.png}
         \end{minipage}
         \caption[Mittlere Krümmung aus Weingartenabb. auf Torus]
-                {Links: Mittlere Krümmung \( H \)
+                {Links: Mittlere Krümmung \( H \).
                  Rechts: Lokaler absoluter Fehler für die Bestimmung von \( H \) über die Weingartenabbildung mit gemittelten Normalen
                  \eqref{eqNormalMittel}. Das Gitter hat 24640 DOFs (\( h\approx 0.06 \)). 
                  Ab dieser Gitterauflösung fängt die Konvergenzrate an stark zu stagnieren.
@@ -901,7 +903,7 @@
     \caption[Fehler (Krümmungen auf quatrischer Oberfläche)]
             {Absolute lokale Fehler für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf
             einer quatrischen Oberfläche
-             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (mitte), dem
+             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (Mitte), dem
              Gauß-Bonnet-Operator (unten links) bzw. dem Krümmungsvektor (unten rechts).
              (249642 DOFs, \( h\approx0.04 \))}
     \label{figErrCurvHeineB}
@@ -954,7 +956,7 @@
     \caption[Fehler (Krümmungen auf Ellipsoid)]
             {Absolute lokale Fehler für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf
             einem Ellipsoid
-             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (mitte), dem
+             ermittelt aus den Eigenwerten der diskreten Weingartenabbildung (Mitte), dem
              Gauß-Bonnet-Operator (unten links) bzw. dem Krümmungsvektor (unten rechts).
              (1962 DOFs, \( h\approx0.18 \))}
     \label{figErrCurvHeineC}
@@ -978,9 +980,3 @@
              für die Gaußsche Krümmung (links) und mittlere Krümmung (rechts) auf einem Ellipsoid.}
     \label{figErrCompHeineC}
   \end{figure}
-%\section{Approximation der Krümmung}
-%  \subsection{Beispiel: Krümmung Teil 1: Gauß-Bonnet-Operator}
-%  \subsection{Beispiel: Krümmung Teil 2: Weingarten-Abbildung}
-%  \subsection{Beispiel: Krümmung Teil 3: Krümmungsvektor}
-%  \label{subsecKruemmungsvektor}
-

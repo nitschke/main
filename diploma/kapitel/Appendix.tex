@@ -3,7 +3,7 @@
 
 \chapter{Appendix}
 
-\section{Bezeichner}
+\section{Häufige Bezeichner}
 
 \begin{tabular}{p{0.19\textwidth}p{0.79\textwidth}}
   \( N \) & Dimension des Ambienteraumes \( \R^{N} \) \\
@@ -21,7 +21,7 @@
   \( \nabla \) & Oberflächen Gradient \( \nabla_{M} = \sharp\circ\exd 
                                                     = \left( I - \vec{\nu}\vec{\nu}^{T}
                                                     \right)\nabla_{\R^{3}} \) \\
-  \( \nabla_{\R^{3}} \) & gwöhnlicher \( \R^{3} \)-Gradient \\
+  \( \nabla_{\R^{3}} \) & gewöhnlicher \( \R^{3} \)-Gradient \\
   \( C^{\infty}(M) \) & Raum der glatten Funktionen auf \( M \) \\
   \( \mathcal{V}^{\infty}(M) \) & Raum der glatten Tangentialvektorfelder auf \( M \) \\
   \( m_{v} \) & Anzahl der Dreiecke im 1-Ring um \( v\in K^{(0)}\)\\
@@ -60,7 +60,7 @@
     sind (approximativ oder exakt) gegeben.
 
     Zu Beachten ist hierbei, dass die Kantenkraft \texttt{forceLength} nur auf einem Knoten aufgetragen wird.
-    Der andere Knoten der ebenfalls zu dieser Kante gehört bekommt die gleiche Kantenkraft aufdatiert, wenn die Knotenkräfte auf dem 2. Dreieckelement, das sich diese Kante teilt, berechnet
+    Der andere Knoten, der ebenfalls zu dieser Kante gehört, bekommt die gleiche Kantenkraft aufdatiert, wenn die Knotenkräfte auf dem 2. Dreieckelement, das sich diese Kante teilt, berechnet
     werden.
 
     
@@ -91,11 +91,11 @@
         AT(k,k) -= C
         AT(k,l) += C
     \end{verbatim}
-    Wobei \texttt{T.dualVolume(k)} das Volumen der Voronoizelle der Ecke \( v_{k} \) eingeschränkt auf \(
-   \mathtt{T} \) ist und \texttt{T.Grad(l)} der von AMDiS bereitgestellte Gradient der linaren Ansatzfunktion zu \( v_{l} \)
+    Wobei \texttt{T.dualVolume(k)} das Volumen der Voronoi-Zelle der Ecke \( v_{k} \) eingeschränkt auf \(
+   \mathtt{T} \) ist und \texttt{T.Grad(l)} der von AMDiS bereitgestellte Gradient der linearen Ansatzfunktion zu \( v_{l} \)
    auf dem Element.
 
- \subsection{Gauss-Bonnet-Operator}
+ \subsection{Gauß-Bonnet-Operator}
   \label{subsecAlgoGaussBonnet}
     Aufstellung des Elementvektors \( \mathtt{bT}\in\R^{3} \) für das Dreieckelement
     \( \mathtt{T}\in K^{(2)} \):
