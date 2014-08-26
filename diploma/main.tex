@@ -7,10 +7,15 @@
 \includepdf{deckblatt/Diplom-deckblatt.pdf}
 \includepdf{deckblatt/Diplom-erklaerung.pdf}
 
-\listoftodos
+%\listoftodos
 
 %\maketitle
+\setcounter{tocdepth}{1}
+\pagenumbering{roman}
 \tableofcontents
+\listoffigures
+\listoftables
+
 
 \include{kapitel/Einf}
 
@@ -23,9 +28,6 @@
 \include{kapitel/FuturWorks}
 
 \include{kapitel/Appendix}
-
-\listoffigures
-\listoftables
 
 \bibliography{bibl.bib}{}
 \bibliographystyle{alpha}
