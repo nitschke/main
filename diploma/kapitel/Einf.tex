@@ -3,4 +3,98 @@
 \setcounter{chapter}{-1}
 \chapter{Einführung}
 
-History: \cite{whitney} (1957)
+Differentialformen und dessen Äußeres Kalkül wurden erstmals 1899 ausführlich in einer Arbeit von \'{E}lie Joseph Cartan \cite{cartan} erwähnt.
+Das mathematische Fundament bildet die äußere Algebra, auch Graßmann-Algebra genannt.
+Mit Hilfe von Diffrentialformen lassen sich viele mathematische Formulierungen aus der klassischen Vektoranalysis koordinatenfrei schreiben.
+Nehmen wir zum Beispiel den Raum \( \R^{2} \) mit Standardkoordinaten \( (x,y) \), dann schreibt sich der Gradient einer differenzierbaren Funktion 
+\( f:\R^{2}\rightarrow \R \) als
+\begin{align}
+  \nabla f &= \frac{\partial f}{\partial x} \vec{e}_{x} + \frac{\partial f}{\partial y} \vec{e}_{y} \formpunkt
+\end{align}
+Im Bereich der Differentialformen gibt es dagegen die äußere Ableitung.
+Da eine Funktion auch eine sogenannte 0-Form ist, ergibt sich
+\begin{align}
+  \label{eqAbleitungEinfBsp}
+  \exd f &= \frac{\partial f}{\partial x} dx + \frac{\partial f}{\partial y} dy \formpunkt
+\end{align}
+Der Unterschied zwischen \( \nabla \) und \( \exd \) scheint hier nur ein syntaktischer sein.
+Wird jedoch ein anderes Koordinatensystem für den \( \R^{2} \) verwendet, z.B. Polarkoordinaten \((\phi , r)\) mit orthonormalen Basisvektoren 
+\(  \vec{e}_{\phi} \) und \( \vec{e}_{r} \),
+dann ergeben sich für beide Ableitungen
+\begin{align}
+  \nabla f &= \frac{1}{r}\frac{\partial f}{\partial \phi} \vec{e}_{\phi} + \frac{\partial f}{\partial r} \vec{e}_{r} \formtext{und} 
+  \exd f = \frac{\partial f}{\partial \phi} d\phi + \frac{\partial f}{\partial r} dr \formpunkt
+\end{align}
+Wärend \( \nabla f \) von den gewählten Koordinaten und Basisvektoren abhängt, ist die Darstellung von \( \exd f \) immer noch die gleiche wie in 
+\eqref{eqAbleitungEinfBsp} nur mit anderen Bezeichnern.
+Es zeigt sich, dass die äußere Ableitung nicht nur invariant gegenüber Koordinatenwechsel im \( \R^{n} \) ist, sondern sogar auf beliebige \( n \)-Mannigfaltigkeiten.
+Deshalb sprechen wir hier von "`koordinatenfrei"'.
+
+Differentialformen vereinfachen auch viele physikalische Probleme. 
+Betrachten wir zum Beispiel die Maxwell-Gleichung in Materie.
+Mit der elektrischen Feldstärke \( \vec{E} \), magnetischen Flußdichte \( \vec{B} \), magnetischen Feldstärke \( \vec{H} \), elektrischen Stromdichte \( \vec{J} \),
+elektrischen Flußdichte \( \vec{D} \), Ladungsdichte \( \rho \) und Lichgeschwindigkeit \( c \)
+ergeben sich die makroskopischen Maxwell-Gleichungen 
+\begin{align}
+  \nabla \times \vec{E} &= - \frac{1}{c} \frac{\partial \vec{B}}{\partial t} \tag{Faradaysche Induktionsgesetz} \\
+  \nabla \cdot \vec{B} &= 0 \tag{Gaußsches Gesetz für Magnetfelder}\\
+  \nabla \times \vec{H} &= \frac{4\pi}{c} \vec{J} + \frac{1}{c} \frac{\partial\vec{D}}{\partial t}  \tag{Amp\`{e}resches Gesetz}\\
+  \nabla \cdot \vec{D} &= 4 \pi \rho \formpunkt \tag{Gaußsches Gesetz}
+\end{align}
+Diese 4 Gleichungen, in der Sprache der klassischen Vektorrechnung, halten nur in einem (flachen) kartesischen dreidimensionalen Raum mit Raumkoordinaten 
+\( \left( x^{1}, x^{2}, x^{3} \right) \) und Zeitkoordinate \( t \).
+Sollte die vierdimensionale Raumzeit jedoch eine Krümmung erfahren, dann müssen diese Gleichungen neu geschrieben werden mit entsprechenden metrischen Informationen.
+Dadurch würde die Formulierung wesentlich komplexer werden. 
+Eine elegantere Möglichkeit ist es die makroskopischen Maxwell-Gleichungen in der Sprache der Differentialformen auszudrücken. 
+Es seien dazu die beiden 2-Formen \( \alpha \) und \( \beta \)
+und die 3-Form \( \gamma \) gegeben durch
+\begin{align}
+    \alpha &:= c \left( \sum_{i=1}^{3} E_{i}dx^{i}\right) \wedge dt \\
+    \beta &:=  - c \left( \sum_{i=1}^{3} H_{i}dx^{i}\right) \wedge dt
+                + \sum_{i=1}^{3} D_{\tau_{i}(1)} dx^{\tau_{i}(2)}\wedge dx^{\tau_{i}(3)} \\
+    \gamma &:= \left( \sum_{i=1}^{3} J_{\tau_{i}(1)} dx^{\tau_{i}(2)}\wedge dx^{\tau_{i}(3)} \right) \wedge dt
+                - \rho dx^{1} \wedge dx^{2} \wedge dx^{3}
+\end{align}
+mit \( \tau_{1}=\left( 1,2,3 \right) \) und dessen zyklische Permutationen.
+Aus den beiden ersten Maxwell-Gleichungen bzw. den beiden letzteren ergibt sich nun (vgl. \cite[4.6]{flanders})
+\begin{align}
+  \begin{aligned}
+    \exd\alpha &= 0 \\
+    \exd\beta  &= -4\pi\gamma  \formpunkt
+  \end{aligned}
+\end{align}
+Diese zwie Gleichungen sind nicht einfach nur eine Umformulierung des ursprünglichen Problems 
+sondern sie gelten sogar in allen zulässigen Koordinatensystemen \( \left( x^{1}, x^{2}, x^{3}, t  \right) \) auf Mannigfaltigkeiten.
+
+Bestrebungen Differentailform und deren Operatoren zu diskretisieren gab es trotz des späteren Aufkommen der Computertechnik kaum.
+H. Whitney \cite{whitney} führte in den Sechzigern erstmalig eine lineare Interpolation glatter Differentialformen ein 
+und schuf mit der Whitney- und de-Rham-Abbildung Isomorphismen zwischen simplizialer Koketten und Differentialformen.
+Der zentrale Integralsatz im Äußeren Kalkül ist der Satz von Stokes.
+Er verallgemeinert viele klassische Integralsätze, wie die Greensche Formel oder den Gaußschen Integralsatz.
+Zu dem bildet er das Kernstück für die äußere Ableitung in einem Diskreten Äußeren Kalkül (DEC).
+In \cite[7.2C]{Marsden} wird beschrieben, wie sich der Satz von Stokes bzgl. Koketten als diskrete äußere Ableitung sehen lässt.
+Eine umfassende Beschäftigung zur Entwicklung eines DECs gibt es jedoch erst seit der Jahrtausendwende.
+Ein gutes Standardwerk, auf welches wir uns im Folgenden auch beziehen wollen, ist die Doktorarbeit von A.N. Hirani \cite{hirani}.
+
+Die Einführung in die Simplizialkomplex, also in die benötigte zugrundeliegende geometrische Struktur, und die darauf aufbauenden simplizialen Ketten und Koketten werden wir ähnlich machen.
+An einigen Stellen werden wir zudem für unsere Zwecke Vereinfachungen vornehmen, durch Beweise Argumentationslücken schließen und Konsistenz zu "`polytopen"' Differentialformen zeigen.
+Obwohl wir uns auf Oberflächen beschränken möchten, werden wir doch an vielen Stellen mit \( n \)-Mannigfaltigkeiten allgemeiner arbeiten.
+Denn im DEC-Kontex ist eine allgemeinerer Umgang mit bestimmten Themen oftmals nicht schwieriger oder komplexer als speziell für \( n=2 \). 
+
+Es werden alle für den Anwendungsteil benötigte diskrete Operatoren hergeleitet und getestet.
+Ebenfalls wird auf die Implementierung eingegangen.
+Die Besonderheit hierbei ist die Anforderung, dass alle DEC-Operatoren (dreieck)elementweise bestimmt werden sollen.
+Genauso wie es auch in der Finite Elemente Methode (FEM) gemacht wird. 
+Somit lassen sich alle DEC-Operatoren in die FE-Toolbox AMDiS integrieren, so dass auf Benutzerebene kaum ein Unterschied zur FEM in der Progammierung der Problemformulierung zu sehen ist.
+
+Im Anwendungsteil geht es um die Berechnung der Gaußschen und der mittleren Krümmung.
+Hier werden mehrer Methoden vorgestellt, gerechnet und mit einem isoparametrischen FE-Ansatz verglichen.
+Unteranderem wird dazu die Weingartenabbildung über den Gradienten der Normalen berechnet.
+Dieses ist ein vektorisiertes skalawertiges Problem bei dem ein diskreter Gradient benötigt wird.
+In Abschnitt \ref{secGradient} wird ein solcher Gradient vorgestellt.
+Auch der Krümmungsvektor kann benutzt werden die mittlere Krümmung zu approximieren.
+Der Krümmungsvektor kann mit Hilfe des Laplace-Beltrami-Operators aus der Koordinatenidentität berechnet werden.
+Eine diskrete Version dieses Differentialoperators zweiter Ordnung wird in \ref{subsecLaplaceBeltrami} vorgestellt als direkte Folgerung
+des Laplace-de-Rham-Operators für Funktionen und dem Diskreten Äußeren Kalküls.
+Zum Vergleichen wird auch ein Gauß-Bonnet-Operator vorgestellt für die Approximation der Gaußschen Krümmung.
+Er ist eine Folgerung des Gauß-Bonnet-Theorems im DEC-Kontext für wohlzentrierte Gitter und zeichnet sich vor allem durch einen sehr kleinen Berechnungsaufwand aus.
