@@ -71,12 +71,14 @@ int main(int argc, char* argv[])
   // ===== create matrix operator =====
   //Operator matrixOperator(sphere.getFeSpace());
   //matrixOperator.addTerm(new Simple_SOT(-1.0));
-  LBeltramiDEC matrixOperator(sphere.getFeSpace());
+  //LBeltramiDEC matrixOperator(sphere.getFeSpace());
+  LBeltramiBaryDEC matrixOperator(sphere.getFeSpace());
   sphere.addMatrixOperator(&matrixOperator, 0, 0);
 
   //Operator simpleOperator(sphere.getFeSpace());
   //simpleOperator.addTerm(new Simple_ZOT());
-  SimpleDEC simpleOperator(sphere.getFeSpace());
+  //SimpleDEC simpleOperator(sphere.getFeSpace());
+  SimpleBaryDEC simpleOperator(sphere.getFeSpace());
   sphere.addMatrixOperator(&simpleOperator,0,0);
 
   int degree = sphere.getFeSpace()->getBasisFcts()->getDegree();
@@ -84,7 +86,8 @@ int main(int argc, char* argv[])
   // ===== create rhs operator =====
   //Operator rhsOperator(sphere.getFeSpace());
   //rhsOperator.addTerm(new CoordsAtQP_ZOT(new F(degree)));
-  FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
+  //FunctionDEC rhsOperator(new F(degree), sphere.getFeSpace());
+  FunctionBaryDEC rhsOperator(new F(degree), sphere.getFeSpace());
   sphere.addVectorOperator(&rhsOperator, 0);
 
   // ===== start adaption loop =====

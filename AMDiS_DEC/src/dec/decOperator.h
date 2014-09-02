@@ -55,6 +55,18 @@ namespace AMDiS {
     
   };
 
+  class LBeltramiBaryDEC : public DecOperator {
+    
+    public:
+      LBeltramiBaryDEC(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
+
+      void getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor = 1.0);
+    
+  };
+
   
   // Laplace(q*f)
   class LBeltramiInteriorFunctionDEC : public DecOperator {
@@ -201,6 +213,23 @@ namespace AMDiS {
 
   };
 
+  class FunctionBaryDEC : public DecOperator {
+    
+    public:
+      
+      FunctionBaryDEC(AbstractFunction<double, WorldVector<double> > *fun, const FiniteElemSpace *rowFeSpace, 
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace), f(fun) {}
+
+      void getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor = 1.0);
+
+    protected:
+      
+      AbstractFunction<double, WorldVector<double> > *f;
+
+  };
+
   class SimpleDEC : public DecOperator {
     
     public:
@@ -214,7 +243,17 @@ namespace AMDiS {
       void getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
 				double factor = 1.0);
+  };
+
+  class SimpleBaryDEC : public DecOperator {
     
+    public:
+      SimpleBaryDEC(const FiniteElemSpace *rowFeSpace,
+	     const FiniteElemSpace *colFeSpace = NULL) : DecOperator(rowFeSpace, colFeSpace) {}
+
+      void getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor = 1.0);
   };
 
 

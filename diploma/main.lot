@@ -2,26 +2,26 @@
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {table}{\numberline {2.1}{\ignorespaces Formeln f\IeC {\"u}r \IeC {\"A}u\IeC {\ss }ere Ableitung}}{37}{table.caption.31}
-\contentsline {table}{\numberline {2.2}{\ignorespaces Laplace auf Sph\IeC {\"a}re (DEC)}}{51}{table.caption.37}
-\contentsline {table}{\numberline {2.3}{\ignorespaces Laplace auf Sph\IeC {\"a}re (FEM)}}{51}{table.caption.38}
-\contentsline {table}{\numberline {2.4}{\ignorespaces Laplace auf Torus (DEC)}}{54}{table.caption.41}
-\contentsline {table}{\numberline {2.5}{\ignorespaces Laplace auf Torus (FEM)}}{54}{table.caption.41}
-\contentsline {table}{\numberline {2.6}{\ignorespaces Gradient auf Sph\IeC {\"a}re}}{57}{table.caption.45}
-\contentsline {table}{\numberline {2.7}{\ignorespaces Gradient auf Torus}}{59}{table.caption.47}
+\contentsline {table}{\numberline {2.1}{\ignorespaces Formeln f\IeC {\"u}r \IeC {\"A}u\IeC {\ss }ere Ableitung}}{41}{table.2.1}
+\contentsline {table}{\numberline {2.2}{\ignorespaces Laplace auf Sph\IeC {\"a}re (DEC)}}{57}{table.2.2}
+\contentsline {table}{\numberline {2.3}{\ignorespaces Laplace auf Sph\IeC {\"a}re (FEM)}}{57}{table.2.3}
+\contentsline {table}{\numberline {2.4}{\ignorespaces Laplace auf Torus (DEC)}}{60}{table.2.4}
+\contentsline {table}{\numberline {2.5}{\ignorespaces Laplace auf Torus (FEM)}}{60}{table.2.5}
+\contentsline {table}{\numberline {2.6}{\ignorespaces Gradient auf Sph\IeC {\"a}re}}{63}{table.2.6}
+\contentsline {table}{\numberline {2.7}{\ignorespaces Gradient auf Torus}}{65}{table.2.7}
 \addvspace {10pt}
-\contentsline {table}{\numberline {3.1}{\ignorespaces Gau\IeC {\ss }-/mittlere Kr\IeC {\"u}mmung aus Weingartenabb. auf Torus (ExN)}}{65}{table.caption.49}
-\contentsline {table}{\numberline {3.2}{\ignorespaces Gau\IeC {\ss }-/mittlere Kr\IeC {\"u}mmung aus Weingartenabb. auf Torus (AvN)}}{65}{table.caption.49}
-\contentsline {table}{\numberline {3.3}{\ignorespaces Gau\IeC {\ss }-/mittlere Kr\IeC {\"u}mmung aus Weingartenabb. auf Torus (ConnN)}}{65}{table.caption.49}
-\contentsline {table}{\numberline {3.4}{\ignorespaces lDOFs Vergleich}}{72}{table.caption.53}
-\contentsline {table}{\numberline {3.5}{\ignorespaces Weingarten auf der Sph\IeC {\"a}re (S*)}}{73}{table.caption.54}
-\contentsline {table}{\numberline {3.6}{\ignorespaces Weingarten auf der Sph\IeC {\"a}re (S*AvN)}}{73}{table.caption.54}
-\contentsline {table}{\numberline {3.7}{\ignorespaces Gau\IeC {\ss }-Bonnet und Kr\IeC {\"u}mmungsvektor auf der Sph\IeC {\"a}re}}{73}{table.caption.54}
-\contentsline {table}{\numberline {3.8}{\ignorespaces Weingarten auf einer quartischen Oberfl\IeC {\"a}che (S*)}}{78}{table.caption.55}
-\contentsline {table}{\numberline {3.9}{\ignorespaces Weingarten auf der Sph\IeC {\"a}re (S*AvN)}}{78}{table.caption.55}
-\contentsline {table}{\numberline {3.10}{\ignorespaces Gau\IeC {\ss }-Bonnet und Kr\IeC {\"u}mmungsvektor auf einer quartischen Oberfl\IeC {\"a}che}}{78}{table.caption.55}
-\contentsline {table}{\numberline {3.11}{\ignorespaces Weingarten auf einem Ellipsoid (S*)}}{79}{table.caption.56}
-\contentsline {table}{\numberline {3.12}{\ignorespaces Weingarten auf einem Ellipsoid (S*AvN)}}{79}{table.caption.56}
-\contentsline {table}{\numberline {3.13}{\ignorespaces Gau\IeC {\ss }-Bonnet und Kr\IeC {\"u}mmungsvektor auf einem Ellipsoid}}{79}{table.caption.56}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Gau\IeC {\ss }-/mittlere Kr\IeC {\"u}mmung aus Weingartenabb. auf Torus (ExN)}}{71}{table.3.1}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Gau\IeC {\ss }-/mittlere Kr\IeC {\"u}mmung aus Weingartenabb. auf Torus (AvN)}}{71}{table.3.2}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Gau\IeC {\ss }-/mittlere Kr\IeC {\"u}mmung aus Weingartenabb. auf Torus (ConnN)}}{71}{table.3.3}
+\contentsline {table}{\numberline {3.4}{\ignorespaces lDOFs Vergleich}}{79}{table.3.4}
+\contentsline {table}{\numberline {3.5}{\ignorespaces Weingarten auf der Sph\IeC {\"a}re (S*)}}{80}{table.3.5}
+\contentsline {table}{\numberline {3.6}{\ignorespaces Weingarten auf der Sph\IeC {\"a}re (S*AvN)}}{80}{table.3.6}
+\contentsline {table}{\numberline {3.7}{\ignorespaces Gau\IeC {\ss }-Bonnet und Kr\IeC {\"u}mmungsvektor auf der Sph\IeC {\"a}re}}{80}{table.3.7}
+\contentsline {table}{\numberline {3.8}{\ignorespaces Weingarten auf einer quartischen Oberfl\IeC {\"a}che (S*)}}{81}{table.3.8}
+\contentsline {table}{\numberline {3.9}{\ignorespaces Weingarten auf der Sph\IeC {\"a}re (S*AvN)}}{81}{table.3.9}
+\contentsline {table}{\numberline {3.10}{\ignorespaces Gau\IeC {\ss }-Bonnet und Kr\IeC {\"u}mmungsvektor auf einer quartischen Oberfl\IeC {\"a}che}}{81}{table.3.10}
+\contentsline {table}{\numberline {3.11}{\ignorespaces Weingarten auf einem Ellipsoid (S*)}}{82}{table.3.11}
+\contentsline {table}{\numberline {3.12}{\ignorespaces Weingarten auf einem Ellipsoid (S*AvN)}}{82}{table.3.12}
+\contentsline {table}{\numberline {3.13}{\ignorespaces Gau\IeC {\ss }-Bonnet und Kr\IeC {\"u}mmungsvektor auf einem Ellipsoid}}{82}{table.3.13}
 \addvspace {10pt}
 \addvspace {10pt}

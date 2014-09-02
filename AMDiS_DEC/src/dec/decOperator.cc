@@ -1,5 +1,6 @@
 #include "decOperator.h"
 #include "elVolumesInfo2d.h"
+#include "elVolumesBaryInfo2d.h"
 #include "WorldVectorHelper.h"
 
 namespace AMDiS {
@@ -26,6 +27,27 @@ namespace AMDiS {
       for (int j = (i+1)%3; j != i; j = (j+1)%3) {
         int k = (2*(i+j))%3;
         double c = volInfo.getDualOppEdgeLen(k) / (volInfo.getOppEdgeLen(k));
+        opMat(i, i) = opMat(i, i) - c;
+        opMat(i, j) = opMat(i, j) + c;
+      }
+    }
+
+    opMat *= factor;
+    //cout << "Beltrami: \n" << opMat << endl;
+    updateUserMat(userMat, opMat);
+  }
+
+  void LBeltramiBaryDEC::getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor) {
+    
+    ElVolumesBaryInfo2d volInfo(elInfo);
+    opMat = 0.0;
+    
+    for (int i = 0; i < 3; i++) {
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        int k = (2*(i+j))%3;
+        double c = volInfo.getDualOppEdgeLen(k) * volInfo.getOppSin(k) / (volInfo.getOppEdgeLen(k));
         opMat(i, i) = opMat(i, i) - c;
         opMat(i, j) = opMat(i, j) + c;
       }
@@ -215,6 +237,20 @@ namespace AMDiS {
     updateUserMat(userMat, opMat);
   }
 
+  void FunctionBaryDEC::getElementVector(const ElInfo *elInfo, 
+				  ElementVector& userVec, 
+				  double factor) {
+
+    ElVolumesBaryInfo2d volInfo(elInfo);
+
+    for (int i = 0; i < 3; i++) {
+      opVec(i) = volInfo.getDualVertexVol(i)*(*f)(elInfo->getCoord(i));
+    }
+
+    opVec *= factor;
+    updateUserVec(userVec, opVec);
+  }
+
   
   void SimpleDEC::getElementMatrix(const ElInfo *elInfo, 
 		    ElementMatrix& userMat, 
@@ -256,6 +292,24 @@ namespace AMDiS {
 
     opVec *= factor;
     updateUserVec(userVec, opVec);
+  }
+
+  void SimpleBaryDEC::getElementMatrix(const ElInfo *elInfo, 
+		    ElementMatrix& userMat, 
+				double factor) {
+    
+    ElVolumesBaryInfo2d volInfo(elInfo);
+    
+    opMat = 0.0;
+
+    for (int i = 0; i < 3; i++) {
+      opMat(i, i) = volInfo.getDualVertexVol(i);
+      //opMat(i, i) = 1.0;
+    }
+    
+    opMat *= factor;
+    //cout << "SimpleDEC:\n" << opMat << endl;
+    updateUserMat(userMat, opMat);
   }
 
   void GaussCurvatureDEC::getElementVector(const ElInfo *elInfo, 

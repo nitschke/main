@@ -1,22 +1,29 @@
-\input{header}
+\input{kapitel/header}
 
 \title{diplomarbeit}
 \author{Ingo Nitschke}
 
 \begin{document}
 \includepdf{deckblatt/Diplom-deckblatt.pdf}
-\includepdf{deckblatt/Diplom-erklaerung.pdf}
+
+\OnehalfSpacing
+\aliaspagestyle{chapter}{empty}
+\include{kapitel/dankeUndSo}
 
 %\listoftodos
 
 %\maketitle
 \setcounter{tocdepth}{1}
 \pagenumbering{roman}
-\tableofcontents
+\enlargethispage{2cm}
+\tableofcontents*
+\newpage
+\enlargethispage{2cm}
 \listoffigures
+\newpage
 \listoftables
-\cleardoublepage
-
+\newpage
+%\cleardoublepage
 
 \include{kapitel/Einf}
 
@@ -32,4 +39,6 @@
 
 \bibliography{bibl.bib}{}
 \bibliographystyle{alpha}
+
+\includepdf{deckblatt/Diplom-erklaerung.pdf}
 \end{document}
