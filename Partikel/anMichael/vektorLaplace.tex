@@ -1,0 +1,137 @@
+\documentclass{scrartcl}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{dsfont}
+\newcommand{\R}{\mathds{R}}
+\newcommand{\Z}{\mathds{Z}}
+\newcommand{\csd}{\text{csd}}
+\renewcommand{\div}{\text{Div}}
+\renewcommand{\hom}{\text{Hom}}
+\newcommand{\err}{\text{Err}}
+\newcommand{\id}{\text{Id}}
+\newcommand{\D}{\text{D}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\sgn}{\mathop{\mathrm{sgn}}\nolimits}
+\newcommand{\formpunkt}{\,\text{.}}
+\newcommand{\formkomma}{\,\text{,}}
+\newcommand{\formtext}[1]{\quad\text{#1}\quad}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+\newcommand{\vecover}[2]{\vec{#1}^{\,#2}}
+\newcommand{\diag}[1]{\text{diag}\left( #1 \right)}
+\newcommand{\II}{I \! I}
+\newcommand{\av}{\text{Av}}
+\newcommand{\conn}{\text{Conn}}
+
+
+\begin{document}
+  Allgemein wäre der Laplace (de-Rham) für ein Vektorfeld \( \vec{p}\in TM \) für eine zweidimensionale Oberfläche
+  \begin{align}
+    \Delta_{dR} \vec{p} &:= -\left( \left( \delta\exd + \exd\delta \right)\vecflat{p}\right)^{\sharp} \in TM
+  \end{align}
+  mit \( \delta = - * \exd * \).
+  \( \flat \) und \( \sharp \) sind hierbei eingeführt um alles kontravariant zu lassen, also nicht im Dualraum des Tangentialraumes zu rechnen.
+  Ein wenig intuitiver ist es vielleicht nur den ersten Anteil, wie bei dem Laplace-Beltrami für Funktionen, zunutzen um so einen allgemeineren Laplace-Beltrami für Vectorfelder zu bekommen
+  \begin{align}
+    \Delta_{B} \vec{p}:= -\left( \delta\exd \vecflat{p}\right)^{\sharp} \in TM
+  \end{align}
+  Ich habe ihn mal für die Sphäre explizit ausgerechnet.
+  Weiter unten ist die genutze Parametrisierung angegeben.
+  Es ergibt sich somit für
+  \begin{align}
+    \vec{p} = p^{1}\partial_{u}\vec{x} + p^{2}\partial_{v}\vec{x} \left( + 0 \cdot \partial_{\nu}\vec{x} \right)
+  \end{align}
+  dass
+  \begin{align}
+    \Delta^{ \mathds{S}^{2}}_{B}\vec{p} &= \left( -2\cos u \partial_{v} p^{2} + \frac{1}{\sin u} \partial_{v}^{2} p^{1} - \sin u \partial_{uv} p^{2}\right) \partial_{u}\vec{x} \\
+                   &\quad + \left( -2p^{2} + \frac{\cot u}{\sin^{2}u} \partial_{v}p^{1} + 3\cot u \partial_{u}p^{2}  
+                              -\frac{1}{\sin^{2}u}\partial_{uv}p^{1} + \partial_{u}^{2} p^{2}\right) \partial_{v}\vec{x}
+  \end{align}
+  Die Umwandlung in Standard-\( \R^{3} \)-Koordinaten erspare ich dir und mir mal, das würde eine riesige Formel werden.
+  Wir können aber ein einfaches Bsp. rechnen.
+  Wählen wir \( p^{1} = 0 \) und \( p^{2} = \frac{1}{\sin u} \), also
+  \begin{align}
+    \vec{p} &= \frac{1}{\sin u} \partial_{v}\vec{x} 
+          =\begin{bmatrix}
+            -\sin v \\ \cos v \\ 0
+           \end{bmatrix}
+          = \frac{1}{\sqrt{1-z^{2}}}
+            \begin{bmatrix}
+            -y \\ x \\ 0
+           \end{bmatrix}
+  \end{align}
+  dann gilt \( \|\vec{p}\| = 1 \) und der Laplace-Beltrami ist
+  \begin{align}
+    \Delta^{ \mathds{S}^{2}}_{B}\vec{p} &= -\frac{1}{\sin^{2}u} \vec{p} =
+        -\frac{1}{\sqrt{\left( 1-z^{2} \right)^{3}}}
+            \begin{bmatrix}
+            -y \\ x \\ 0
+           \end{bmatrix}
+  \end{align}
+  vlt. kannst du das als Testproblem zum vergleichen nutzen mit deinem laplace mit der Einschränkung auf die Oberfläche.
+
+  Da sich der Laplace-Beltrami auch als Rot\( \circ \)rot schreiben lässt, liegt die Vermutung nahe, dass er sich auch allgemein für beliebige Oberflächen in \( \R^{3} \)-Koordinaten durch
+  \begin{align}
+    \Delta_{B}\vec{p} &= \vec{\nu} \times \nabla \left( \nabla \cdot \left( \vec{\nu} \times \vec{p} \right) \right) \in TM
+  \end{align}
+  schreiben lässt
+  mit Normalenfeld \( \vec{\nu} \) und dem gewöhnlichen \( \R^{3} \)-Gradienten, -Divergenz bzw. -Kreuzprodukt.
+  Dafür lege ich aber nicht meine Hand ins Feuer. Hier müsste noch ein Beweis geführt werden.
+
+  Auch gebe ich keine Garantie für alle hier verwendeten Vorzeichen! :) 
+
+
+
+  \subsection{Einheitssphäre}
+    \label{sphere}
+
+    \subsubsection{Parametrisierung}
+      \begin{align}
+      \begin{aligned}
+        \vec{x}: \left( 0, \pi \right) \times \left[ 0 , 2\pi \right)
+                    &\rightarrow \mathds{S}^{2} \subset \R^{3} \\
+             \left( u,v \right) 
+                    &\mapsto\begin{bmatrix}
+                              x(u,v) \\ y(u,v) \\ z(u,v)
+                            \end{bmatrix}
+                    := \begin{bmatrix}
+                        \sin u \cos v \\
+                        \sin u \sin v \\
+                        \cos u
+                      \end{bmatrix}
+      \end{aligned}
+      \end{align}
+      \( u \) heißt Breitengrad und \( v \) Längengrad.
+
+    \subsubsection{Riemannsche Metrik}
+      \begin{align}
+        \partial_{u}\vec{x}
+              &=\begin{bmatrix}
+                  \cos u \cos v \\
+                  \cos u \sin v \\
+                  -\sin u
+                \end{bmatrix}
+              \quad\bot_{\R^{3}}\quad
+              \partial_{v}\vec{x}
+              =\begin{bmatrix}
+                        -\sin u \sin v \\
+                        \sin u \cos v \\
+                        0
+                \end{bmatrix}
+      \end{align}
+      \begin{align}
+        \Rightarrow g = \begin{bmatrix}
+              1 & 0 \\ 0 & \sin^{2} u
+            \end{bmatrix}
+          =: \diag{g_{u}, g_{v}}
+      \end{align}
+  
+\end{document}

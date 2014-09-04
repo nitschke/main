@@ -6,29 +6,29 @@
 \section{Primär- und Dualgitter}
   
   \begin{ziel}
-    Bei vielen numerischen Methoden werden Gebiete über nichtabzählbaren Mengen auf denen Gleichungen "`leben"' diskretisiert.
-    Ziel dabei ist es endlich viele Gleichungen zu erzeugen, die das ursprüngliche Problem approximativ lösen.
+    Bei vielen numerischen Methoden werden Gebiete, über nichtabzählbaren Mengen auf denen Gleichungen "`leben"', diskretisiert.
+    Ziel dabei ist es, endlich viele Gleichungen zu erzeugen, die das ursprüngliche Problem approximativ lösen.
     Ein Beispiel für solch ein Vorgehen ist die FDM (Finite-Differenzen-Methode) im \( \R^{n} \).
     Dort wird ein Gebiet \( U\subseteq\R^{n} \) mit endlich vielen Rechtecken diskretisiert 
-    und es wird versucht eine Funktion zu finden, die jedem Knoten einen Wert zuweist und damit endlichdimensional beschrieben ist, so dass diese
+    und es wird versucht eine Funktion zu finden, die jedem Knoten einen Wert zuweist und damit endlichdimensional beschrieben ist, sodass diese
     diskrete Funktion eine stetige Funktion auf \( U \) approximiert. 
 
     Das funktioniert beim DEC ähnlich. Die Objekte, die es hier zu approximieren gilt, sind allerdings Differentialformen und das Gebiet eine
-    Mannigfaltigkeit welche durch Polyeder diskretisiert wird. Die diskreten Differentialformen sind dann auf den Knoten, Kanten, Flächen usw. als Integralwerte
+    Mannigfaltigkeit, welche durch Polyeder diskretisiert wird. Die diskreten Differentialformen werden dann auf den Knoten, Kanten, Flächen usw. als Integralwerte
     definiert. Wir werden uns hierbei auf Simplizes als spezielle Polyeder beschränken und die Menge der Simplizes so charakterisieren, dass wir
     eine algebraische Topologie bekommen. Somit wird eine algebraische Struktur erzeugt, die es einem ermöglicht in dieser Topologie
     "`sinnvoll zu rechnen"'.
     Das heißt der große Unterschied zu anderen numerischen Verfahren ist, dass wir nicht auf einem Gitter sondern mit einem Gitter rechnen wollen.
-    Aus diesem Grund müssen Anforderungen an die diskrete Struktur gestellt werden, die bestimmte Eigenschaften der Differentialformen auch widerspiegeln.
-    So bilden die Differentialformen auf einer Mannigfaltigkeit zusammen mit der äußeren Ableitung einen Kokettenkomplex, den de-Rham-Kokomplex und mit ihm die de-Rham-Kohomologiegruppen.
-    Kohomologiegruppen lassen sich mit Hilfe eines Randoperators auch erzeugen, deshalb scheinen zum
+    Aus diesem Grund müssen Anforderungen an die diskrete Struktur gestellt werden, welche bestimmte Eigenschaften der Differentialformen auch widerspiegeln.
+    So bilden die Differentialformen auf einer Mannigfaltigkeit zusammen mit der äußeren Ableitung einen Kokettenkomplex, den de-Rham-Kokomplex, und mit ihm die de-Rham-Kohomologiegruppen.
+    Kohomologiegruppen lassen sich mit Hilfe eines Rand\-operators auch erzeugen, deshalb scheinen zum
     Beispiel
-    die Simplizialkomplexe als Triangulierung einer Mannigfaltigkeit ein geeigneter Kandidat für
+    die Simplizialkomplexe, als Triangulierung einer Mannigfaltigkeit, ein geeigneter Kandidat für
     eine Gitterstruktur zu sein.
-    Wie wir später noch in Kapitel \ref{chapterDEC} sehen werden haben wir mit der de-Rham-Abbildung eine Möglichkeit mit der sich Elemente aus dem de-Rham-Kokomplex
+    Wie wir später noch in Kapitel \ref{chapterDEC} sehen werden, haben wir mit der de-Rham-Abbildung eine Möglichkeit mit der sich Elemente aus dem de-Rham-Kokomplex
     (Differentialformen) auf dem simplizialen Kokettenkomplex (diskrete Differentialformen) identifizieren lassen.
-    Dazu sind aber einige Voraussetzungen an das Gitter nötig die im Folgende eingeführt werden.
-    Zudem wird im Abschnitt \ref{secGittergenerierung} eine einfache Möglichkeit geboten bestehende Gitter an diesen Anforderungen anzupassen.
+    Dazu sind aber einige Voraussetzungen an das Gitter nötig, die im Folgenden eingeführt werden.
+    Zudem wird in Abschnitt \ref{secGittergenerierung} eine einfache Möglichkeit geboten, bestehende Gitter an diese Anforderungen anzupassen.
   \end{ziel}
 
   \subsection{Simplizialkomplex}
@@ -53,7 +53,7 @@
       \label{singSimplex}
       \label{refSingSimplex}
       Die obige Definition eines Simplexes, hier als \( \sigma_{\text{geo}} \) geschrieben, nennt man auch geometrische Realisierung eines Simplexes.
-      Denn es ist auch möglich ein Simplex als Abbildung vom Standard-Simplex 
+      Denn es ist auch möglich, ein Simplex als Abbildung vom Standard-Simplex 
         \begin{align} 
           \Delta^{p} &:= \left\{\left( \mu^{0},\mu^{1},\ldots,\mu^{p} \right) \middle| \mu^{i} \ge 0  \text{ und } \sum_{i=0}^{p}\mu^{i} = 1 \right\} \subset
         \R^{p+1} 
@@ -64,27 +64,27 @@
         \sigma_{\text{sing}} = \sigma^{p}_{\text{sing}}\left( v_{0}, v_{1}, \ldots, v_{p} \right) : \Delta^{p} &\rightarrow \R^{N}
                         : \left( \mu^{0},\mu^{1},\ldots,\mu^{p} \right)\mapsto \sum_{i=0}^{p}\mu^{i}v_{i}
       \end{align}
-      so dass \( \sigma_{\text{sing}}(\Delta^{p}) = \sigma^{p}_{\text{geo}} \) gilt.
+      sodass \( \sigma_{\text{sing}}(\Delta^{p}) = \sigma^{p}_{\text{geo}} \) gilt.
       Das Simplex \(\sigma_{\text{sing}}\) heißt singuläres \( p \)-Simplex (vgl. \cite{lueck}).
     \end{bemerkung}
 
-    Von nun an ist mit einem Simplex \( \sigma \) immer die geometrische Realisierung nach Definition \ref{defSimplex} gemeint solange nicht explizit auf
+    Von nun an ist mit einem Simplex \( \sigma \) immer die geometrische Realisierung nach Definition \ref{defSimplex} gemeint, solange nicht explizit auf
     etwas anderes hingewiesen wird.
     
-    Eine Größe, die wir noch häufig benötigen werden ist das Volumen eines Simplexes.
+    Eine Größe, die wir noch häufig benötigen werden, ist das Volumen eines Simplexes.
     \begin{definition}
       Das Volumen eines \( p \)-Simplexes \( \sigma^{p} \) für \( p > 0 \) ist definiert durch
       \begin{align}
         \left| \sigma^{p} \right| &:= \int_{\sigma^{p}} dx^{1}\wedge dx^{2} \wedge \ldots \wedge dx^{p}\formkomma
       \end{align}
-      wobei \( \left( x^{1}, x^{2}, \ldots, x^{p} \right) \) gerade die Koordinaten des \( p \)"~Dimensionalen Untervektorraumes des
+      wobei \( \left( x^{1}, x^{2}, \ldots, x^{p} \right) \) die Koordinaten des \( p \)"~Dimensionalen Untervektorraumes des
       \( \R^{N} \) sind in dem \( \sigma^{p} \) liegt.
       Für \( p=0  \) definieren wir
       \begin{align}
         \left| \sigma^{0} \right| &:= 1 \formpunkt
       \end{align}
     \end{definition}
-    Damit ist das Volumen einer Ecke also 0, von einer Kante die Länge und von einem Dreieck der Flächeninhalt.
+    Damit ist das Volumen einer Ecke gleich null, von einer Kante die Länge und von einem Dreieck der Flächeninhalt.
 
 
     \begin{definition}
@@ -96,7 +96,7 @@
       und \( \sigma^{r} \) nennen wir Facette oder Seite von \( \sigma^{p} \).
     \end{definition}
     
-    Damit bildet \( \prec \) beziehungsweise \( \succ \) eine strikte Ordnung auf der Menge aller (endlichen) Simplizes.
+    Damit bildet \( \prec \) bzw. \( \succ \) eine strikte Ordnung auf der Menge aller (endlichen) Simplizes.
     
     \begin{definition}
       Ein Simplizialkomplex \( K \) über \( \R^{N} \) ist eine Menge von Simplizes mit folgenden zwei Regeln
@@ -111,18 +111,18 @@
       die Dimension von \( K \) und \( N \) bezeichnet die Dimension des Ambienteraumes, in unserem Fall also des \( \R^{N} \).
     \end{definition}
 
-    Im Folgendem ist ein Simplizialkomplex immer endlich, das heißt es besteht nur aus einer endlichen Menge von Simplizes.
+    Im Folgenden ist ein Simplizialkomplex immer endlich. Das heißt, er besteht nur aus einer endlichen Menge von Simplizes.
 
     \begin{definition}
       Die Vereinigung aller Simplizes eines Simplizialkomplexes über \( \R^{N} \), das heißt
       \begin{align}
         |K| := \bigcup_{\sigma \in K} \sigma \subset \R^{N} \text{,}
       \end{align}
-      ist der zugrundeliegende (topologische) Raum oder auch Polytop.
+      ist der zugrunde liegende (topologische) Raum oder auch Polytop.
       Die Topologie von \( |K| \) ist dann gerade die induzierte Teilraumtopologie des \( \R^{N} \).
     \end{definition}
     
-    Meistens sieht es aber so aus, dass wir ein Raum haben und ein Simplizialkomplex suchen der diesen beschriebt.
+    In den meisten Fällen wird jedoch ein Raum gegeben sein und es ist ein entsprechender Simplizialkomplex gesucht, der diesen Raum beschreibt.
     Dieses führt uns zu folgender Definition.
 
     \begin{definition}
@@ -130,7 +130,7 @@
       Existiert eine Triangulation von \( V \), dann heißt \( V \) triangulierbar.
     \end{definition}
 
-    Bisher kann solch ein Simplizialkomplex noch sehr viele Teilräume des \( \R^{N} \) beschreiben, die für diese Arbeit nicht von Belang sind. 
+    Bisher kann solch ein Simplizialkomplex noch sehr viele Teilräume des \( \R^{N} \) beschreiben, welche für diese Arbeit nicht von Belang sind. 
     Wir wollen deshalb die Menge der Simplizialkomplexe etwas einschränken, um uns langsam der Beschreibung von 
     \mbox{(Hyper-)Oberflächen} zu nähern.
 
@@ -138,17 +138,17 @@
       Ein Simplizialkomplex \( K \) heißt mannigfaltigartig, wenn das Polytop \( |K| \) eine \( C^{0} \)-Mannigfaltigkeit ist.
     \end{definition}
 
-    Da wir uns später mit den Spezialfall von Oberflächen im \( \R^{3} \) beschäftigen möchten, seien hier schon mal ein paar Bemerkungen dazu.
+    Da wir uns später mit dem Spezialfall von Oberflächen im \( \R^{3} \) beschäftigen möchten, seien hier schon mal ein paar Bemerkungen dazu.
     
     \begin{bemerkung}
-      Sei \( K \) ein mannigfaltigartiger Simplizialkomplex im \( \R^{3} \) mit dim(\( K \)) = 2.
+      Sei \( K \) ein zweidimensionaler mannigfaltigartiger Simplizialkomplex im \( \R^{3} \).
       \begin{itemize}
         \item Falls \( |K| \) nicht flach ist, dann ist das Polytop \( |K| \) global nicht differenzierbar.
         \item Falls \( |K| \) zudem eine geschlossene Mannigfaltigkeit ist, dann ist \( |K| \) ein Polyeder.
       \end{itemize}
     \end{bemerkung}
 
-    Der zugrundeliegende Raum eines Simplizialkomplexes kann im Allgemeinen nicht eine beliebige 
+    Der zugrunde liegende Raum eines Simplizialkomplexes kann im Allgemeinen nicht eine beliebige 
     \( C^{\infty} \)-Mannigfaltigkeit sein. Jedoch kann ein Simplizialkomplex solch eine
     Mannigfaltigkeit approximieren, d.h.
     
@@ -164,17 +164,17 @@
     \begin{bemerkung}
       Wenn \( K \sim M \) gilt, dann würden wir für die Übertragung von skalarwertigen Informationen von der Mannigfaltigkeit
       \( M \) auf den Simplizialkomplex \( K \) auf den Ecken nichts falsch machen.
-      Wie sieht es aber mit höherwertigen Informationen aus, wie zum Beispiel Vektorfelder oder 
-      allgemein Differentialformen höheren Grades als null?
-      Für 2 dimensionale Mannigfaltigkeiten bedeutet das, dass 1-Formen auf Kanten und 2-Formen auf den Dreieckelementen ausgewertet
-      werden, wie wir später noch im Kapitel~\ref{chapterDEC} sehen werden.
+      Wie sieht es aber mit höherwertigen Informationen, wie zum Beispiel Vektorfelder oder 
+      allgemein Differentialformen höheren Grades als null, aus?
+      Für zweidimensionale Mannigfaltigkeiten bedeutet dies, dass 1-Formen auf Kanten und 2-Formen auf den Dreieckelementen ausgewertet
+      werden. Wie wir später noch in Kapitel~\ref{chapterDEC} sehen werden.
       Kanten und Dreieckflächen liegen aber nur (linear) approximiert im Simplizialkomplex vor, genauso wie auch die Metrik,
       da die Simplizes im Inneren flach sind.
-      Dennoch brauchen wir für spätere Argumentationen ein simpliziales Konstrukt bei dem wir diese Fehler nicht machen.
-      Dieses formale Brücke zwischen der Mannigfaltigkeit und dem Simplizialkomplex nennen wir abstrakter Simplizialkomplex (über der Mannigfaltigkeit \( M \) ). 
-      Er lässt sich genauso einführen wie oben für den Simplizialkomplex über dem \( \R^{N} \) 
-      nur dass die \(p\)-Simplizes für \( p > 0 \) eine Krümmung besitzen, die gleiche wie \( M \) eingeschränkt auf das jeweilige Simplex.
-      Das heißt, dass der zugrundeliegende Raum des abstrakten Simplexes gleich der Mannigfaltig \( M \) ist.
+      Dennoch brauchen wir für spätere Argumentationen ein simpliziales Konstrukt, bei dem wir diese Fehler nicht machen.
+      Diese formale Brücke zwischen der Mannigfaltigkeit und dem Simplizialkomplex nennen wir abstrakter Simplizialkomplex (über der Mannigfaltigkeit \( M \) ). 
+      Er lässt sich genauso einführen wie oben für den Simplizialkomplex über dem \( \R^{N} \), 
+      nur dass die \(p\)-Simplizes für \( p > 0 \) eine Krümmung besitzen. Und zwar ist es die gleiche wie für \( M \) eingeschränkt auf das jeweilige Simplex.
+      Das heißt, dass der zu grundeliegende Raum des abstrakten Simplexes gleich der Mannigfaltig \( M \) ist.
       Folgendes kommutative Diagramm, soll das für ein einzelnes Simplex verdeutlichen.
       \begin{align}
         \label{diagSingulaerAbstrakt}
@@ -193,14 +193,14 @@
       Whitney \cite{whitney} forderte noch weitere Bedingungen an diese Abbildung. 
       Für uns soll die Homöomorphieeigenschaft allerdings reichen, da wir sie nur formal nutzen werden und nie explizit mit ihr rechnen wollen.
       Prinzipiell genügt es, wenn wir uns die Abbildung \( \pi_{\sigma} \) als "`Ankleben"' des Simplexes \( \sigma \) auf die Mannigfaltigkeit vorstellen.
-      Des Weiteren soll \( \pi:=\pi_{\bullet} \) \footnote{d.h. \( \pi|_{\sigma} = \pi_{\sigma} \)} homomorph auf dem ganzem Simplizialkomplex bezüglich der Relation \( \prec \) sein, 
+      Des Weiteren soll \( \pi:=\pi_{\bullet} \) \footnote{d.h. \( \pi|_{\sigma} = \pi_{\sigma} \)} homomorph auf dem ganzen Simplizialkomplex bezüglich der Relation \( \prec \) sein, 
       also ist \( \pi \) ein Isomorphismus zwischen dem Simplizialkomplex \( K \) und einem abstrakten Simplizialkomplex \( L \) mit \( |L| = M \) und \( K^{(0)} = L^{(0)} \).
       Wobei
       \begin{align}
         K^{(p)} &:= \left\{ \sigma^{p} \in K \right\}
       \end{align}
       das \( p \)-Skelett von \( K \) ist. 
-      Zu dem ist \( L = \pi(K) \) somit eindeutig bestimmt falls \( \pi \) bekannt ist.
+      Zudem ist \( L = \pi(K) \) somit eindeutig bestimmt, falls \( \pi \) bekannt ist.
       Wenn solch eine Triangulation \( L \) von \( M \) existiert, dann nennen wir auch \( K = \pi^{-1}(L) \) eine (lineare) Triangulation von \( M \).
     \end{bemerkung}
 
@@ -222,10 +222,10 @@
     und zum anderen wird eine weitere notwendige Eigenschaft an den Simplizialkomplex, dessen Polytop und die zu 
     approximierende Mannigfaltigkeit gestellt: die Orientierbarkeit.
 
-    Wie wir in Bemerkung \ref{refSingSimplex} sehen hängt die geometrische Realisierung \( \sigma \) eines singulären Simplexes \( \sigma_{\text{sing}} \), 
+    Wie wir in Bemerkung \ref{refSingSimplex} sehen, hängt die geometrische Realisierung \( \sigma \) eines singulären Simplexes \( \sigma_{\text{sing}} \), 
     also dessen Bild, nicht von der gewählten Reihenfolge der Ecken \( v_{i} \) ab. 
     Formal können wir aber diesen für \( \sigma \) syntaktischen Unterschied auch semantisch nutzen und schreiben \( \sigma = \left( v_{0}, v_{1}, \ldots, v_{p} \right) \)
-    mit runden Klammern um die Reihenfolge zu würdigen. 
+    mit runden Klammern, um die Reihenfolge zu würdigen. 
     Somit ergeben sich für einen Satz Ecken \( p! \) Simplizes 
     \begin{align}
       \Sigma^{p} &:= \left\{ \left( v_{\tau(0)}, v_{\tau(1)}, \ldots, v_{\tau(p)} \right) \middle| \tau\in S_{p} \text{ Permutation} \right\} \formkomma
@@ -247,7 +247,7 @@
       \end{align}
     \end{definition}
 
-    Dass hier das orientierte Simplex ebenfalls als \( \sigma \) geschrieben wird soll uns nicht stören, da dieses auch immer das entsprechende geometrische Simplex impliziert.
+    Dass hier das orientierte Simplex ebenfalls als \( \sigma \) geschrieben wird soll, uns nicht stören, da dieses auch immer das entsprechende geometrische Simplex impliziert.
     Oft werden wir einfachheitshalber nur Simplex sagen, wenn aus dem Kontext klar ist, dass dieses Simplex orientiert ist.
     Für \( p > 0 \) ergeben sich somit genau 2 Äquivalenzklassen und somit Orientierungen pro Simplex. 
     Wir wollen die Orientierung eineindeutig mit 
@@ -255,7 +255,8 @@
       \sgn: \Sigma^{p}\slash\Theta \rightarrow \left\{ -1 , +1 \right\}
     \end{align}
     beschreiben.
-    Falls \( p=0 \), das heißt es liegt eine Ecke vor und folglich nur eine Orientierungsmöglichkeit, dann wird die Orientierung festgelegt, wenn möglich durch die induzierte Orientierung.
+    Falls \( p=0 \), das heißt es liegt eine Ecke vor und folglich nur eine Orientierungsmöglichkeit, dann wird die Orientierung festgelegt. 
+    Wenn möglich durch die induzierte Orientierung.
 
     \begin{definition}
       \label{defIndOri}
@@ -273,10 +274,10 @@
 
     \begin{beispiel}
       \label{bspOrientierung}
-      Anhand folgendes Beispieles sehen wir, dass diese Definition intuitiver ist als es vielleicht auf den ersten Blick anmuten mag.
+      Anhand folgendem Beispieles sehen wir, dass diese Definition intuitiver ist als es vielleicht auf den ersten Blick anmuten mag.
       Gegeben sei ein \( 2 \)-Simplex \mbox{\( \sigma:=\left[ v_{0}, v_{1}, v_{2} \right] \)}, also ein Dreieck, dessen Orientierung auf \( +1 \) festgelegt wird.
       Daraus leiten sich die Orientierungen der Kanten ab. 
-      Durch Transposition der Kante \( \left[ v_{0}, v_{2} \right] \), und damit der Wechsel zur anderen Äquivalenzklasse, 
+      Durch Transposition der Kante \( \left[ v_{0}, v_{2} \right] \), und damit dem Wechsel zur anderen Äquivalenzklasse, 
       kann zudem eine einheitliche Orientierung aller Kanten erreicht werden.
       \begin{align}
         \begin{xy}
@@ -291,8 +292,9 @@
       \end{align}
       \begin{minipage}{0.65\textwidth}
         Geometrisch wird die Orientierung oft durch Pfeile visualisiert.
-        In diesem Beispiel ein gebogener Pfeil für die Fläche.
-        Gegen den Uhrzeigersinn bedeutet dabei eine Orientierung von \( +1 \), das ist auch gleichbedeutend damit, 
+        In diesem Beispiel ist es ein gebogener Pfeil für die Fläche.
+        Gegen den Uhrzeigersinn bedeutet hierbei eine Orientierung von \( +1 \). 
+        Dies ist auch gleichbedeutend damit, 
         dass die Rechte-Hand-Regel 
         gilt und die Fläche per Definition eine äußere Normale besitzt.
         Sollen nun alle Kanten die gleiche Orientierung wie die Fläche besitzen, so müssen die Pfeile der Kanten ebenfalls gegen den Uhrzeiger abgetragen werden.
@@ -322,14 +324,15 @@
         \def\r{0.35} 
         \draw[line width=1pt, ->] ($(C)+(135:\r)$) arc (135:405:\r) -- ++ (-3pt,3pt);
       \end{tikzpicture}
-      \end{minipage}
-      \begin{minipage}{0.65\textwidth}
-      Es sei nun ein weiteres Simplex \( \tilde{\sigma} := \left[ v_{1}, v_{3}, v_{2} \right] \) "`angelegt"', so dass beide Simplizes sich die Kante
+      \end{minipage}\\
+      \vspace{0.5cm}\\
+      \noindent\begin{minipage}{0.65\textwidth}
+      \noindent Es sei nun ein weiteres Simplex \( \tilde{\sigma} := \left[ v_{1}, v_{3}, v_{2} \right] \) "`angelegt"', sodass beide Simplizes sich die Kante
       \( \left[ v_{1}, v_{2} \right] \) teilen und die Orientierung von \( \tilde{\sigma} \) auf \( +1 \) gesetzt wird. 
       Dabei müssen die von den Kanten aufgespannten (Unter"~)Vektorräume (z.B. des \( \R^{3} \)) nicht notwendigerweise gleich sein.
-      Dennoch liegt das Gefühl nahe zusagen, dass die beiden 2-Simplexe irgendwie "`gleichorientiert"' sind.
+      Dennoch liegt das Gefühl nahe, zu sagen, dass die beiden 2-Simplexe irgendwie "`gleichorientiert"' sind.
       Des Weiteren fällt auf, dass die induzierte Orientierung der gemeinsamen Kante für beide Dreiecke entgegengesetzt ist.
-      Darauf wollen wir im allgemeineren näher eingehen.
+      Darauf wollen wir im Allgemeineren näher eingehen.
       \end{minipage}
       \hfill
       \begin{minipage}[c]{0.3\textwidth}  
@@ -469,10 +472,10 @@
     Damit ist es uns nun möglich eine Mannigfaltigkeit mit obigen Voraussetzungen mittels Primärgitter linear zu triangulieren.
 
     \begin{bemerkung}[zur Implementierung]
-      Da später alle computergestützten Rechnungen mit AMDiS gemacht werden ist es wichtig, dass die dortigen Gitter die Anforderungen
+      Da später alle computergestützten Rechnungen mit AMDiS gemacht werden, ist es wichtig, dass die dortigen Gitter die Anforderungen
       eines Primärgitters erfüllen. 
-      Ob ein mannigfaltigartiger Simplizialkomplex als Eingangsgröße vorliegt, liegt in der Verantwortung des Benutzers.
-      Die Orientiertheit eines 2D-Gitters, also für Simplizialkomplexe der Dimension 2, ist mit Folgerung \ref{folgOrientierungImR3} 
+      Ob ein mannigfaltigartiger Simplizialkomplex als Eingangsgröße vorliegt, dafür muss der Benutzer selber Sorge tragen.
+      Die Orientierbarkeit eines 2D-Gitters, also für Simplizialkomplexe der Dimension 2, ist mit Folgerung \ref{folgOrientierungImR3} 
       automatisch gegeben, da in AMDiS die Ecken eines Dreieckelements immer gegen den Uhrzeigersinn aufgetragen werden
       (siehe \cite{tutorial}).
     \end{bemerkung}
@@ -482,14 +485,14 @@
 
   \subsection{Umkreismittelpunktunterteilung}
     Eine sehr wichtige Zutat für das DEC ist das Dualgitter. 
-    Es erlaubt uns später die Definition des Sternoperators \( \star \), das geometrische Analogon zum \mbox{Hodge-Stern-Operators \( * \)}.
+    Dieses erlaubt uns später die Definition des Sternoperators \( \star \), das geometrische Analogon zum \mbox{Hodge-Stern-Operator \( * \)}.
     Liegt der Simplizialkomplex zum Beispiel als Delaunay-Triangulierung vor, so ist der duale Zellkomplex gerade das zugehörige Voronoi-Diagramm. 
-    Dieser ist im allgemeinen natürlich kein Simplizialkomplex. Des Weiteren teilt im nichtflachen Fall, das Voronoi-Diagramm und die 
+    Dieser ist im Allgemeinen natürlich kein Simplizialkomplex. Des Weiteren teilt im nichtflachen Fall, das Voronoi-Diagramm und die 
     Delaunay-Triangulierung nicht einmal den selben zugrunde
     liegenden Raum.
-    Unter gewissen Voraussetzungen ist es aber möglich ein Primärgitter so simplizial zu verfeinern, dass wir ein Gitter zu bekommen, 
+    Unter gewissen Voraussetzungen ist es aber möglich, ein Primärgitter so simplizial zu verfeinern, dass wir ein Gitter bekommen, 
     welches wieder die Primärgitter"|eigenschaften erfüllt und
-    zudem Gruppierungen von \( n \)-Simplizes enthalten, die den zugehörigen Voronoi-Zellen ähneln, als eine Art "`Voronoi-Zelle mit Knicken"'.
+    zudem Gruppierungen von \( n \)-Simplizes enthalten, welche den zugehörigen Voronoi-Zellen, als eine Art "`Voronoi-Zelle mit Knicken"', ähneln.
 
     \begin{definition}
       \label{defUmkreismittelpunkt}
@@ -511,7 +514,8 @@
 
     \begin{bemerkung}
       Obige Definition, stellt ein Spezialfall des Kleinste-Sphäre-Problems dar.
-      Die Ecken von \( \sigma^{p} \) sind nach Voraussetzung geometrisch linear unabhängig, demnach ist nach \cite{converingSphere}  die Sphäre \( \mathds{S}_{r}^{p-1}(c(\sigma^{p})) \) existent
+      Die Ecken von \( \sigma^{p} \) sind nach Voraussetzung geometrisch linear unabhängig. 
+      Demnach ist nach \cite{converingSphere}  die Sphäre \( \mathds{S}_{r}^{p-1}(c(\sigma^{p})) \) existent
       und eindeutig bestimmt. Der Umkreismittelpunkt \( c(\sigma^{p}) \) nach Definition \ref{defUmkreismittelpunkt} ist somit wohldefiniert.
     \end{bemerkung}
 
@@ -530,7 +534,7 @@
         \end{aligned}
       \end{align}
       \( D \) ist die Determinante des Simplexes, also dessen doppeltes Volumen. 
-      Einsetzen in \eqref{formSphere} für z.B. \( r = \left\| v_{0} - c(v_{0}v_{1}v_{2}) \right\| \) und nachrechnen ergibt die Korrektheit der Formel.
+      Durch das Einsetzen in \eqref{formSphere} (für z.B. \( r = \left\| v_{0} - c(v_{0}v_{1}v_{2}) \right\| \)) sehen wir, dass diese Formel den Umkreismittelpunkt ergibt.
     \end{bemerkung}
 
     \begin{definition}
@@ -549,14 +553,15 @@
     Die populärsten sind zum Beispiel:
     \begin{itemize}
       \item Alle Innenwinkel sind kleiner als \( \frac{\pi}{2} \), oder
-      \item bilden wir einen Kreis in der aufgespannten Ebene des Dreieckes mit zwei Ecken auf dem Rand und Mittelpunkt auf der sich ergebenen Kante beider Ecken, 
-      dann liegt die dritte Ecke außerhalb dieses Kreises, das heißt
+      \item Bilden wir einen Kreis in der aufgespannten Ebene des Dreieckes. 
+            Dabei soll der Mittelpunkt des Kreises der Umkreismittelpunkte einer Kante sein und die beiden Ecken dieser Kante auf dem Rand des Kreises liegen.  
+      Dann liegt die dritte Ecke  des Dreieckes immer außerhalb dieses Kreises, das heißt
         \begin{align}
           \forall \sigma^{1} := \left[ v_{\tau(0)},v_{\tau(1)}\right] \prec \left[v_{0},v_{1},v_{2}\right]:\quad \|v_{\tau(2)} - c(\sigma^{1})\| > \|v_{\tau(0)} - c(\sigma^{1})\|
           \formpunkt
         \end{align}
     \end{itemize}
-    Wie dem auch sei, mit der Wohlzentriertheit eines Simplizialkomplexes ist es nun möglich eine Verfeinerung durchzuführen, die alle Umkreismittelpunkte als neue Knoten enthält und zudem
+    Wie dem auch sei, mit der Wohlzentriertheit eines Simplizialkomplexes ist es nun möglich eine Verfeinerung durchzuführen, die alle Umkreismittelpunkte als neue Knoten enthält und welche zudem
     wieder ein Simplizialkomplex ist.
 
     \begin{definition}
@@ -572,18 +577,21 @@
     \end{definition}
 
     \begin{bemerkung}
-      Da alle \( n \)-Simplizes des \(\text{csd}K  \) jeweils Teilmengen eines \( n \)-Simplexes aus \( K \) sind, ändert sich am zugrundeliegenden Raum nichts, das heißt
+      Da alle \( n \)-Simplizes des \(\text{csd}K  \) jeweils Teilmengen eines \( n \)-Simplexes aus \( K \) sind, ändert sich am zugrunde liegenden Raum nichts. 
+      Das heißt
       \( |\text{csd}K| = |K| \). 
       Jedoch approximiert \(\text{csd}K\) nicht mehr die Mannigfaltigkeit \( M \) im Sinne von Definition \ref{defManniApprox}, 
       weil neu entstandene Knoten im Allgemeinen nicht auf der Mannigfaltigkeit
       liegen. 
     \end{bemerkung}
 
-    Wie wir im vorhergehenden Absatz gesehen haben, spielt die Orientierung eines Simplizialkomplexes eine große Rolle. Die Frage ist nur,
-    wie lässt sich auf sinnvoller Art und Weise eine Orientierung von dem ausgehenden Simplizialkomplex induzieren, konkret, wenn wir von
+    Wie wir im vorhergehenden Absatz gesehen haben, spielt die Orientierung eines Simplizialkomplexes eine große Rolle. Die Frage ist,
+    wie lässt sich auf sinnvolle Art und Weise eine Orientierung von dem ausgehenden Simplizialkomplex induzieren, besonders wenn wir von
     einem Primärgitter ausgehen.
-    Für Volumenelemente ist intuitiv klar, was sinnvoll ist, nämlich, dass die Orientierung der \( n \)-Simplizes des  \( \text{csd}K \),
-    welche die \( n \)-Simplizes aus  \( K \) verfeinern, übernommen werden kann. Schließlich ist das Polytop beider Komplexe gleich und
+    Für Volumenelemente ist intuitiv klar, was sinnvoll wäre.
+    Die Orientierung der \( n \)-Simplizes des  \( \text{csd}K \),
+    welche die \( n \)-Simplizes aus  \( K \) verfeinern, kann übernommen werden. 
+    Schließlich ist das Polytop beider Komplexe gleich und
     sollte als \( n \)-Mannigfaltigkeit auch ihre Orientierung beibehalten.
     Allgemein definieren wir
 
@@ -603,8 +611,8 @@
       K \) das Dualgitter von \( K \).
     \end{definition}
     Dass sich überhaupt erst eine Orientierung für die Volumenelemente nach Definition \ref{defDualInduzierteOrientierung} induzieren lässt, 
-    also die dortige Bedingung \( \hat{\sigma}^{n} \subseteq \sigma^{n}\) erfüllt ist, erhalten wir durch folgendes Lemma für
-    \( p = n \) und der Tatsache, dass 
+    also die dortige Bedingung \( \hat{\sigma}^{n} \subseteq \sigma^{n}\) erfüllt ist, erhalten wir durch nachfolgendes Lemma für
+    \( p = n \) und die Tatsache, dass 
     \begin{align}
       \left( \csd K \right)^{(n)} = \left\{ c\left( \sigma^{0} \right) c\left( \sigma^{1} \right) \ldots c\left( \sigma^{n} \right) \middle|
                                                                               \sigma^{i}\in K \text { für } 0 \le i \le n    \right\} \formpunkt
@@ -628,21 +636,21 @@
            \sum_{k=0}^{p} \lambda^{k} = \sum_{k=0}^{p} \sum_{i=k}^{p} \tilde{\mu}^{i} \mu_{i}^{k}
                                       = \sum_{i=0}^{p} \tilde{\mu}^{i} \sum_{k=0}^{i}\mu_{i}^{k}
                                       = \sum_{i=0}^{p} \tilde{\mu}^{i}
-                                      = 1 \formkomma
+                                      = 1
         \end{align}
-        zudem ist \( \lambda^{k} = \sum_{i=k}^{p} \tilde{\mu}^{i} \mu_{i}^{k}  \ge 0\), da alle Summanden nicht negativ sind, also ist \( x \in \sigma^{p} \).
+        Zudem ist \( \lambda^{k} = \sum_{i=k}^{p} \tilde{\mu}^{i} \mu_{i}^{k}  \ge 0\), da alle Summanden nicht negativ sind, also ist \( x \in \sigma^{p} \).
       \end{proof}
     \end{lemma}
-    Somit ist Definition \ref{defDualgitter} sinnvoll und das Dualgitter existiert unter den getroffenen Voraussetzungen.
+    Somit ist Definition \ref{defDualgitter} berechtigt und das Dualgitter existiert unter den getroffenen Voraussetzungen.
 
-    Nun wissen wir welches das duale Gitter zum wohlzentrierten Primärgitter sein soll.
+    Nun wissen wir, welches das duale Gitter zum wohlzentrierten Primärgitter sein soll.
     Was ist aber konkret dual zu einem Element, also einem einzelnen Simplex, aus dem Pri\-mär\-gitter?
     Betrachten wir eine zweidimensionale Delaunay-Triangulierung und das dazugehörige Voronoi-Diagramm, 
     dann ist die Dualitätszugehörigkeit geometrisch klar.
-    Ecken sind dual zu den Voronoi-Zellen, Kanten zu den Kanten, der Voronoi-Zelle und Dreiecke zu den Ecken, der Voronoi-Zelle.
-    All diese, im allgemeinen Zellen, lassen sich nun auch innerhalb des \( \csd K \) als Vereinigungen von Simplizes darstellen.
+    Ecken sind dual zu den Voronoi-Zellen, Kanten zu den Kanten der Voronoi-Zelle und Dreiecke zu den Ecken der Voronoi-Zelle.
+    All diese, im Allgemeinen Zellen, lassen sich nun auch innerhalb des \( \csd K \) als Vereinigungen von Simplizes darstellen.
     In \cite{hirani} und \cite{munkres} werden die Dualzellen als offene Zellen eingeführt.
-    Das wollen wir hier nicht machen, da es für diese Arbeit nicht vonnöten ist und weitere technische Kompliziertheiten beinhalten würde.
+    Jenes möchten wir hier nicht machen, da es für diese Arbeit nicht vonnöten ist und weitere technische Kompliziertheiten beinhalten würde.
 
     \begin{definition}
       \label{defDualZelle}
@@ -768,16 +776,16 @@
           \def\r{0.15} 
           \draw[line width=1pt, ->] ($(CC)+(405:\r)$) arc (405:135:\r) -- ++ (3pt,3pt);
         \end{tikzpicture}
-        \caption[Bsp. induzierte Orientierung]{ Wie wir sehen ist
+        \caption[Bsp. induzierte Orientierung]{ Wie wir sehen, ist
                                                \( \sgn_{\left[ v_{0},v_{1} \right]}\left( [ c_{01},c_{012} ] \right) = +1 \),
                                                dabei spielt es keine Rolle, ob wir \( v_{0} \prec \left[ v_{0},v_{1} \right] \)
                                                oder \( v_{1} \prec \left[ v_{0}, v_{1} \right] \) für die Berechnung hinzuziehen.}
         \label{figIndOrientDualKante}
       \end{minipage}
     \end{figure}
-    Definition \ref{defIndOriElemDual} ist wohldefiniert, das heißt unabhängig von den gewählten \( \sigma^{i} \prec \sigma^{p} \), 
-    denn würden wir ein \( \sigma^{i} \) durch ein \( \tilde{\sigma}^{i} \prec \sigma^{p} \) austauschen und sich dabei die Orientierung für das resultierende
-    \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{p}) \right] \) ändern, dann würde sich auch bei 
+    Definition \ref{defIndOriElemDual} ist wohldefiniert, das heißt unabhängig von den gewählten \( \sigma^{i} \prec \sigma^{p} \).
+    Denn würden wir ein \( \sigma^{i} \) durch ein \( \tilde{\sigma}^{i} \prec \sigma^{p} \) austauschen und es ändert sich dabei die Orientierung für das resultierende
+    \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{p}) \right] \), dann würde sich auch bei 
     \(\left[ c(\sigma^{0}),\ldots,c(\tilde{\sigma}^{i}), \ldots, c(\sigma^{n}) \right] \) die Orientierung ändern. 
     Das gilt natürlich für jedes beliebige \( \tilde{\sigma}^{i} \prec \sigma^{p} \) und auch für beliebig häufiges wiederholen der Wechsel.
     
@@ -786,21 +794,23 @@
 
   \begin{fazit}
     Damit wäre nun das geometrische Fundament für ein DEC gelegt, welches für diese Arbeit hier vollkommen ausreichend ist.
-    Wenn wir genau hinschauen, dann ist zu bemerken, dass nicht alle Simplizes des Dualgitters vom Primärgitter nach unseren Definitionen eine induzierte Orientierung erhalten können.
+    Wenn wir genau hinschauen, ist zu bemerken, dass nicht alle Simplizes des Dualgitters vom Primärgitter nach unseren Definitionen eine induzierte Orientierung erhalten können.
     Wohl aber für eine Teilmenge des \( \csd K \), mehr als diese Teilmenge wird auch für die
     numerischen Schematas nicht vonnöten sein, wie wir noch sehen werden.
     
-    Leider ist gerade die Wohlzentriertheit eine problematische Bedingung für die Zulässig\-keit von Gitter.
+    Leider ist gerade die Wohlzentriertheit eine problematische Bedingung für die Zulässig\-keit von Gittern.
     Zum Beispiel gibt es in der FEM diese Anforderung nicht, obgleich wohlzentrierte Gitter die numerischen Eigenschaften sicherlich verbessern würden.
-    Wie dem auch sei, in \ref{secGittergenerierung} wird ein (ingenieurmäßiger) Ansatz geboten für den DEC brauchbare Triangulierungen aus nicht zulässigen Gittern zu generieren.
+    In \ref{secGittergenerierung} wird ein einfacher Ansatz geboten für den DEC brauchbare Triangulierungen aus nicht zulässigen Gittern zu generieren.
     Jedoch setzt das auch einiges explizites oder implizites Wissen an die tatsächliche Geometrie der Mannigfaltigkeit voraus und es muss zusätzliche Rechnergestützte Arbeit in das Problem
     gesteckt werden. Damit zeichnet sich schon hier das größte Manko eines DECs auf wohlzentrierten Primärgittern ab.
     In zukünftigen Arbeiten muss die Wohlzentriertheit abgeschwächt werden.
     Ein kleiner Sieg wäre zum Beispiel schon eine "`Wohlzentriertheit im Limes"', das heißt es wären auch Umkreismittelpunkte auf dem Rand eines Simplexes zulässig.
     Damit wären auf zweidimensionalen Gittern auch Rechtecke möglich und folglich auch, selbst im planaren, Ecken mit nur 4 Dreieckelementen, die sich diese Ecke teilen.
-    Prinzipiell könnte so auch der hier vorgestellte DEC in gleicher Art und Weise geführt werden, allerdings können sich so auch Kanten der Länge null ergeben und somit müssten wir auch
-    ständig aufpassen in den späteren Berechnungschematas nicht durch null zuteilen. Deswegen sehen wir hier in dieser Arbeit davon ab.
-    In \ref{secImpliziteMannigfaltigkeiten} wird auch noch kurz gezeigt wie wir numerisch mit implizit gegeben Oberflächen umgehen können.
+    Prinzipiell könnte so auch der hier vorgestellte DEC in gleicher Art und Weise geführt werden. 
+    Allerdings können sich so auch Kanten der Länge null ergeben und somit müssten wir auch
+    ständig aufpassen in den späteren Berechnungs\-schematas nicht durch null zuteilen. 
+    Aus diesem Grund sehen wir hier in dieser Arbeit davon ab.
+    In \ref{secImpliziteMannigfaltigkeiten} wird auch noch kurz gezeigt wie wir numerisch mit implizit gegebenen Oberflächen umgehen können.
 
     Eine weitere Möglichkeit ist es einen ganz anderen Ansatz für die Dualität der Gitter zu verfolgen.
     In \cite{sensen} wird im Rahmen einer diskreten Chern-Simons-Theorie auf speziellen dreidimensionalen Mannigfaltigkeiten (Raumzeit) eine baryzentrische Unterteilung genutzt.
@@ -810,7 +820,8 @@
     Die Tatsache, dass bei einer Umkreismittelpunktunterteilung die zueinander dualen Simplizes im gewissen Sinne orthogonal sind, 
     macht es uns da später einfacher.
     Für zukünftige Arbeiten sollte dennoch die baryzentrische Dualität ein paar Gedanken wert sein, denn jeder Simplizialkomplex ist mit dieser Unterteilung baryzentrisch wohlzentriert,
-    speziell auch das Dualgitter selbst, das gibt die Umkreismittelpunktunterteilung nicht her. 
+    speziell auch das Dualgitter selbst. 
+    Das gibt die Umkreismittelpunktunterteilung nicht her. 
     Somit würde auch einer globalen und sogar lokalen Verfeinerung bzgl. der Zulässigkeit des Gitters nichts mehr im Wege stehen.
   \end{fazit}
 
@@ -825,11 +836,11 @@
 \section{Kettenkomplexe}
 
   \begin{ziel}
-    Ziel dieses Abschnittes ist es die zuvor eingeführten Simplizes in einer algebraisch sinnvollen Weise zu "`verketten"'.
+    Ziel dieses Abschnittes ist es, die zuvor eingeführten Simplizes in einer algebraisch sinnvollen Weise zu "`verketten"'.
     Die Universaleigenschaft sichert uns zudem, dass wir Operatoren auf diesen "`Ketten"' nur auf den einzelnen Simplizes definieren
     müssen, da sie sich kanonisch auf den "`Ketten"' fortsetzen lassen.
-    Im Mittelpunkt soll hier der Sternoperator stehen, der Simplizes mit ihren dualen "`Ketten"' identifiziert, et vice versa
-    und der Randoperator, der den Ketten und speziell auch den Simplizes die Komplexeigenschaft bringt.
+    Im Mittelpunkt sollen hier der Sternoperator, der Simplizes mit ihren dualen "`Ketten"' identifiziert et vice versa,
+    und der Randoperator, der den Ketten und speziell auch den Simplizes die Komplexeigenschaft bringt, stehen.
   \end{ziel}
 
   \begin{definition}
@@ -841,14 +852,15 @@
     \end{align}
     die Menge aller \( p \)-Ketten über \( K \).
   \end{definition}
-  Prinzipiell würde für das reine Rechnen mit \( p \)-Ketten Koeffizienten aus \( \left\{ +1, 0,  -1 \right\} \) ausreichen,
-  da wir Simplizes gleicher Dimension immer nur "`aneinander reihen"' (konkatenieren) werden, das entspräche das reine Addieren (\( +1 \)) zweier benachbarter Simplizes.
+  Prinzipiell würden für das reine Rechnen mit \( p \)-Ketten Koeffizienten aus \( \left\{ +1, 0,  -1 \right\} \) ausreichen,
+  da wir Simplizes gleicher Dimension immer nur "`aneinander reihen"' (konkatenieren) werden. 
+  Das entspräche dem reinen Addieren (\( +1 \)) zweier benachbarter Simplizes.
   Subtrahieren (\( -1 \)) erlaubt zudem die Orientierung, falls vorhanden, zu wechseln.
   Auch Koeffizienten aus \( \R \) sind denkbar, dann wäre \( C_{p}(K) \) ein \( \R \)-Vektorraum.
-  Das wir hier jedoch \( \Z \) gewählt haben, hat den Vorteil, dass \( C_{p}(K) \) bezüglich der Addition eine freie abelsche Gruppe ist
-  (mit Erzeugendensystem \( K^{(p)} \), d.h.  \( \left\langle K^{(p)} \right\rangle_{C_{p}(K)} = C_{p}(K) \))
+  Dass wir hier jedoch \( \Z \) gewählt haben, hat den Vorteil, dass \( C_{p}(K) \) abzählbar und bezüglich der Addition eine freie abelsche Gruppe ist
+  (mit Erzeugendensystem \( K^{(p)} \), d.h.  \( \left\langle K^{(p)} \right\rangle_{C_{p}(K)} = C_{p}(K) \)),
   in der die Universaleigenschaft gilt.
-  Genauer \( C_{p}(K) \) ist frei bzgl. jeder abelschen Gruppe \( \mathfrak{A} \), deswegen kommutiert das Diagramm
+  Genauer, \( C_{p}(K) \) ist frei bzgl. jeder abelschen Gruppe \( \mathfrak{A} \), deswegen kommutiert das Diagramm
   \begin{align}
     \label{diagFreieAbelscheGruppe}
     \begin{xy}
@@ -858,7 +870,8 @@
       }
     \end{xy}
   \end{align}
-  mit \( op = \widehat{op}|_{K^{(p)}} \), das heißt \( \widehat{op} \) ist der eindeutig bestimmte Homomorphismus, der \( op \) fortsetzt und zwar gilt
+  mit \( op = \widehat{op}|_{K^{(p)}} \), das heißt \( \widehat{op} \) ist der eindeutig bestimmte Homomorphismus, der \( op \) fortsetzt.
+  Und zwar gilt
   \begin{align}
     \widehat{op}\left(\sum_{\sigma\in K^{(p)}}a_{\sigma}\sigma\right) = \sum_{\sigma\in K^{(p)}}a_{\sigma}op(\sigma) \formpunkt
   \end{align}
@@ -868,7 +881,7 @@
   Geometrisch kann die in \eqref{eqKette} rein formale Addition als Vereinigung interpretiert werden. 
   In Definition \ref{defDualZelle} wurde die Dualzelle eines \( p \)-Simplex eingeführt. 
   Sie ist die geometrische Vereinigung von \( (n-p) \)-Simplizes.
-  Nun liegt es nahe, diese Dualzelle als \( (n-p) \)-Kette darzustelle.
+  Nun liegt es nahe, diese Dualzelle als \( (n-p) \)-Kette darzustellen.
   Das führt uns zur Definition des Sternoperators.
 
   \begin{definition}
@@ -882,7 +895,7 @@
      \( s_{\sigma^{p}, \sigma^{p+1}, \ldots, \sigma^{n}} \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right] \) der
      durch \( \sigma^{p} \) induzierte Orientierung entspricht.
   \end{definition}
-  Wie man sieht besteht das Bild von \( \star \) nur aus Verkettungen von elementaren Dualsimplizes und freilich ist das eine Untergruppe des \( C_{n-p}(\csd K) \).
+  Wie man sieht, besteht das Bild von \( \star \) nur aus Verkettungen von elementaren Dualsimplizes und freilich ist das eine Untergruppe des \( C_{n-p}(\csd K) \).
   Wir definieren deshalb hier \( C_{n-p}(\star K) := Im(\star_{(p)}) = \star C_{p}(K) \).
   Also gilt \( \star: C_{p}(K) \rightarrow   C_{n-p}(\star K) \).
 
@@ -896,7 +909,7 @@
   ergibt sich über Koeffizientenvergleich nur der triviale Kern \( \left\{ 0 \right\} \) für den Gruppenhomomorphismus \( \star \), 
   folglich ist der Sternoperator auch injektiv.
   
-  Desweiteren ist auch \( C_{n-p}(\star K) \) freie abelsche Gruppe mit 
+  Des Weiteren ist auch \( C_{n-p}(\star K) \) freie abelsche Gruppe mit 
   \mbox{\( \star K^{(n-p)} := \star\left( K^{(p)} \right) \)} als Erzeugendensystem, 
   denn für jedes \( \hat{c} = \star c \in C_{n-p}(\star K) \) mit \( c = \sum_{\sigma \in K^{(p)}} a_{\sigma}\sigma \in C_{p}(K) \) für gewisse \( a_{\sigma} \in \Z \) gilt
   \begin{align}
@@ -909,7 +922,7 @@
   dann muss auch \( c = 0 \) gelten, weil der Sternoperator ein Gruppenisomorphismus ist,
   das heißt es wären alle \( a_{\sigma} = 0 \) in \eqref{eqSternSigmaKette} als einzige (triviale) Lösung für \( \hat{c} = 0 \).
   Genauso wie bei \eqref{diagFreieAbelscheGruppe} können wir nun Operatoren auf \( C_{n-p}(\star K) \) auf der Basis \( \star K^{(n-p)} \) definieren und fortsetzen, 
-  wenn der Operator auf eine abelsche Gruppe abbildet.
+  wenn der Operator auf eine abelsche Gruppe abgebildet wird.
 
   Da der Sternoperator das simpliziale Analogon zum Hodge-Stern-Operator \( * \) werden soll, sollten auch analoge, also auf syntaktischer Ebene gleiche, Bedingungen gelten.
   Für eine Differentialform \( \alpha\in\Omega^{p}(M) \) auf einer \( n \)-dimensionalen Mannigfaltigkeit \( M \) gilt 
@@ -942,7 +955,7 @@
     Es sei \( K \) ein zweidimensionales wohlzentriertes Primärgitter ohne Rand,
     dann wird mit dem Sternoperator
     \begin{itemize}
-      \item ein Knoten auf eine 2-Kette abgebildet, so dass alle Dreiecke in dieser Verkettung vorkommen, die diesen Knoten als Ecke haben, 
+      \item ein Knoten auf eine 2-Kette abgebildet, sodass alle Dreiecke in dieser Verkettung vorkommen, die diesen Knoten als Ecke haben, 
             et vice versa.
             Die Orientierung der Flächenelemente ist die aller Flächenelemente. 
             Die sich ergebene 2-Kette nennen wir auch Voronoi-Zelle.
@@ -950,8 +963,8 @@
             haben, et vice versa.
             Die sich ergebene 1-Kette nennen wir auch Voronoi-Kante. 
             Die orientierte Kante bzw. Voronoi-Kante wird somit immer in Richtung der Flächenorientierungen "`gedreht"'.
-      \item ein Dreieckelement auf dessen Umkreismittelpunkt abgebildet, et vice versa, 
-            deswegen nennen wir den Umkreismittelpunkt auch Voronoi-Knoten.
+      \item ein Dreieckelement auf dessen Umkreismittelpunkt abgebildet, et vice versa. 
+            Deswegen nennen wir den Umkreismittelpunkt auch Voronoi-Knoten.
     \end{itemize}
     In Abbildung \ref{figBspSternoperator2D} ist dieser Zusammenhang für einen Ausschnitt eines Primärgitters beispielhaft dargestellt.
   \end{bemerkung}
@@ -959,8 +972,8 @@
   \begin{figure}
     \centering\includegraphics[width=0.8\textwidth]{bilder/dualSigma0.eps}
     \caption[Bsp. Sternoperator in 2D]{Beispiel für den Sternoperator auf einem Primärgitter der Dimension 2.
-                                       Für Knoten und Volumenelemente ändert sich die Orientierung auch nach mehrmaliger Anwendung nicht,
-                                       dagegen muss bei Kanten immer gegen den Uhrzeigersinn "`gedreht"' werden, so dass z.B. \( \star\star\sigma^{1} = -\sigma^{1} \)}
+                                       Für Knoten und Volumenelemente ändert sich die Orientierung auch nach mehrmaliger Anwendung nicht.
+                                       Dagegen muss bei Kanten immer gegen den Uhrzeigersinn "`gedreht"' werden, sodass z.B. \( \star\star\sigma^{1} = -\sigma^{1} \) gilt.}
     \label{figBspSternoperator2D}
     \vspace{1cm}
     \centering\includegraphics[width=0.8\textwidth]{bilder/dualSigmaRand.eps}
@@ -970,7 +983,7 @@
     \label{figBspRandAufDualZelle}
   \end{figure}
 
-  Nun wird es Zeit der Überschrift Rechnung zutragen und einen Operator einzuführen, der die Komplexeigenschaft erfüllt. 
+  Nun wird es Zeit der Überschrift Rechnung zu tragen und einen Operator einzuführen, der die Komplexeigenschaft erfüllt. 
   
   \begin{definition}
     \label{defRandoperator}
@@ -981,7 +994,7 @@
     \end{align}
     wobei \( \sigma^{p} = \left[ v_{0}, v_{1}, \ldots, v_{p} \right] \in K\) ist. 
     Das Dach bedeutet wieder, dass die entsprechende Ecke weggelassen wird.
-    Da schon vorher erwähnt wurde das Knoten offene Mengen bezüglich der simplizialen Topologie sind, setzen wir konsistenterweise
+    Da schon vorher erwähnt wurde, dass Knoten offene Mengen bezüglich der simplizialen Topologie sind, setzen wir konsistenterweise
     \begin{align}
       \partial_{0}\sigma^{0} := 0
     \end{align}
@@ -990,7 +1003,7 @@
 
   \begin{folgerung}
     Der (duale) Randoperator \( \partial_{p}: C_{p}(\star K) \rightarrow C_{p-1}(\star K) \) lässt sich vom obigen Randoperator für einen wohlzentrierten Simplizialkomplex \( K \) ableiten, 
-    in dem wir \( \csd K \) als Simplizialkomplex nutzen und den Operator auf \( C_{p}(\star K) \le C_{p}(\csd K) \) einschränken.
+    indem wir \( \csd K \) als Simplizialkomplex nutzen und den Operator auf \( C_{p}(\star K) \le C_{p}(\csd K) \) einschränken.
     Das bedeutet für \( \hat{\sigma}^{p} = \star\sigma^{n-p} \in \star K^{(p)} \) (\( \star K^{(p)} \) Erzeugendensystem)
     \begin{align}
       \partial_{p} \hat{\sigma}^{p} &= \partial_{p}\star\sigma^{n-p} \\
@@ -1000,9 +1013,9 @@
     \( \sigma^{n-p} \) konsistent ist. (vergleiche Beispiel in Abbildung \ref{figBspRandAufDualZelle})
   \end{folgerung}
   \begin{proof}
-    Das \( \partial_{p} C_{p}(\star K) \le C_{p-1}(\csd K) \) gilt, ist klar wegen der Untergruppeneigenschaft von \( C_{p}(\star K) \) und weil der Randoperator ein Homomorphismus ist.
+    Dass \( \partial_{p} C_{p}(\star K) \le C_{p-1}(\csd K) \) gilt, ist klar, wegen der Untergruppeneigenschaft von \( C_{p}(\star K) \) und weil der Randoperator ein Homomorphismus ist.
     Zu zeigen ist allerdings noch, dass \( \partial_{p} C_{p}(\star K) \le C_{p-1}(\star K) \) gilt. 
-    Dabei reicht es auch hier aus, dass nur auf dem Erzeugendensystem zu zeigen (algebraischer Induktionsanfang).
+    Dabei reicht es auch hier aus, dies nur auf dem Erzeugendensystem zu zeigen (algebraischer Induktionsanfang).
     Der (algebraische) Induktionsschritt gilt dann immer wegen der Universaleigenschaft für homomorphe Fortsetzungen auf freie abelsche Gruppen.
 
     Für eine bessere Lesbarkeit substituieren wir den Grad der Simplizes \( (n-p) \leftrightarrow p \) und schreiben nur \( s \) für \( s_{\bullet} \in \left\{ +1,-1 \right\} \)
@@ -1036,7 +1049,7 @@
       \sigma^{p}\prec\ldots\prec\sigma^{k-1}\prec\sigma^{k}\prec\sigma^{k+1}\prec\ldots\prec\sigma^{n}\formkomma
     \end{align}
     wenn bis auf \( \sigma^{k} \) und \( \sigma^{p} \) alle Simplizes fest gewählt sind. 
-    Die beiden sich ergebenden dualen Simplizes sind gegensätzlich orientiert, da die "`Zählrichtung"' der Dualecken anders herum ist.
+    Die beiden sich ergebenden, dualen Simplizes sind gegensätzlich orientiert, da die "`Zählrichtung"' der Dualecken anders herum ist.
     \eqref{eqproof4} folgt daraus, dass sich beide Summanden für \( i=k \) aufheben. 
     Das machen wir dann für alle \( p < k \le n \).
     Der Rest ergibt sich durch aufteilen der Summe und der Definition des Sternoperators.
@@ -1044,7 +1057,7 @@
     Bemerkung:
     In z.B. \cite{hirani} wurde der duale Randoperator per Definition festgelegt ohne zu prüfen oder zu verweisen 
     ob er mit dem primären Randoperator auf dualen Gittern konsistent ist.
-    Dem wurde hier nun genüge getan. Es ist der gleiche Operator mit eingeschränktem Definitionsbereich.
+    Dem wurde hier nun Genüge getan. Es ist der gleiche Operator mit eingeschränktem Definitionsbereich.
   \end{proof}
 
   \begin{folgerung}
@@ -1075,10 +1088,10 @@
 
     
   \begin{fazit}
-    Am Anfang des Absatzes haben wir uns entschieden, die Koeffizienten der Ketten aus \( \Z \) zuwählen.
+    Am Anfang des Absatzes haben wir uns entschieden, die Koeffizienten der Ketten aus \( \Z \) zu wählen.
     Hätten wir \( \R \) genommen, dann wäre \( C_{p}(K) \) ein \( \R \)-Vektorraum mit (linear unabhängiger) Basis \( K^{(p)} \).
-    Dem entsprechend würde auch immer noch alles aus diesem Absatz gelten.
-    Wir würde aber die Abzählbarkeit des \( C_{p}(K) \) aufgeben, die uns unter Umständen später noch von nützen sein könnte.
+    Dementsprechend würde auch immer noch alles aus diesem Absatz gelten.
+    Wir würden aber die Abzählbarkeit des \( C_{p}(K) \) aufgeben, die uns unter Umständen später noch von Nutzen sein könnte.
 
     Wenn wir allgemein \( C_{p} \) als Funktor auf der Kategorie der Simplizialkomplexe sehen, also
     \begin{align}
@@ -1101,9 +1114,9 @@
                                                            := \left( \left[ \mu^{0},\ldots,\mu^{p} \right] \mapsto \sum_{i=0}^{p} \mu^{i} v_{i}\right)
     \end{align}
     oder zu den abstrakten Kettenkomplexen mit \( f:=\pi \) (Projektion/Ankleben der Simplizes auf die Mannigfaltigkeit) gegeben.
-    Zum anderen haben wir in zukünftigen Arbeiten auch die Möglichkeit Oberflächen zu betrachten die sich zeitlich ändern 
-     \( f(t):K\rightarrow K(t) \) unter beibehalten der simplizialen Struktur, so es denn möglich ist.
-    Im Einzelnen muss dann noch geprüft werden unter welchen Voraussetzungen \( f\circ\partial = \partial\circ f\) beziehungsweise \( f\circ\star = \star\circ f\) gilt.
+    Zum anderen haben wir in zukünftigen Arbeiten auch die Möglichkeit Oberflächen zu betrachten, die sich zeitlich ändern 
+    (\( f(t):K\rightarrow K(t) \)) unter beibehalten der simplizialen Struktur, so es denn möglich ist.
+    Im Einzelnen muss dann noch geprüft werden, unter welchen Voraussetzungen \( f\circ\partial = \partial\circ f\) beziehungsweise \( f\circ\star = \star\circ f\) gilt.
   \end{fazit}
   
 
@@ -1116,7 +1129,7 @@
 
   \begin{ziel}
     Die Wohlzentriertheit eines Gitters ist Pflicht, da ohne sie kein brauchbares duales Gitter (Voronoi-Gitter) erzeugt werden kann. 
-    Diese zur Triangulierung duale Gebietsdiskretisierung wird aber benötigt um zum Beispiel einen 
+    Diese zur Triangulierung duale Gebietsdiskretisierung wird aber benötigt, um zum Beispiel einen 
     diskreten Hodge-Stern-Operator sinnvoll zu entwickeln. 
     Bei einem nicht wohlzentrierten Dreieck liegt der Voronoi-Knoten \( \star\sigma^{2} \) nicht im Dreieck \( \sigma^{2} \).
     Das Problem dabei ist, dass sich die Werte auf \( \star\sigma^{2} \) und \( \sigma^{2} \) nur um einen 
@@ -1134,7 +1147,7 @@
     Damit sind oft genutzte lokale und globale Strategien zur Verfeinerung nicht anwendbar. 
     So wird zum Beispiel bei der FEM-Toolbox AMDiS \cite{amdis} die längste Kante halbiert und von dort zwei neue Kanten zu den jeweils gegenüberliegenden Knoten der beiden angrenzenden Dreiecken erstellt. Der neu entstandene Knotenpunkt hat folglich einen 1-Ring aus 4 Flächenelementen.
     Auch CAD-Programme liefern im Allgemeinen keine geeigneten Gitter. 
-    Ein möglicher Ausweg könnte eine Triangulierung (bzw. Neutriangulierung) mittels angepassten Delaunay oder anderen Algorithmen sein, zum Beispiel Centroidal Voronoi Tessellation (CVT)\cite{CVTGunzburger}, 
+    Ein möglicher Ausweg könnte eine Triangulierung (bzw. Neutriangulierung) mittels angepasstem Delaunay oder anderen Algorithmen sein, zum Beispiel Centroidal Voronoi Tessellation (CVT)\cite{CVTGunzburger}, 
     Optimal Delaunay Triangulations (ODT)\cite{ODT} oder Hexagonal Delaunay Triangulation\cite{HDT}.
 
     Im Folgenden wollen wir davon ausgehen, dass zumindest eine Triangulation vorliegt, die die Bedingung erfüllt, dass jeder Knoten Teil von mehr als 4 Dreiecken ist. 
@@ -1142,16 +1155,16 @@
     Die Struktur des Simplizialkomplexes soll dabei erhalten bleiben. Nur die Knotenpunkte werden neu arrangiert. Das setzt natürlich voraus, dass die Oberfläche exakt, 
     zum Beispiel explizit durch eine Immersion \( X: M \rightarrow \R^{3} \) oder implizit durch das 0-Niveau einer Level-Set-Funktion\cite{levelset}, oder eine Approximation der 2-Mannigfaltigkeit höher als 1 gegeben ist.
 
-    Ansätze zur Gitterverbesserung bei der die Wohlzentriertheit im Vordergrund steht gibt es bis jetzt wenige.
+    Ansätze zur Gitterverbesserung, bei der die Wohlzentriertheit im Vordergrund steht, gibt es bis jetzt wenige.
     Denn obwohl diese Forderung an der Triangulation für viele numerische Verfahren Vorteile bringen würde, 
     so ist sie doch nur für den hier verwendeten DEC zwingend. 
     Eine Arbeit ist zum Beispiel \cite{meshHirani}, wobei auch hier das diskrete Äußere Kalkül die Motivation bildete.
-    Hier wird eine Kostenfunktion aufgestellt deren Argument des Minimums ein wohlzentrierter Simplizialkomplex ist.
+    Hier wird eine Kostenfunktion aufgestellt, deren Argument des Minimums ein wohlzentrierter Simplizialkomplex ist.
     Leider muss solch ein Minimum nicht existieren, weder im planaren noch auf gekrümmten Oberflächen.
-    Wir wollen hier im Folgendem einen ähnlich Ansatz verwenden. 
-    Ausgangspunkt sind Kraftvektoren an den Knoten, die das Gitter so unter Zwang setzen, dass die daraus resultierende Bewegung der
+    Wir wollen hier im Folgenden einen ähnlichen Ansatz verwenden. 
+    Dazu sind Kraftvektoren an den Knoten gegeben, die das Gitter so unter Zwang setzen, dass die daraus resultierende Bewegung der
     Knoten, wenn es denn möglich ist, eine wohlzentrierte Triangulation formt. 
-    Das Modell ist nicht neu und wird zum Beispiel zur Simulation von biologischen Zellgewebe verwendet. 
+    Das Modell ist nicht neu und wird zum Beispiel zur Simulation von biologischem Zellgewebe verwendet. 
     Einen Überblick zu der Thematik bietet \cite{meshCooper}.  
   \end{ziel}
 
@@ -1159,33 +1172,33 @@
   
   \subsection{Mechanisches Modell und dessen Diskretisierung}
     
-    Ein einfacher mechanischer Ansatz, um nach gewissen Kriterien ein optimales Gitter zu entwickeln ist
+    Ein einfacher mechanischer Ansatz, um nach gewissen Kriterien ein optimales Gitter zu entwickeln, ist
     \begin{align}
-      \gamma\frac{\d \vec{x}_{i}}{\d t} &= \vec{F}(\vec{x}_{i})
+      \gamma\frac{\d \vec{x}_{i}}{\d t} &= \vec{F}(\vec{x}_{i}) \formpunkt
       \label{visd}
     \end{align}
     Diese gewöhnliche Differentialgleichung erster Ordnung beschreibt eine Viskosedämpfung am Knoten 
     \( \sigma^{0}_{i} \) mit dem Koordinatenvektor \( \vec{x}_{i} \in M \subset \R^{3}\) und Viskositätskoeffizient \( \gamma \).
-    Eine einfache Diskretisierung des Problems \eqref{visd} ist das Explizite Eulerverfahren 
+    Eine einfache Diskretisierung des Problems \eqref{visd} ist das explizite Eulerverfahren 
     mit nachgeschalteter Projektion \( \pi:\R^{3} \rightarrow M \) um die Nebenbedingung \( \vec{x}_{i} \in M \)
     zu erfüllen.
     \begin{align}
-      \vec{x}_{i}(t+\Delta t) &= \pi\left(\vec{x}_{i}(t) + h \vec{F}_{i}\right)
+      \vec{x}_{i}(t+\Delta t) &= \pi\left(\vec{x}_{i}(t) + h \vec{F}_{i}\right) \formpunkt
       \label{euler}
     \end{align}
-    wobei \( h:= \frac{\Delta t}{\gamma} \) und \( \vec{F}_{i}:= \vec{F}(\vec{x}_{i}(t)) \).
+    Wobei \( h:= \frac{\Delta t}{\gamma} \) und \( \vec{F}_{i}:= \vec{F}(\vec{x}_{i}(t)) \).
     Der Kraftvektor \( \vec{F}_{i} \) resultiert aus Interaktionen mit den anderen Knoten. 
     Im Overlapping-Sphere-Modell(OS)\cite{meshCooper} sind das all die Knoten \( \sigma^{0}_{j} \), die einen bestimmten Abstand zu \( \sigma^{0}_{i} \) haben.
     Für das explizite Eulerverfahren (Verfahren 1.Ordnung) werden kleine Schrittweiten \( h \) benötigt. 
     Allerdings bringen Verfahren höherer Ordnung wahrscheinlich keine signifikant besseren Ergebnisse. Zum einen könnte eine größere Schrittweite
     nicht ausgenutzt werden, da es sonst passieren kann, dass sich, durch die resultierende größere Verschiebung eines Knoten, Dreiecke überlappen
     und somit keine zulässige Triangulierung mehr vorliegt. Zum anderen reduziert die Projektion \( \pi \) die Konvergenzordnung der Verfahren.
-    So wurde zum Beispiel in den numerischen Experimenten auch das Heun-Verfahren (explizites Runge-Kutta-Verfahren der Ordnung 2) getestet ohne
+    So wurde zum Beispiel in den numerischen Experimenten auch das Heun-Verfahren (explizites Runge-Kutta-Verfahren der Ordnung 2) getestet, ohne
     nennenswerte bessere Resultate, dafür mit wesentlich höheren Kosten in der Berechnung.
     Implizite Verfahren haben einen zu hohen Aufwand in der Implementation, denn es ist zu bedenken, dass der Kraftvektor \(\vec{F}_{i}\) nicht
     nur von den Koordinaten \(  \vec{x}_{i} \) abhängt, sondern auch von der umgebenden Struktur.
 
-    Wir wollen hier, im Gegensatz zum OS-Modell, die Gitterstruktur des Simplizialkomplexes ausnutzen, das heißt es interagieren genau die Knoten mit einander, die eine gemeinsame Kante besitzen. Somit lässt sich der Kraftvektor \( \vec{F}_{i} \) zerlegen zu
+    Wir wollen hier, im Gegensatz zum OS-Modell, die Gitterstruktur des Simplizialkomplexes ausnutzen, das heißt es interagieren genau die Knoten miteinander, die eine gemeinsame Kante besitzen. Somit lässt sich der Kraftvektor \( \vec{F}_{i} \) zerlegen zu
   \begin{align}
     \vec{F}_{i} &= \sum_{\sigma^{1}:=[\sigma^{0}_{j}, \sigma^{0}_{i}]\succ\sigma^{0}_{i}} 
                                   \frac{F_{\sigma^{0}_{i}\prec\sigma^{1}}}{\|\vec{x}_{j} - \vec{x}_{i}\|} \left(\vec{x}_{j} - \vec{x}_{i}\right)
@@ -1197,17 +1210,17 @@
     F_{\sigma^{0}\prec\sigma^{1}} &= \sum_{\sigma^{2}\succ\sigma^{1}} F_{\sigma^{0}\prec\sigma^{1}\prec\sigma^{2}}
     \formpunkt
   \end{align}
-  Als praktisch erweist es sich außerdem die Kräfte dimensionslos zuhalten, da somit eventuell auftretende Parameter für unterschiedliche
+  Als praktisch erweist es sich außerdem, die Kräfte dimensionslos zu halten, da somit eventuell auftretende Parameter für unterschiedliche
   Ausgangsgitter annähernd gleich gewählt werden können. 
   Die Schrittweite \( h \) in \eqref{euler} hängt somit annähernd linear von der Gitterweite ab. 
   Zu beachten ist hierbei, dass sich die Gitterweite, je nach Definition\footnote{z.B. Maximum aller Umkreisradien}, in jedem Eulerschritt ändern kann.
 
-  Es folgen nun 2 heuristische Ansätze für die Kraft um die Beschaffenheit des Gitters positiv zu beeinflussen.
+  Es folgen nun 2 heuristische Ansätze für die Kraft, um die Beschaffenheit des Gitters positiv zu beeinflussen.
 
   \subsubsection{Optimale Kantenlängen}
     Ein ideales Dreieck mit bestmöglichen Eigenschaften hat überall Innenwinkel von \( \frac{\pi}{3} \). 
     Folglich liegt ein gleichseitiges Dreieck vor. 
-    Deshalb wäre es ein guter Ansatz zu versuchen eben diese Eigenschaft bei einem Dreieckelement hervorzurufen.
+    Deshalb wäre es ein guter Ansatz, zu versuchen, eben diese Eigenschaft bei einem Dreieckelement hervorzurufen.
     Wir setzen eine Kantenkraft in linearer Abhängigkeit der Länge der Kante \( \sigma^{1} \) an, die für alle Knoten \( \sigma^{0}\prec\sigma^{1} \) gleich ist.
     \begin{align}
        F^{L}_{\sigma^{0}\prec\sigma^{1}} := F^{L}_{\sigma^{1}} &:= \frac{|\sigma^{1}|}{l^{*}} - k
@@ -1218,24 +1231,24 @@
     Das heißt alle Dreiecke \( \sigma^{2}\) wären dann vom Ausmaß gleich einem gleichseitigen Referenzdreieck \( T^{*} \).
     Dessen Fläche berechnet sich dann über die Gesamtfläche \( V(K) = \sum_{\sigma^{2}}|\sigma^{2}| \) und der Anzahl aller Dreiecke \( N_{\sigma^{2}} = |\left\{ \sigma^{2} \in K \right\}|\)
     \begin{align}
-        |T^{*}| &= \frac{V(K)}{N_{\sigma^{2}}}
+        |T^{*}| &= \frac{V(K)}{N_{\sigma^{2}}} \formkomma
     \end{align}
     sowie unter Ausnutzung, dass \( T^{*} \) gleichseitig ist
     \begin{align}
-      |T^{*}| &= \frac{l^{*}\sqrt{3}}{4}
+      |T^{*}| &= \frac{l^{*}\sqrt{3}}{4} \formpunkt
     \end{align}
     Zusammen ergibt sich für die Referenzlänge \( l^{*} > 0 \)
     \begin{align}
       l^{*} &= 2 \sqrt{\frac{V(K)}{\sqrt{3}N_{\sigma^{2}}}}
     \end{align}
-    Für \( k=1 \) kann man sich das so vorstellen, dass die beiden Knoten einer Kante \( \sigma^{1} \) sich abstoßen falls \( |\sigma^{1}| < l^{*}
-    \), sich anziehen falls \( |\sigma^{1}| > l^{*}\) oder keine Kräfte wirken wenn \( |\sigma^{1}| = l^{*}\) gilt (siehe Abb. \ref{edgeLaw}).
-    \( k = 0 \) würde für eine Gitter mit Rand und freien Randknoten\footnote{Randknoten dürfen auch nach innen wandern} bedeuten, 
+    Für \( k=1 \) können wir uns es so vorstellen, dass die beiden Knoten einer Kante \( \sigma^{1} \) sich abstoßen, falls \( |\sigma^{1}| < l^{*}
+    \), sich anziehen, falls \( |\sigma^{1}| > l^{*}\) oder keine Kräfte wirken, wenn \( |\sigma^{1}| = l^{*}\) gilt (siehe Abb. \ref{edgeLaw}).
+    \( k = 0 \) würde für ein Gitter mit Rand und freien Randknoten\footnote{Randknoten dürfen auch nach innen wandern} bedeuten, 
     dass es immer weiter schrumpft. In unserem Fall, also Triangulierung von Oberflächen ohne Rand, zeigt sich, dass sich die Gitter vor allem dort
-    zusammen ziehen, wo sich zum einen 1-Ringe aus 5 Dreieckelementen befinden und zum anderen wo die Krümmung der Mannigfaltigkeit klein ist.
+    zusammenziehen, wo sich zum einen 1-Ringe aus 5 Dreieckelementen befinden und zum anderen die Krümmung der Mannigfaltigkeit klein ist.
     Letzteres ist allerdings keine gute Eigenschaft, da gerade dort ein feineres Gitter vonnöten wäre, wo die Oberfläche eine große Krümmung
     aufweist.
-    Der andere Extremfall, \( k=1 \), würde zwar ein annähernd gleich grobes Gitter erzeugen, aber in Experimenten zeigte sich, dass \eqref{euler}
+    Der andere Extremfall, \( k=1 \), würde zwar ein annähernd gleich grobes Gitter erzeugen, jedoch zeigte sichin Experimenten, dass \eqref{euler}
     dadurch instabil wird. Stabilisierend wirkt sich aber das Hinzuaddieren des folgenden Kraftansatzes aus.
     \begin{figure}
       \begin{minipage}[t]{0.45\textwidth}
@@ -1253,8 +1266,8 @@
 
   \subsubsection{Optimale Winkel}
     Ein weiterer heuristischer Ansatz bezieht sich direkt auf die inneren Winkel eines Dreieckelements. 
-    Wie in Abbildung \ref{angleLaw} angedeutet bewirkt eine Verschiebung entlang der Kante eine Änderung des Winkels.
-    Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, dann wird der Winkel an dem zu verschiebenden Knoten kleiner, et vice versa. 
+    Wie in Abbildung \ref{angleLaw} angedeutet, bewirkt eine Verschiebung entlang der Kante eine Änderung des Winkels.
+    Wird dabei, wie in Abbildung \ref{angleLaw}, die Kante länger, so wird der Winkel an dem zu verschiebenden Knoten kleiner, et vice versa. 
     Somit ist ein sinnvoller Ansatz für die Kraft an einem Knoten \( \sigma_{0} \) in Abhängigkeit 
     zur Kante \( \sigma^{1}_{i}\succ\sigma^{0} \) und dem Dreieck \( \sigma^{2}\succ\sigma^{1}_{i} \) 
     \begin{align}
@@ -1267,7 +1280,7 @@
     im Dreieck \( \sigma^{2} = [\sigma^{0},v_{0},v_{1}] \) hat.
     
     Eine sinnvolle Wahl für die Konstante ist \( c = \cos \frac{\pi}{3} = 0.5\).
-    Sie würde in einer flachen Triangulation mit hexagonaler Struktur bewirken, dass sich keine Kräfte entwickeln, falls alle Dreiecke bis auf Rotation und Translation gleich sind.
+    Sie würde in einer flachen Triangulation mit hexagonaler Struktur bewirken, dass sich keine Kräfte entwickeln, falls alle Dreiecke, bis auf Rotation und Translation, gleich sind.
 
   \subsubsection{Kombination der Kantenkräfte}
     Es hat sich gezeigt, dass \eqref{edgeForce} und \eqref{angleForce} gerade auf komplizierteren Gebieten einzeln entweder nicht das gewünschte Resultat liefern oder instabil sind.
@@ -1276,8 +1289,8 @@
       F^{\text{Gesamt}}_{\sigma^{0}\prec\sigma^{1}} &:= D \cdot F^{L}_{\sigma^{0}\prec\sigma^{1}} + (1-D) \cdot F^{A}_{\sigma^{0}\prec\sigma^{1}}
     \end{align}
     mit \( D\in[0,1] \).
-    Algorithmus \ref{AlgoForces} zeigt wie die resultierenden Kräfte auf einem Dreieckelement berechnet werden können. 
-    Um alle Knotenkräfte\footnote{d.h. \((\vec{F}_{i})_{i=1,\ldots, N_{\sigma^{0}}}\in (\R^{3})^{N_{\sigma^{0}}} \)} zu erhalten müssen wir nur noch diese Element-Knotenkräfte aufassemblieren. 
+    Algorithmus \ref{AlgoForces} zeigt, wie die resultierenden Kräfte auf einem Dreieckelement berechnet werden können. 
+    Um alle Knotenkräfte\footnote{d.h. \((\vec{F}_{i})_{i=1,\ldots, N_{\sigma^{0}}}\in (\R^{3})^{N_{\sigma^{0}}} \)} zu erhalten, müssen wir nur noch die Element-Knotenkräfte aufassemblieren. 
     
   \subsubsection{Projektion der Kraftvektoren}
     Des Weiteren, wie im Algorithmus \ref{AlgoForces} zu sehen, wird der Kraftvektor \( \vec{F}_{i} \) in den Tangentialraum projiziert, das heißt
@@ -1298,7 +1311,7 @@
     Das müssen wir nicht machen, aber es bringt Vorteile. 
     Zum einen könnten Knoten soweit in Normalenrichtung verschoben werden, dass die nachfolgende Projektion den Knoten falsch abbildet und das Gitter zerstört wird 
     (vgl. Abb. \ref{AbbFatalEuler}), zum anderen wird die Projektion in \eqref{euler} oft iterativ gelöst (vgl. \ref{SubSubSecPhiProject}) und je weiter weg wir den Knoten von der
-    Mannigfaltigkeit verschieben um so schlechter ist die Startnährung für das iterative Verfahren.
+    Mannigfaltigkeit verschieben, um so schlechter ist die Startnäherung für das iterative Verfahren.
     \begin{figure}
       \centering
       \includegraphics[width=0.5\textwidth]{bilder/meshCorrector/fatalEuler.eps}
@@ -1316,14 +1329,15 @@
     \subsubsection{Ellipsoid}
       Wir wollen nun ein geeignetes Gitter für ein Ellipsoid erstellen (vgl. Appendix \ref{heineC}).
       Zur Verfügung steht uns eine Starttriangulierung der Einheitssphäre mit zirka 1000 Knoten.
-      Es ist fast überall eine hexagonale Struktur vorhanden bis auf 12 Defekte, genauer, an 12 Knoten
+      Es ist fast überall eine hexagonale Struktur vorhanden, bis auf 12 Defekte. 
+      Genauer, an 12 Knoten
       befinden sich pentagonale 1-Ringe. 
       Dieses Startgitter wird nun auf den Ellipsoid projiziert (vgl. Abschnitt \ref{SubSubSecPhiProject}).
       
-      Wie in Abbildung \ref{AbbEllipsoid} zu sehen, ist ein wohlzentrierter Simplizialkomplexe nach nur
+      Wie in Abbildung \ref{AbbEllipsoid} zu sehen, ist ein wohlzentrierter Simplizialkomplex nach nur
       wenigen Eulerschritten \eqref{euler} erreicht. 
       Der größte Winkel nimmt aber weiterhin logarithmisch ab. 
-      Nach zirka 200 Schritten hat er sein Minimum erreicht und steigt danach wieder leicht.
+      Nach zirka 200 Schritten hat er sein Minimum erreicht und steigt danach wieder leicht an.
       Das ist nicht verwunderlich, denn kleinere Winkel sind nicht das einzige Optimalitätskriterium.
       Geplottet wurde das Integralmittel \( \bar{\alpha}_{\max} \) (\texttt{AvMaxAngle}) der größten Winkel der Dreiecke
       und der größte aller maximalen Winkel \(\alpha_{\max}^{\max} \) (\texttt{MaxMaxAngle}) nach jedem Iterationsschritt.
@@ -1332,8 +1346,8 @@
                               = \frac{1}{V(K)} \sum_{\sigma^{2}\in K} |\sigma^{2}| \alpha_{max}^{\sigma^{2}} \\
          \alpha_{\max}^{\max} &:= \max\left\{ \alpha_{max}^{\sigma^{2}} \middle| \sigma^{2} \in K \right\}
       \end{align}
-      wobei \( |K| \) der zugrunde liegende Raum des Simplizialkomplexes \( K \) ist 
-      und \( \mu\in\Lambda^{2}(|K|) \) die die stückweise konstante Volumenform auf \( |K| \).
+      Wobei \( |K| \) der zugrunde liegende Raum des Simplizialkomplexes \( K \) 
+      und \( \mu\in\Lambda^{2}(|K|) \) die stückweise konstante Volumenform auf \( |K| \) ist.
       \( \alpha_{max}^{\sigma^{2}} \) ist der größte Winkel auf dem Dreieck \( \sigma^{2} \).
 
       \begin{figure}
@@ -1362,11 +1376,6 @@
                  nach 1000 Eulerschritten (danach keine signifikanten Veränderungen mehr);
                  (semilog)Eulerschritte-Winkel-Plot (Maximum und Integralmittel)}
          \label{AbbEllipsoid}
-      \end{figure}
-
-    \subsubsection{Lokale Verfeinerung}
-     
-      \begin{figure}
         \begin{minipage}[t]{0.32\textwidth}
         \includegraphics[width=\textwidth]{bilder/meshCorrector/sphereDivBy4Before.eps}
         \end{minipage}
@@ -1386,37 +1395,43 @@
          \label{AbbVerfeinerung}
       \end{figure}
 
+    \subsubsection{Lokale Verfeinerung}
+     
+      %\begin{figure}
+      %\end{figure}
+
       Die in der FEM häufig anzutreffende Verfeinerung, nämlich die Halbierung der Dreiecke, führt zu 1-Ringen aus 4 Flächenelementen an den neu
       entstandenen Knoten und ist somit im Allgemeinen nicht zulässig für unsere Triangulierung.
-      Eine Möglichkeit Dreiecke zu verfeinern und trotzdem eine Ausgangssituation für ein wohlzentriertes Gitter zu schaffen ist das Vierteln von
+      Eine Möglichkeit Dreiecke zu verfeinern und trotzdem eine Ausgangssituation für ein wohlzentriertes Gitter zu schaffen, ist das Vierteln von
       Flächenelementen, wobei 3 neue Knoten an den Seitenhalbierenden enstehen (siehe Abb. \ref{AbbVerfeinerung} ganz links). 
-      Die somit hängenden Knoten werden beseitigt indem die Nachbarelemente halbiert werden.
-      Das heißt es ensteht hexagonale Struktur an einem neuen Knoten, wenn beide angrenzende Dreiecke zum Verfeinern markiert wurden und
-      pentagonale Struktur, wenn nur ein Dreieck markiert wurde. Für die alten Knoten an denen eine neue Kante hinzu kommt erhöht sich die Anzahl
+      Die somit hängenden Knoten werden beseitigt, indem die Nachbarelemente halbiert werden.
+      Das heißt es ensteht hexagonale Struktur an einem neuen Knoten, wenn beide angrenzenden Dreiecke zum Verfeinern markiert wurden und
+      pentagonale Struktur, wenn nur ein Dreieck markiert wurde. 
+      Für die alten Knoten an denen eine neue Kante hinzu kommt, erhöht sich die Anzahl
       der umliegenden Flächenelemente um eins.
 
-      Nachdem die neuen Knoten auf die Mannigfaltigkeit projiziert werden ist im Allgemeinen noch nicht sichergestellt, dass ein wohlzentrierte
+      Nachdem die neuen Knoten auf die Mannigfaltigkeit projiziert werden, ist im Allgemeinen noch nicht sichergestellt, dass eine wohlzentrierte
       Triangulation vorliegt. Deshalb wenden wir unseren Algorithmus \eqref{euler} darauf an.
-      Wenn vor der Verfeinerung ein zulässiges Gitter vorlag, dann zeigt sich, dass wir nur sehr wenige Iterationsschritte benötigen um
+      Wenn vor der Verfeinerung ein zulässiges Gitter vorlag, dann zeigt sich, dass wir nur sehr wenige Iterationsschritte benötigen, um
       wieder ein
       zulässiges Gitter herzustellen. Abbildung \ref{AbbVerfeinerung} zeigt das Resultat nach nur einem Eulerschritt mit zwei verschiedenen
       Parameterkonfigurationen. Hier wurde ein Dreieck verfeinert (links). Das Gitterverbesserungsverfahren erzeugt zum einen wohlzentrierte
       Dreiecke bei denen die Abmessungen weitestgehend gleich bleiben (Mitte) und bei denen die neu entstandenen Elemente schrumpfen,
       jedoch die Winkel
-      besser sind (rechts) als bei der anderen Parameterkonfiguration.
+      besser sind (rechts), als bei der anderen Parameterkonfiguration.
 
      \begin{fazit}
         Prinzipiell ist es also möglich ein wohlzentriertes Gitter aus einer Ausgangstriangulation zu erzeugen, wenn genügend viele
         Informationen über die stetige Oberfläche bekannt sind. 
-        Zum Teil reichen auch nur wenige Eulerschritte aus um Wohlzentriertheit zu erreichen, jedoch um in gewissen Sinne gleichmäßige
-        Gitter zu bekommen muss wesentlich mehr Aufwand betrieben werden, der unter Umständen den des eigentlichen Problems, wie das Lösen
+        Zum Teil reichen auch nur wenige Eulerschritte aus, um Wohlzentriertheit zu erreichen, jedoch um in gewissem Sinne gleichmäßige
+        Gitter zu bekommen, muss wesentlich mehr Aufwand betrieben werden, der unter Umständen den des eigentlichen Problems, wie das Lösen
         einer Partiellen Differentialgleichung auf der Oberfläche, bei weitem übersteigt.
      \end{fazit}
 
 
 
 
-
+  \newpage
   \section{Implizit gegebene Oberflächen}
     \label{secImpliziteMannigfaltigkeiten}
     Oftmals ist eine Oberfläche \( M\subset\R^{3} \) nicht explizit über eine Parametrisierung 
@@ -1441,7 +1456,7 @@
 
     \subsection{Numerische Projektion}
       \label{SubSubSecPhiProject}
-      Wenn bei einem Simplizialkomplex, welches die Oberfläche approximiert, neue Knoten enstehen oder vorhandene verschoben werden sollen,
+      Wenn bei einem Simplizialkomplex, welches die Oberfläche approximiert, neue Knoten entstehen oder vorhandene verschoben werden sollen,
       dann ist es notwendig diese Knoten auf die Mannigfaltigkeit zu projizieren, 
       denn eine Bedingung an den Simplizialkomplex ist, dass die Knoten dort und auf dem abstrakten Simplizialkomplex übereinstimmen.
 
@@ -1469,11 +1484,11 @@
       Deshalb approximieren wir den Gradienten mittels Taylor an \( \vec{y} \):
       \begin{align}
         \nabla\varphi(\vec{x}) &= \nabla\varphi(\vec{y}) + H[\varphi](\vec{y})(\vec{x}-\vec{y}) + HOT \\
-                               &= \nabla\varphi(\vec{y}) + \frac{\varepsilon}{\|\nabla\varphi(\vec{x})\|} H[\varphi](\vec{y})\nabla\varphi(\vec{x}) + HOT
+                               &= \nabla\varphi(\vec{y}) + \frac{\varepsilon}{\|\nabla\varphi(\vec{x})\|} H[\varphi](\vec{y})\nabla\varphi(\vec{x}) + HOT \formkomma
       \end{align}
       wobei  \( HOT \) für Therme höherer Ordnung (in \( \varepsilon \)) steht 
-      und \( H[\varphi] \) ist die (symmetrische) Hessematrix von \( \varphi \in
-      C^{2}\left(\overline{B_{\varepsilon}(\vec{x})}\right) \).
+      und \( H[\varphi] \) die (symmetrische) Hessematrix von \( \varphi \in
+      C^{2}\left(\overline{B_{\varepsilon}(\vec{x})}\right) \) ist.
       Einsetzen in \eqref{EqProjection} liefert
       \begin{align}
         \vec{x} &= \vec{y} +  h \nabla\varphi(\vec{y}) + \vec{O}(\varepsilon^{2}) \quad\text{.}
@@ -1482,7 +1497,7 @@
       \begin{align}
         \vec{x}^{*} &:= \vec{y} +  h \nabla\varphi(\vec{y})
       \end{align}
-      für \( \vec{x} \) ausreichend falls \( \varphi \) hinreichend glatt und \( \varepsilon \) klein.
+      für \( \vec{x} \) ausreichend, falls \( \varphi \) hinreichend glatt und \( \varepsilon \) klein.
 
       Nun wollen wir \( h \) so bestimmen, dass \(\vec{x}^{*}\) auf der Oberfläche liegt, das heißt
       \begin{align}
