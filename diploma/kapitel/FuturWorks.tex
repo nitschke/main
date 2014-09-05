@@ -2,12 +2,13 @@
 
 Wir haben nun einen kleinen Einblick in die Welt des Diskreten Äußeren Kalküls bekommen.
 Innerhalb des Rechnens mit Differentialformen behält das DEC deren Leichtigkeit bei,
-denn es werden keine Karten herangezogen auf denen gerechnet wird, sondern es wird direkt im (flachen) Ambienteraum gearbeitet und das ohne
-das sonst übliche "`Nachkorregieren"' der dortigen Differentialoperatoren durch Projektionen oder ähnlichem.
+denn es werden keine Karten herangezogen auf denen gerechnet wird, stattdessen wird direkt im (flachen) Ambienteraum gearbeitet und das ohne
+das sonst übliche "`Nachkorregieren"' der dortigen Differentialoperatoren durch Projektionen oder Ähnlichem.
 Die diskrete Metrik der Mannigfaltigkeit ergibt sich ganz natürlich aus der Geometrie des zugehörigen Simplizialkomplexes.
 Somit gelten die DEC-hergeleiteten Operatoren immer in der Formulierung, unabhängig von der kontinuierlichen Metrik.
-Auch dass es möglich ist direkt das Differentialkalkül der äußeren Algebra zu nutzen ist sehr angenehm, denn es macht zum Beispiel für den
-Laplace-Beltrami-Operator schon einen Unterschied, ob es 
+Auch ist es sehr angenehm, dass es möglich ist, direkt das Differentialkalkül der äußeren Algebra zu nutzen. 
+Denn es macht zum Beispiel für die Behandlung des
+Laplace-Beltrami-Operators einen Unterschied, ob es 
     \begin{align}
       \Delta_{B} &= \frac{1}{\sqrt{\left| \det g \right|}} \sum_{i,j=1}^{n} \frac{\partial}{\partial x^{j}} \left( g^{ij}\sqrt{\left| \det g \right|} \frac{\partial }{\partial x^{i}}
       \right)
@@ -18,12 +19,13 @@ oder
   \end{align}
 zu diskretisieren gilt, obwohl beides der gleiche Operator ist.
 Ganz abgesehen von der Komplexität der Ausdrücke, ist beim Ersten die Metrik schon festgelegt, beim Zweiten noch nicht.
-Auch ist eine DEC-Formulierung unabhängig von der Dimension \( N \) des Ambiente Raumes, das heißt das es keinen Unterschied macht ob eine
+Auch ist eine DEC-Formulierung unabhängig von der Dimension \( N \) des Ambiente Raumes. 
+Das heißt, dass es keinen Unterschied macht ob eine
 Oberfläche in einem dreidimensionalen Raum oder einem 20-dimensionalen Raum eingebettet ist.
 Skalarfelder bleiben weiterhin eindimensional und Vektorfelder \( n \)-dimensional.
 Nur der Speicher- und Auswertungsaufwand wird linear steigen.
-Die Rechenkosten ist ein zusätzliches Argument, welches für das DEC spricht, wie wir im Anwendungsteil sehen konnten.
-Hier konnte mit vergleichsweisen kleinem Aufwand gute Ergebnisse in der Berechnung der Krümmungen erzielt werden.
+Die Rechenkosten sind ein zusätzliches Argument, welches für das DEC spricht, wie wir im Anwendungsteil sehen konnten.
+Hier konnten mit vergleichsweise kleinem Aufwand gute Ergebnisse in der Berechnung der Krümmungen erzielt werden.
 
 Wir haben uns hier vor allem auf das diskretisieren der linearen Operatoren \( * \) und \( \exd \) beschränkt.
 Für einen vollen Satz von Operatoren, mit denen wir alle üblichen Gleichungen für Differentialformen im Diskreten berechnen können, werden noch
@@ -34,9 +36,10 @@ Umkreismittelpunktes.
 Das ist eine Anforderung, die in dieser Art und Weise in zukünftigen Arbeiten nicht haltbar ist.
 Ein Ausweg bietet hierbei die schon angesprochene baryzentrische Wohlzentriertheit.
 Hierbei ist jedes Simplex wohlzentriert und wir erhalten immer ein baryzentrischen Dualgitter.
-Für die äußere Ableitung spielt das keine Rolle, jedoch muss der diskrete Hodge-Stern-Operator neu formuliert werden, da hier die
+Für die äußere Ableitung spielt das keine Rolle. 
+Jedoch muss der diskrete Hodge-Stern-Operator neu formuliert werden, da hier die
 Orthogonalität der Simplizes zu ihren dualen Ketten nicht mehr ausgenutzt werden kann. 
-Für Ecken und Volumenformen ändert sich vermutlich nichts, aber für die Kanten wäre es ein möglicher Ansatz nur über den "`orthogonalen Anteil'" der dualen
+Für Ecken und Volumenformen ändert sich vermutlich nichts, jedoch wäre es für die Kanten ein möglicher Ansatz ausschließlich über den "`orthogonalen Anteil'" der dualen
 Form zu integrieren.
 Es gilt \( dx^{2}= \sin\left( \gamma_{i} \right) d\xi \), 
 wobei \( \left( x^{1},x^{2} \right) \) die orthogonalen Koordinaten sind,
@@ -55,21 +58,21 @@ Somit kann man sich leicht überlegen, dass für eine diskrete Form \( \alpha\in
 den Hodge-Stern-Operator in dem von uns verwendeten Sinne für uniforme Gitter approximiert.
 Dieses gilt dann für jeglichen Wohlzentriertheitsbegriff, nicht nur für den baryzentrischen oder bzgl. des Umkreismittelpunktes.
 
-Interessant wäre auch eine Approximation der Oberfläche besser als nur linear, z.B. durch diverse Spline-Ansätzen, und deren Auswirkung auf das Konvergenzverhalten und
-Stabilität bei DEC-Problemen. 
-Alleine schon durch Differenzierbarkeit des zugrundeliegenden diskreten Raumes für den resultierenden (quasiabstrakten) Simplizialkomplex
+Wünschenswert wäre auch eine bessere Approximation der Oberfläche als nur linear, z.B. durch diverse Spline-Ansätze, und wie sich diese auf das Konvergenzverhalten und
+Stabilität bei DEC-Problemen auswirken. 
+Allein durch Differenzierbarkeit des zugrunde liegenden diskreten Raumes für den resultierenden (quasiabstrakten) Simplizialkomplex
 könnten die Tangentialräume an jeden beliebigen Punkt zweifelsfrei definiert werden.
 Das wiederum hätte große Vorteile für die Definition der diskreten Flat- und Sharp-Operatoren und der Interpolation von Vektorfeldern.
 
-Die Behandlung von Randbedingungen stellt ebenfalls noch eine große Herausforderung in zukünftigen Arbeiten dar.
+Die Behandlung von Randbedingungen stellt ebenfalls eine große Herausforderung in zukünftigen Arbeiten dar.
 
 Auch das Lösen von höher dimensionalen Problemen ist denkbar.
 Zum Beispiel die Behandlung von vierdimensionalen Problemen (Raumzeit), wie sie in der Astrophysik vorkommen.
-Dabei wäre zu überlegen (wie bei allen raumzeitartigen Formulierungen) ob die Zeit "`kontravariant herausgeholt"' 
+Dabei wäre zu überlegen, wie bei allen raumzeitartigen Formulierungen, ob die Zeit "`kontravariant herausgeholt"' 
 oder mit zur raumzeit-gekrümmten Mannigfaltigkeit gehören sollte. 
 Bei letzterem wären Simplizes eher unpraktisch, da wir gerade Schnitte in der Zeit haben möchten. 
 Hier wären entsprechende Hyperprismen (mit gleichlangen Kanten in der Zeitrichtung) wesentlich sinnvoller.
 
 Das Potential eines allgemeinen DECs ist enorm und da der Modus Operandi inzwischen klar ist, lassen sich unzählige Modifikationen und
-Anwendungsmöglichkeiten finden, so dass es eine Freude sein wird zu verfolgen welche Wege das noch in den Kinderschuhen steckende Diskrete
+Anwendungsmöglichkeiten finden, sodass es eine Freude sein wird zu verfolgen welche Wege das noch in den Kinderschuhen steckende Diskrete
 Äußere Kalkül gehen wird.

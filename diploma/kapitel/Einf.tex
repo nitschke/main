@@ -1,9 +1,9 @@
 \pagenumbering{arabic}
 \setcounter{chapter}{-1}
-\setcounter{page}{-1} 
+\setcounter{page}{1} 
 \chapter{Einführung}
 
-Differentialformen und dessen Äußeres Kalkül wurden erstmals 1899 ausführlich in einer Arbeit von \'{E}lie Joseph Cartan \cite{cartan} erwähnt.
+Differentialformen und deren äußeres Kalkül wurden erstmals 1899 ausführlich in einer Arbeit von \'{E}lie Joseph Cartan \cite{cartan} erwähnt.
 Das mathematische Fundament bildet die äußere Algebra, auch Graßmann-Algebra genannt.
 Mit Hilfe von Differentialformen lassen sich viele mathematische Formulierungen aus der klassischen Vektoranalysis koordinatenfrei schreiben.
 Nehmen wir zum Beispiel den Raum \( \R^{2} \) mit Standardkoordinaten \( (x,y) \), dann schreibt sich der Gradient einer differenzierbaren Funktion 
@@ -17,7 +17,7 @@ Da eine Funktion auch eine sogenannte 0-Form ist, ergibt sich
   \label{eqAbleitungEinfBsp}
   \exd f &= \frac{\partial f}{\partial x} dx + \frac{\partial f}{\partial y} dy \formpunkt
 \end{align}
-Der Unterschied zwischen \( \nabla \) und \( \exd \) scheint hier nur ein syntaktischer sein.
+Der Unterschied zwischen \( \nabla \) und \( \exd \) scheint hier nur ein syntaktischer zu sein.
 Wird jedoch ein anderes Koordinatensystem für den \( \R^{2} \) verwendet, z.B. Polarkoordinaten \((\phi , r)\) mit orthonormalen Basisvektoren 
 \(  \vec{e}_{\phi} \) und \( \vec{e}_{r} \),
 dann ergeben sich für beide Ableitungen
@@ -25,7 +25,7 @@ dann ergeben sich für beide Ableitungen
   \nabla f &= \frac{1}{r}\frac{\partial f}{\partial \phi} \vec{e}_{\phi} + \frac{\partial f}{\partial r} \vec{e}_{r} \formtext{und} 
   \exd f = \frac{\partial f}{\partial \phi} d\phi + \frac{\partial f}{\partial r} dr \formpunkt
 \end{align}
-Wärend \( \nabla f \) von den gewählten Koordinaten und Basisvektoren abhängt, ist die Darstellung von \( \exd f \) immer noch die gleiche wie in 
+Während \( \nabla f \) von den gewählten Koordinaten und Basisvektoren abhängt, ist die Darstellung von \( \exd f \) immer noch die gleiche wie in 
 \eqref{eqAbleitungEinfBsp} nur mit anderen Bezeichnern.
 Es zeigt sich, dass die äußere Ableitung nicht nur invariant gegenüber Koordinatenwechsel im \( \R^{n} \) ist, sondern sogar auf beliebige \( n \)-Mannigfaltigkeiten.
 Deshalb sprechen wir hier von "`koordinatenfrei"'.
@@ -43,7 +43,7 @@ ergeben sich die makroskopischen Maxwell-Gleichungen
 \end{align}
 Diese 4 Gleichungen, in der Sprache der klassischen Vektorrechnung, halten nur in einem (flachen) kartesischen dreidimensionalen Raum mit Raumkoordinaten 
 \( \left( x^{1}, x^{2}, x^{3} \right) \) und Zeitkoordinate \( t \).
-Sollte die vierdimensionale Raumzeit jedoch eine Krümmung erfahren, dann müssen diese Gleichungen neu geschrieben werden mit entsprechenden metrischen Informationen.
+Sollte die vierdimensionale Raumzeit jedoch eine Krümmung erfahren, dann müssen diese Gleichungen mit entsprechenden metrischen Informationen neu geschrieben werden.
 Dadurch würde die Formulierung wesentlich komplexer werden. 
 Eine elegantere Möglichkeit ist es die makroskopischen Maxwell-Gleichungen in der Sprache der Differentialformen auszudrücken. 
 Es seien dazu die beiden 2-Formen \( \alpha \) und \( \beta \)
@@ -56,7 +56,7 @@ und die 3-Form \( \gamma \) gegeben durch
     \gamma &:= \left( \sum_{i=1}^{3} J_{\tau_{i}(1)} dx^{\tau_{i}(2)}\wedge dx^{\tau_{i}(3)} \right) \wedge dt
                 - \rho dx^{1} \wedge dx^{2} \wedge dx^{3}
 \end{align}
-mit \( \tau_{1}=\left( 1,2,3 \right) \) und dessen zyklischen Permutationen.
+mit \( \tau_{1}=\left( 1,2,3 \right) \) und dessen zyklische Permutationen.
 Aus den beiden ersten Maxwell-Gleichungen bzw. den beiden letzteren ergibt sich nun (vgl. \cite[4.6]{flanders})
 \begin{align}
   \begin{aligned}
@@ -67,27 +67,27 @@ Aus den beiden ersten Maxwell-Gleichungen bzw. den beiden letzteren ergibt sich 
 Diese zwie Gleichungen sind nicht einfach nur eine Umformulierung des ursprünglichen Problems 
 sondern sie gelten sogar in allen zulässigen Koordinatensystemen \( \left( x^{1}, x^{2}, x^{3}, t  \right) \) auf Mannigfaltigkeiten.
 
-Bestrebungen Differentialform und deren Operatoren zu diskretisieren gab es trotz des späteren Aufkommen der Computertechnik kaum.
+Bestrebungen die Differentialformen und deren Operatoren zu diskretisieren, gab es trotz des späteren Aufkommen der Computertechnik kaum.
 H. Whitney \cite{whitney} führte in den Sechzigern erstmalig eine lineare Interpolation glatter Differentialformen ein 
-und schuf mit der Whitney- und de-Rham-Abbildung Isomorphismen zwischen simplizialer Koketten und Differentialformen.
-Der zentrale Integralsatz im Äußeren Kalkül ist der Satz von Stokes.
+und schuf mit der Whitney- und de-Rham-Abbildung Isomorphismen zwischen simplizialen Koketten und Differentialformen.
+Der zentrale Integralsatz im äußeren Kalkül ist der Satz von Stokes.
 Er verallgemeinert viele klassische Integralsätze, wie die Greensche Formel oder den Gaußschen Integralsatz.
 Zudem bildet er das Kernstück für die äußere Ableitung in einem Diskreten Äußeren Kalkül (DEC).
 In \cite[7.2C]{Marsden} wird beschrieben, wie sich der Satz von Stokes bzgl. Koketten als diskrete äußere Ableitung sehen lässt.
 Eine umfassende Beschäftigung zur Entwicklung eines DECs gibt es jedoch erst seit der Jahrtausendwende.
 Ein gutes Standardwerk, auf welches wir uns im Folgenden auch beziehen wollen, ist die Doktorarbeit von A.N. Hirani \cite{hirani}.
 
-Eine Einführung in die Simplizialkomplexe, also in die benötigte zugrundeliegende geometrische Struktur und die darauf aufbauenden
+Eine Einführung in die Simplizialkomplexe, also in die benötigte zugrunde liegende geometrische Struktur und die darauf aufbauenden
 simplizialen Ketten und Koketten, werden wir ähnlich machen.
 An einigen Stellen werden wir zudem für unsere Zwecke Vereinfachungen vornehmen, durch Beweise Argumentationslücken schließen und Konsistenz zu "`polytopen"' Differentialformen zeigen.
 Obwohl wir uns auf Oberflächen beschränken möchten, werden wir doch an vielen Stellen mit \( n \)-Mannigfaltigkeiten allgemeiner arbeiten.
-Denn im DEC-Kontext ist eine allgemeinerer Umgang mit bestimmten Themen oftmals nicht schwieriger oder komplexer als speziell für \( n=2 \). 
+Denn im DEC-Kontext ist ein allgemeinerer Umgang mit bestimmten Themen oftmals nicht schwieriger oder komplexer als speziell für \( n=2 \). 
 
 Es werden alle für den Anwendungsteil benötigte diskrete Operatoren hergeleitet und getestet.
 Ebenfalls wird auf die Implementierung eingegangen.
 Die Besonderheit hierbei ist die Anforderung, dass alle DEC-Operatoren (dreieck)elementweise bestimmt werden sollen.
 Genauso wie es auch in der Finite Elemente Methode (FEM) gemacht wird. 
-Somit lassen sich alle DEC-Operatoren in die FE-Toolbox AMDiS integrieren, so dass auf Benutzerebene kaum ein Unterschied zur FEM in der
+Somit lassen sich alle DEC-Operatoren in die FE-Toolbox AMDiS integrieren, sodass auf Benutzerebene kaum ein Unterschied zur FEM in der
 Programmierung der Problemformulierung zu sehen ist.
 
 Im Anwendungsteil wird es um die Berechnung der Gaußschen und der mittleren Krümmung gehen.
@@ -95,9 +95,9 @@ Hier werden mehrere Methoden vorgestellt, gerechnet und mit einem isoparametrisc
 Unter anderem wird dazu die Weingartenabbildung über den Gradienten der Normalen berechnet.
 Dieses ist ein vektorisiertes skalarwertiges Problem bei dem ein diskreter Gradient benötigt wird.
 In Abschnitt \ref{secGradient} wird ein solcher Gradient vorgestellt.
-Auch der Krümmungsvektor kann benutzt werden die mittlere Krümmung zu approximieren.
+Auch der Krümmungsvektor kann dazu benutzt werden, die mittlere Krümmung zu approximieren.
 Der Krümmungsvektor kann mit Hilfe des Laplace-Beltrami-Operators aus der Koordinatenidentität berechnet werden.
-Eine diskrete Version dieses Differentialoperators zweiter Ordnung wird in \ref{subsecLaplaceBeltrami} vorgestellt als direkte Folgerung
-des Laplace-de-Rham-Operators für Funktionen und dem Diskreten Äußeren Kalküls.
-Zum Vergleichen wird auch ein Gauß-Bonnet-Operator vorgestellt für die Approximation der Gaußschen Krümmung.
+Eine diskrete Version dieses Differentialoperators zweiter Ordnung wird in Abschnitt \ref{subsecLaplaceBeltrami} vorgestellt als direkte Folgerung
+des Laplace-de-Rham-Operators für Funktionen und dem Diskreten Äußeren Kalkül.
+Zum Vergleich wird auch ein Gauß-Bonnet-Operator für die Approximation der Gaußschen Krümmung vorgestellt.
 Er ist eine Folgerung des Gauß-Bonnet-Theorems im DEC-Kontext für wohlzentrierte Gitter und zeichnet sich vor allem durch einen sehr kleinen Berechnungsaufwand aus.
