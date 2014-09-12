@@ -1,0 +1,47 @@
+%\documentclass{beamer}
+\documentclass[handout]{beamer}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage[T1]{fontenc}
+\usepackage{pstricks}
+\usepackage{pst-node}
+%\usepackage[english]{babel}
+%\usepackage[fixlanguage]{babelbib}
+\usepackage{multimedia}
+
+
+\usetheme{Warsaw}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\setbeamercovered{transparent}
+
+\title[Einführung in DEC]{Einführung in das Kalkül diskreter Differentialformen (DEC)}
+\author{Ingo Nitschke}
+\institute{IWR - TU Dresden}
+
+\beamertemplatenavigationsymbolsempty
+
+\newcommand{\R}{\mathds{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\qqquad}{\qquad\qquad}
+\newcommand{\rot}{\text{rot}}
+\newcommand{\sgn}{\text{sgn}}
+\renewcommand{\div}{\text{div}}
+\renewcommand{\d}{\textbf{d}}
+\newcommand{\ablx}[2]{\frac{\partial #1}{\partial x^{#2}}}
+
+
+\begin{document}
+  
+  \begin{frame}
+    \begin{align}
+      \left\{\text{p1}^{(2,0)}(u,v)+\cot (u) \text{p1}^{(1,0)}(u,v)+\csc (u) \left(\text{p1}^{(0,2)}(u,v)-\csc (u) \text{p1}(u,v)\right)-(\sin (u)-1) \text{p2}^{(1,1)}(u,v)-2 \cos (u)
+   \text{p2}^{(0,1)}(u,v),\csc ^2(u) \left(2 \cot (u) \text{p1}^{(0,1)}(u,v)+\text{p2}^{(0,2)}(u,v)\right)+\text{p2}^{(2,0)}(u,v)+3 \cot (u) \text{p2}^{(1,0)}(u,v)-2 \text{p2}(u,v)\right\}
+    \end{align}
+  \end{frame}
+
+\end{document}
