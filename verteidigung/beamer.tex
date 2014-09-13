@@ -19,29 +19,92 @@
 \useoutertheme{infolines}
 %\setbeamercovered{transparent}
 
-\title[Einführung in DEC]{Einführung in das Kalkül diskreter Differentialformen (DEC)}
+\title[DEC]{Diskretes Äußeres Kalkül (DEC)\\auf Oberflächen ohne Rand}
 \author{Ingo Nitschke}
 \institute{IWR - TU Dresden}
 
 \beamertemplatenavigationsymbolsempty
 
 \newcommand{\R}{\mathds{R}}
+\newcommand{\Z}{\mathds{Z}}
+\newcommand{\csd}{\text{csd}}
+\renewcommand{\div}{\text{Div}}
+\renewcommand{\hom}{\text{Hom}}
+\newcommand{\err}{\text{Err}}
+\newcommand{\id}{\text{Id}}
+\newcommand{\D}{\text{D}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\sgn}{\mathop{\mathrm{sgn}}\nolimits}
+\newcommand{\formpunkt}{\,\text{.}}
+\newcommand{\formkomma}{\,\text{,}}
+\newcommand{\formtext}[1]{\quad\text{#1}\quad}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\qqquad}{\qquad\qquad}
-\newcommand{\rot}{\text{rot}}
-\newcommand{\sgn}{\text{sgn}}
-\renewcommand{\div}{\text{div}}
-\renewcommand{\d}{\textbf{d}}
-\newcommand{\ablx}[2]{\frac{\partial #1}{\partial x^{#2}}}
+\newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+\newcommand{\vecover}[2]{\vec{#1}^{\,#2}}
+\newcommand{\diag}[1]{\text{diag}\left( #1 \right)}
+\newcommand{\II}{I \! I}
+\newcommand{\av}{\text{Av}}
+\newcommand{\conn}{\text{Conn}}
 
 
 \begin{document}
+ \frame{ \titlepage }
+ \frame {
+    \frametitle{Content}
+    \tableofcontents
+  }
+
   
+\section{Motivation}
+
+  \subsection{Differentialformen}
   \begin{frame}
-    \begin{align}
-      \left\{\text{p1}^{(2,0)}(u,v)+\cot (u) \text{p1}^{(1,0)}(u,v)+\csc (u) \left(\text{p1}^{(0,2)}(u,v)-\csc (u) \text{p1}(u,v)\right)-(\sin (u)-1) \text{p2}^{(1,1)}(u,v)-2 \cos (u)
-   \text{p2}^{(0,1)}(u,v),\csc ^2(u) \left(2 \cot (u) \text{p1}^{(0,1)}(u,v)+\text{p2}^{(0,2)}(u,v)\right)+\text{p2}^{(2,0)}(u,v)+3 \cot (u) \text{p2}^{(1,0)}(u,v)-2 \text{p2}(u,v)\right\}
-    \end{align}
+    \begin{block}{"`Tensor-Maschine"'}
+      Für einen Vektorraum \( V \) nimmt ein \( (m,n) \)-Tensor \( m \) Kovektoren aus \( V^{*} \)
+      (Dualraum von \( V \)) und \( n \) Vektoren aus \( V \) und gibt einen Wert aus \( \R \) zurück.
+
+      \centering\includegraphics[height=0.7\textheight]{bilder/tensormaschine/Tensor.eps}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Differentialform als "`Tensor-Maschine"'}
+      Eine Differentialform vom Grad \( n \) ist ein antisymmetrischer \( (0,n) \)-Tensor.
+
+      \centering\includegraphics[height=0.7\textheight]{bilder/tensormaschine/Differentialform.eps}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Beispiel im \( \R^{2} \supseteq U\)}
+      \begin{description}
+        \item[0-Formen] \( f:\emptyset\rightarrow\R \) sind Skalare 
+          bzw. Funktionen.
+          \begin{align*}
+            f:U\rightarrow\R,\ x\mapsto f_{x}:=f(x) \formpunkt
+          \end{align*}
+        \item[1-Formen] \( \alpha\in\left( \R^{2} \right)^{*}\cong\R^{2}  \) können als Zeilenvektoren
+          aufgefasst werden
+          \begin{align*}
+            \alpha = \left[ \alpha_{1},\alpha_{2} \right]:\R^{2}&\rightarrow\R \\ 
+                   \vec{v} = \begin{bmatrix}
+                    v^{1} \\ v^{2}
+                   \end{bmatrix}
+                   &\mapsto \alpha(v) = \left[ \alpha_{1},\alpha_{2} \right] \begin{bmatrix}
+                          v^{1} \\ v^{2}
+                          \end{bmatrix}
+                   = \alpha_{1}v^{1} + \alpha_{2}v^{2}
+          \end{align*}
+          bzw. als Zeilenvektorfeld
+          \begin{align*}
+            \alpha: U\times\mathcal{V}(U)\rightarrow\R,\ 
+                  \left( x,\vec{v} \right)\mapsto\alpha_{x}(\vec{v})=\alpha(x)\vec{v}(x)
+          \end{align*}
+        \item[2-Formen] können als antisymmetrische Matrizen aufgefasst werden.
+      \end{description}
+    \end{block}
   \end{frame}
 
 \end{document}
