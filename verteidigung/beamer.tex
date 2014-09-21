@@ -374,4 +374,44 @@
       \end{overprint}
   \end{frame}
 
+  \begin{frame}
+    \begin{block}{Sternoperator \( \star: C_{p}(K) \rightarrow   C_{n-p}(\star K) \subset C_{n-p}(\csd K) \)}
+      \begin{align*}
+       \star\sigma^{p} := \sum_{\sigma^{p} \prec \sigma^{p+1} \prec \ldots \prec \sigma^{n}}
+                                                   s_{\sigma^{p} \sigma^{p+1} \ldots \sigma^{n}} \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right]
+      \end{align*}
+      \begin{itemize}
+        \item<2-> Knoten \( \sigma^{0} \) \( \mapsto \) Voronoizelle \( \star\sigma^{0}\in C_{2}(\star K) \)
+        \item<3-> Kante \( \sigma^{1} \) \( \mapsto \) Voronoikante \( \star\sigma^{1}\in C_{1}(\star K) \)
+        \item<4-> Dreieck \( \sigma^{2} \) \( \mapsto \) Voronoiknoten \( \star\sigma^{2}\in C_{0}(\star K) \)
+      \end{itemize}
+    \end{block}
+    \begin{overprint}
+      \onslide<2> 
+        \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/starS0.tex} 
+        \end{minipage}\hfill
+       {\Huge\(\longmapsto\)}  \hfill
+       \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/starS0mapped.tex} 
+        \end{minipage}
+      \onslide<3> 
+        \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/starS1.tex} 
+        \end{minipage}\hfill
+       {\Huge\(\longmapsto\)}  \hfill
+       \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/starS1mapped.tex} 
+        \end{minipage}
+      \onslide<4> 
+        \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/starS2.tex} 
+        \end{minipage}\hfill
+       {\Huge\(\longmapsto\)}  \hfill
+       \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/starS2mapped.tex} 
+        \end{minipage}
+    \end{overprint}
+  \end{frame}
+
 \end{document}
