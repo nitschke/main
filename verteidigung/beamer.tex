@@ -1,17 +1,20 @@
-%\documentclass{beamer}
-\documentclass[handout]{beamer}
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[matrix,arrow]{xy}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{dsfont}
-\usepackage[T1]{fontenc}
-\usepackage{pstricks}
-\usepackage{pst-node}
+\usepackage{hyperref}
+
+%\usepackage[T1]{fontenc}
 %\usepackage[english]{babel}
 %\usepackage[fixlanguage]{babelbib}
-\usepackage{multimedia}
+%\usepackage{multimedia}
+
 
 
 \usetheme{Warsaw}
@@ -47,6 +50,7 @@
 \newcommand{\II}{I \! I}
 \newcommand{\av}{\text{Av}}
 \newcommand{\conn}{\text{Conn}}
+\newcommand{\tred}[1]{\textcolor{red}{#1}}
 
 
 \begin{document}
@@ -57,9 +61,8 @@
   }
 
   
-\section{Motivation}
+\section{Differentialformen und Motivation}
 
-  \subsection{Differentialformen}
   \begin{frame}
     \begin{block}{"`Tensor-Maschine"'}
       Für einen Vektorraum \( V \) nimmt ein \( (m,n) \)-Tensor \( m \) Kovektoren aus \( V^{*} \)
@@ -78,14 +81,14 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Beispiel im \( \R^{2} \supseteq U\)}
+    \begin{block}{Beispiel im \( \R^{2} \supseteq U\), \( dim(U) = 2 \)}
       \begin{description}
-        \item[0-Formen] \( f:\emptyset\rightarrow\R \) sind Skalare 
+        \item[0-Formen] \( f:\emptyset\rightarrow\R \) sind Konstanten
           bzw. Funktionen.
           \begin{align*}
             f:U\rightarrow\R,\ x\mapsto f_{x}:=f(x) \formpunkt
           \end{align*}
-        \item[1-Formen] \( \alpha\in\left( \R^{2} \right)^{*}\cong\R^{2}  \) können als Zeilenvektoren
+        \item[1-Formen] \( \alpha\in\left( \R^{2} \right)^{*}\cong\R^{2}  \) können als Zeilenvektoren (Kovektoren)
           aufgefasst werden
           \begin{align*}
             \alpha = \left[ \alpha_{1},\alpha_{2} \right]:\R^{2}&\rightarrow\R \\ 
@@ -99,12 +102,276 @@
           \end{align*}
           bzw. als Zeilenvektorfeld
           \begin{align*}
-            \alpha: U\times\mathcal{V}(U)\rightarrow\R,\ 
-                  \left( x,\vec{v} \right)\mapsto\alpha_{x}(\vec{v})=\alpha(x)\vec{v}(x)
+            \alpha: U\times\mathcal{V}(U)&\rightarrow\R\\
+                  \left( x,\vec{v} \right)&\mapsto\alpha_{x}(\vec{v})=\alpha_{1}(x)v^{1}(x) + \alpha_{2}(x)v^{2}(x)
           \end{align*}
         \item[2-Formen] können als antisymmetrische Matrizen aufgefasst werden.
       \end{description}
     \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Metrischer Tensor zweidimensionaler Mannigfaltigkeiten}
+      \begin{itemize}
+        \item o.E.d.A orthogonal:
+              \begin{align*}
+                g =\begin{bmatrix}
+                  g_{1} & 0 \\
+                  0 & g_{2}
+                \end{bmatrix}
+              \end{align*}
+        \item Skalarprodukt:
+          \begin{align*}
+            \left\langle \vec{w}, \vec{v} \right\rangle_{g} = \vec{w}^{T} g \vec{v} = g_{1}w^{1}v^{1} + g_{2}w^{2}v^{2}
+          \end{align*}
+        \item Länge: 
+          \begin{align*}
+            \left\| \vec{v} \right\|_{g} = \sqrt{\left\langle \vec{v}, \vec{v} \right\rangle_{g}}
+          \end{align*}
+        \item Winkel:
+          \begin{align*}
+            \cos\Theta = \frac{\left\langle \vec{w}, \vec{v} \right\rangle_{g}}{\left\| \vec{v} \right\|_{g} \left\| \vec{w} \right\|_{g}}
+          \end{align*}
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Motivation: Skalarprodukt \( \leadsto \) Kontraktion von 1-Formen}
+      \begin{align*}
+        \left\langle \vec{w} , \vec{v} \right\rangle_{g} &= \tred{g_{1}}w^{1}v^{1} + \tred{g_{2}}w^{2}v^{2} \\
+                                                     &= w_{1}v^{1} + w_{2}v^{2} 
+                                                     = \vecflat{w}\left( \vec{v} \right)
+      \end{align*}
+    \end{block}
+
+    \begin{block}{Motivation: Gradient \( \leadsto \) äußere Ableitung}
+    \begin{itemize}
+        \item \( f:M \rightarrow \R \) differenzierbar und \( dx^{i}(\partial_{i}) = \delta_{ij}  \)
+      \begin{align*}
+        \nabla f &= \tred{g^{1}}\partial_{1}f\partial_{1} + \tred{g^{2}}\partial_{2}f\partial_{2} =\begin{bmatrix}
+                                                                                         \tred{g^{1}}\partial_{1}f \\
+                                                                                         \tred{g^{2}}\partial_{2}f
+                                                                                      \end{bmatrix} \\
+                 &= \left( \partial_{1}f dx^{1} + \partial_{2}f dx^{2} \right)^{\sharp} = \left[ \partial_{1}f, \partial_{2}f \right]^{\sharp} \\
+                 &= \left( \exd f \right)^{\sharp}
+      \end{align*}
+        \item \( \Rightarrow \) \( \exd f \) metrikunabhängig
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Beispiel: Polarkoordinaten \( \left( \phi,r \right) \) (flacher Fall)}
+    \begin{itemize}
+      \item \( \vec{x}:[0,2\pi)\times \R_{+} \rightarrow \R^{2} \), \( (\phi,r)\mapsto r\left[ \cos\phi, \sin\phi \right]^{T} \)
+      \item mit \(  \vec{e}_{i} := \left\|\partial_{i}\vec{x} \right\|^{-1} \partial_{i}\vec{x} \) gilt
+      \begin{align*}
+        \nabla f &= \tred{\frac{1}{r}}\partial_{\phi} f \vec{e}_{\phi} + \partial_{r}f \vec{e}_{r} \\
+        \exd f  &= \partial_{\phi}f d\phi + \partial_{r}f dr
+      \end{align*}
+
+      \item \( \Rightarrow \) \( \exd f \) koordinatenunabhängig (koordinatenfrei)
+    \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Beispiel: Einheitssphäre (nichtflacher Fall)}
+      \begin{itemize}
+        \item \( u \) Breitengrad und \( v \) Längengrad
+        \begin{align*}
+        \begin{aligned}
+        \vec{x}: \left( 0, \pi \right) \times \left[ 0 , 2\pi \right)
+                    &\rightarrow \mathds{S}^{2} \subset \R^{3},\ 
+             \left( u,v \right) 
+                    \mapsto\begin{bmatrix}
+                              x(u,v) \\ y(u,v) \\ z(u,v)
+                            \end{bmatrix}
+                    := \begin{bmatrix}
+                        \sin u \cos v \\
+                        \sin u \sin v \\
+                        \cos u
+                      \end{bmatrix}
+      \end{aligned}
+      \end{align*}
+      \item 
+        \begin{align*}
+          \nabla f &= \partial_{u} f \partial_{u}\vec{x} + \tred{\frac{1}{\sin^{2}u}} \partial_{v} f \partial_{v}\vec{x} \\
+          \exd f  &=  \partial_{u} f du + \partial_{v} f dv
+        \end{align*}
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{Richtungsableitung}
+      \begin{align*}
+        \exd f(\vec{v}) = \left\langle \nabla f , \vec{v} \right\rangle_{g}
+      \end{align*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Äußere Ableitung für 1-Formen in 2D}
+      \begin{align*}
+        \exd\left(w_{1}dx^{1} + w_{2}dx^{2}\right) &= \left( \partial_{1}w_{2} - \partial_{2}w_{1} \right) dx^{1}\wedge dx^{2}
+      \end{align*}
+    \end{block}
+    \pause
+    \begin{block}{Hodge-Stern-Operator}
+      \begin{itemize}
+        \item \( * \) ist Isomorphismus zwischen \( \Omega^{p}(M) \) und \( \Omega^{n-p}(M) \)
+        \item<3-> für \( n = 2 \):
+        \alt<4-6>{
+        \begin{itemize}
+          \item<4-> \( *f = \sqrt{g_{1}g_{2}}f dx^{1}\wedge dx^{2} \)
+          \item<5-> \( *\left(w_{1}dx^{1} + w_{2}dx^{2}\right) = -\sqrt{g_{1}g^{2}}w_{2}dx^{1} + \sqrt{g^{1}g_{2}}w_{1}dx^{2} \)
+          \item<6-> \( *w_{12} dx^{1}\wedge dx^{2} = \sqrt{g^{1}g^{2}}w_{12} \)
+        \end{itemize}}
+        {\begin{itemize}
+          \item<7> \( *f = \tred{\sqrt{g_{1}g_{2}}}f dx^{1}\wedge dx^{2} \)
+          \item<7> \( *\left(w_{1}dx^{1} + w_{2}dx^{2}\right) = -\tred{\sqrt{g_{1}g^{2}}}w_{2}dx^{1} + \tred{\sqrt{g^{1}g_{2}}}w_{1}dx^{2} \)
+          \item<7> \( *w_{12} dx^{1}\wedge dx^{2} = \tred{\sqrt{g^{1}g^{2}}}w_{12} \)
+        \end{itemize}}
+        \item<7-> \( \Rightarrow \) nicht metrikunabhängig!
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Baukasten für lineare Differentialoperatoren 1.Ordnung für \( dim(M)=2 \)}
+      \begin{itemize}
+        \item<1-> \( C^{\infty}(M) \) glatte Funktionen, \( \mathcal{V}^{\infty}(M) \) glatte Vektorfelder auf \( M \)
+          \begin{align*}
+            \begin{xy} \xymatrix{
+                \Omega^{0}(M) \ar[r]^{\exd} & \Omega^{1}(M) \ar[r]^{\exd} \ar@<-2pt>[d]_{\tred{\sharp}} & \Omega^{2}(M) \ar@{<->}[d]^{\tred{*}}\\
+                C^{\infty}(M) \ar[r]_{\tred{\nabla}} \ar@{<->}[u]^{\text{id}} & \mathcal{V}^{\infty}(M) \ar[r]_{\tred{\text{rot}}} \ar@<-2pt>[u]_{\tred{\flat}} & C^{\infty}(M) }
+            \end{xy}
+          \end{align*}
+
+        \item<2-> \( \delta := -*\exd * \) Koableitung
+          \begin{align*}
+            \begin{xy} \xymatrix{
+              \Omega^{0}(M) \ar@{<->}[d]_{\text{id}} & \Omega^{1}(M) \ar[l]^{\tred{\delta}} \ar@<2pt>[d]^{\tred{\sharp}} & \Omega^{2}(M) \ar[l]^{\tred{\delta}}\\
+              C^{\infty}(M) & \mathcal{V}^{\infty}(M) \ar[l]^{\tred{\text{Div}}} \ar@<2pt>[u]^{\tred{\flat}} & C^{\infty}(M) \ar[l]^{\tred{\text{-Rot}}} \ar@{<->}[u]_{\tred{*}} }
+            \end{xy}
+          \end{align*}
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Diskretisierungen}
+      \begin{itemize}
+        \item<1-> Mannigfaltigkeit \(M\) \( \leadsto \) Simplizialkomplex \( K \), Kettenkomplex \( C_{p}(K) \)
+        \item<2-> Differentialformen \( \Omega^{p}(M) \) \( \leadsto \) Kokettenkomplex \( \Omega^{p}_{d}(K) :=   C^{p}(K)\)
+        \item<3-> Operatoren auf \( \Omega^{p}(M) \) (\( \exd \), \( * \), usw.) \( \leadsto \) Operatoren auf \( \Omega^{p}_{d}(K) \), \( C_{p}(K) \)
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \section{Simplizialer Kettenkomplex}
+
+  \begin{frame}
+    \begin{block}{Simplizes \( \sigma^{p} \) \( \ldots \)}
+      \begin{itemize}
+        \item<1-> sind \alt<1>{\tred{Knoten}}{Knoten}\alt<2>{, \tred{Kanten}}{, Kanten}\alt<3>{, \tred{Dreiecke}, usw.}{, Dreiecke, usw.}
+        \item<4-> können mit einer Orientierung versehen werden
+        \item<5-> besitzen einen Umkreismittelpunkt \( c(\sigma^{p}) \) \\
+                  (\( c(\sigma^{p}) \in Int(\sigma^{p}) \Rightarrow :  \) Wohlzentrierheit)
+        %\item<6-> lassen sich bei Wohlzentrierheit unterteilen
+      \end{itemize}
+    \end{block}
+    \begin{overprint}
+      \onslide<1> \centering\input{bilder/tikz/S0.tex}
+      \onslide<2> \centering\input{bilder/tikz/S1.tex}
+      \onslide<3> \centering\input{bilder/tikz/S2.tex}
+      \onslide<4> \centering\input{bilder/tikz/SOrient.tex}
+      \onslide<5> \centering\input{bilder/tikz/SCircum.tex}
+      %\onslide<6> \centering\input{bilder/tikz/SSub.tex}
+    \end{overprint}
+  \end{frame}
+
+  \begin{frame}
+    \small
+    \begin{block}{Zweidimensionales Primärgitter \( K \)}
+      \begin{itemize}
+        \setlength{\itemsep}{1pt}
+        \item<1-> \( K \) besteht aus (orientierten) Simplizes.
+        \item<2-> Jede Facette liegt in \( K \).
+        \item<4-> Der Schnitt zweier Simplizes ist leer oder liegt in \( K \). (\( \Rightarrow :\) Simplizialkomplex)
+        \item<6-> Das Polytop \( |K|:= \bigcup_{\sigma\in K} \sigma \) ist \( C^{0} \)"~Mannigfalltigkeit. (\( \Rightarrow :\) mannigfaltigartig)
+        \item<8-> Alle Dreiecke sind gleichorientiert. (\( \Rightarrow :\) Orientierbarkeit)
+        \item<9-> Zusätzlich: Jedes Simplex ist wohlzentriert. (\( \Rightarrow\exists \) Dualgitter)
+      \end{itemize}
+    \end{block}
+      \begin{overprint}
+        \onslide<1> \centering\input{bilder/tikz/KVers1.tex}
+        \onslide<2> \centering\input{bilder/tikz/KVers1Err.tex}
+        \onslide<3> \centering\input{bilder/tikz/KVers2.tex}
+        \onslide<4> \centering\input{bilder/tikz/KVers2Err.tex}
+        \onslide<5> \centering\input{bilder/tikz/KVers3.tex}
+        \onslide<6> \centering\input{bilder/tikz/KVers3Err.tex}
+        \onslide<7> \centering\input{bilder/tikz/KVers4.tex}
+        \onslide<8> \centering\input{bilder/tikz/KOrient.tex}
+        \onslide<9> \centering\input{bilder/tikz/KVers4Err.tex}
+        \onslide<10> \centering\input{bilder/tikz/K.tex}
+      \end{overprint}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Gitter wohlzentrieren}
+      Über einen mechanischen Ansatz \( d_{t}\vec{x}_{i} = \vec{F}\left( \vec{x}_{i} \right)\) lassen sich Gitterpunkte u.U. neu arrangieren.
+      \( \vec{F} \) wird nach folgenden Kriterien definiert.
+      \begin{itemize}
+        \item<2-> Optimale Winkel von \( 60^{\circ} \)
+        \item<3-> Optimale Kantenlänge: \( \forall\sigma^{1}\in K:\quad \left| \sigma^{1} \right| = l^{*} \)
+      \end{itemize}
+    \end{block}
+    \begin{overprint}
+      \onslide<3> \centering\href{run:videos/meshCorr/runVideo.sh}{\includegraphics[width=0.45\textwidth]{videos/meshCorr/step0.eps}\hfill
+                                                                   \includegraphics[width=0.49\textwidth]{videos/meshCorr/step1000.eps}\\
+                                                                   \includegraphics[width=0.6\textwidth]{videos/meshCorr/bar.eps}}
+      \onslide<4> \centering\href{run:videos/meshCorr/runVideo.sh}{\includegraphics[width=0.6\textwidth]{videos/meshCorr/plot.eps}}
+    \end{overprint}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Dualgitter \( \csd K \)}
+      Das Dualgitter \( \csd K \) ist die Umkreismittelpunktsunterteilung eines wohlzentrierten Primärgitters.
+      Dazu gehören \( \ldots \) 
+      \begin{itemize}
+        \item<2-> alle Umkreismittelpunkte \( c(\sigma^{p}) \)
+        \item<3-> alle Kanten \( s[c(\sigma^{p}), c(\sigma^{q})] \) mit \( \sigma^{p}\prec\sigma^{q} \)
+        \item<4-> alle Dreiecke \( s[c(\sigma^{p}), c(\sigma^{q}),  c(\sigma^{r})] \) mit \( \sigma^{p}\prec\sigma^{q}\prec\sigma^{r} \)
+      \end{itemize}
+    \end{block}
+      \begin{overprint}
+        \onslide<1> \centering\input{bilder/tikz/K.tex}
+        \onslide<2> \centering\input{bilder/tikz/CsdK0.tex}
+        \onslide<3> \centering\input{bilder/tikz/CsdK1.tex}
+        \onslide<4> \centering\input{bilder/tikz/CsdK2.tex}
+        \onslide<5> \centering\input{bilder/tikz/CsdK.tex}
+      \end{overprint}
+      \visible<5->{Das Dualgitter ist wieder ein Primärgitter, aber kein wohlzentriertes.}
+  \end{frame}
+
+  \begin{frame}
+  \small
+    \begin{block}{Kettenkomplex \( C_{p}(K) \)}
+      \begin{itemize}
+        \setlength{\itemsep}{1pt}
+        \item<1->  Eine \( p \)-Kette aus \( C_{p}(K) \) ist eine formale Summe aus \( p \)-Simplizes
+            \begin{align*}
+              C_{p}(K) &:= \left\{\sum_{\sigma\in K^{(p)}}a_{\sigma}\sigma \middle| a_{\sigma}\in\Z \right\}
+            \end{align*}
+        \item<2-> zB. \( c^{1} := \sigma^{1}_{0} - \sigma^{1}_{1} + 2\sigma^{1}_{2}\in C_{1}(K) \)
+        \item<3-> zB. \( c^{2} := \sum_{\sigma^{2}\succ v} \sigma^{2} \in C_{2}(\csd K) \) (1-Ring um \( v \) im \( \csd K \), \( \star v \))
+      \end{itemize}
+    \end{block}
+      \begin{overprint}
+        \onslide<2> \centering\input{bilder/tikz/Kette1.tex}
+        \onslide<3> \centering\input{bilder/tikz/Kette2.tex}
+      \end{overprint}
   \end{frame}
 
 \end{document}

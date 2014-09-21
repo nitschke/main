@@ -12,33 +12,7 @@ using namespace AMDiS;
 // ===== function definitions ================================================
 // ===========================================================================
 
-//// Heine 5.1(c)
-//class Phi : public AbstractFunction<double, WorldVector<double> >
-//{
-//public:
-//  Phi() : AbstractFunction<double, WorldVector<double> >(1) {}
-//
-//  double operator()(const WorldVector<double>& x) const 
-//  {
-//    return 0.5 * (x[0]*x[0] + 4.0*x[1]*x[1] + (4.0/9.0)*x[2]*x[2] - 1.0);
-//  }
-//};
-//
-//class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
-//{
-//public:
-//  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >(1) {}
-//
-//  WorldVector<double> operator()(const WorldVector<double>& x) const 
-//  {
-//    WorldVector<double> rval(x);
-//    rval[1] *= 4.0;
-//    rval[2] *= 4.0/9.0;
-//    return rval;
-//  }
-//};
-
-// Heine 5.1(b)
+// Heine 5.1(c)
 class Phi : public AbstractFunction<double, WorldVector<double> >
 {
 public:
@@ -46,10 +20,7 @@ public:
 
   double operator()(const WorldVector<double>& x) const 
   {
-    double z2 = x[2] * x[2];
-    double xMz2 = x[0] - z2;
-    double yMz2 = x[1] - z2;
-    return 0.5 * (xMz2 * xMz2 + yMz2 * yMz2 + z2 - 1.0);
+    return 0.5 * (x[0]*x[0] + 4.0*x[1]*x[1] + (4.0/9.0)*x[2]*x[2] - 1.0);
   }
 };
 
@@ -61,13 +32,42 @@ public:
   WorldVector<double> operator()(const WorldVector<double>& x) const 
   {
     WorldVector<double> rval(x);
-    double z2 = x[2] * x[2];
-    rval[0] -= z2;
-    rval[1] -= z2;
-    rval[2] += 2.0 * x[2]* (2.0 * z2 - x[0] - x[1]);
+    rval[1] *= 4.0;
+    rval[2] *= 4.0/9.0;
     return rval;
   }
 };
+
+//// Heine 5.1(b)
+//class Phi : public AbstractFunction<double, WorldVector<double> >
+//{
+//public:
+//  Phi() : AbstractFunction<double, WorldVector<double> >(1) {}
+//
+//  double operator()(const WorldVector<double>& x) const 
+//  {
+//    double z2 = x[2] * x[2];
+//    double xMz2 = x[0] - z2;
+//    double yMz2 = x[1] - z2;
+//    return 0.5 * (xMz2 * xMz2 + yMz2 * yMz2 + z2 - 1.0);
+//  }
+//};
+//
+//class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+//{
+//public:
+//  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >(1) {}
+//
+//  WorldVector<double> operator()(const WorldVector<double>& x) const 
+//  {
+//    WorldVector<double> rval(x);
+//    double z2 = x[2] * x[2];
+//    rval[0] -= z2;
+//    rval[1] -= z2;
+//    rval[2] += 2.0 * x[2]* (2.0 * z2 - x[0] - x[1]);
+//    return rval;
+//  }
+//};
 
 
 // ===========================================================================
@@ -81,8 +81,8 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== create projection =====
-  //new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
-  new TorusProject(1, VOLUME_PROJECTION);
+  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  //new TorusProject(1, VOLUME_PROJECTION);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);
   //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
