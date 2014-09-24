@@ -55,6 +55,9 @@ target_link_libraries(gradTorus ${BASIS_LIBS} dec)
 add_executable(curvSphere src/sphereCurv.cc)
 target_link_libraries(curvSphere ${BASIS_LIBS} dec)
 
+add_executable(defSphere src/defSphere.cc)
+target_link_libraries(defSphere ${BASIS_LIBS} dec)
+
 add_executable(heine51b src/heine51b.cc)
 target_link_libraries(heine51b ${BASIS_LIBS} dec)
 

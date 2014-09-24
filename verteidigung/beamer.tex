@@ -68,7 +68,7 @@
       Für einen Vektorraum \( V \) nimmt ein \( (m,n) \)-Tensor \( m \) Kovektoren aus \( V^{*} \)
       (Dualraum von \( V \)) und \( n \) Vektoren aus \( V \) und gibt einen Wert aus \( \R \) zurück.
 
-      \centering\includegraphics[height=0.7\textheight]{bilder/tensormaschine/Tensor.eps}
+      \hfill\includegraphics[height=0.7\textheight]{bilder/tensormaschine/Tensor.eps}\phantom{qwertz}
     \end{block}
   \end{frame}
 
@@ -76,166 +76,166 @@
     \begin{block}{Differentialform als "`Tensor-Maschine"'}
       Eine Differentialform vom Grad \( n \) ist ein antisymmetrischer \( (0,n) \)-Tensor.
 
-      \centering\includegraphics[height=0.7\textheight]{bilder/tensormaschine/Differentialform.eps}
+      \hfill\includegraphics[height=0.7\textheight]{bilder/tensormaschine/Differentialform.eps}\phantom{qwertz}
     \end{block}
   \end{frame}
 
-  \begin{frame}
-    \begin{block}{Beispiel im \( \R^{2} \supseteq U\), \( dim(U) = 2 \)}
-      \begin{description}
-        \item[0-Formen] \( f:\emptyset\rightarrow\R \) sind Konstanten
-          bzw. Funktionen.
-          \begin{align*}
-            f:U\rightarrow\R,\ x\mapsto f_{x}:=f(x) \formpunkt
-          \end{align*}
-        \item[1-Formen] \( \alpha\in\left( \R^{2} \right)^{*}\cong\R^{2}  \) können als Zeilenvektoren (Kovektoren)
-          aufgefasst werden
-          \begin{align*}
-            \alpha = \left[ \alpha_{1},\alpha_{2} \right]:\R^{2}&\rightarrow\R \\ 
-                   \vec{v} = \begin{bmatrix}
-                    v^{1} \\ v^{2}
-                   \end{bmatrix}
-                   &\mapsto \alpha(v) = \left[ \alpha_{1},\alpha_{2} \right] \begin{bmatrix}
-                          v^{1} \\ v^{2}
-                          \end{bmatrix}
-                   = \alpha_{1}v^{1} + \alpha_{2}v^{2}
-          \end{align*}
-          bzw. als Zeilenvektorfeld
-          \begin{align*}
-            \alpha: U\times\mathcal{V}(U)&\rightarrow\R\\
-                  \left( x,\vec{v} \right)&\mapsto\alpha_{x}(\vec{v})=\alpha_{1}(x)v^{1}(x) + \alpha_{2}(x)v^{2}(x)
-          \end{align*}
-        \item[2-Formen] können als antisymmetrische Matrizen aufgefasst werden.
-      \end{description}
-    \end{block}
-  \end{frame}
+  %\begin{frame}
+  %  \begin{block}{Beispiel im \( \R^{2} \supseteq U\), \( dim(U) = 2 \)}
+  %    \begin{description}
+  %      \item[0-Formen] \( f:\emptyset\rightarrow\R \) sind Konstanten
+  %        bzw. Funktionen.
+  %        \begin{align*}
+  %          f:U\rightarrow\R,\ x\mapsto f_{x}:=f(x) \formpunkt
+  %        \end{align*}
+  %      \item[1-Formen] \( \alpha\in\left( \R^{2} \right)^{*}\cong\R^{2}  \) können als Zeilenvektoren (Kovektoren)
+  %        aufgefasst werden
+  %        \begin{align*}
+  %          \alpha = \left[ \alpha_{1},\alpha_{2} \right]:\R^{2}&\rightarrow\R \\ 
+  %                 \vec{v} = \begin{bmatrix}
+  %                  v^{1} \\ v^{2}
+  %                 \end{bmatrix}
+  %                 &\mapsto \alpha(v) = \left[ \alpha_{1},\alpha_{2} \right] \begin{bmatrix}
+  %                        v^{1} \\ v^{2}
+  %                        \end{bmatrix}
+  %                 = \alpha_{1}v^{1} + \alpha_{2}v^{2}
+  %        \end{align*}
+  %        bzw. als Zeilenvektorfeld
+  %        \begin{align*}
+  %          \alpha: U\times\mathcal{V}(U)&\rightarrow\R\\
+  %                \left( x,\vec{v} \right)&\mapsto\alpha_{x}(\vec{v})=\alpha_{1}(x)v^{1}(x) + \alpha_{2}(x)v^{2}(x)
+  %        \end{align*}
+  %      \item[2-Formen] können als antisymmetrische Matrizen aufgefasst werden.
+  %    \end{description}
+  %  \end{block}
+  %\end{frame}
 
-  \begin{frame}
-    \begin{block}{Metrischer Tensor zweidimensionaler Mannigfaltigkeiten}
-      \begin{itemize}
-        \item o.E.d.A orthogonal:
-              \begin{align*}
-                g =\begin{bmatrix}
-                  g_{1} & 0 \\
-                  0 & g_{2}
-                \end{bmatrix}
-              \end{align*}
-        \item Skalarprodukt:
-          \begin{align*}
-            \left\langle \vec{w}, \vec{v} \right\rangle_{g} = \vec{w}^{T} g \vec{v} = g_{1}w^{1}v^{1} + g_{2}w^{2}v^{2}
-          \end{align*}
-        \item Länge: 
-          \begin{align*}
-            \left\| \vec{v} \right\|_{g} = \sqrt{\left\langle \vec{v}, \vec{v} \right\rangle_{g}}
-          \end{align*}
-        \item Winkel:
-          \begin{align*}
-            \cos\Theta = \frac{\left\langle \vec{w}, \vec{v} \right\rangle_{g}}{\left\| \vec{v} \right\|_{g} \left\| \vec{w} \right\|_{g}}
-          \end{align*}
-      \end{itemize}
-    \end{block}
-  \end{frame}
+  %\begin{frame}
+  %  \begin{block}{Metrischer Tensor zweidimensionaler Mannigfaltigkeiten}
+  %    \begin{itemize}
+  %      \item o.E.d.A orthogonal:
+  %            \begin{align*}
+  %              g =\begin{bmatrix}
+  %                g_{1} & 0 \\
+  %                0 & g_{2}
+  %              \end{bmatrix}
+  %            \end{align*}
+  %      \item Skalarprodukt:
+  %        \begin{align*}
+  %          \left\langle \vec{w}, \vec{v} \right\rangle_{g} = \vec{w}^{T} g \vec{v} = g_{1}w^{1}v^{1} + g_{2}w^{2}v^{2}
+  %        \end{align*}
+  %      \item Länge: 
+  %        \begin{align*}
+  %          \left\| \vec{v} \right\|_{g} = \sqrt{\left\langle \vec{v}, \vec{v} \right\rangle_{g}}
+  %        \end{align*}
+  %      \item Winkel:
+  %        \begin{align*}
+  %          \cos\Theta = \frac{\left\langle \vec{w}, \vec{v} \right\rangle_{g}}{\left\| \vec{v} \right\|_{g} \left\| \vec{w} \right\|_{g}}
+  %        \end{align*}
+  %    \end{itemize}
+  %  \end{block}
+  %\end{frame}
 
-  \begin{frame}
-    \begin{block}{Motivation: Skalarprodukt \( \leadsto \) Kontraktion von 1-Formen}
-      \begin{align*}
-        \left\langle \vec{w} , \vec{v} \right\rangle_{g} &= \tred{g_{1}}w^{1}v^{1} + \tred{g_{2}}w^{2}v^{2} \\
-                                                     &= w_{1}v^{1} + w_{2}v^{2} 
-                                                     = \vecflat{w}\left( \vec{v} \right)
-      \end{align*}
-    \end{block}
+  %\begin{frame}
+  %  \begin{block}{Motivation: Skalarprodukt \( \leadsto \) Kontraktion von 1-Formen}
+  %    \begin{align*}
+  %      \left\langle \vec{w} , \vec{v} \right\rangle_{g} &= \tred{g_{1}}w^{1}v^{1} + \tred{g_{2}}w^{2}v^{2} \\
+  %                                                   &= w_{1}v^{1} + w_{2}v^{2} 
+  %                                                   = \vecflat{w}\left( \vec{v} \right)
+  %    \end{align*}
+  %  \end{block}
 
-    \begin{block}{Motivation: Gradient \( \leadsto \) äußere Ableitung}
-    \begin{itemize}
-        \item \( f:M \rightarrow \R \) differenzierbar und \( dx^{i}(\partial_{i}) = \delta_{ij}  \)
-      \begin{align*}
-        \nabla f &= \tred{g^{1}}\partial_{1}f\partial_{1} + \tred{g^{2}}\partial_{2}f\partial_{2} =\begin{bmatrix}
-                                                                                         \tred{g^{1}}\partial_{1}f \\
-                                                                                         \tred{g^{2}}\partial_{2}f
-                                                                                      \end{bmatrix} \\
-                 &= \left( \partial_{1}f dx^{1} + \partial_{2}f dx^{2} \right)^{\sharp} = \left[ \partial_{1}f, \partial_{2}f \right]^{\sharp} \\
-                 &= \left( \exd f \right)^{\sharp}
-      \end{align*}
-        \item \( \Rightarrow \) \( \exd f \) metrikunabhängig
-      \end{itemize}
-    \end{block}
-  \end{frame}
+  %  \begin{block}{Motivation: Gradient \( \leadsto \) äußere Ableitung}
+  %  \begin{itemize}
+  %      \item \( f:M \rightarrow \R \) differenzierbar und \( dx^{i}(\partial_{i}) = \delta_{ij}  \)
+  %    \begin{align*}
+  %      \nabla f &= \tred{g^{1}}\partial_{1}f\partial_{1} + \tred{g^{2}}\partial_{2}f\partial_{2} =\begin{bmatrix}
+  %                                                                                       \tred{g^{1}}\partial_{1}f \\
+  %                                                                                       \tred{g^{2}}\partial_{2}f
+  %                                                                                    \end{bmatrix} \\
+  %               &= \left( \partial_{1}f dx^{1} + \partial_{2}f dx^{2} \right)^{\sharp} = \left[ \partial_{1}f, \partial_{2}f \right]^{\sharp} \\
+  %               &= \left( \exd f \right)^{\sharp}
+  %    \end{align*}
+  %      \item \( \Rightarrow \) \( \exd f \) metrikunabhängig
+  %    \end{itemize}
+  %  \end{block}
+  %\end{frame}
 
-  \begin{frame}
-    \begin{block}{Beispiel: Polarkoordinaten \( \left( \phi,r \right) \) (flacher Fall)}
-    \begin{itemize}
-      \item \( \vec{x}:[0,2\pi)\times \R_{+} \rightarrow \R^{2} \), \( (\phi,r)\mapsto r\left[ \cos\phi, \sin\phi \right]^{T} \)
-      \item mit \(  \vec{e}_{i} := \left\|\partial_{i}\vec{x} \right\|^{-1} \partial_{i}\vec{x} \) gilt
-      \begin{align*}
-        \nabla f &= \tred{\frac{1}{r}}\partial_{\phi} f \vec{e}_{\phi} + \partial_{r}f \vec{e}_{r} \\
-        \exd f  &= \partial_{\phi}f d\phi + \partial_{r}f dr
-      \end{align*}
+  %\begin{frame}
+  %  \begin{block}{Beispiel: Polarkoordinaten \( \left( \phi,r \right) \) (flacher Fall)}
+  %  \begin{itemize}
+  %    \item \( \vec{x}:[0,2\pi)\times \R_{+} \rightarrow \R^{2} \), \( (\phi,r)\mapsto r\left[ \cos\phi, \sin\phi \right]^{T} \)
+  %    \item mit \(  \vec{e}_{i} := \left\|\partial_{i}\vec{x} \right\|^{-1} \partial_{i}\vec{x} \) gilt
+  %    \begin{align*}
+  %      \nabla f &= \tred{\frac{1}{r}}\partial_{\phi} f \vec{e}_{\phi} + \partial_{r}f \vec{e}_{r} \\
+  %      \exd f  &= \partial_{\phi}f d\phi + \partial_{r}f dr
+  %    \end{align*}
 
-      \item \( \Rightarrow \) \( \exd f \) koordinatenunabhängig (koordinatenfrei)
-    \end{itemize}
-    \end{block}
-  \end{frame}
+  %    \item \( \Rightarrow \) \( \exd f \) koordinatenunabhängig (koordinatenfrei)
+  %  \end{itemize}
+  %  \end{block}
+  %\end{frame}
 
-  \begin{frame}
-    \begin{block}{Beispiel: Einheitssphäre (nichtflacher Fall)}
-      \begin{itemize}
-        \item \( u \) Breitengrad und \( v \) Längengrad
-        \begin{align*}
-        \begin{aligned}
-        \vec{x}: \left( 0, \pi \right) \times \left[ 0 , 2\pi \right)
-                    &\rightarrow \mathds{S}^{2} \subset \R^{3},\ 
-             \left( u,v \right) 
-                    \mapsto\begin{bmatrix}
-                              x(u,v) \\ y(u,v) \\ z(u,v)
-                            \end{bmatrix}
-                    := \begin{bmatrix}
-                        \sin u \cos v \\
-                        \sin u \sin v \\
-                        \cos u
-                      \end{bmatrix}
-      \end{aligned}
-      \end{align*}
-      \item 
-        \begin{align*}
-          \nabla f &= \partial_{u} f \partial_{u}\vec{x} + \tred{\frac{1}{\sin^{2}u}} \partial_{v} f \partial_{v}\vec{x} \\
-          \exd f  &=  \partial_{u} f du + \partial_{v} f dv
-        \end{align*}
-      \end{itemize}
-    \end{block}
+  %\begin{frame}
+  %  \begin{block}{Beispiel: Einheitssphäre (nichtflacher Fall)}
+  %    \begin{itemize}
+  %      \item \( u \) Breitengrad und \( v \) Längengrad
+  %      \begin{align*}
+  %      \begin{aligned}
+  %      \vec{x}: \left( 0, \pi \right) \times \left[ 0 , 2\pi \right)
+  %                  &\rightarrow \mathds{S}^{2} \subset \R^{3},\ 
+  %           \left( u,v \right) 
+  %                  \mapsto\begin{bmatrix}
+  %                            x(u,v) \\ y(u,v) \\ z(u,v)
+  %                          \end{bmatrix}
+  %                  := \begin{bmatrix}
+  %                      \sin u \cos v \\
+  %                      \sin u \sin v \\
+  %                      \cos u
+  %                    \end{bmatrix}
+  %    \end{aligned}
+  %    \end{align*}
+  %    \item 
+  %      \begin{align*}
+  %        \nabla f &= \partial_{u} f \partial_{u}\vec{x} + \tred{\frac{1}{\sin^{2}u}} \partial_{v} f \partial_{v}\vec{x} \\
+  %        \exd f  &=  \partial_{u} f du + \partial_{v} f dv
+  %      \end{align*}
+  %    \end{itemize}
+  %  \end{block}
 
-    \begin{block}{Richtungsableitung}
-      \begin{align*}
-        \exd f(\vec{v}) = \left\langle \nabla f , \vec{v} \right\rangle_{g}
-      \end{align*}
-    \end{block}
-  \end{frame}
+  %  \begin{block}{Richtungsableitung}
+  %    \begin{align*}
+  %      \exd f(\vec{v}) = \left\langle \nabla f , \vec{v} \right\rangle_{g}
+  %    \end{align*}
+  %  \end{block}
+  %\end{frame}
 
-  \begin{frame}
-    \begin{block}{Äußere Ableitung für 1-Formen in 2D}
-      \begin{align*}
-        \exd\left(w_{1}dx^{1} + w_{2}dx^{2}\right) &= \left( \partial_{1}w_{2} - \partial_{2}w_{1} \right) dx^{1}\wedge dx^{2}
-      \end{align*}
-    \end{block}
-    \pause
-    \begin{block}{Hodge-Stern-Operator}
-      \begin{itemize}
-        \item \( * \) ist Isomorphismus zwischen \( \Omega^{p}(M) \) und \( \Omega^{n-p}(M) \)
-        \item<3-> für \( n = 2 \):
-        \alt<4-6>{
-        \begin{itemize}
-          \item<4-> \( *f = \sqrt{g_{1}g_{2}}f dx^{1}\wedge dx^{2} \)
-          \item<5-> \( *\left(w_{1}dx^{1} + w_{2}dx^{2}\right) = -\sqrt{g_{1}g^{2}}w_{2}dx^{1} + \sqrt{g^{1}g_{2}}w_{1}dx^{2} \)
-          \item<6-> \( *w_{12} dx^{1}\wedge dx^{2} = \sqrt{g^{1}g^{2}}w_{12} \)
-        \end{itemize}}
-        {\begin{itemize}
-          \item<7> \( *f = \tred{\sqrt{g_{1}g_{2}}}f dx^{1}\wedge dx^{2} \)
-          \item<7> \( *\left(w_{1}dx^{1} + w_{2}dx^{2}\right) = -\tred{\sqrt{g_{1}g^{2}}}w_{2}dx^{1} + \tred{\sqrt{g^{1}g_{2}}}w_{1}dx^{2} \)
-          \item<7> \( *w_{12} dx^{1}\wedge dx^{2} = \tred{\sqrt{g^{1}g^{2}}}w_{12} \)
-        \end{itemize}}
-        \item<7-> \( \Rightarrow \) nicht metrikunabhängig!
-      \end{itemize}
-    \end{block}
-  \end{frame}
+  %\begin{frame}
+  %  \begin{block}{Äußere Ableitung für 1-Formen in 2D}
+  %    \begin{align*}
+  %      \exd\left(w_{1}dx^{1} + w_{2}dx^{2}\right) &= \left( \partial_{1}w_{2} - \partial_{2}w_{1} \right) dx^{1}\wedge dx^{2}
+  %    \end{align*}
+  %  \end{block}
+  %  \pause
+  %  \begin{block}{Hodge-Stern-Operator}
+  %    \begin{itemize}
+  %      \item \( * \) ist Isomorphismus zwischen \( \Omega^{p}(M) \) und \( \Omega^{n-p}(M) \)
+  %      \item<3-> für \( n = 2 \):
+  %      \alt<4>{
+  %      \begin{itemize}
+  %        \item<4> \( *f = \sqrt{g_{1}g_{2}}f dx^{1}\wedge dx^{2} \)
+  %        \item<4> \( *\left(w_{1}dx^{1} + w_{2}dx^{2}\right) = -\sqrt{g_{1}g^{2}}w_{2}dx^{1} + \sqrt{g^{1}g_{2}}w_{1}dx^{2} \)
+  %        \item<4> \( *w_{12} dx^{1}\wedge dx^{2} = \sqrt{g^{1}g^{2}}w_{12} \)
+  %      \end{itemize}}
+  %      {\begin{itemize}
+  %        \item<5> \( *f = \tred{\sqrt{g_{1}g_{2}}}f dx^{1}\wedge dx^{2} \)
+  %        \item<5> \( *\left(w_{1}dx^{1} + w_{2}dx^{2}\right) = -\tred{\sqrt{g_{1}g^{2}}}w_{2}dx^{1} + \tred{\sqrt{g^{1}g_{2}}}w_{1}dx^{2} \)
+  %        \item<5> \( *w_{12} dx^{1}\wedge dx^{2} = \tred{\sqrt{g^{1}g^{2}}}w_{12} \)
+  %      \end{itemize}}
+  %      \item<5-> \( \Rightarrow \) nicht metrikunabhängig!
+  %    \end{itemize}
+  %  \end{block}
+  %\end{frame}
 
   \begin{frame}
     \begin{block}{Baukasten für lineare Differentialoperatoren 1.Ordnung für \( dim(M)=2 \)}
@@ -726,6 +726,42 @@
             \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2.eps}
           \end{minipage}
     \end{overprint}
+  \end{frame}
+
+\section{Fazit und Ausblicke}
+
+  \begin{frame}
+    \begin{block}{Pros}
+      \begin{itemize}
+        \item Äußeres Kalkül (Problemformulierung)
+        %\item Unabhängigkeit der Ambientedimension
+        \item Geringer Aufwand im Vergleich zu Diffuse Domain Ansätzen 
+        \item Geringer Aufwand der Krümmungsberechnung im Vergleich zur isoparametrischen FEM
+        \item Gute Integration in AMDiS
+      \end{itemize}
+    \end{block}
+    \pause
+    \begin{block}{Kontras}
+      \begin{itemize}
+        \item Äußeres Kalkül (Flat, Sharp)
+        \item Wohlzentriertheit
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{\huge Vielen Dank für Ihre Aufmerksamkeit! }
+      \centering\href{run:videos/defSphere/runVideo.sh}{\includegraphics[width=0.8\textwidth]{videos/defSphere/defSphere.png}}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Ausgewählte Literatur}
+      \footnotesize
+      \nocite{hirani}\nocite{marsden}\nocite{jaenich}\nocite{meshCooper}
+      \bibliographystyle{alpha}
+      \bibliography{bibl.bib}{}
+    \end{block}
   \end{frame}
 
 \end{document}
