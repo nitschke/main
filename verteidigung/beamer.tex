@@ -25,6 +25,7 @@
 \title[DEC]{Diskretes Äußeres Kalkül (DEC)\\auf Oberflächen ohne Rand}
 \author{Ingo Nitschke}
 \institute{IWR - TU Dresden}
+\date{25. September 2014}
 
 \beamertemplatenavigationsymbolsempty
 
@@ -488,7 +489,7 @@
     \begin{itemize}
       \item<7-> \( \left\langle *\alpha, \star\sigma^{p} \right\rangle := \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \alpha(\sigma^{p}) \)
       \item<8-> (n=2) Für \( \alpha\in\Omega^{p}(|K|) \) gilt 
-                  \( \left| \left( *\psi(\alpha) - \psi(*\alpha) \right)(\star\sigma^{p})\right| \le \mathcal{O}\left(h^{3-p}\right) \).
+                  \( \left\| *\psi(\alpha) - \psi(*\alpha) \right\| \le \mathcal{O}\left(h^{3-p}\right) \).
     \end{itemize}
   \end{block}
   }
@@ -684,46 +685,174 @@
     \begin{block}{Oberflächen}
       \begin{itemize}
         \item<1-> Einheitssphäre: \( K\equiv 1 \), \( H\equiv 1 \)
-        \item<2-> Ellipsoid: \(  \varphi(x,y,z) := (3x)^{2} + (6y)^{2} + (2z)^{2} - 9  \)
-        \item<4-> Quartische Oberfläche: \( \varphi(x,y,z) :=  (x-z^{2})^{2} + (y-z^{2})^{2} + z^{2} - 1  \)
+        \item<8-> Ellipsoid: \(  \varphi(x,y,z) := (3x)^{2} + (6y)^{2} + (2z)^{2} - 9  \)
+        \item<16-> Quartische Oberfläche: \( \varphi(x,y,z) :=  (x-z^{2})^{2} + (y-z^{2})^{2} + z^{2} - 1  \)
       \end{itemize}
     \end{block}
     \vfill
     \begin{overprint}
       \onslide<1> 
           \begin{minipage}[t]{0.49\textwidth}
-            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2.eps}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_1.eps}
           \end{minipage}\hfill
           \begin{minipage}[t]{0.49\textwidth}
-            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2.eps}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_1.eps}
           \end{minipage}
-      \onslide<2>
+      \onslide<2> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_2.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_2.eps}
+          \end{minipage}
+      \onslide<3> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_3.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_3.eps}
+          \end{minipage}
+      \onslide<4> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_4.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_4.eps}
+          \end{minipage}
+      \onslide<5> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_5.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_5.eps}
+          \end{minipage}
+      \onslide<6> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_6.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_6.eps}
+          \end{minipage}
+      \onslide<7> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2_7.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2_7.eps}
+          \end{minipage}
+      %elipsoid
+      \onslide<8>
            \begin{minipage}[t]{0.49\textwidth}
               \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/K2k.png}
             \end{minipage}\hfill
             \begin{minipage}[t]{0.49\textwidth}
               \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/H2k.png}
             \end{minipage}
-      \onslide<3>
+      \onslide<9> 
           \begin{minipage}[t]{0.49\textwidth}
-            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2.eps}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_1.eps}
           \end{minipage}\hfill
           \begin{minipage}[t]{0.49\textwidth}
-            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2.eps}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_1.eps}
           \end{minipage}
-      \onslide<4> 
+      \onslide<10> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_2.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_2.eps}
+          \end{minipage}
+      \onslide<11> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_3.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_3.eps}
+          \end{minipage}
+      \onslide<12> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_4.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_4.eps}
+          \end{minipage}
+      \onslide<13> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_5.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_5.eps}
+          \end{minipage}
+      \onslide<14> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_6.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_6.eps}
+          \end{minipage}
+      \onslide<15> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2_7.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2_7.eps}
+          \end{minipage}
+      %quartic S
+      \onslide<16> 
           \begin{minipage}[t]{0.49\textwidth}
               \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/K250k.png}
           \end{minipage}\hfill
           \begin{minipage}[t]{0.49\textwidth}
               \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/H250k.png}
           \end{minipage}
-      \onslide<5>
+      \onslide<17> 
           \begin{minipage}[t]{0.49\textwidth}
-              \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2.eps}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_1.eps}
           \end{minipage}\hfill
           \begin{minipage}[t]{0.49\textwidth}
-            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2.eps}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_1.eps}
+          \end{minipage}
+      \onslide<18> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_2.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_2.eps}
+          \end{minipage}
+      \onslide<19> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_3.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_3.eps}
+          \end{minipage}
+      \onslide<20> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_4.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_4.eps}
+          \end{minipage}
+      \onslide<21> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_5.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_5.eps}
+          \end{minipage}
+      \onslide<22> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_6.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_6.eps}
+          \end{minipage}
+      \onslide<23> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2_7.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2_7.eps}
           \end{minipage}
     \end{overprint}
   \end{frame}
@@ -745,6 +874,8 @@
       \begin{itemize}
         \item Äußeres Kalkül (Flat, Sharp)
         \item Wohlzentriertheit
+        \item Lineare Approximation der Mannigfaltigkeit
+        %lineare oberflächenapprox--- keine tangentialräume
       \end{itemize}
     \end{block}
   \end{frame}
