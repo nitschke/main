@@ -375,7 +375,7 @@
   \end{frame}
 
   \begin{frame}
-    \begin{block}{Sternoperator \( \star: C_{p}(K) \rightarrow   C_{n-p}(\star K) \subset C_{n-p}(\csd K) \)}
+    \begin{block}{Sternoperator \( \star: C_{p}(K) \rightarrow   C_{n-p}(\star K) < C_{n-p}(\csd K) \)}
       \begin{align*}
        \star\sigma^{p} := \sum_{\sigma^{p} \prec \sigma^{p+1} \prec \ldots \prec \sigma^{n}}
                                                    s_{\sigma^{p} \sigma^{p+1} \ldots \sigma^{n}} \left[ c(\sigma^{p}), c(\sigma^{p+1}), \ldots, c(\sigma^{n}) \right]
@@ -411,6 +411,320 @@
        \begin{minipage}{0.4\textwidth}
           \centering\input{bilder/tikz/starS2mapped.tex} 
         \end{minipage}
+    \end{overprint}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Randoperator \( \partial: C_{p}(\mathcal{K}) \rightarrow C_{p-1}(\mathcal{K}) \) \quad(\(\mathcal{K}\in\left\{ K, \star K \right\}  \))} 
+      \begin{itemize}
+        \item<1-> (Primär) \(  \partial\sigma^{p} :=
+                                \begin{cases}
+                                  \sum\limits_{i=0}^{p} (-1)^{i} \left[ v_{0}, v_{1}, \ldots, \hat{v}_{i}, \ldots, v_{p} \right] & \text{für } p>0 \\
+                                  0 & \text{für } p=0
+                                \end{cases}
+                            \)
+        \item<2-> (Dual) \( \partial_{p}\star\sigma^{n-p} =  
+                               \begin{cases}
+                                  \sum\limits_{\sigma^{n-p+1} \succ \sigma^{n-p}} \star \left( s_{\sigma^{n-p+1}} \sigma^{n-p+1} \right) & \text{für } p>0 \\
+                                  0 & \text{für } p=0
+                                \end{cases}
+                          \)
+        \item<3-> Es gilt die Komplexeigenschaft \( \partial\circ\partial = 0 \) \quad\( \Rightarrow \) Kettenkomplex
+      \end{itemize}
+    \end{block}
+    \begin{overprint}
+      \onslide<2> 
+        \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/Voronoizelle.tex} 
+        \end{minipage}\hfill
+       {\Huge\(\longmapsto\)}  \hfill
+       \begin{minipage}{0.4\textwidth}
+          \centering\input{bilder/tikz/VoronoizelleRand.tex} 
+        \end{minipage}
+      \onslide<3-> 
+          \begin{align*}
+      \begin{xy}
+        \xymatrix{
+          0 \ar[r] & 
+          C_{n}(K) \ar[r]^{\partial_{n}} \ar[d]^{\star} & 
+          C_{n-1}(K) \ar[r]^{\partial_{n-1}} \ar[d]^{\star} & 
+          \ldots \ar[r]^{\partial_{1}} & 
+          C_{0}(K) \ar[r] \ar[d]^{\star} &
+          0 \\
+          0  & 
+          C_{0}(\star K) \ar[l] & 
+          C_{1}( \star K) \ar[l]^{\partial_{1}} & 
+          \ldots \ar[l]^{\partial_{2}} & 
+          C_{n}(\star K) \ar[l]^{\partial_{n}} &
+          0 \ar[l]
+        }
+      \end{xy}
+    \end{align*}
+    \end{overprint}
+  \end{frame}
+
+\section{Diskrete Differentialformen}
+
+  \begin{frame}
+  \begin{block}{De-Rham-Abbildung \( \psi^{d}: \Omega^{p}(M) \rightarrow \Omega_{d}^{p}(\mathcal{K}) \)}
+    \begin{itemize}
+      \item<1-> \( \Omega_{d}^{p}(K) := C^{p}(K) := \text{Hom}\left( C_{p}(K), \R \right) \)
+      \item<2-> \( \psi^{p}(\alpha) = \left( \sigma^{p} \mapsto \int\limits_{\pi\left(\sigma^{p}\right)} \alpha =: \psi^{p}(\alpha)(\sigma^{p}) =:  \left\langle \psi^{p}(\alpha), \sigma^{p} \right\rangle\right)  \)
+    \end{itemize}
+  \end{block}
+  \visible<3->{
+  \begin{block}{Diskrete äußere Ableitung \( \exd : \Omega^{p}_{d}(\mathcal{K}) \rightarrow \Omega^{p+1}_{d}(\mathcal{K}) \)}
+    \begin{itemize}
+      \item<3-> \( \exd\psi^{p}\left( \alpha \right):= \psi^{p+1}\left( \exd\alpha \right)\) 
+                \visible<4->{\alt<4-5>{\tred{\(= \psi^{p}\left( \alpha \right)\circ\partial \)}}{\(= \psi^{p}\left( \alpha \right)\circ\partial \)}
+                \hfill (d.h \( \left\langle \exd\alpha_{d},\sigma \right\rangle = \left\langle \alpha_{d}, \partial\sigma \right\rangle \))}
+      \item<5-> Satz von Stokes: \alt<5>{\tred{\( \int_{U} \exd\alpha = \int_{\partial U} \alpha  \)}}{\( \int_{U} \exd\alpha = \int_{\partial U} \alpha  \)}
+      \item<6-> \( \exd\circ\exd=0 \)\hfill\( \Rightarrow \) Kokettenkomplex
+    \end{itemize}
+  \end{block}
+  }
+  \visible<7->{
+  \begin{block}{Diskreter Hodge-Stern-Operator \( *:\Omega_{d}^{p}(K)\rightarrow\Omega_{d}^{n-p}(\star K) < \Omega_{d}^{n-p}(\csd K) \)}
+    \begin{itemize}
+      \item<7-> \( \left\langle *\alpha, \star\sigma^{p} \right\rangle := \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \alpha(\sigma^{p}) \)
+      \item<8-> (n=2) Für \( \alpha\in\Omega^{p}(|K|) \) gilt 
+                  \( \left| \left( *\psi(\alpha) - \psi(*\alpha) \right)(\star\sigma^{p})\right| \le \mathcal{O}\left(h^{3-p}\right) \).
+    \end{itemize}
+  \end{block}
+  }
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Beispiel: Diskreter Laplace-Beltrami-Operator}
+    \small
+      \begin{align*}
+        \left\langle \Delta_{B}f, v \right\rangle 
+            &= \left\langle *\exd*\exd f, \alt<1-2>{\tred{v}}{v} \right\rangle
+            \onslide<2->{= \frac{1}{|\star v|}\left\langle \exd*\exd f, \alt<2-4>{\tred{\star v}}{\star v} \right\rangle}&\\
+            &\onslide<3->{= \frac{1}{|\star v|}\left\langle *\exd f, \alt<3-5>{\tred{\partial\star v}}{\partial\star v} \right\rangle}
+            \onslide<4->{=\frac{1}{|\star v|}\alt<4-5>{\tred{\sum_{\sigma^{1}\succ v}}}{\sum_{\sigma^{1}\succ v}}\left\langle *\exd f, \alt<4-5>{\tred{\star\sigma^{1}}}{\star\sigma^{1}}
+                                  \right\rangle}&\\
+            &\onslide<5->{=\frac{1}{|\star v|}\alt<5-6>{\tred{\sum_{\sigma^{1}\succ v}}}{\sum_{\sigma^{1}\succ v}} \frac{|\star\sigma^{1}|}{|\sigma^{1}|}
+                          \left\langle \exd f, \alt<5-6>{\tred{\sigma^{1}}}{\sigma^{1}}\right\rangle}
+            \onslide<6->{=\frac{1}{|\star v|}\sum_{\sigma^{1}=\left[ \tred{v},\tred{v_{i}} \right]} \frac{|\star\sigma^{1}|}{|\sigma^{1}|}
+                          \left( f(\tred{v_{i}}) - f(\tred{v}) \right)}
+      \end{align*}
+    \end{block}
+    \begin{overprint}
+       \onslide<1-2>
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB1.tex} 
+          \end{minipage}\hfill
+          \visible<2>{
+          {\Huge\(\overset{\star}{\longmapsto}\)}  \hfill
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB2.tex} 
+          \end{minipage}}
+       \onslide<3-4>
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB2.tex} 
+          \end{minipage}\hfill
+          {\Huge\(\overset{\partial}{\longmapsto}\)}  \hfill
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB3.tex} 
+          \end{minipage}
+       \onslide<5>
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB3.tex} 
+          \end{minipage}\hfill
+          {\Huge\(\overset{\star}{\longmapsto}\)}  \hfill
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB4.tex} 
+          \end{minipage}
+       \onslide<6>
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB4.tex} 
+          \end{minipage}\hfill
+          {\Huge\(\overset{\partial}{\longmapsto}\)}  \hfill
+          \begin{minipage}{0.4\textwidth}
+            \centering\input{bilder/tikz/LB5.tex} 
+          \end{minipage}
+    \end{overprint}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Implementierung am Beispiel}
+      \small
+      \begin{itemize}
+        \item<1-> Aufstellen des dualen Problems an einem globalen Knoten \( v_{i}\in K^{(0)} \):
+            \begin{align*}
+              \left\langle *\Delta_{B} f , \star v_{i} \right\rangle
+                     &= \sum_{\sigma^{1}=\left[ v_{i}, v_{j} \right]} 
+                     \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
+                      \left( f_{j} - f_{i} \right)
+            \end{align*}
+        \item<2-> Umschreiben als Summe über Dreiecke \( \sigma^{2} \) und Wechsel zu lokaler (Element)Indizierung:
+              \begin{align*}
+                \left\langle *\Delta_{B} f , \star v_{i} \right\rangle
+                               &= \sum_{\substack{\sigma^{2}=\left[ v^{\sigma^{2}}_{0},v^{\sigma^{2}}_{1},v^{\sigma^{2}}_{2} \right]\\
+                                               v^{\sigma^{2}}_{0} = v_{i}}}
+                  \sum_{l=1,2} C^{\sigma^{2}}_{0,l} 
+                          \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right)
+              \end{align*}
+              mit den Koeffizienten
+              \begin{align*}
+               C^{\sigma^{2}}_{k,l} &= C^{\sigma^{2}}_{l,k}
+                            = \frac{\left| \star \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] 
+                                            \cap \sigma^{2}\right|}
+                                   {\left| \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] \right|}
+              \end{align*}
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Implementierung am Beispiel}
+      \begin{itemize}
+        \item<1-> Aufstellen der Elementmatrizen für jedes Dreieck \( \sigma^{2} \):
+          {\small
+          \begin{align*}
+            \begin{bmatrix}
+        -\left( C^{\sigma^{2}}_{01} + C^{\sigma^{2}}_{02}\right) & C^{\sigma^{2}}_{01} & C^{\sigma^{2}}_{02} \\
+        C^{\sigma^{2}}_{01} & -\left( C^{\sigma^{2}}_{01} + C^{\sigma^{2}}_{12}\right) & C^{\sigma^{2}}_{12} \\
+        C^{\sigma^{2}}_{02} & C^{\sigma^{2}}_{12} & -\left( C^{\sigma^{2}}_{02} + C^{\sigma^{2}}_{12}\right)
+      \end{bmatrix}
+      \begin{bmatrix}
+        f^{\sigma^{2}}_{0} \\ f^{\sigma^{2}}_{1} \\ f^{\sigma^{2}}_{2}
+      \end{bmatrix}
+        &=: A^{\sigma^{2}} f^{\sigma^{2}}
+          \end{align*}}
+        \item<2-> Assemblierung der globalen Systemmatrix \( A \) \\(oder Rechte-Seite-Vektor)
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+
+\section{Krümmungsberechnungen mit DEC}
+  
+  \begin{frame}
+    \begin{block}{Mittlere Krümmung \( H \)}
+      \begin{itemize}
+        \item<1-> Krümmungsvektor: 
+          \begin{align*}
+            \vec{H} &=2 H \vec{\nu}\quad  \Longrightarrow  H = \frac{1}{2}\left\| \vec{H} \right\|
+          \end{align*}
+        \item<2-> Inklusionsabbildung: 
+            \begin{align*}
+                \iota: \R^{3}|_{M} \hookrightarrow \R^{3},\quad \vec{x} \mapsto \vec{x}
+            \end{align*}
+        \item<3-> Stetiges Problem:  \quad\quad (\( \R^{3} \)-vektorisiertes skalares Problem)
+          \begin{align*}
+            \vec{H} &= -\Delta_{B}\iota 
+          \end{align*}
+        %{\flushright(\( \R^{3} \)-vektorisiertes skalares Problem)}
+        \item<4-> Diskretes Problem: Für alle \( k=1,2,3 \) und \( v\in K^{(0)} \):
+          \begin{align*}
+            \left\langle *H_{k}, \star v \right\rangle &= - \left\langle *\Delta_{B}\iota_{k}, \star v \right\rangle
+          \end{align*}
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Weingartenabbildung}
+      \begin{itemize}
+        \item<1-> ist ein (1,1)-Tensorfeld:
+          \begin{align*}
+            S: T_{\vec{x}}M &\rightarrow T_{\vec{x}}M \\
+                    \vec{w} &\mapsto \exd\vec{\nu} \left( \vec{w} \right)
+          \end{align*}
+        \item<2-> Erweiterte Weingartenabbildung:
+          \begin{align*}
+            \bar{S}:= \nabla\vec{\nu} \in \R^{3 \times 3}
+          \end{align*}
+          Die zwei betragsmäßig größten Eigenwerte sind Hauptkrümmungen.
+        \item<3-> Diskretes Problem: Für alle \( i,j\in\left\{ 1,2,3 \right\} \) und \( v\in K^{(0)} \):
+          \begin{align}
+            \label{eqWeingartenEq1}
+        \left\langle *\bar{\nu}^{i} , \star v \right\rangle 
+                &= \left\langle *\left[ \vecover{\nu}{\av} \right]_{i}, \star v \right\rangle \\
+        \label{eqWeingartenEq2}
+        \left\langle *\left[ \nabla^{\overline{pd}}\bar{\nu}^{i} \right]_{j} , \star v \right\rangle
+            - \left\langle *\left[ S^{\overline{pd}} \right]_{ij} , \star v \right\rangle 
+                &= 0
+          \end{align}
+         Falls \( \vec{\nu} \) bekannt, dann kann \eqref{eqWeingartenEq1} weglassen werden.
+      \end{itemize}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Diskretes Normalenfeld}
+        \begin{align*}
+          \left\langle *\vecover{\nu}{\av}, \star v \right\rangle = \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2}\right| 
+                                          \vecover{\nu}{\sigma^{2}}
+        \end{align*}
+    \end{block}
+    \pause
+    \begin{block}{Diskreter Primär-Dual-Gradient im Mittel}
+      \begin{align*}
+        \left\langle *\nabla^{\overline{pd}} f, \star v \right\rangle
+            = \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right|
+                 \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(v) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}}
+      \end{align*}
+    \end{block}
+     \pause
+    \begin{block}{Gauß-Bonnet-Operator}
+       \begin{align*}
+      \label{eqProbGB}
+      \left\langle *K^{GB} , \star v \right\rangle &=
+          \sum_{\sigma^{2}\succ v} \left( \frac{2\pi}{m_{v}} - \sum_{\sigma^{2}\succ\sigma^{1}\succ v}
+                               \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
+                                 \left|\sigma^{1}\right|\right) \right)
+    \end{align*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{Oberflächen}
+      \begin{itemize}
+        \item<1-> Einheitssphäre: \( K\equiv 1 \), \( H\equiv 1 \)
+        \item<2-> Ellipsoid: \(  \varphi(x,y,z) := (3x)^{2} + (6y)^{2} + (2z)^{2} - 9  \)
+        \item<4-> Quartische Oberfläche: \( \varphi(x,y,z) :=  (x-z^{2})^{2} + (y-z^{2})^{2} + z^{2} - 1  \)
+      \end{itemize}
+    \end{block}
+    \vfill
+    \begin{overprint}
+      \onslide<1> 
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrKL2.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/sphere/ErrHL2.eps}
+          \end{minipage}
+      \onslide<2>
+           \begin{minipage}[t]{0.49\textwidth}
+              \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/K2k.png}
+            \end{minipage}\hfill
+            \begin{minipage}[t]{0.49\textwidth}
+              \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/H2k.png}
+            \end{minipage}
+      \onslide<3>
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrKL2.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineC/ErrHL2.eps}
+          \end{minipage}
+      \onslide<4> 
+          \begin{minipage}[t]{0.49\textwidth}
+              \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/K250k.png}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+              \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/H250k.png}
+          \end{minipage}
+      \onslide<5>
+          \begin{minipage}[t]{0.49\textwidth}
+              \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrKL2.eps}
+          \end{minipage}\hfill
+          \begin{minipage}[t]{0.49\textwidth}
+            \centering\includegraphics[width=\textwidth]{bilder/Curvature/heineB/ErrHL2.eps}
+          \end{minipage}
     \end{overprint}
   \end{frame}
 
