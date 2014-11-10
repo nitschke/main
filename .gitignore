@@ -5,6 +5,8 @@
 **CMakeFiles/
 *CMakeCache.txt
 **output/
+**macro/
+**output.save/
 *Makefile
 *.cmake
 *.csv

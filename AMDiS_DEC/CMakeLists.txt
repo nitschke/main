@@ -70,6 +70,9 @@ target_link_libraries(heine51cWeingarten ${BASIS_LIBS} dec)
 add_executable(heine51bWeingarten src/heine51bWeingarten.cc)
 target_link_libraries(heine51bWeingarten ${BASIS_LIBS} dec)
 
+add_executable(heine51bGaussMean src/heine51bGaussMean.cc)
+target_link_libraries(heine51bGaussMean ${BASIS_LIBS} dec)
+
 add_executable(sphereWeingarten src/sphereWeingarten.cc)
 target_link_libraries(sphereWeingarten ${BASIS_LIBS} dec)
 
