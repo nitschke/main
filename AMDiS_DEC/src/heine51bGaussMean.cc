@@ -177,7 +177,11 @@ int main(int argc, char* argv[])
   printError(gcBonnet, gcDOFV, "GaussBonnet");
   VtkVectorWriter::writeFile(gcBonnet, string("output/GaussBonnet"));
 
-  DOFVector<double> mcMagY = halfMag(*(sphere.getSolution(0)), *(sphere.getSolution(1)), *(sphere.getSolution(2)));
+  DOFVector<double> mcMagY = halfMag(*(sphere.getSolution(0)), 
+                                     *(sphere.getSolution(1)), 
+                                     *(sphere.getSolution(2)),
+                                     "LaplaceMean",
+                                     true);
   printError(mcMagY, mcDOFV, "MeanMagY");
   VtkVectorWriter::writeFile(mcMagY, "output/MeanMagY.vtu");
 

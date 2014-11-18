@@ -1,0 +1,57 @@
+\input{header}
+
+\begin{document}
+\begin{frontmatter}
+  \title{Curvature approximation on surfaces -- A Discrete Exterior Calculus Approach}
+
+  \author{I.~Nitschke\fnref{fn1}}
+  \ead{ingo.nitschke@tu-dresden.de}
+  
+  \author{A.~Voigt\fnref{fn1,fn2}}
+  \ead{axel.voigt@tu-dresden.de}
+
+  \fntext[fn1]{Department of Mathematics, TU Dresden, 01062 Dresden, Germany}
+  \fntext[fn2]{Center of Advanced Modeling and Simulation, TU Dresden, 01062 Dresden, Germany}
+
+  \begin{abstract}
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+  \end{abstract}
+
+  \begin{keyword}
+    Surfaces \sep Curvature \sep DEC
+  \end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+
+\section{Discrete Exterior Calculus (DEC)}
+  The Discrete Exterior Calculus \citep{hirani, desbrun} defines discrete differential \mh{p}{forms} on a triangulated mesh (simplicial complex).
+  For surface meshes, i.e. triangulated orientable \mh{2}{manifolds}, the degree of the discrete \mh{p}{forms} is 0, 1 or 2
+  and their are represented by scalars on vertices, edges, triangles or chains of them. 
+  Operators for the differential forms, like the exterior derivation \( \exd \) or the hodge star \( \star \), can be approximated by expressions on the discrete
+  geometrical structure. 
+  E.g. the integral over a triangle of the exterior derivation \( \exd \) for a \mh{1}{form} can be expressed as the integral of the
+  \mh{1}{form} over the boundaries edges of the triangle. 
+  This follows directly from the Stokes Theorem \citep[Ch. 7]{marsden}. 
+ 
+  \subsection{Discrete manifolds}
+    In our setting, the surface meshes are linear triangulations of orientable closed \mh{2}{manifolds}.
+    Such a Triangulation are sets of \mh{p}{simplices} \( \left\{ \sigma^{p} \right\} \) of the same degree \( p \), e.g. sets of vertices,
+    edges and triangles, and form a simplicial complex of dimension \( n=2 \).
+    A simplicial complex \( K \) comply two essential rules:
+    \begin{enumerate}
+      \item Every face of a simplex \( \sigma^{p}\in K \) is in \( K \).
+      \item The intersection of two simplices in \( K \) is also in \( K \) or empty.
+    \end{enumerate}
+    
+
+  
+
+
+\section*{References}
+\bibliography{bibl}
+\bibliographystyle{elsarticle-harv}
+
+\end{document}

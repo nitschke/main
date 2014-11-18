@@ -6,12 +6,13 @@ lineStyles = ['-','--', '-.', ':']
 lw = 3;
 
 #name = ["MaxAngleRatio", "AvAngleRatio"]
-#name = ["MaxDiameter", "AvDiameter"]
-name = ["MaxMaxAngle", "AvMaxAngle"]
+name = ["MaxDiameter", "AvDiameter"]
+#name = ["MaxMaxAngle", "AvMaxAngle"]
 #name = ["AvArea", "MinArea","MaxArea"]
 n = len(name)
 last = 100000
-with open('../meshStatsSphereDivBy4.csv.save', 'rb') as f:
+#with open('../meshStatsbunny.csv', 'rb') as f:
+with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]
     k = 0

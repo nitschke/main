@@ -1,14 +1,13 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/heine51b_100k_improved.3d
-%sphereMesh->macro file name:       ./macro/sphereIko50k.3d
+sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
 sphereMesh->global refinements:    0
 sphereMesh->check:                0
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              4 %9 %12 %13 %16
+sphere->components:              12
 
 sphere->solver:                bicgstab2 %cg %tfqmr
 sphere->solver->max iteration: 1000
@@ -21,13 +20,7 @@ sphere->marker[0]->strategy:   0
 sphere->adapt[0]->max iteration: 0
 
 
-sphere->output->filename:         output/heine51b.3d
+sphere->output->filename:         output/weingarten.3d
 sphere->output->ParaView format:  1
 sphere->output->AMDiS format: 0
 sphere->output->ARH format: 0
-
-
-meshCorrector->h: 0.006
-meshCorrector->nMax: 500
-
-edgeForces->k: 0.75   % in [0,1]

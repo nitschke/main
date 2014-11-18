@@ -1,5 +1,6 @@
 #include "AMDiS.h"
 #include "WorldVectorHelper.h"
+#include "MeshHelper.h"
 
 namespace AMDiS {
 
@@ -55,20 +56,36 @@ namespace AMDiS {
     return rval;
   }
 
-  DOFVector<double> halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z)
+  DOFVector<double> halfMag(const DOFVector<double>& x, 
+                            const DOFVector<double>& y, 
+                            const DOFVector<double>& z,
+                            std::string resName,
+                            bool respOrientation)
   {
-    FUNCNAME("DOFVector<double>::halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z)");
+    FUNCNAME("DOFVector<double>::halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z, usw.)");
 
     DOFVector<double>::Iterator xIterator(const_cast<DOFVector<double>*>(&x), USED_DOFS);
     DOFVector<double>::Iterator yIterator(const_cast<DOFVector<double>*>(&y), USED_DOFS);
     DOFVector<double>::Iterator zIterator(const_cast<DOFVector<double>*>(&z), USED_DOFS);
 
-    DOFVector<double> rval(x.getFeSpace(), "HalfOfMagXYZ");
+    DOFVector<double> rval(x.getFeSpace(), resName);
     DOFVector<double>::Iterator rvalIterator(&rval, USED_DOFS);
     
-    for (xIterator.reset(), yIterator.reset(), zIterator.reset(), rvalIterator.reset(); !xIterator.end();
-	 ++xIterator, ++yIterator, ++zIterator, ++rvalIterator) {
-      *rvalIterator = 0.5 * sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator)); 
+    if (respOrientation) {
+      DOFVector<WorldVector<double> > normals = getNormals(x.getFeSpace());
+      DOFVector<WorldVector<double> >::Iterator normalsIterator(const_cast<DOFVector<WorldVector<double> >*>(&normals), USED_DOFS);
+      for (xIterator.reset(), yIterator.reset(), zIterator.reset(), rvalIterator.reset(),normalsIterator.reset(); 
+           !xIterator.end();
+	         ++xIterator, ++yIterator, ++zIterator, ++rvalIterator, ++normalsIterator) {
+      *rvalIterator = 0.5 * sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator));
+        if ((*normalsIterator)[0] * (*xIterator) +  (*normalsIterator)[1] * (*yIterator) + (*normalsIterator)[2] * (*zIterator) < 0.0)
+          *rvalIterator *= -1.0;
+      }
+    } else {
+      for (xIterator.reset(), yIterator.reset(), zIterator.reset(), rvalIterator.reset(); !xIterator.end();
+	         ++xIterator, ++yIterator, ++zIterator, ++rvalIterator) {
+        *rvalIterator = 0.5 * sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator));
+      }
     }
 
     return rval;
@@ -131,9 +148,9 @@ namespace AMDiS {
   }
 
 //TODO: untested
-DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v){
+DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v, std::string resName){
   DOFVector<WorldVector<double> >::Iterator vIterator(const_cast<DOFVector<WorldVector<double> >*>(&v), USED_DOFS);
-  DOFVector<double> rval(v.getFeSpace(), "v_i");
+  DOFVector<double> rval(v.getFeSpace(), resName);
   DOFVector<double>::Iterator rvalIterator(&rval, USED_DOFS);
   for (vIterator.reset(), rvalIterator.reset(); !vIterator.end(); ++vIterator, ++rvalIterator) {
     *rvalIterator = (*vIterator)[i];

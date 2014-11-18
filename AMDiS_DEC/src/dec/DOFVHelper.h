@@ -8,7 +8,9 @@ namespace AMDiS {
 
   DOFVector<double> mag(const DOFVector<WorldVector<double> >& v);
 
-  DOFVector<double> halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z);
+  DOFVector<double> halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z,
+                          std::string resName = "HalfOfMagXYZ",
+                            bool respOrientation = false);
 
   DOFVector<double> prod01(const DOFVector<WorldVector<double> >& v);
 
@@ -16,7 +18,7 @@ namespace AMDiS {
 
   DOFVector<WorldVector<double> > toWorld(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z);
 
-  DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v);
+  DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v, std::string resName = "v_i");
 
   void printError(const DOFVector<double> &dofv,const DOFVector<double> &sol, string name);
 

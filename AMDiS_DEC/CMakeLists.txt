@@ -16,6 +16,9 @@ include_directories(src/dec)
 add_executable(meshCorrector src/correctMesh.cc)
 target_link_libraries(meshCorrector ${BASIS_LIBS} dec)
 
+add_executable(improveMesh src/improveMesh.cc)
+target_link_libraries(improveMesh ${BASIS_LIBS} dec)
+
 add_executable(laplaceSphere src/sphereLaplaceDEC.cc)
 target_link_libraries(laplaceSphere ${BASIS_LIBS} dec)
 
@@ -75,6 +78,12 @@ target_link_libraries(heine51bGaussMean ${BASIS_LIBS} dec)
 
 add_executable(sphereWeingarten src/sphereWeingarten.cc)
 target_link_libraries(sphereWeingarten ${BASIS_LIBS} dec)
+
+add_executable(weingarten src/weingarten.cc)
+target_link_libraries(weingarten ${BASIS_LIBS} dec)
+
+add_executable(gaussMean src/gaussMean.cc)
+target_link_libraries(gaussMean ${BASIS_LIBS} dec)
 
 #create the output dir
 #create the output dir

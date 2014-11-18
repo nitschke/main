@@ -11,7 +11,7 @@ class MeshCorrector {
     
     void oneHeunIteration(double h);
 
-    void iterate(int n, double h);
+    void iterate(int n, double h, std::string name);
 
     const FiniteElemSpace *getFeSpace() {return feSpace;}
 
