@@ -72,6 +72,10 @@ int main(int argc, char* argv[])
   //phi->interpol(new Phi());
   //VtkVectorWriter::writeFile(phi, meshOut + string("_phi.vtu"));
 
+  MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
+  mwriter.appendData(sphere.getFeSpace(),true);
+  
+
   AMDiS::finalize();
 }
 

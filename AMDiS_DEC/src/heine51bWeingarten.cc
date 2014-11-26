@@ -148,21 +148,21 @@ int main(int argc, char* argv[])
   int oh = 0;
   for (int i = 0; i < 3; i++) {
     // N
-    //sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
-    //sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
+    sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
+    sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
     for (int j = 0; j < 3; j++) {
-       //int pos = matIndex(i,j) + oh + 3;
-       int pos = matIndex(i,j) + oh;
+       int pos = matIndex(i,j) + oh + 3;
+       //int pos = matIndex(i,j) + oh;
        // -II_ij
        SimpleDEC *II = new SimpleDEC(sphere.getFeSpace(pos), sphere.getFeSpace(pos));
        II->setFactor(-1.0);
        sphere.addMatrixOperator(II, pos, pos);
        // [d(N_j)]_i
-       //PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
-       //sphere.addMatrixOperator(dN, pos, j+oh);
-       PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), sphere.getFeSpace(pos), sphere.getFeSpace(pos));
-       dN->setFactor(-1.0);
-       sphere.addVectorOperator(dN, pos);
+       PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
+       sphere.addMatrixOperator(dN, pos, j+oh);
+       //PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), sphere.getFeSpace(pos), sphere.getFeSpace(pos));
+       //dN->setFactor(-1.0);
+       //sphere.addVectorOperator(dN, pos);
     }
   }
   
@@ -173,8 +173,8 @@ int main(int argc, char* argv[])
   WorldMatrix<DOFVector<double> * > IIDV;
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
-      //IIDV[i][j] = sphere.getSolution(matIndex(i,j) + oh + 3);
-      IIDV[i][j] = sphere.getSolution(matIndex(i,j) + oh);
+      IIDV[i][j] = sphere.getSolution(matIndex(i,j) + oh + 3);
+      //IIDV[i][j] = sphere.getSolution(matIndex(i,j) + oh);
     }
   }
 
@@ -198,10 +198,10 @@ int main(int argc, char* argv[])
   printError(mcWeingarten, mcDOFV, "MeanWeingarten");
   VtkVectorWriter::writeFile(mcWeingarten, "output/MeanWeingarten.vtu");
 
-  MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
-  mwriter.appendData(sphere.getFeSpace(),true);
+  //MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
+  //mwriter.appendData(sphere.getFeSpace(),true);
 
-  sphere.writeFiles(adaptInfo, true);
+  //sphere.writeFiles(adaptInfo, true);
 
   AMDiS::finalize();
 }
