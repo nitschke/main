@@ -107,7 +107,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
   
   \subsection{Geometrical operators}
     The two momentous operators on chains are the boundary operator \( \partial \) and the star operator \( \star \).
-    These are the geometrical tools for the discrete exterior derivation \( \d \) resp. the discrete Hodge star \( * \),
+    These are the geometrical tools for the discrete exterior derivation \( \exd \) resp. the discrete Hodge star \( * \),
     what we will see below.
 
     \subsubsection{The star operator}
@@ -200,13 +200,159 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \( \left\langle \psi(\alpha), \pi\left(\sigma^{p}\right) \right\rangle \).
 
   \subsection{DEC operators}
-    For the definition of a discrete version of the Hodge star \( * \) or the exterior derivative \( \d \) we can fall back to the
+    For the definition of a discrete version of the Hodge star \( * \) or the exterior derivative \( \exd \) we can fall back to the
     geometric operators.
 
     \subsubsection{The discrete Hodge star operator}
+      The discrete Hodge star \( *:\Omega_{d}^{p}(K)\rightarrow\Omega_{d}^{2-p}(*K) \) 
+      is nothing more than scale the evaluation of a discrete\mh{p}{form} by the
+      ratio of the dual (Voronoi) and the primal volumes.  
+      \begin{align}
+      \label{eqDiscreteHodge}
+        \left\langle *\alpha, \star\sigma^{p} \right\rangle 
+                                        &:= \frac{|\star\sigma^{p}|}{|\sigma^{p}|} \left\langle \alpha, \sigma^{p} \right\rangle
+      \end{align}
+      for a simplex \( \sigma^{p}\in K \) and a \( \alpha\in\Omega_{d}^{p}(K) \).
+      Note that the intrinsic volume of a \mh{0}{simplex} is 1.
+      (In \cite{diploma} we can see that \eqref{eqDiscreteHodge} is consistent with \( \mathcal{O}(h^{3-p}) \) for the maximum circumscribed diameter \( h \).)
+      The discrete Hodge star on a discrete dual form \( \hat{\alpha}\in\Omega_{d}^{p}(*K) \) can be  obtained implicitly by the rule
+      \( **\hat{\alpha} = (-1)^{p}\hat{\alpha} \), wich holds on a even-dimensional simplicial complex as well as for smooth forms on a
+      even-dimensional manifold. 
+
+    \subsubsection{The discrete exterior derivative}
+      The main advantage in the definition of discrete differential forms as integral evaluation of smooth forms on (abstract) simplices is
+      that we are able to use the Stokes theorem \eqref{eqStokes} to describe a discrete exterior derivative
+      \( \exd : \Omega^{p}_{d}(K) \rightarrow \Omega^{p+1}_{d}(K) \):
+      \begin{align}
+        \left\langle \exd\psi\left( \alpha \right), \sigma^{p} \right\rangle \label{eqDisExD}
+                :&= \left\langle \psi\left( \exd\alpha \right), \sigma^{p} \right\rangle \\
+                &= \left\langle \psi\left( \alpha \right), \partial\sigma^{p} \right\rangle \label{eqStokes}
+      \end{align}
+      (this applies on \( \star K \) also) and there is no approximation error accept the interpretation of the integral expression.
+      Hence, the discrete exterior derivative inherit the complex property of the boundary operator, i.e. \( \exd\circ\exd=0 \).
+      That's why the sequence of discrete differential forms (cochains) \( \left( \Omega^{p}_{d}(K), \exd \right)\) 
+      (and  \( \left( \Omega^{p}_{d}(\star K), \exd \right) \))
+      \begin{align}
+      \begin{xy}
+        \xymatrix{
+          0 \ar[r] & 
+          \Omega^{0}_{d}(K) \ar[r]^{\exd} \ar[d]^{\star} & 
+          \Omega^{1}_{d}(K) \ar[r]^{\exd} \ar[d]^{\star} & 
+          \Omega^{2}_{d}(K) \ar[r] \ar[d]^{\star} &
+          0 \\
+          0  & 
+          \Omega^{2}_{d}(\star K) \ar[l] \ar[u]& 
+          \Omega^{1}_{d}(\star K) \ar[l]^{\exd} \ar[u] & 
+          \Omega^{0}_{d}(\star K) \ar[l]^{\exd} \ar[u] &
+          0 \ar[l]
+        }
+      \end{xy}
+      \end{align}
+      is a cochain complex.
+
+    \subsubsection{The discrete Laplace-Beltrami operator}
+      The Laplace-Beltrami operator \( \Delta_{B}= * \exd * \exd \) is the special case of the negative Laplace-de Rham operator
+      \( -\Delta_{dR} = *\exd *\exd + \exd *\exd * \) for \mh{0}{forms} on a \mh{2}{mainfold} or in general on a even-dimensional manifold.
+      To discretize \( \Delta_{B} \) all of work is done above,
+      because we can use the definitions \eqref{eqDiscreteHodge} and \eqref{eqDisExD} step by step in the same manner like the smooth exterior
+      calculus.
+      I.e. for a \mh{0}{form} \( f \) on a vertex \( v \) it results in
+      \begin{align}
+        \label{eqDisLaplace}
+        \left\langle \Delta_{B} f, v \right\rangle
+                &= \frac{1}{\left| \star v \right|} \sum_{\sigma^{1}=\left[ v,v_{i} \right]\in K} \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
+                       \left( f(v_{i}) - f(v) \right) \formpunkt
+      \end{align}
+      For greater details see \cite{hirani} or \cite{desbrun}. 
+      \eqref{eqDisLaplace}, equivalent to the cotan-formular described in \cite{meyer}, is a approximation of order 2 (see \cite{xu})
+      and was already earlier published in \cite{arakawa} as a non-DEC consequence. 
+
+      \paragraph{Note on Implementation}
+        In section \ref{secCurvatureVector} we need the discrete Laplace-Beltrami operator to approximate the mean curvature.
+        One way to do that is to represent the discrete linear operators \( * \) and \( \exd \) as matrices act on
+        a vector of all vertices, edges or triangles.
+        So the discrete Laplace-Beltrami is nothing more than the product of these matrices 
+        (see \cite{siggraphKap8}, \cite{pydec} or \cite{crane}).
+        
+        A more ``FEM-like'' manner is to decompose \eqref{eqDisLaplace} in parts, which can be computed on all (triangle) elements without
+        knowledge of their neighbours.
+        For this we formulate the operator on the Voronoi cells to cancel the scale factor \( \left| \star v \right|^{-1} \) 
+        in \eqref{eqDisLaplace}, split the sum and use a local vertex indexing on all elements:
+        \begin{align} \label{eqVoronoiLaplace}
+                \left\langle *\Delta_{B} f , \star v_{i} \right\rangle
+                               &= \sum_{\sigma^{1}=\left[ v_{i}, v_{j} \right]} 
+                     \frac{\left| \star\sigma^{1} \right|}{\left| \sigma^{1} \right|}
+                      \left( f(v_{j}) - f(v_{i}) \right)\\
+                               &= \sum_{\substack{\sigma^{2}=\left[ v^{\sigma^{2}}_{0},v^{\sigma^{2}}_{1},v^{\sigma^{2}}_{2} \right]
+                              \\
+                                               v^{\sigma^{2}}_{0} = v_{i}}}
+                  \sum_{l=1,2} C^{\sigma^{2}}_{0,l} 
+                          \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right) \formpunkt \label{eqLokalLaplace}
+        \end{align}
+        \( f^{\sigma^{2}}_{l}\in\R \) are the evaluations of \( f \) on the local vertices \( v^{\sigma^{2}}_{l} \) on the element \(
+        \sigma^{2}\).
+        Figure \ref{figLocalIndexing} clarify this setting.
+        The coefficients \( C^{\sigma^{2}}_{0,l}\in\R \) are generally defined by
+        \begin{align}
+               C^{\sigma^{2}}_{k,l} &:= C^{\sigma^{2}}_{l,k}
+                            := \frac{\left| \star \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] 
+                                            \cap \sigma^{2}\right|}
+                                   {\left| \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] \right|}\formpunkt
+        \end{align}
+        \begin{figure}
+          \centering
+          \includegraphics[width=.45\textwidth]{bilder/tikz/elementSummeKante.eps}
+          \caption{Two adjacent (triangle) elements share a common edge \( \sigma^{1}=\left[ v_{i}, v_{j} \right] \).
+                   The vertices are local indexed on these elements.}
+          \label{figLocalIndexing}
+        \end{figure}
+        Hence we can extract from \eqref{eqLokalLaplace} a local coefficients matrix
+        \begin{align}
+          A^{\sigma^{2}} 
+              &:= {\footnotesize\begin{bmatrix}
+                    -\left( C^{\sigma^{2}}_{01} + C^{\sigma^{2}}_{02}\right) & C^{\sigma^{2}}_{01} & C^{\sigma^{2}}_{02} \\
+                    C^{\sigma^{2}}_{01} & -\left( C^{\sigma^{2}}_{01} + C^{\sigma^{2}}_{12}\right) & C^{\sigma^{2}}_{12} \\
+                    C^{\sigma^{2}}_{02} & C^{\sigma^{2}}_{12} & -\left( C^{\sigma^{2}}_{02} + C^{\sigma^{2}}_{12}\right)
+                  \end{bmatrix}} 
+        \end{align}
+        which holds all computation parts for the local vertices.
+        All \( A^{\sigma^{2}} \) can be assembly in a familiar way to get a sparse global matrix 
+        \( A\in\R^{N_{\sigma^{0}} \times N_{\sigma^{0}}} \), where \( N_{\sigma^{0}} \) are the number of vertices in \( K \).
+        At the end, for \( f_{h}\in\R^{N_{\sigma^{0}}} \), the vector of evaluations for \( f \) 
+        (resp. vector of DOFs\footnote{Degree Of Freedom}), 
+        \( Af_{h} \) is the result of \eqref{eqVoronoiLaplace} on all global vertices.
+
+        The great advantage of this proceeding is the compatibility to existing Finite Element code 
+        like AMDiS\footnote{Adaptive MultiDimensional Simulation toolbox, developed at Institute for Scientific Computing, TU-Dresden}
+        \cite{amdis}.
+        Only the element operator \( A^{\sigma^{2}} \) must be implemented 
+        under use of linear test functions for the interpolation. 
+        All other works, like mesh management, problem formulation on the user level, assembling and solving of the linear System, 
+        can be done by the FE-toolbox.
+
+    \subsubsection{The discrete gradient}
+      The gradient of a scalar valued function \( f \) can be obtained by rising the indices of its exterior derivative, 
+      in other words \( \nabla f = \left( \exd f \right)^{\sharp} \).
+      Unfortunately, the sharp operator \( \sharp \) depends on the (unknown) metric of the manifold. 
+      In \cite{hirani} it is suggested to use this discrete sharp operator for such a exact \mh{1}{form} \( \exd f \) to get a discrete
+      gradient:
+      \begin{align}
+        \label{eqGradientHeine}
+        \left\langle \left( \exd f \right)^{\sharp} , \star\sigma^{2}\right\rangle
+          &:= \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(w) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}} \formkomma
+      \end{align}
+      with a arbitrary vertex \( w\prec\sigma^{2} \) and 
+      \( \Phi_{\sigma^{0}}^{\sigma^{2}} \) is the linear test function (hat function) for the vertex \( \sigma^{0} \) 
+      restricted to \( \sigma^{2} \). 
+
+
+
       
-      
-    
+\section{Curvature approximations}
+  \subsection{Curvature vector} \label{secCurvatureVector}
+  \subsection{Weingarten map} \label{secWeingarten}
+
+\section{Results}
 
 \section*{References}
 \bibliography{bibl}
