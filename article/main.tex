@@ -25,6 +25,14 @@
 \section{Introduction}
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
+  
+  \begin{figure}
+    \centering
+    \includegraphics[width=.45\textwidth]{bilder/bunnyCurvature.jpg}
+    \caption{blub}
+    \label{figBunnyCurvature}
+  \end{figure}
+
 
 \section{Discrete Exterior Calculus (DEC)}
   The Discrete Exterior Calculus \citep{hirani, desbrun} defines discrete differential \mh{p}{forms} on a triangulated mesh (simplicial complex).
@@ -334,7 +342,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       The gradient of a scalar valued function \( f \) can be obtained by rising the indices of its exterior derivative, 
       in other words \( \nabla f = \left( \exd f \right)^{\sharp} \).
       Unfortunately, the sharp operator \( \sharp \) depends on the (unknown) metric of the manifold. 
-      In \cite{hirani} it is suggested to use this discrete sharp operator for such a exact \mh{1}{form} \( \exd f \) to get a discrete
+      In \cite{hirani} it is suggested to use the following discrete sharp operator for such a exact \mh{1}{form} \( \exd f \) to get a discrete
       gradient:
       \begin{align}
         \label{eqGradientHeine}
@@ -344,6 +352,22 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       with a arbitrary vertex \( w\prec\sigma^{2} \) and 
       \( \Phi_{\sigma^{0}}^{\sigma^{2}} \) is the linear test function (hat function) for the vertex \( \sigma^{0} \) 
       restricted to \( \sigma^{2} \). 
+      \eqref{eqGradientHeine} gives us a tangential vector of the polytop \( |K| \) on the circumcenter of the triangle \( \sigma^{2} \).
+      But in our setting we want to use a gradient on a vertex of the primal mesh, resp. interpreted on the associated Voronoi cell.
+      A simple way to get such a discrete gradient, is to average \eqref{eqGradientHeine} over all dual vertices of the Voronoi cell
+      related to the primal vertex \( v \).
+      \begin{align} \label{eqGradientAverage}
+        \left\langle *\overline\nabla f, \star v \right\rangle
+            = \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right|
+                 \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(v) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}}
+      \end{align}
+      The drawback of the discrete average gradient, which we will use in section \ref{secWeingarten}, is that \( |K| \) has no tangential
+      space on its vertices, because the polytop is not continuous differentiable in \( v \).
+      This makes the situation for a numerical analysis slightly difficult.
+      But comparing calculations for several manifolds and functions indicate the consistence of \eqref{eqGradientAverage} to the smooth
+      gradient, 
+      if the triangulation is fine enough. 
+      
 
 
 
