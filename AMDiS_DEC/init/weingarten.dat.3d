@@ -1,6 +1,7 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
+%sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
+sphereMesh->macro file name:       ./macro/horseWellcentered90k.3d
 sphereMesh->global refinements:    0
 sphereMesh->check:                0
 
