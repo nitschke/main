@@ -6,6 +6,8 @@ namespace AMDiS {
 
   const DOFVector<double>& minus(const DOFVector<WorldVector<double> >& x, const DOFVector<WorldVector<double> >& y);
 
+  DOFVector<double> sqrtScale(const DOFVector<double>& x);
+
   DOFVector<double> mag(const DOFVector<WorldVector<double> >& v);
 
   DOFVector<double> halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z,

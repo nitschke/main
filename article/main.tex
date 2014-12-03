@@ -27,10 +27,13 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
   
   \begin{figure}
-    \centering
-    \includegraphics[width=.45\textwidth]{bilder/bunnyCurvature.jpg}
-    \caption{blub}
-    \label{figBunnyCurvature}
+    \centering\includegraphics[width=.45\textwidth]{bilder/bunnyCurvature.jpg}
+    \centering\includegraphics[width=.45\textwidth]{bilder/horseCurvature.jpg}
+    \centering\includegraphics[width=.45\textwidth]{bilder/colourBar.jpg}
+    \caption{Surface curvature approximations of the Stanford Bunny and a horse.
+             Left: Gaussian curvature \( K \) (square root scaled colours).
+             Right: Mean curvature \( H \) (linear scaled colours)}
+    \label{figBunnyHorseCurvature}
   \end{figure}
 
 
@@ -40,7 +43,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
   and their are represented by scalars on vertices, edges, triangles or chains of them. 
   Operators for the differential forms, like the exterior derivation \( \exd \) or the hodge star \( \star \), can be approximated by expressions on the discrete
   geometrical structure. 
-  E.g. the integral over a triangle of the exterior derivation \( \exd \) for a \mh{1}{form} can be expressed as the integral of the
+  E.g. the integral over a triangle of the exterior derivation \( \exd \) for a \mh{1}{form} can be expressed as the integral of this
   \mh{1}{form} over the boundaries edges of the triangle. 
   This follows directly from the Stokes Theorem \citep[Ch. 7]{marsden}. 
  
@@ -138,7 +141,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       \eqref{eqVoronoiEdge} describe the Voronoi edge of the primal edge \( \sigma^{1} \) (c.p. figure \ref{figExSubdivision})
       and \eqref{eqVoronoiVertex} describe the Voronoi vertex of a primal triangle \( \sigma^{2} \). 
       With the notation \(C_{2-p}( \star K)  \) for the image of \( \star \), 
-      the star operator act on \(C_{2-p}( \star K)  \) and map to \( C_{p}(K) \) is for \( p=0,2 \) simply the inverse.
+      the star operator, act on \(C_{2-p}( \star K)  \) and map to \( C_{p}(K) \), is for \( p=0,2 \) simply the inverse.
       For \( p=1 \) we must swap the orientation, i.e. \( \star\star\sigma^{1}=-\sigma^{1} \).
 
     \subsubsection{The boundary operator}
@@ -258,7 +261,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       \end{align}
       is a cochain complex.
 
-    \subsubsection{The discrete Laplace-Beltrami operator}
+    \subsubsection{The discrete Laplace-Beltrami operator} \label{secDisLaplaceBeltrami}
       The Laplace-Beltrami operator \( \Delta_{B}= * \exd * \exd \) is the special case of the negative Laplace-de Rham operator
       \( -\Delta_{dR} = *\exd *\exd + \exd *\exd * \) for \mh{0}{forms} on a \mh{2}{mainfold} or in general on a even-dimensional manifold.
       To discretize \( \Delta_{B} \) all of work is done above,
@@ -297,7 +300,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
                   \sum_{l=1,2} C^{\sigma^{2}}_{0,l} 
                           \left( f^{\sigma^{2}}_{l} -  f^{\sigma^{2}}_{0}\right) \formpunkt \label{eqLokalLaplace}
         \end{align}
-        \( f^{\sigma^{2}}_{l}\in\R \) are the evaluations of \( f \) on the local vertices \( v^{\sigma^{2}}_{l} \) on the element \(
+        \( f^{\sigma^{2}}_{l}\in\R \) are the evaluations of \( f \) on the local vertices \( v^{\sigma^{2}}_{l} \) of the element \(
         \sigma^{2}\).
         Figure \ref{figLocalIndexing} clarify this setting.
         The coefficients \( C^{\sigma^{2}}_{0,l}\in\R \) are generally defined by
@@ -347,27 +350,49 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       \begin{align}
         \label{eqGradientHeine}
         \left\langle \left( \exd f \right)^{\sharp} , \star\sigma^{2}\right\rangle
-          &:= \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(w) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}} \formkomma
+          &:= \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(w) \right) \nabla_{\R^{3}}\Phi_{\sigma^{0}}^{\sigma^{2}} \formkomma
       \end{align}
-      with a arbitrary vertex \( w\prec\sigma^{2} \) and 
+      with a arbitrary vertex \( w\prec\sigma^{2} \),
       \( \Phi_{\sigma^{0}}^{\sigma^{2}} \) is the linear test function (hat function) for the vertex \( \sigma^{0} \) 
-      restricted to \( \sigma^{2} \). 
+      restricted to \( \sigma^{2} \) and \( \nabla_{\R^{3}} \) is the usual \( \R^{3} \) gradient in the ambient space. 
+      The formulation for the \( \R^{3} \) vector \( \left( \exd f \right)^{\sharp} \) is to read component wise 
+      as a \( \R^{3} \)-vectorized scalar formulation.
       \eqref{eqGradientHeine} gives us a tangential vector of the polytop \( |K| \) on the circumcenter of the triangle \( \sigma^{2} \).
       But in our setting we want to use a gradient on a vertex of the primal mesh, resp. interpreted on the associated Voronoi cell.
       A simple way to get such a discrete gradient, is to average \eqref{eqGradientHeine} over all dual vertices of the Voronoi cell
-      related to the primal vertex \( v \).
+      related to the primal vertex \( v \):
       \begin{align} \label{eqGradientAverage}
         \left\langle *\overline\nabla f, \star v \right\rangle
             = \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right|
-                 \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(v) \right) \nabla\Phi_{\sigma^{0}}^{\sigma^{2}}
+                 \sum_{\sigma^{0}\prec\sigma^{2}} \left( f(\sigma^{0}) - f(v) \right) \nabla_{\R^{3}}\Phi_{\sigma^{0}}^{\sigma^{2}}
       \end{align}
       The drawback of the discrete average gradient, which we will use in section \ref{secWeingarten}, is that \( |K| \) has no tangential
       space on its vertices, because the polytop is not continuous differentiable in \( v \).
       This makes the situation for a numerical analysis slightly difficult.
-      But comparing calculations for several manifolds and functions indicate the consistence of \eqref{eqGradientAverage} to the smooth
+      But comparing calculations for several manifolds and functions and 
+      the results in section \ref{secResults} indicate the consistence of \eqref{eqGradientAverage} to the smooth
       gradient, 
       if the triangulation is fine enough. 
       
+      \paragraph{Note on Implementation}
+        Like in section \ref{secDisLaplaceBeltrami}, we can deploy a coefficients matrix for the \mh{q}{th} component of 
+        \eqref{eqGradientAverage} for a triangle \( \sigma^{2} \):
+        \begin{align}
+            \begin{bmatrix}
+              -\left( C^{\sigma^{2}}_{01q} + C^{\sigma^{2}}_{02q}\right) & C^{\sigma^{2}}_{01q} & C^{\sigma^{2}}_{02q} \\
+              C^{\sigma^{2}}_{10q} & -\left( C^{\sigma^{2}}_{10q} + C^{\sigma^{2}}_{12q}\right) & C^{\sigma^{2}}_{12q} \\
+              C^{\sigma^{2}}_{20q} & C^{\sigma^{2}}_{21q} & -\left( C^{\sigma^{2}}_{20q} + C^{\sigma^{2}}_{21q}\right)
+            \end{bmatrix}
+        \end{align}
+        with 
+        \begin{align}
+          C^{\sigma^{2}}_{klq} &:= \left| \star v_{k}^{\sigma^{2}} \cap \sigma^{2} \right|
+                                   \frac{\partial}{\partial x^{q}} \Phi^{\sigma^{2}}_{v_{l}^{\sigma^{2}}} \formkomma
+        \end{align}
+        for \( k,l,q\in\left\{ 0,1,2 \right\} \) 
+        and \( \left( x^{0}, x^{1}, x^{2} \right) \) are the ordinary \( \R^{3} \) coordinates.
+
+        
 
 
 
@@ -376,7 +401,102 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
   \subsection{Curvature vector} \label{secCurvatureVector}
   \subsection{Weingarten map} \label{secWeingarten}
 
-\section{Results}
+\section{Results} \label{secResults}
+  
+  \begin{align}
+    \label{eqSphere}
+    \varphi\left( x,y,z \right) &:= x^{2} + y^{2} + z^{2} - 1 \\
+    \label{eqEllipsoid}
+    \varphi\left( x,y,z \right) &:= \left( 3x \right)^{2} + \left( 6y \right)^{2} + \left( 2z \right)^{2} - 9\\
+    \label{eqQuartic}
+    \varphi\left( x,y,z \right) &:= \left( x - z^{2} \right)^{2} + \left( y - z^{2} \right)^{2} + z^{2} - 1
+  \end{align}
+
+  \begin{figure}
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/sphere/L2K.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/sphere/L2H.eps}
+    \end{minipage}\\
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/sphere/LMaxK.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/sphere/LMaxH.eps}
+    \end{minipage}
+    \caption{Sphere \eqref{eqSphere}: Relative \( L_{2} \) (top) resp. \( L_{\infty} \) (bottom) error for \( K \) (left) and
+                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
+    \label{figSphere}
+  \end{figure}
+
+  \begin{figure}
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/K.jpg}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/H.jpg}
+    \end{minipage}\\
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/L2K.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/L2H.eps}
+    \end{minipage}\\
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/LMaxK.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/LMaxH.eps}
+    \end{minipage}
+    \caption{Ellipsoid \eqref{eqEllipsoid}: Top row: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).
+                              Middle and bottom row: Relative \( L_{2} \) resp. \( L_{\infty} \) error for \( K \) (left) and
+                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
+    \label{figEllipsoid}
+  \end{figure}
+
+  \begin{figure}
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/K.jpg}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/H.jpg}
+    \end{minipage}\\
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/L2K.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/L2H.eps}
+    \end{minipage}\\
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/LMaxK.eps}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/LMaxH.eps}
+    \end{minipage}
+    \caption{Quartic Surface \eqref{eqQuartic}: Top row: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).
+                              Middle and bottom row: Relative \( L_{2} \) resp. \( L_{\infty} \) error for \( K \) (left) and
+                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
+    \label{figQuartic}
+  \end{figure}
+
+
 
 \section*{References}
 \bibliography{bibl}

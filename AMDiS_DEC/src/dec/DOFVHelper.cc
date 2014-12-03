@@ -40,6 +40,24 @@ namespace AMDiS {
     return rval;
   }
 
+  DOFVector<double> sqrtScale(const DOFVector<double>& x)
+  {
+    FUNCNAME("DOFVector<double>::sqrtScale(const DOFVector<double>& x)");
+
+    DOFVector<double>::Iterator xIterator(const_cast<DOFVector<double>*>(&x), USED_DOFS);
+    
+    DOFVector<double> rval(x.getFeSpace(), "sqrtScaledValues");
+    DOFVector<double>::Iterator rvalIterator(&rval, USED_DOFS);
+
+    double xmin = x.min();
+    double xmax = x.max();
+    for (xIterator.reset(), rvalIterator.reset(); !xIterator.end(); ++xIterator, ++rvalIterator) {
+      *rvalIterator = ((*xIterator) >= 0) ? (sqrt((*xIterator)/xmax)) : (-sqrt((*xIterator)/xmin));
+    }
+
+    return rval;
+  }
+
   DOFVector<double> mag(const DOFVector<WorldVector<double> >& v)
   {
     FUNCNAME("DOFVector<double>::halfMag(const DOFVector<double>& x, const DOFVector<double>& y, const DOFVector<double>& z)");

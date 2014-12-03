@@ -93,9 +93,13 @@ int main(int argc, char* argv[])
 
   DOFVector<double> gcWeingarten = prod01(eigDofVector);
   VtkVectorWriter::writeFile(gcWeingarten, "output/GaussWeingarten.vtu");
+  DOFVector<double> gcWeingartenScaled = sqrtScale(gcWeingarten);
+  VtkVectorWriter::writeFile(gcWeingartenScaled, "output/GaussWeingartenScaled.vtu");
 
   DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
   VtkVectorWriter::writeFile(mcWeingarten, "output/MeanWeingarten.vtu");
+  DOFVector<double> mcWeingartenScaled = sqrtScale(mcWeingarten);
+  VtkVectorWriter::writeFile(mcWeingartenScaled, "output/MeanWeingartenScaled.vtu");
 
   MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
   mwriter.appendData(sphere.getFeSpace(),true);

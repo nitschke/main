@@ -19,8 +19,8 @@ hHeine1 = [
 0.0717,
 0.0407,
 0.0231,
-0.0131,
-0.00743
+0.0131#,
+#0.00743
 ]
 
 hHeine2 = [
@@ -30,8 +30,8 @@ hHeine2 = [
 0.0784,
 0.0441,
 0.0249,
-0.014,
-0.00787
+0.014#,
+#0.00787
 ]
 
 hHeine3 = [
@@ -41,8 +41,8 @@ hHeine3 = [
 0.0863,
 0.0486,
 0.0273,
-0.0154,
-0.00856
+0.0154#,
+#0.00856
 ]
 
 hHeine4 = [
@@ -85,8 +85,8 @@ errHeine1 = [
 1.2,
 1.2,
 1.2,
-1.2,
-1.2
+1.2#,
+#1.2
 ]
 
 errHeine2 = [
@@ -96,8 +96,8 @@ errHeine2 = [
 0.016,
 0.0053,
 0.0017,
-0.00053,
-0.00017
+0.00053#,
+#0.00017
 ]
 
 errHeine3 = [
@@ -107,8 +107,8 @@ errHeine3 = [
 0.037,
 0.01,
 0.0032,
-0.001,
-0.00034
+0.001#,
+#0.00034
 ]
 
 errHeine4 = [
@@ -141,7 +141,8 @@ plt.rc('text', usetex=True)
 plt.rc('xtick', labelsize=16)
 plt.rc('ytick', labelsize=16)
 plt.rc('axes', labelsize=16)
-plt.xlim([0.007,0.8]);
+#plt.xlim([0.007,0.8]);
+plt.xlim([0.01,0.8]);
 
 #plt.rc('font', family='serif')
 #plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
