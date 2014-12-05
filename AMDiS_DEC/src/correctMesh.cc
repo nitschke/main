@@ -69,37 +69,37 @@ using namespace AMDiS;
 //  }
 //};
 
-// Chmutov
-class Phi : public AbstractFunction<double, WorldVector<double> >
-{
-public:
-  Phi() : AbstractFunction<double, WorldVector<double> >(1) {}
-
-  double operator()(const WorldVector<double>& x) const 
-  {
-    double x2 = x[0] * x[0];
-    double y2 = x[1] * x[1];
-    double z2 = x[2] * x[2];
-    double x4 = x2 * x2;
-    double y4 = y2 * y2;
-    double z4 = z2 * z2;
-    return x4 + y4 + z4 - x2 - y2 - z2 - 0.375;
-  }
-};
-
-class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
-{
-public:
-  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >(1) {}
-
-  WorldVector<double> operator()(const WorldVector<double>& x) const 
-  {
-    WorldVector<double> rval(x);
-    rval *= -2.0;
-    for (int i = 0; i < 3; i++) rval[i] = rval[i] + 4.0 * x[i] * x[i] * x[i];
-    return rval;
-  }
-};
+//// Chmutov
+//class Phi : public AbstractFunction<double, WorldVector<double> >
+//{
+//public:
+//  Phi() : AbstractFunction<double, WorldVector<double> >(1) {}
+//
+//  double operator()(const WorldVector<double>& x) const 
+//  {
+//    double x2 = x[0] * x[0];
+//    double y2 = x[1] * x[1];
+//    double z2 = x[2] * x[2];
+//    double x4 = x2 * x2;
+//    double y4 = y2 * y2;
+//    double z4 = z2 * z2;
+//    return x4 + y4 + z4 - x2 - y2 - z2 - 0.375;
+//  }
+//};
+//
+//class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+//{
+//public:
+//  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >(1) {}
+//
+//  WorldVector<double> operator()(const WorldVector<double>& x) const 
+//  {
+//    WorldVector<double> rval(x);
+//    rval *= -2.0;
+//    for (int i = 0; i < 3; i++) rval[i] = rval[i] + 4.0 * x[i] * x[i] * x[i];
+//    return rval;
+//  }
+//};
 
 
 
@@ -114,11 +114,11 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
-  //new TorusProject(1, VOLUME_PROJECTION);
-  //WorldVector<double> ballCenter;
-  //ballCenter.set(0.0);
-  //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
+  //new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
+  WorldVector<double> ballCenter;
+  ballCenter.set(0.0);
+  new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
   
 
   // ===== create and init the scalar problem ===== 
@@ -139,16 +139,16 @@ int main(int argc, char* argv[])
   int nMax;
   Parameters::get("meshCorrector->nMax", nMax);
 
+  string meshOut;
+  Parameters::get("meshCorrector->outName", meshOut);
   MeshCorrector mc(sphere.getFeSpace());
-  mc.iterate(nMax, h, "Chmutov");
+  mc.iterate(nMax, h, meshOut);
 
 
   // ===== start adaption loop =====
   adapt->adapt();
 
 
-  string meshOut;
-  Parameters::get("meshCorrector->outName", meshOut);
   //MacroWriter::writeMacro(new DataCollector<double>(sphere.getFeSpace()), meshOut.c_str());
   //DOFVector<double> *phi = new DOFVector<double>(sphere.getFeSpace(),"phi");
   //phi->interpol(new Phi());

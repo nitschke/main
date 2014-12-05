@@ -12,7 +12,8 @@ name = ["MaxDiameter", "AvDiameter"]
 n = len(name)
 last = 100000
 #with open('../meshStatsbunny.csv', 'rb') as f:
-with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
+#with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
+with open('../meshStatssphere100.csv', 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]
     k = 0
@@ -29,6 +30,8 @@ for i in arange(n):
 
 #semilogx([1,last],[90,90],'k'+lineStyles[i+1],label="wellcentered", linewidth=lw)
 #plot([0,last],[90,90],"--",label="wellcentered")
+
+    
 
 grid(True)
 legend()

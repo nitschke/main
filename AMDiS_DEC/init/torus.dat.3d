@@ -1,6 +1,6 @@
 dimension of world:      3
 
-torusMesh->macro file name:       ./macro/torus1k.3d
+torusMesh->macro file name:       ./macro/torus250k_improved.3d
 %torusFlavors: 500, (1, 2, 5, 10, 25, 50, 100, 250)k
 torusMesh->global refinements:    0
 torusMesh->check:                 0
@@ -8,7 +8,7 @@ torusMesh->check:                 0
 torus->mesh:                    torusMesh
 torus->dim:                     2
 torus->polynomial degree[0]:    1
-torus->components:              1
+torus->components:              4
 
 torus->solver:                bicgstab2 %bicgstab_ell %tfqmr %bicgstab2
 torus->solver->ell:           2

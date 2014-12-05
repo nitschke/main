@@ -1,10 +1,12 @@
 #include "AMDiS.h"
 #include "decOperator.h"
-#include "MatrixHelper.h"
+#include "meshCorrector.h"
 #include "MeshHelper.h"
 #include "WorldVectorHelper.h"
+#include "MatrixHelper.h"
 #include "DOFVHelper.h"
 #include "torusProjection.h"
+
 
 using namespace std;
 using namespace AMDiS;
@@ -12,6 +14,20 @@ using namespace AMDiS;
 // ===========================================================================
 // ===== function definitions ================================================
 // ===========================================================================
+
+class X : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  X(int i_) : AbstractFunction<double, WorldVector<double> >(1), i(i_) {}
+
+  double operator()(const WorldVector<double>& x) const 
+  {
+    return x[i];
+  }
+
+protected:
+  int i;
+};
 
 class MC : public AbstractFunction<double, WorldVector<double> >
 {
@@ -88,25 +104,7 @@ private:
   int i;
 };
 
-class NormalVec : public AbstractFunction< WorldVector<double>, WorldVector<double> >
-{
-public:
-  NormalVec() : AbstractFunction< WorldVector<double>, WorldVector<double> >(0), n0(0), n1(1), n2(2) {}
 
-  WorldVector<double> operator()(const WorldVector<double>& x) const
-  {
-    WorldVector<double> rval;
-    rval[0] = n0(x);
-    rval[1] = n1(x);
-    rval[2] = n2(x);
-    return rval;
-  }
-
-private:
-  Normal n0;
-  Normal n1;
-  Normal n2;
-};
 
 
 // ===========================================================================
@@ -119,6 +117,7 @@ int main(int argc, char* argv[])
 
   AMDiS::init(argc, argv);
 
+  // ===== create projection =====
   new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
 
   // ===== create and init the scalar problem ===== 
@@ -134,43 +133,22 @@ int main(int argc, char* argv[])
 					       &torus,
 					       adaptInfo);
   
-
-  int oh = 0;
   for (int i = 0; i < 3; i++) {
-    // N
-    //torus.addMatrixOperator(new SimpleDEC(torus.getFeSpace(i+oh), torus.getFeSpace(i+oh)), i+oh, i+oh);
-    //torus.addVectorOperator(new DualPrimalNormalDEC(i, torus.getFeSpace(i+oh)), i+oh);
-    for (int j = 0; j < 3; j++) {
-       int pos = matIndex(i,j) + oh;
-       //int pos = matIndex(i,j) + oh + 3;
-       // -II_ij
-       SimpleDEC *II = new SimpleDEC(torus.getFeSpace(pos), torus.getFeSpace(pos));
-       II->setFactor(-1.0);
-       torus.addMatrixOperator(II, pos, pos);
-       // [d(N_j)]_i
-       //PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, torus.getFeSpace(pos), torus.getFeSpace(j+oh));
-       //torus.addMatrixOperator(dN, pos, j+oh);
-       // with known normal
-       PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), torus.getFeSpace(pos), torus.getFeSpace(j+oh));
-       dN->setFactor(-1.0);
-       torus.addVectorOperator(dN, pos);
-    }
+    // ===== create matrix operator =====
+    torus.addMatrixOperator(new SimpleDEC(torus.getFeSpace(i), torus.getFeSpace(i)), i, i);
+    // ===== create rhs operator =====
+    torus.addVectorOperator(new LBeltramiInteriorFunctionDEC(new X(i), torus.getFeSpace(i)), i);
   }
   
+  // GaussCurv: geometric operator
+  SimpleDEC *gaussCurv = new SimpleDEC(torus.getFeSpace(3),torus.getFeSpace(3) );
+  torus.addMatrixOperator(gaussCurv, 3, 3);
+
+  GaussCurvatureDEC *rhs = new GaussCurvatureDEC(torus.getFeSpace(3));
+  torus.addVectorOperator(rhs,3);
 
   // ===== start adaption loop =====
   adapt->adapt();
-
-  WorldMatrix<DOFVector<double> * > IIDV;
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      IIDV[i][j] = torus.getSolution(matIndex(i,j) + oh);
-      //IIDV[i][j] = torus.getSolution(matIndex(i,j) + oh + 3);
-    }
-  }
-
-  DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
-  VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
 
   DOFVector<double> gcDOFV(torus.getFeSpace(),"GaussCurvExact");
   gcDOFV.interpol(new GC());
@@ -180,19 +158,17 @@ int main(int argc, char* argv[])
   mcDOFV.interpol(new MC());
   VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
 
-  DOFVector<double> gcWeingarten = prod01(eigDofVector);
-  VtkVectorWriter::writeFile(gcWeingarten, string("output/gaussWeingarten.vtu"));
-  printError(gcWeingarten, gcDOFV, "GaussWeingarten");
+  DOFVector<double> gcBonnet = *(torus.getSolution(3));
+  printError(gcBonnet, gcDOFV, "GaussBonnet");
+  VtkVectorWriter::writeFile(gcBonnet, string("output/GaussBonnet"));
 
-  DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
-  VtkVectorWriter::writeFile(mcWeingarten, string("output/meanWeingarten.vtu"));
-  printError(mcWeingarten, mcDOFV, "MeanWeingarten");
-
-  DOFVector<WorldVector<double> > normalDOFV(torus.getFeSpace(),"Normal");
-  normalDOFV.interpol(new NormalVec());
-  VtkVectorWriter::writeFile(normalDOFV, string("output/normals.vtu"));
-  printError(*(torus.getSolution()), 0, 1, 2, normalDOFV, "Normal");
-
+  DOFVector<double> mcMagY = halfMag(*(torus.getSolution(0)), 
+                                     *(torus.getSolution(1)), 
+                                     *(torus.getSolution(2)),
+                                     "LaplaceMean",
+                                     true);
+  printError(mcMagY, mcDOFV, "MeanMagY");
+  VtkVectorWriter::writeFile(mcMagY, "output/MeanMagY.vtu");
 
   MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
   mwriter.appendData(torus.getFeSpace(),true);
