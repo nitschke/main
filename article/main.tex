@@ -304,7 +304,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
         \sigma^{2}\).
         Figure \ref{figLocalIndexing} clarify this setting.
         The coefficients \( C^{\sigma^{2}}_{0,l}\in\R \) are generally defined by
-        \begin{align}
+        \begin{align} \label{eqLokalMatrixLaplace}
                C^{\sigma^{2}}_{k,l} &:= C^{\sigma^{2}}_{l,k}
                             := \frac{\left| \star \left[ v^{\sigma^{2}}_{k}, v^{\sigma^{2}}_{l} \right] 
                                             \cap \sigma^{2}\right|}
@@ -399,6 +399,50 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       
 \section{Curvature approximations}
   \subsection{Curvature vector} \label{secCurvatureVector}
+    The curvature vector \( \vec{H} \) is given by
+    \begin{align}
+      \vec{H} = 2 H \vec{\nu}
+    \end{align}
+    for the mean curvature \( H \) and normals \( \vec{\nu} \). 
+    In this paper, the mean curvature is set as the arithmetic mean of the two principal curvatures and
+    \( H \) should be all over positive for a sphere (i.e. \( H\equiv1 \) on \( \mathds{S}^{2} \)).
+    \( H \) and \( \vec{H} \) are extrinsic curvature values.
+    This means, that an two dimensional ``inhabitant'' of the surface can't determine this kind of curvature 
+    in contrast to the Gaussian curvatures.
+    With the inclusion map \( \vec{x}:= \R^{3}\supset M \hookrightarrow \R^{3} \), which is the position vector of \( M \) in \( \R^{3} \),
+    the curvature vector can be calculated by (see \cite[Ch. 5]{chen}, \cite[Ch. 4.5]{flanders} or \cite{elliott})
+    \begin{align} \label{eqCurvatureVector}
+      -\Delta_{B}\vec{x} = \vec{H} \formpunkt
+    \end{align}
+    (Note that \( \vec{x} \) is an isometric immersion with the common induced metric from \( \R^{3} \).)
+    The equation \eqref{eqCurvatureVector} is component-wise to read and can be discretized with 
+    discrete Laplace-Beltrami operator in \eqref{eqDisLaplace}, 
+    where \( f \) becomes the \mh{i}{th} coordinate functions \( x^{i} \) for
+    \( i=0,1,2 \).
+    Hence, we can easily build the local coefficients matrices for the elements \( \sigma^{2} \) 
+    with \( A^{\sigma^{2}} \) from \eqref{eqLokalMatrixLaplace}:
+    \begin{align}
+      \begin{bmatrix}
+        A^{\sigma^{2}} & 0 & 0 \\
+        0 & A^{\sigma^{2}} & 0 \\
+        0 & 0 & A^{\sigma^{2}}
+      \end{bmatrix}
+    \end{align}
+    to determine the left-hand side of the system
+    \begin{align} \label{eqDisCurvatureVector}
+      \left\langle *\Delta_{B} x^{i}, \star v \right\rangle
+        &= \left\langle *H^{i}, \star v \right\rangle \formpunkt
+    \end{align}
+    for all vertices \( v\in K \) and \( i=0,1,2 \).
+    \( H^{i}\in \R \) are the components of the curvature vector.
+    The right-hand side of \eqref{eqDisCurvatureVector} can be locally represented by the decomposed Voronoi area 
+    \begin{align}
+      C^{\sigma^{2}}_{i} = \left|  \right|
+    \end{align}
+    around \( v \).
+    
+
+
   \subsection{Weingarten map} \label{secWeingarten}
 
 \section{Results} \label{secResults}
