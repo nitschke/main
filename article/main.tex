@@ -400,7 +400,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 \section{Curvature approximations}
   \subsection{Curvature vector} \label{secCurvatureVector}
     The curvature vector \( \vec{H} \) is given by
-    \begin{align}
+    \begin{align}\label{eqMeanCurvCurvVec}
       \vec{H} = 2 H \vec{\nu}
     \end{align}
     for the mean curvature \( H \) and normals \( \vec{\nu} \). 
@@ -415,35 +415,112 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       -\Delta_{B}\vec{x} = \vec{H} \formpunkt
     \end{align}
     (Note that \( \vec{x} \) is an isometric immersion with the common induced metric from \( \R^{3} \).)
-    The equation \eqref{eqCurvatureVector} is component-wise to read and can be discretized with 
-    discrete Laplace-Beltrami operator in \eqref{eqDisLaplace}, 
+
+    The equation \eqref{eqCurvatureVector} is to read component-wise and can be discretized with 
+    the discrete Laplace-Beltrami operator in \eqref{eqDisLaplace}, 
     where \( f \) becomes the \mh{i}{th} coordinate functions \( x^{i} \) for
     \( i=0,1,2 \).
-    Hence, we can easily build the local coefficients matrices for the elements \( \sigma^{2} \) 
-    with \( A^{\sigma^{2}} \) from \eqref{eqLokalMatrixLaplace}:
-    \begin{align}
-      \begin{bmatrix}
-        A^{\sigma^{2}} & 0 & 0 \\
-        0 & A^{\sigma^{2}} & 0 \\
-        0 & 0 & A^{\sigma^{2}}
-      \end{bmatrix}
-    \end{align}
-    to determine the left-hand side of the system
+    I.e. we solve for all vertices \( v\in K \) and \( i=0,1,2 \).
     \begin{align} \label{eqDisCurvatureVector}
       \left\langle *\Delta_{B} x^{i}, \star v \right\rangle
-        &= \left\langle *H^{i}, \star v \right\rangle \formpunkt
+        &= \left\langle *H^{i}_{LX}, \star v \right\rangle \formpunkt
     \end{align}
-    for all vertices \( v\in K \) and \( i=0,1,2 \).
-    \( H^{i}\in \R \) are the components of the curvature vector.
-    The right-hand side of \eqref{eqDisCurvatureVector} can be locally represented by the decomposed Voronoi area 
+    \( H^{i}_{LX}\in \R \) are the components of the approximated curvature vector.
+    The right-hand side (RHS) of \eqref{eqDisCurvatureVector} can be locally represented by the decomposed Voronoi area 
     \begin{align}
-      C^{\sigma^{2}}_{i} = \left|  \right|
+      C^{\sigma^{2}}_{i} = \left| \star v \cap \sigma^{2}  \right|
     \end{align}
-    around \( v \).
+    around \( v\prec\sigma^{2} \).
+    Hence, the local coefficients matrix of the RHS of \eqref{eqDisCurvatureVector}
+    (and generally for all Zero-Order-Terms of scalar valued functions) becomes
+    \begin{align}
+      \begin{bmatrix}
+        C^{\sigma^{2}}_{0} & 0 & 0 \\
+        0 & C^{\sigma^{2}}_{1} & 0 \\
+        0 & 0 & C^{\sigma^{2}}_{2}
+      \end{bmatrix}
+    \end{align}
+    and can be assembly in a common way.
+
+    The mean curvature \( H \) is determined with \eqref{eqMeanCurvCurvVec} by taking the euclidean \mh{\R^{3}}{norm}
+    \begin{align}
+      H_{LX} = \frac{s}{2}\left\| \vec{H}_{LX} \right\|_{\R^{3}}
+    \end{align}
+    on every vertex with respect to the sign \( s:K^{(0)}\rightarrow\left\{ +1,-1 \right\} \),
+    which depends on the direction of \(  \vec{H}_{LX} \).
+    If the approximated curvature vector point outward the polytop \( K \), then is \( s=+1 \) and vice versa. 
+
+    
     
 
 
   \subsection{Weingarten map} \label{secWeingarten}
+    The Weingarten map (shape operator) \( S \)
+    can be obtained by rising on time the indices of the second fundamental form \( \II \)
+    (see \cite{FirstCourse}),
+    i.e. \( S = (g)^{-1}\II \) with a metric tensor \( g \),
+    or by the exterior derivatives of the normal components:
+    \begin{align}
+    \begin{aligned}\label{eqDefWeingarten}
+      S: T_{\vec{x}}M &\rightarrow T_{\vec{x}}M \\
+                    \vec{w} &\mapsto \exd\vec{\nu} \left( \vec{w} \right) \formpunkt
+    \end{aligned}
+    \end{align}
+    In particularly, \( \exd\nu^{i} \left( \vec{w} \right) \) is the directional derivative of the \mh{i}{th} normal component \( \nu^{i} \) 
+    along \( \vec{w} \).
+    The eigenvalues of \( S \) are the principal curvatures \( \kappa_{1} \) and \( \kappa_{2} \).
+    Note that the linear operator \( S \) by \eqref{eqDefWeingarten} as matrix have a column space in local coordinates 
+    and depends on the choice of the parametrisation as a consequence.
+    A more manageable formulation is the extended Weingarten map
+    \begin{align}\label{eqDefExWeingarten}
+      \bar{S}:= \nabla\vec{\nu} \formkomma
+    \end{align}
+    which can be defined on the entire tangential space of the \( \R^{3} \) (if the normal vectors of \( M \) are smoothly extended to them).
+    The point is, that \( \bar{S} \), restricted to \( T_{\vec{x}}M \), is the Weingarten map \( S \) (see \cite[Pt. 2, Ch. 2]{kimura}),
+    with the additive eigenvalue 0,
+    and \eqref{eqDefExWeingarten} can be approximated by our discrete average gradient \eqref{eqGradientAverage},
+    i.e. we calculate the \mh{i}{th} row \( \bar{s}_{i}\in\R^{3} \) of the discrete extended Weingarten map \( \bar{S}_{W}\in\R^{3\times 3} \) by
+    \begin{align} \label{eqDisWeingarten}
+      \left\langle *\overline{\nabla}\nu^{i} , \star v \right\rangle 
+        &= \left\langle *\bar{s}_{i} , \star v \right\rangle
+    \end{align}
+    on all vertices \( v\in K \).
+    For numerical reason we symmetrize \( \bar{S}_{W} \) by
+    \begin{align}
+      \bar{S}_{W}^{Sym} &:= \frac{1}{2}\left( \bar{S}_{W} + \bar{S}_{W}^{T} \right)
+    \end{align}
+    to get the same property like the smooth extended Weingarten map.
+    To obtain the eigenvalues we use the QR-algorithm of the MTL4\footnote{Matrix Template Library 4}.
+    The lowest eigenvalue regarding to the absolute value is omitted.
+    So w.l.o.g.
+    \begin{align}
+      \left\{\kappa_{1},\kappa_{2}\right\} &\approx \left\{ \kappa_{W,1}, \kappa_{W,2} \right\} \\ 
+                    &:= \left\{ \lambda\in\text{Eig}(\bar{S}_{W}^{Sym}) \middle|\ \exists\lambda_{0}\in\text{Eig}(\bar{S}_{W}^{Sym}): \left| \lambda \right| > \lambda_{0} \right\} 
+    \end{align}
+    Hence, the approximated Gauss and mean curvatures are
+    \begin{align}
+      K_{W} &:= \kappa_{W,1} \cdot \kappa_{W,2} \\
+      H_{W} &:= \frac{1}{2}\left( \kappa_{W,1} + \kappa_{W,2} \right) \formpunkt
+    \end{align}
+
+    The equations \eqref{eqDisWeingarten} can be applied, only if we know the exact normals of the manifolds on the vertices, 
+    e.g. if the surface \( M \) is described by the 0-level-set of a signed distance function \( \varphi:\R^{3}\rightarrow\R \),
+    then is
+    \begin{align}
+      \vec{\nu} &= \frac{\nabla_{\R^{3}}\varphi}{\left\| \nabla_{\R^{3}}\varphi \right\|} \formpunkt
+    \end{align}
+    For arbitrary surface triangulations, where the smooth manifold is unknown, like in figure \ref{figBunnyHorseCurvature},
+    we must approximate the normals on the vertices before.
+    A simple way to do that, is to average the element normals \( \vec{\nu}^{\sigma^{2}} \) of a triangle \( \sigma^{2}\in K \)
+    over the Voronoi area:
+    \begin{align}
+      \left\langle *\vec{\nu}_{\avn} , \star v \right\rangle
+        &:= \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right| \vec{\nu}^{\sigma^{2}} \formpunkt
+    \end{align}
+    With the same procedure above, we get the approximated curvatures \( K_{W,\avn} \) and \( H_{W,\avn} \).
+
+
+
 
 \section{Results} \label{secResults}
   
@@ -456,23 +533,10 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \varphi\left( x,y,z \right) &:= \left( x - z^{2} \right)^{2} + \left( y - z^{2} \right)^{2} + z^{2} - 1
   \end{align}
 
+
   \begin{figure}
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/sphere/L2K.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/sphere/L2H.eps}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/sphere/LMaxK.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/sphere/LMaxH.eps}
-    \end{minipage}
+    \centering\includegraphics[width=.49\textwidth]{bilder/sphere/L2K.eps}
+    \centering\includegraphics[width=.49\textwidth]{bilder/sphere/L2H.eps}
     \caption{Sphere \eqref{eqSphere}: Relative \( L_{2} \) (top) resp. \( L_{\infty} \) (bottom) error for \( K \) (left) and
                                                      \( H \) (right) for different \( h \) in a log-log-plot.}
     \label{figSphere}
