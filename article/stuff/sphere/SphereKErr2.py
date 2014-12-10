@@ -134,20 +134,22 @@ lineStyles = ['-','--', '-.', ':','', ' ', 'None']
 
 plt.rc('text', usetex=True)
 
-plt.rc('xtick', labelsize=16)
-plt.rc('ytick', labelsize=16)
-plt.rc('axes', labelsize=16)
+#plt.rc('xtick', labelsize=25)
+#plt.rc('ytick', labelsize=25)
+#plt.rc('axes', labelsize=25)
 plt.xlim([0.007,0.16]);
 
-plt.rcParams['lines.linewidth'] = 3
-plt.rcParams['lines.markersize'] = 10
+plt.rcParams['font.size'] = 23
+plt.rcParams['lines.linewidth'] = 6
+plt.rcParams['lines.markersize'] = 12
+plt.rcParams['lines.marker'] = 'd'
 
 #plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
-plt.loglog(hDEC, errSK, '-D', label=r"Weingarten",);
-plt.loglog(hDEC, errSKAvN, label=r"Weingarten (AvN)");
-plt.loglog(hDEC, errGB, label=r"Gauss-Bonnet");
+plt.loglog(hDEC, errSK, label=r"W",);
+plt.loglog(hDEC, errSKAvN, label=r"W,AvN");
+plt.loglog(hDEC, errGB, label=r"GB");
 #plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
-plt.loglog(hHeine2, errHeine2, label=r"FEM Degree 2", marker="D");
+plt.loglog(hHeine2, errHeine2, label=r"FEM-D2");
 #plt.loglog(hHeine3, errHeine3, label=r"FEM Degree 3", linewidth=4);
 #plt.loglog(hHeine4, errHeine4, label=r"FEM Degree 4", linewidth=4);
 
@@ -155,6 +157,7 @@ xlabel("h");
 ylabel(r"$Err_{2}$");
 title(r"$L_{2}$-Error for $K$ on sphere");
 
-grid(True)
+grid(True, which="major", ls='-')
+grid(True, which="minor")
 legend(loc='lower right')
 show()

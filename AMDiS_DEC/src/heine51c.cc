@@ -211,7 +211,7 @@ int main(int argc, char* argv[])
 
   DOFVector<double> gcBonnet = *(sphere.getSolution(3));
   printError(gcBonnet, gcDOFV, "GaussBonnet");
-  VtkVectorWriter::writeFile(gcBonnet, string("output/GaussBonnet"));
+  VtkVectorWriter::writeFile(gcBonnet, string("output/GaussBonnet.vtu"));
 
   DOFVector<double> gcWeingarten = prod01(eigDofVector);
   printError(gcWeingarten, gcDOFV, "GaussWeingarten");

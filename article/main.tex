@@ -537,9 +537,18 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
   \begin{figure}
     \centering\includegraphics[width=.49\textwidth]{bilder/sphere/L2K.eps}
     \centering\includegraphics[width=.49\textwidth]{bilder/sphere/L2H.eps}
-    \caption{Sphere \eqref{eqSphere}: Relative \( L_{2} \) (top) resp. \( L_{\infty} \) (bottom) error for \( K \) (left) and
-                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
-    \label{figSphere}
+    \caption{Sphere \eqref{eqSphere}: Relative \( L_{2} \) error for \( K \) (top) and
+                                                     \( H \) (bottom) for different \( h \) in a log-log-plot.}
+    \label{figSphereL2Err}
+  \end{figure}
+
+  \begin{figure}
+    \centering\includegraphics[width=.49\textwidth]{bilder/sphere/ErrView.jpg}
+    \caption{Sphere \eqref{eqSphere}:
+                  The maximal errors for \( K_{W,\avn} \) keeps on the 12 vertices with 1-rings of 5 triangles.
+                  25002 DOFs were used (\( h\approx 0.03 \)).
+                  The errors for \( H_{W,\avn} \) results in a similar picture.}
+    \label{figSphereErrView}
   \end{figure}
 
   \begin{figure}
@@ -550,27 +559,26 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \begin{minipage}[htp]{.23\textwidth}
       \centering
       \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/H.jpg}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/L2K.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/L2H.eps}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/LMaxK.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/LMaxH.eps}
     \end{minipage}
-    \caption{Ellipsoid \eqref{eqEllipsoid}: Top row: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).
-                              Middle and bottom row: Relative \( L_{2} \) resp. \( L_{\infty} \) error for \( K \) (left) and
-                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
+    \caption{Ellipsoid \eqref{eqEllipsoid}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
     \label{figEllipsoid}
+  \end{figure}
+
+  \begin{figure}
+    \centering\includegraphics[width=.49\textwidth]{bilder/ellipsoid/L2K.eps}
+    \centering\includegraphics[width=.49\textwidth]{bilder/ellipsoid/L2H.eps}
+    \caption{Ellipsoid \eqref{eqEllipsoid}: Relative \( L_{2} \) error for \( K \) (top) and
+                                                     \( H \) (bottom) for different \( h \) in a log-log-plot.}
+    \label{figEllipsoidL2Err}
+  \end{figure}
+
+  \begin{figure}
+    \centering\includegraphics[width=.49\textwidth]{bilder/ellipsoid/ErrView.jpg}
+    \caption{Ellipsoid \eqref{eqEllipsoid}:
+                  The maximal errors for \( K_{W,\avn} \) keeps primarily  on the lateral 4 of all 12 vertices with 1-rings of 5 triangles.
+                  100002 DOFs were used (\( h\approx 0.026 \)).
+                  The errors for \( K_{GB} \) and \( H_{W,\avn} \) results in a similar picture.}
+    \label{figEllipsoidErrView}
   \end{figure}
 
   \begin{figure}
