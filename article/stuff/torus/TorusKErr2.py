@@ -51,23 +51,23 @@ lineStyles = ['-','--', '-.', ':','', ' ', 'None']
 
 plt.rc('text', usetex=True)
 
-plt.rc('xtick', labelsize=16)
-plt.rc('ytick', labelsize=16)
-plt.rc('axes', labelsize=16)
-#plt.xlim([0.007,0.8]);
-plt.xlim([0.01,0.3]);
+plt.xlim([0.018,0.3]);
+plt.rcParams['font.size'] = 23
+plt.rcParams['lines.linewidth'] = 6
+plt.rcParams['lines.markersize'] = 12
+plt.rcParams['lines.marker'] = 'd'
 
 #plt.rc('font', family='serif')
 #plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
-plt.loglog(hDEC, errSK, label=r"Weingarten", linewidth=4);
-plt.loglog(hDEC, errSKAvN, label=r"Weingarten (AvN)", linewidth=4);
-plt.loglog(hDEC, errGB, label=r"Gauss-Bonnet", linewidth=4);
+plt.loglog(hDEC, errSK, label=r"W");
+plt.loglog(hDEC, errSKAvN, label=r"W,AvN");
+plt.loglog(hDEC, errGB, label=r"GB");
 
 xlabel("h");
 ylabel(r"$Err_{2}$");
 title(r"$L_{2}$-Error for $K$ on torus");
 
-
-grid(True)
+grid(True, which="major", ls='-')
+grid(True, which="minor")
 legend(loc='lower right')
 show()

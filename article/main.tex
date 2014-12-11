@@ -517,8 +517,55 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       \left\langle *\vec{\nu}_{\avn} , \star v \right\rangle
         &:= \sum_{\sigma^{2}\succ v} \left| \star v \cap \sigma^{2} \right| \vec{\nu}^{\sigma^{2}} \formpunkt
     \end{align}
-    With the same procedure above, we get the approximated curvatures \( K_{W,\avn} \) and \( H_{W,\avn} \).
+    With these discrete normals on the vertices and the same procedure above, 
+    we get then the approximated curvatures \( K_{W,\avn} \) and \( H_{W,\avn} \).
 
+  \subsection{Gauss-Bonnet-Operator}
+    Thus far, we have two approaches for the mean curvature with sections \ref{secCurvatureVector} and \ref{secWeingarten}.
+    For a second approach of the Gauss curvature, we want to use a Gauss-Bonnet approximation, like in \cite{polthier} or \cite{octavian}, for comparison reasons.
+    
+    On the abstract Voronoi cell \( \pi(\star v) \) (arise by projecting to the manifold) of a vertex \( v \), 
+    it holds the Gauss-Bonnet theorem \cite{berger}:
+    \begin{align}
+      \label{eqGaussBonnet}
+      \int_{\pi(\star v)}K \mu = 2\pi - \sum_{i=1}^{m_{v}}\tilde{\beta_{i}} - \int_{\partial\pi(\star v)} k_{g} ds \formpunkt
+    \end{align}
+    \( \mu\in\Omega^{2}(M)  \) is the volume form, \( k_{g} \) the geodetic curvature on the boundary edges of the cell 
+    and \( \tilde{\beta_{i}} \) the \( m_{v} \) exterior angles of the boundary on the Voronoi vertices.
+    This can be approximated on the simplicial complex \( K \) by omitting the projection.
+    The geodetic curvature \( k_{g} \) vanish on the straight lines and on the bucklings, where the dual edges intersect the primal edges.
+    Hence, in our DEC notation, we get
+    \begin{align}
+      \label{eqDisGaussBonnet}
+      \left\langle *K_{GB} , \star v \right\rangle &:= 2\pi - \sum_{i=1}^{m_{v}}\beta_{i}
+    \end{align}
+    on a vertex \( v\in K \), with the exterior angles \( \beta_{i} \).
+    \begin{figure}
+      \begin{minipage}[htp]{.235\textwidth}
+        \centering\includegraphics[width=.99\textwidth]{bilder/tikz/GaussBonnet.eps}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[htp]{.235\textwidth}
+        \centering\includegraphics[width=.99\textwidth]{bilder/tikz/ElementGaussBonnet.eps}
+      \end{minipage}
+      \caption{Left: \(  m = m_{v} =: \tilde{m}+1 \) exterior angles \( \beta_{i} \) on the vertices of a Voronoi cell.
+                The solid lines (with orientations) marks the dual (Voronoi) edges.
+               Right: Angles in a primal triangle referring to the edges from the circumcenter subdivision.}
+      \label{figGaussBonnet}
+    \end{figure}
+    We see in figure \ref{figGaussBonnet}, that it is possible to calculate the exterior angles by the local interior angles 
+    \( \alpha_{0} \) and \( \alpha_{1} \) on \( v \) for a
+    triangle \( \sigma^{2}\succ v \):
+    \begin{align}
+      \beta_{\bullet} = \pi - \gamma_{0} - \gamma_{1} = \alpha_{0} + \alpha_{1} \formpunkt
+    \end{align}
+    Because the interior angles are determinable by the length measures of the edges, we get 
+    \begin{align}
+      \sum_{i=1}^{m_{v}}\beta_{i} &= \sum_{\sigma^{2}\succ v} \sum_{\sigma^{2}\succ\sigma^{1}\succ v}
+                               \text{atan2}\left( 2\left|\star\sigma^{1} \cap \sigma^{2} \right|, 
+                                 \left|\sigma^{1}\right|\right)
+    \end{align}
+    for the angle sum in \eqref{eqDisGaussBonnet}.
 
 
 
@@ -574,12 +621,16 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
   \begin{figure}
     \centering\includegraphics[width=.49\textwidth]{bilder/ellipsoid/ErrView.jpg}
+    \centering\includegraphics[width=.49\textwidth]{bilder/ellipsoid/ErrViewHLX.jpg}
     \caption{Ellipsoid \eqref{eqEllipsoid}:
-                  The maximal errors for \( K_{W,\avn} \) keeps primarily  on the lateral 4 of all 12 vertices with 1-rings of 5 triangles.
-                  100002 DOFs were used (\( h\approx 0.026 \)).
-                  The errors for \( K_{GB} \) and \( H_{W,\avn} \) results in a similar picture.}
+                  The maximal errors for \( K_{W,\avn} \) (top) keeps primarily  on the lateral 4 of all 12 vertices with 1-rings of 5 triangles.
+                  The errors for \( K_{GB} \) and \( H_{W,\avn} \) results in a similar picture.
+                  Slightly different is the situation at the errors for \( H_{LX} \) (bottom).
+                  There are the maximums partially on vertices in the neighbourhood. 
+                  100002 DOFs were used (\( h\approx 0.026 \)).}
     \label{figEllipsoidErrView}
   \end{figure}
+
 
   \begin{figure}
     \begin{minipage}[htp]{.23\textwidth}
@@ -589,27 +640,17 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \begin{minipage}[htp]{.23\textwidth}
       \centering
       \includegraphics[width=0.99\textwidth]{bilder/quartic/H.jpg}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/quartic/L2K.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/quartic/L2H.eps}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/quartic/LMaxK.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/quartic/LMaxH.eps}
     \end{minipage}
-    \caption{Quartic Surface \eqref{eqQuartic}: Top row: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).
-                              Middle and bottom row: Relative \( L_{2} \) resp. \( L_{\infty} \) error for \( K \) (left) and
-                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
+    \caption{Quartic surface\eqref{eqQuartic}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
     \label{figQuartic}
+  \end{figure}
+
+  \begin{figure}
+    \centering\includegraphics[width=.49\textwidth]{bilder/quartic/L2K.eps}
+    \centering\includegraphics[width=.49\textwidth]{bilder/quartic/L2H.eps}
+    \caption{Quartic surface \eqref{eqQuartic}: Relative \( L_{2} \) error for \( K \) (top) and
+                                                     \( H \) (bottom) for different \( h \) in a log-log-plot.}
+    \label{figQuarticL2Err}
   \end{figure}
 
   \begin{figure}
@@ -620,27 +661,17 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \begin{minipage}[htp]{.23\textwidth}
       \centering
       \includegraphics[width=0.99\textwidth]{bilder/torus/H.jpg}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/torus/L2K.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/torus/L2H.eps}
-    \end{minipage}\\
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/torus/LMaxK.eps}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/torus/LMaxH.eps}
     \end{minipage}
-    \caption{Torus: Top row: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).
-                              Middle and bottom row: Relative \( L_{2} \) resp. \( L_{\infty} \) error for \( K \) (left) and
-                                                     \( H \) (right) for different \( h \) in a log-log-plot.}
+    \caption{Torus: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
     \label{figTorus}
+  \end{figure}
+
+  \begin{figure}
+    \centering\includegraphics[width=.49\textwidth]{bilder/torus/L2K.eps}
+    \centering\includegraphics[width=.49\textwidth]{bilder/torus/L2H.eps}
+    \caption{Torus: Relative \( L_{2} \) error for \( K \) (top) and
+                                                     \( H \) (bottom) for different \( h \) in a log-log-plot.}
+    \label{figTorusL2Err}
   \end{figure}
 
 
