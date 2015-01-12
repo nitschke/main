@@ -14,47 +14,15 @@ hDEC = [
 0.01209790
 ]
 
-hHeine1 = [
-0.126,
-0.0717,
-0.0407,
-0.0231,
-0.0131#,
-#0.00743
-]
-
 hHeine2 = [
-0.395,
-0.242,
-0.138,
-0.0784,
-0.0441,
-0.0249,
-0.014#,
-#0.00787
+0.368,
+0.204,
+0.116,
+0.0673,
+0.0379,
+0.0214
 ]
 
-hHeine3 = [
-0.515,
-0.284,
-0.154,
-0.0863,
-0.0486,
-0.0273,
-0.0154#,
-#0.00856
-]
-
-hHeine4 = [
-0.793,
-0.448,
-0.244,
-0.144,
-0.0817,
-0.0464,
-0.0261,
-0.0146
-]
 
 errSK = [
 9.8203400E-01,
@@ -80,47 +48,16 @@ errGB = [
 7.2582200E-03
 ]
 
-errHeine1 = [
-0.41,
-0.41,
-0.42,
-0.42,
-0.42#,
-#0.42
-]
 
 errHeine2 = [
-0.052,
-0.025,
-0.0073,
-0.0019,
-0.00049,
-0.00012,
-3.10E-005#,
-#7.70E-006
+2.7,
+4.4,
+2.4,
+0.96,
+0.34,
+0.11
 ]
 
-errHeine3 = [
-0.27,
-0.096,
-0.021,
-0.0048,
-0.0012,
-0.00031,
-7.80E-005#,
-#2.00E-005
-]
-
-errHeine4 = [
-0.14,
-0.025,
-0.0015,
-0.00028,
-1.90E-005,
-2.80E-006,
-2.40E-007,
-3.40E-008
-]
 
 errSKAvN = [
 7.6599900E-01,
@@ -145,15 +82,10 @@ plt.rcParams['lines.linewidth'] = 6
 plt.rcParams['lines.markersize'] = 12
 plt.rcParams['lines.marker'] = 'd'
 
-#plt.rc('font', family='serif')
-#plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
 plt.loglog(hDEC, errSK, label=r"W");
 plt.loglog(hDEC, errSKAvN, label=r"W,AvN");
 plt.loglog(hDEC, errGB, label=r"GB");
-#plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
-plt.loglog(hHeine2, errHeine2, label=r"FEM-D2", linewidth=4);
-#plt.loglog(hHeine3, errHeine3, label=r"FEM Degree 3", linewidth=4);
-#plt.loglog(hHeine4, errHeine4, label=r"FEM Degree 4", linewidth=4);
+plt.loglog(hHeine2, errHeine2, label=r"FEM-D2");
 
 xlabel("h");
 ylabel(r"$Err_{2}$");

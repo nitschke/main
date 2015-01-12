@@ -138,7 +138,7 @@ plt.loglog(hDEC, errSK, label=r"W");
 plt.loglog(hDEC, errSKAvN, label=r"W,AvN");
 plt.loglog(hDEC, errGB, label=r"GB");
 #plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
-plt.loglog(hHeine2, errHeine2, label=r"FEM-D2", linewidth=4);
+plt.loglog(hHeine2, errHeine2, label=r"FEM-D2");
 #plt.loglog(hHeine3, errHeine3, label=r"FEM Degree 3", linewidth=4);
 #plt.loglog(hHeine4, errHeine4, label=r"FEM Degree 4", linewidth=4);
 

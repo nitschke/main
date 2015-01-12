@@ -83,12 +83,12 @@ errHeine1 = [
 ]
 
 errHeine2 = [
-0.23,
-0.09,
-0.025,
-0.0067,
-0.0017,
-0.00044
+0.086,
+0.06,
+0.026,
+0.011,
+0.0049,
+0.0024
 ]
 
 errHeine3 = [
@@ -133,13 +133,11 @@ plt.rcParams['lines.linewidth'] = 6
 plt.rcParams['lines.markersize'] = 12
 plt.rcParams['lines.marker'] = 'd'
 
-#plt.rc('font', family='serif')
-#plt.loglog(h, errWeinWN, 'k-', label=r"(KExN)", linewidth=4);
 plt.loglog(hDEC, errSH, label=r"W");
 plt.loglog(hDEC, errSHAvN, label=r"W,AvN");
 plt.loglog(hDEC, errLX, label=r"LX");
 #plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
-plt.loglog(hHeine2, errHeine2, label=r"FEM-D2", linewidth=4);
+plt.loglog(hHeine2, errHeine2, label=r"FEM-D2");
 #plt.loglog(hHeine3, errHeine3, label=r"FEM Degree 3", linewidth=4);
 #plt.loglog(hHeine4, errHeine4, label=r"FEM Degree 4", linewidth=4);
 

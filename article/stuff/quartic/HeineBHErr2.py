@@ -14,46 +14,14 @@ hDEC = [
 0.0120979
 ]
 
-hHeine1 = [
-0.126,
-0.0717,
-0.0407,
-0.0231,
-0.0131#,
-#0.00743
-]
 
 hHeine2 = [
-0.395,
-0.242,
-0.138,
-0.0784,
-0.0441,
-0.0249,
-0.014#,
-#0.00787
-]
-
-hHeine3 = [
-0.515,
-0.284,
-0.154,
-0.0863,
-0.0486,
-0.0273,
-0.0154#,
-#0.00856
-]
-
-hHeine4 = [
-0.793,
-0.448,
-0.244,
-0.144,
-0.0817,
-0.0464,
-0.0261,
-0.0146
+0.368,
+0.204,
+0.116,
+0.0673,
+0.0379,
+0.0214
 ]
 
 errSH = [
@@ -80,48 +48,15 @@ errLX = [
 2.6521100E-03
 ]
 
-errHeine1 = [
-0.17,
-0.18,
-0.18,
-0.18,
-0.18#,
-#0.18
-]
 
 errHeine2 = [
-0.021,
-0.0055,
-0.0014,
-0.00034,
-8.60E-005,
-2.20E-005,
-5.40E-006#,
-#1.40E-006
+0.25,
+0.15,
+0.073,
+0.039,
+0.018,
+0.0085
 ]
-
-errHeine3 = [
-0.11,
-0.048,
-0.011,
-0.0028,
-0.0007,
-0.00018,
-4.50E-005#,
-#1.10E-005
-]
-
-errHeine4 = [
-0.058,
-0.012,
-0.0008,
-0.00014,
-9.70E-006,
-1.40E-006,
-1.20E-007,
-1.70E-008
-]
-
 errSHAvN = [
 0.326261,
 0.300841,
@@ -132,6 +67,28 @@ errSHAvN = [
 0.089295,
 0.0472614,
 0.014991
+]
+
+hausdorff = [
+3.2202400E-01,
+2.4412700E-01,
+1.3399600E-01,
+2.4312500E-02,
+1.4245800E-02,
+7.8599600E-03,
+3.2672400E-03,
+1.2132800E-03
+]
+
+hausdorffTo = [
+1.7253700E-01,
+1.4136700E-01,
+1.0111200E-01,
+2.4732000E-02,
+1.4233000E-02,
+8.3140000E-03,
+3.3690000E-03,
+1.1360000E-03
 ]
 
 
@@ -149,10 +106,14 @@ plt.rcParams['lines.marker'] = 'd'
 plt.loglog(hDEC, errSH, label=r"W");
 plt.loglog(hDEC, errSHAvN, label=r"W,AvN");
 plt.loglog(hDEC, errLX, label=r"LX");
-#plt.loglog(hHeine1, errHeine1, label=r"FEM Degree 1", linewidth=4);
-plt.loglog(hHeine2, errHeine2, label=r"FEM-D2", linewidth=4);
-#plt.loglog(hHeine3, errHeine3, label=r"FEM Degree 3", linewidth=4);
-#plt.loglog(hHeine4, errHeine4, label=r"FEM Degree 4", linewidth=4);
+plt.loglog(hHeine2, errHeine2, label=r"FEM-D2");
+#plt.loglog(hDEC, hDEC, label=r"slope=1");
+#plt.loglog(hDEC, array(hDEC)*array(hDEC), label=r"slope=2");
+#plt.loglog(hDEC[0:-1], hausdorff, label=r"Hausdorff");
+#plt.loglog(hDEC[0:-1], hausdorffTo, label=r"Hausdorff");
+#plt.loglog(hausdorff, errSH[0:-1], label=r"W");
+#plt.loglog(hausdorff, errSHAvN[0:-1], label=r"W,AvN");
+#plt.loglog(hausdorff, errLX[0:-1], label=r"LX");
 
 xlabel("h");
 ylabel(r"$Err_{2}$");

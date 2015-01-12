@@ -30,7 +30,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \centering\includegraphics[width=.45\textwidth]{bilder/bunnyCurvature.jpg}
     \centering\includegraphics[width=.45\textwidth]{bilder/horseCurvature.jpg}
     \centering\includegraphics[width=.45\textwidth]{bilder/colourBar.jpg}
-    \caption{Surface curvature approximations of the Stanford Bunny and a horse.
+    \caption{Surface curvature approximations of the Stanford Bunny (39998 DOFs) and a horse (89983 DOFs).
              Left: Gaussian curvature \( K \) (square root scaled colours).
              Right: Mean curvature \( H \) (linear scaled colours)}
     \label{figBunnyHorseCurvature}
@@ -397,7 +397,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
 
       
-\section{Curvature approximations}
+\section{Curvature approximations} \label{secCurvatureApprox}
   \subsection{Curvature vector} \label{secCurvatureVector}
     The curvature vector \( \vec{H} \) is given by
     \begin{align}\label{eqMeanCurvCurvVec}
@@ -533,7 +533,8 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \( \mu\in\Omega^{2}(M)  \) is the volume form, \( k_{g} \) the geodetic curvature on the boundary edges of the cell 
     and \( \tilde{\beta_{i}} \) the \( m_{v} \) exterior angles of the boundary on the Voronoi vertices.
     This can be approximated on the simplicial complex \( K \) by omitting the projection.
-    The geodetic curvature \( k_{g} \) vanish on the straight lines and on the bucklings, where the dual edges intersect the primal edges.
+    The geodetic curvature \( k_{g} \) vanish on the straight lines and on the bucklings, where the dual edges intersect the primal edges
+    in right angles.
     Hence, in our DEC notation, we get
     \begin{align}
       \label{eqDisGaussBonnet}
@@ -550,14 +551,14 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
       \end{minipage}
       \caption{Left: \(  m = m_{v} =: \tilde{m}+1 \) exterior angles \( \beta_{i} \) on the vertices of a Voronoi cell.
                 The solid lines (with orientations) marks the dual (Voronoi) edges.
-               Right: Angles in a primal triangle referring to the edges from the circumcenter subdivision.}
+               Right: Local angles (\( \beta^{\sigma^{2}}:=\beta_{i} \)) in a primal triangle \( \sigma^{2} \) referring to the edges of the circumcenter subdivision.}
       \label{figGaussBonnet}
     \end{figure}
     We see in figure \ref{figGaussBonnet}, that it is possible to calculate the exterior angles by the local interior angles 
     \( \alpha_{0} \) and \( \alpha_{1} \) on \( v \) for a
     triangle \( \sigma^{2}\succ v \):
     \begin{align}
-      \beta_{\bullet} = \pi - \gamma_{0} - \gamma_{1} = \alpha_{0} + \alpha_{1} \formpunkt
+      \beta^{\sigma^{2}} = \pi - \gamma_{0} - \gamma_{1} = \alpha_{0} + \alpha_{1} \formpunkt
     \end{align}
     Because the interior angles are determinable by the length measures of the edges, we get 
     \begin{align}
@@ -571,14 +572,263 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
 \section{Results} \label{secResults}
   
-  \begin{align}
-    \label{eqSphere}
-    \varphi\left( x,y,z \right) &:= x^{2} + y^{2} + z^{2} - 1 \\
-    \label{eqEllipsoid}
-    \varphi\left( x,y,z \right) &:= \left( 3x \right)^{2} + \left( 6y \right)^{2} + \left( 2z \right)^{2} - 9\\
-    \label{eqQuartic}
-    \varphi\left( x,y,z \right) &:= \left( x - z^{2} \right)^{2} + \left( y - z^{2} \right)^{2} + z^{2} - 1
-  \end{align}
+
+  \subsection{Test surfaces}
+    For our numerical tests, we use the following 4 surfaces, with analytical known Gauss and mean curvatures:
+  
+    \begin{description}
+      \item[Sphere] (unit) with given signed distance function  
+        \begin{align}
+             \label{eqSphere}
+             \varphi\left( x,y,z \right) &:= x^{2} + y^{2} + z^{2} - 1 \formpunkt
+        \end{align}
+        The Gauss and mean curvature are all over 1 on the unit sphere.
+        \item[Ellipsoid] (tri-axial; length of semi-principal axes: \( \left( 1,0.5,1.5 \right) \)) 
+            with given signed distance function  
+              \begin{align}
+                \label{eqEllipsoid}
+                \varphi\left( x,y,z \right) &:= \left( 3x \right)^{2} + \left( 6y \right)^{2} + \left( 2z \right)^{2} - 9
+              \end{align}
+            and curvatures (see Figure \ref{figEllipsoid})
+            \begin{align}
+              K(x,y,z) &= \frac{11664}{(81+972y^{2}-20z^{2})^{2}} \\
+              H(x,y,z) &= \frac{36 \left(45+54 y^2-10 z^2\right)}{\left(81+972 y^2-20 z^2\right)^{3/2}} \formpunkt
+            \end{align}
+  \begin{figure}
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/K.jpg}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/H.jpg}
+    \end{minipage}
+    \caption{Ellipsoid \eqref{eqEllipsoid}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
+    \label{figEllipsoid}
+  \end{figure}
+       
+
+       \item[Quartic surface] with given signed distance function
+            \begin{align}
+              \label{eqQuartic}
+              \varphi\left( x,y,z \right) &:= \left( x - z^{2} \right)^{2} + \left( y - z^{2} \right)^{2} + z^{2} - 1
+            \end{align}
+            and curvatures (see Figure \ref{figQuartic})
+            {\footnotesize
+            \begin{align}
+              K(x,y,z) &= -\frac{1 + 2x - 2x^{2} + 2y - 2y^{2} + 2(-3 + x + y)z^{2}}
+                          {1 - 4(-2 + x + x^{2} + y - 2xy + y^{2})z^{2}} \\
+              H(x,y,z) &= -\frac{x - x^{2} + y - y^{2} + (-7 + 3x + 3y)z^{2}}
+                         {1 - 4(-2 + x + x^{2} + y - 2xy + y^{2})z^{2}}\formpunkt
+            \end{align}
+            }
+  \begin{figure}
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/K.jpg}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/quartic/H.jpg}
+    \end{minipage}
+    \caption{Quartic surface\eqref{eqQuartic}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
+    \label{figQuartic}
+  \end{figure}
+
+      \item[Torus] with major radius\footnote{distance from the center of the tube to the center of the torus} \( R = 2 \)
+                   and minor radius\footnote{radius of the tube} \mbox{\( r=0.5 \)}
+                   with given signed distance function  
+              \begin{align}
+                \label{eqTorus}
+                \varphi\left( x,y,z \right) &:= \left( 2 - \sqrt{x^{2}-y^{2}} \right)^{2} + z^{2} - 0.25 
+              \end{align}
+                  and curvatures (see Figure \ref{figTorus})
+              \begin{align}
+                K(x,y,z) &= 4 - \frac{8}{\sqrt{x^{2}+y^{2}}} \\
+                H(x,y,z) &= 2 - \frac{2}{\sqrt{x^{2}+y^{2}}} \formpunkt
+              \end{align}
+  \begin{figure}
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/torus/K.jpg}
+    \end{minipage}\hfill
+    \begin{minipage}[htp]{.23\textwidth}
+      \centering
+      \includegraphics[width=0.99\textwidth]{bilder/torus/H.jpg}
+    \end{minipage}
+    \caption{Torus \eqref{eqTorus}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
+    \label{figTorus}
+  \end{figure}
+    \end{description}
+
+  \subsubsection{Notes on meshing}
+    Except for the torus, all macro triangulations are icosahedrons.
+    In \cite{arakawa}, we see that the 20 plane faces are able to divide in \( N^{2} \) equal equilateral triangles
+    and all vertices can projected to the smooth surface.
+    Unfortunately, this procedure doesn't results in a well-centered simplicial complex for the ellipsoid and the quartic surface.
+    Our resort for this problem provide a mechanical evolution for the coordinates \( \vec{x}_{i} \) of the vertices \( v_{i}\in K \)
+    \begin{align}\label{eqForceLaw}
+      \frac{\mathrm{d} \vec{x}_{i}}{\mathrm{d} t} &= \vec{F}(\vec{x}_{i}) \formpunkt
+    \end{align}
+    The force vector \( \vec{F}(\vec{x}_{i}) \) describe the interaction with the adjoining edges \( \sigma^{1}\succ v_{i} \) and
+    triangles \( \sigma^{2}\succ v_{i} \).
+    We use two approaches for \( \vec{F} \), who will linear combinated.
+    One is to displace the vertices, so that all edges grasp at the same length.
+    This is similar to a overlapping sphere (OS)/ Voronoi tesselation (VT) hybrid model in \cite{meshCooper}, with fixed connectivity, 
+    for simulating the arrangement of cells in tissue.
+    The other approach is to choose \( \vec{F} \) so, that the edges \( \sigma^{1}\succ v_{i} \) will become longer or shorter in dependency
+    of the enclosed angle of \( \sigma^{1} \) and the other edge \( \tilde{\sigma}^{1}\prec\sigma^{2} \) 
+    on all triangles \( \sigma^{2}\succ v_{i} \).
+    The aspired optimum (which can't be reached in general) can be a enclosed angle of \( \frac{\pi}{3} \) for example.
+    
+    The equation \eqref{eqForceLaw} can be numerical solved by the explicit Euler method.
+    It must be pointed out, that the smooth surface \( M \) gives us a geometrical constrain for the coordinates \( \vec{x}_{i} \).
+    That's why we project all vertices to \( M \) after every Euler step.
+    A explicit base method of higher order doesn't result in faster convergence in practice 
+    because of the projection
+    and a implicit method is hard to implement with all of the dependencies of \( \vec{F} \) in mind.
+
+    The torus mesh in figure \ref{figTorus} can be obtain by a uniform triangulation of a tube and clue the both ends together 
+    with a twist of \( 4\pi \) along the tube.
+    The meshes for the bunny and the horse in figure \ref{figBunnyHorseCurvature} are produced with the  
+    great AVCD\footnote{Approximated Centroidal Voronoi Diagram} remeshing tool (see \cite{valette}) with some handmade corrections 
+    (clearing up the few \mh{1}{rings} with less than 5 triangles).
+
+   \subsection{Comparing method}
+
+    For the three test surfaces of genus 0 (sphere, ellipsoid, quartic surface) exists experimental results in \cite{heine} by C-J. Heine. 
+    There is a isoparametric finite element approach deployed of degree 1 till 4 for the approximation of the curvatures.
+    We only want to use the results of the degree 2 FE-Method (FEM-D2) to compare with our calculations,
+    because the linear FEM-D1, which is the only really comparable with regard to the computation effort, is not convergent
+    and FEM-D3, resp. FEM-D4, is too expensive in contrast to our methods.
+    The lack of convergence of the discrete curvature vector with a linear FEM is discussed in \cite{nochetto}.
+    The advantage of a FE approach is that the triangulation doesn't need to be well-centered.
+    Therefor, the global mesh refinement strategy in \cite{heine} is to bisect the longest edge of a triangle.
+    This produce triangulations of \mh{1}{rings} with 4 or 8 elements in about equal parts,
+    i.e. the average are approximately  \mh{1}{rings} with 6 elements like our triangulations
+    (all \mh{1}{rings} have 6 elements, except the 12 defects with 5 triangles).
+    That's the reason, why the number of local DOFs (lDOFs) per triangle is a plausible measurement for the relative costs
+    to compare the FE and DEC methods.
+    E.g. for one value on a global vertex with 6 adjacent elements and a linear method 
+    (i.e. local coefficients matrix in \( \R^{3 \times 3} \)) we get a row with 7 NNZ\footnote{Number of NonZero elements}
+    in the assembled global coefficients matrix independently of the choice of the method. 
+    For the calculation of the DEC-discretized curvature vector (LX) with \eqref{eqDisCurvatureVector}, 
+    we have to solve the Laplace-Beltrami for the 3 components of the position vector on every vertices.
+    Therefor, there are 9 lDOFs on every triangle element.
+    For the Weingarten map approach (W) with \eqref{eqDisWeingarten}, we must calculate a \mh{3 \times 3}{matrix}
+    on a vertex (\( \Rightarrow  \) 27 lDOFs).
+    If the normals are unknown (W,\( \avn \)), then 3 lDOFs are added per vertex (\( \Rightarrow  \) 36 lDOFs). 
+    The Gauss-Bonnet approximation gives us only 3 DOFs per vertex (\( \Rightarrow \) 9 lDOFs).
+    In the FE-approaches (FEM-D*) in \cite{heine} is the Weingarten map and the curvature vector, as interim result, to be calculated.
+    But at this, is to respect the growing number of DOFs per value with higher degrees of the elements.
+    A summary is displayed in table \ref{tabLDOFs}.
+    \begin{table*}[tbp]
+      \definecolor{mygray}{gray}{.75}
+      \centering
+      \begin{tabular}{|c|>{\columncolor{mygray}}c|>{\columncolor{mygray}}c|>{\columncolor{mygray}}c|>{\columncolor{mygray}}c|c|>{\columncolor{mygray}}c|c|c|}
+        \hline
+        Method & GB & LX & W & W,\( \avn \) & FEM-D1 & FEM-D2 & FEM-D3 & FEM-D4 \\\hline
+        lDOFs  & 3  & 9  & 27& 36           & 36     & 72     & 120    & 180 \\\hline
+      \end{tabular}
+      \caption{lDOFs for different methods in ascending order.
+               Our 4 appoaches and the FEM-D2 from \cite{heine} for comparing are highlighted gray}
+      \label{tabLDOFs}
+    \end{table*}
+
+
+  \subsection{Numerical experiments}
+    We have implemented all curvature approximation approaches of section \ref{secCurvatureApprox} in a AMDiS framework.
+    So we defined only the (triangle) element coefficients matrix as element operators and used linear functions for the interpolation of
+    the results.
+    The solving of the resulting linear system was done by the BiCGStab2\footnote{BiConjugate Gradient Stabilized method with \( l=2 \)}.
+    Like in \cite{heine}, the errors were measured in the discrete relative \( L_{r} \)-norm (\( r\in\left\{ 2,\infty \right\} \)), 
+    i.e. the absolute errors were globally normalized by the norm of the analytical solutions:
+    \begin{align}
+      \text{Err}_{r} := \frac{\left\| C - C_{\text{Meth}} \right\|_{L_{r}(|K|)}}{ \left\| C \right\|_{L_{r}(|K|)}} \formpunkt
+    \end{align}
+    \( C\in\left\{ K,H \right\} \) is the curvature value and ``\( \text{Meth} \)'' the used method.
+    For \( r=2 \) we plot the errors for our test surfaces in figures \ref{figSphereL2Err}, \ref{figEllipsoidL2Err}, \ref{figQuarticL2Err} and
+    \ref{figTorusL2Err} in a log-scale on both axis.
+    The axis of abscissas describe the fineness of the triangulation and is measured in
+    \begin{align}
+      h := 2\max_{\sigma^{2}\in K} \left\| \vec{x}\left( v^{\sigma^{2}} \right) - \vec{x}\left( \star\sigma^{2} \right) \right\|_{2}
+      \formkomma
+    \end{align}
+    with an arbitrary vertex \( v^{\sigma^{2}}\prec\sigma^{2} \),
+    i.e. \( h \) is the maximum over all circumscribed diameters.
+    We see in table \ref{tabEOC} the EOCs (Experimental Order of Convergence)
+    for the both lowest \( h \) in the appropriate norm.
+    \begin{table*}[tbp]
+      \centering
+      \begin{tabular}{|*{17}{c|}} \hline
+         & \multicolumn{4}{c|}{Sphere} 
+         & \multicolumn{4}{c|}{Ellipsoid} 
+         & \multicolumn{4}{c|}{Quartic surface} &
+        \multicolumn{4}{c|}{Torus} \\\cline{2-17}
+          EOC & \multicolumn{2}{c|}{K} & \multicolumn{2}{c|}{H}
+              & \multicolumn{2}{c|}{K} & \multicolumn{2}{c|}{H}
+              & \multicolumn{2}{c|}{K} & \multicolumn{2}{c|}{H}
+              & \multicolumn{2}{c|}{K} & \multicolumn{2}{c|}{H} \\\cline{2-17}
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \)
+              & \( L_{2} \) & \( L_{\infty} \) \\\hline
+        GB(K) / LX(H) & 2.0 & 2.0 & 2.4 & 1.7 & 
+                  1.4 & NC  & 1.9 & NC &
+                  1.8 & 1.8 & 1.8 & 1.8 &
+                  1.9 & 1.0 & 1.9 & 1.4 \\\hline
+           W    & 2.0 & 2.0 & 2.0 & 2.0 &
+                  2.0 & 2.0 & 2.0 & 2.0 &
+                  1.7 & 1.8 & 1.8 & 1.8 &
+                  2.0 & 2.1 & 2.0 & 2.0 \\\hline
+   W,\( \avn \) & 1.4 & NC  & 1.4 & NC  &
+                  1.9 & NC  & 2.0 & NC  &
+                  1.6 & 1.6 & 1.7 & 1.6 &
+                  2.0 & 2.1 & 2.0 & 2.0 \\\hline
+        FEM-D2  & 2.4 & 2.0 & 2.4 & 2.0 &
+                  1.3 & 1.7 & 1.1 & 1.3 & 
+                  2.0 & 2.2 & 1.4 & 1.4 &&&&\\\hline
+      \end{tabular}
+      \caption{Experimental Order of Convergence (EOC) of both finest triangulations for the relative discrete \( L_{2} \)-
+      and \( L_{\infty} \)-norm. Values lower than 0.1 are denoted as NC (No Convergence).}
+      \label{tabEOC}
+    \end{table*}
+    The reason for the choice of the finest meshes is the sometimes poor resolution of coarser triangulations.
+    E.g. we see, by the mean of the slope, no or only lower convergence at mounted \( h \) for the quartic surface in figure
+    \ref{figQuarticL2Err},
+    because the mesh don't picture good enough the two ridges, so that the geometrical error exceeds the error of the method.
+    In general, it is often to observe, that there is a kind of ``transient phase'' with respect to the order of convergence.
+    And the higher the ``complexity'' of the surface the longer is this phase.
+
+    However, on the sphere and the ellipsoid stagnate the EOCs for the discrete maximum norm on finer triangulations.
+    In figure \ref{figSphereErrView} and \ref{figEllipsoidErrView} (top) we see that maximum errors sticks on the defects of the hexagonal
+    mesh structure for the \( W,\avn \) methods respectively for \( K_{GB} \).
+    Figure \ref{figEllipsoidErrView} (bottom) point to a similar error behavior for calculation of the curvature vector on the ellipsoid,
+    but there are larger errors on the outer vertices of the 1-rings too.
+
+  \subsection{Conclusion}
+    With regard to the errors and the computational effort, the Gauss-Bonnet-Operator for the Gauss curvature (\( K_{GB} \)) and the
+    curvature vector with the DEC-discretized Laplace-Beltrami-Operator for the mean curvature (\( H_{LX} \)) 
+    seems to be the best choice of method for our used
+    examples.
+    But the advantage of the calculation of the Weingarten map is the higher information content, 
+    because \( W \) gives us the whole shape-operator and the both principal curvatures as consequence
+    and hence \( W \) must be only one time calculated to get \( K \) and \( H \) simultaneous.
+
+    Table \ref{tabEOC} leads to guess of a nearly second order method for the DEC-discretized Weingarten map (\( W \)) if the normals of the smooth
+    surface are known on every vertex.
+    This partially not hold if the normals are averaged over the adjacent element normals (\( W,\avn \)).
+    So that a better approximation of the vertex normals can maybe leads to a better order of convergence up to 2.
+
+
+    
+
+
+    
 
 
   \begin{figure}
@@ -596,19 +846,6 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
                   25002 DOFs were used (\( h\approx 0.03 \)).
                   The errors for \( H_{W,\avn} \) results in a similar picture.}
     \label{figSphereErrView}
-  \end{figure}
-
-  \begin{figure}
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/K.jpg}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/ellipsoid/H.jpg}
-    \end{minipage}
-    \caption{Ellipsoid \eqref{eqEllipsoid}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
-    \label{figEllipsoid}
   \end{figure}
 
   \begin{figure}
@@ -633,19 +870,6 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
 
   \begin{figure}
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/quartic/K.jpg}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/quartic/H.jpg}
-    \end{minipage}
-    \caption{Quartic surface\eqref{eqQuartic}: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
-    \label{figQuartic}
-  \end{figure}
-
-  \begin{figure}
     \centering\includegraphics[width=.49\textwidth]{bilder/quartic/L2K.eps}
     \centering\includegraphics[width=.49\textwidth]{bilder/quartic/L2H.eps}
     \caption{Quartic surface \eqref{eqQuartic}: Relative \( L_{2} \) error for \( K \) (top) and
@@ -653,23 +877,11 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     \label{figQuarticL2Err}
   \end{figure}
 
-  \begin{figure}
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/torus/K.jpg}
-    \end{minipage}\hfill
-    \begin{minipage}[htp]{.23\textwidth}
-      \centering
-      \includegraphics[width=0.99\textwidth]{bilder/torus/H.jpg}
-    \end{minipage}
-    \caption{Torus: Gaussian curvature \( K \) (left) and mean curvature \( H \) (right).}
-    \label{figTorus}
-  \end{figure}
 
   \begin{figure}
     \centering\includegraphics[width=.49\textwidth]{bilder/torus/L2K.eps}
     \centering\includegraphics[width=.49\textwidth]{bilder/torus/L2H.eps}
-    \caption{Torus: Relative \( L_{2} \) error for \( K \) (top) and
+    \caption{Torus \eqref{eqTorus}: Relative \( L_{2} \) error for \( K \) (top) and
                                                      \( H \) (bottom) for different \( h \) in a log-log-plot.}
     \label{figTorusL2Err}
   \end{figure}
