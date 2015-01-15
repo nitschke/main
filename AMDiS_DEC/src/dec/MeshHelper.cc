@@ -2,6 +2,7 @@
 #include "WorldVectorHelper.h"
 #include "elVolumesInfo2d.h"
 #include "phiProjection.h"
+#include "DOFVHelper.h"
 
 namespace AMDiS{
 
@@ -108,7 +109,7 @@ DOFVector<double> getVoronoiRadiiDualApprox(const FiniteElemSpace *feSpace) {
   return Radii;
 }
 
-DOFVector<WorldVector<double> > getNormals(const FiniteElemSpace *feSpace) {
+DOFVector<WorldVector<double> > getNormals(const FiniteElemSpace *feSpace, bool norma) {
   
   DOFVector<WorldVector<double> > normals(feSpace, "normals");
   WorldVector<double> zero(DEFAULT_VALUE, 0.0);
@@ -134,10 +135,166 @@ DOFVector<WorldVector<double> > getNormals(const FiniteElemSpace *feSpace) {
     }
   }
 
-  return normals;
+  return (norma) ? normalize(normals) : normals;
 }
 
-DOFVector<WorldVector<double> > getNormalsConnectionAverage(const FiniteElemSpace *feSpace) {
+DOFVector<WorldVector<double> > getNormalsVoronoiAverage(const FiniteElemSpace *feSpace, bool norma) {
+  
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
+  WorldVector<double> zero(DEFAULT_VALUE, 0.0);
+  normals = zero;
+
+  DOFVector<double> vol1Ring = getDualVols(feSpace);
+  
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+    int numBasFcts = basFcts->getNumber();
+    std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+    DOFAdmin *admin = feSpace->getAdmin();
+    DegreeOfFreedom dof;
+
+  WorldVector<double> normal;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    ElVolumesInfo2d vols(el);
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    el->getElementNormal(normal);
+    for (int i = 0; i < 3; i++) {
+      dof = localIndices[i];
+      normals[dof] += (vols.getDualVertexVol(i) / vol1Ring[dof]) * normal;
+    }
+  }
+
+  return (norma) ? normalize(normals) : normals;
+}
+
+DOFVector<WorldVector<double> > getNormalsAngleAverage(const FiniteElemSpace *feSpace) {
+  
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
+  WorldVector<double> zero(DEFAULT_VALUE, 0.0);
+  normals = zero;
+
+  
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+    int numBasFcts = basFcts->getNumber();
+    std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+    DOFAdmin *admin = feSpace->getAdmin();
+    DegreeOfFreedom dof;
+
+  WorldVector<double> normal;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    ElVolumesInfo2d vols(el);
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    el->getElementNormal(normal);
+    for (int i = 0; i < 3; i++) {
+      dof = localIndices[i];
+      normals[dof] += (vols.getAngle(i)) * normal;
+    }
+  }
+
+  return normalize(normals);
+}
+
+DOFVector<WorldVector<double> > getNormalsBeltramiAverage(const FiniteElemSpace *feSpace) {
+  
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
+  WorldVector<double> zero(DEFAULT_VALUE, 0.0);
+  normals = zero;
+
+  
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+    int numBasFcts = basFcts->getNumber();
+    std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+    DOFAdmin *admin = feSpace->getAdmin();
+    DegreeOfFreedom dofi, dofj;
+
+  //WorldVector<double> normal;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    ElVolumesInfo2d vols(el);
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    //el->getElementNormal(normal);
+    for (int i = 0; i < 3; i++) {
+      dofi = localIndices[i];
+      for (int j = (i+1)%3; j != i; j = (j+1)%3) {
+        dofj = localIndices[j];
+        int k = (2*(i+j))%3;
+        WorldVector<double> c = (vols.getDualOppEdgeLen(k) / (vols.getOppEdgeLen(k))) * el->getCoord(j);
+        normals[dofi] += (-1.0) * c;
+        normals[dofj] += c;
+      }
+    }
+  }
+
+  return normalize(normals);
+}
+
+DOFVector<WorldVector<double> > getNormalsAngleEdgeReciprocalAverage(const FiniteElemSpace *feSpace) {
+  
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
+  WorldVector<double> zero(DEFAULT_VALUE, 0.0);
+  normals = zero;
+
+  
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+    int numBasFcts = basFcts->getNumber();
+    std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+    DOFAdmin *admin = feSpace->getAdmin();
+    DegreeOfFreedom dof;
+
+  WorldVector<double> normal;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    ElVolumesInfo2d vols(el);
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    el->getElementNormal(normal);
+    for (int i = 0; i < 3; i++) {
+      dof = localIndices[i];
+      double len1 = vols.getOppEdgeLen((i+1)%3);
+      double len2 = vols.getOppEdgeLen((i+2)%3);
+      normals[dof] += (vols.getSin(i) / (len1 * len2)) * normal;
+    }
+  }
+
+  return normalize(normals);
+}
+
+DOFVector<WorldVector<double> > getNormalsEdgeReciprocalAverage(const FiniteElemSpace *feSpace) {
+  
+  DOFVector<WorldVector<double> > normals(feSpace, "normals");
+  WorldVector<double> zero(DEFAULT_VALUE, 0.0);
+  normals = zero;
+
+  
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+    int numBasFcts = basFcts->getNumber();
+    std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+    DOFAdmin *admin = feSpace->getAdmin();
+    DegreeOfFreedom dof;
+
+  WorldVector<double> normal;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    ElVolumesInfo2d vols(el);
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    el->getElementNormal(normal);
+    for (int i = 0; i < 3; i++) {
+      dof = localIndices[i];
+      double len1 = vols.getOppEdgeLen((i+1)%3);
+      double len2 = vols.getOppEdgeLen((i+2)%3);
+      normals[dof] += (1.0 / (len1 * len2)) * normal;
+    }
+  }
+
+  return normalize(normals);
+}
+
+DOFVector<WorldVector<double> > getNormalsConnectionAverage(const FiniteElemSpace *feSpace, bool norma) {
   
   DOFVector<WorldVector<double> > normals(feSpace, "normals");
   WorldVector<double> zero(DEFAULT_VALUE, 0.0);
@@ -163,7 +320,7 @@ DOFVector<WorldVector<double> > getNormalsConnectionAverage(const FiniteElemSpac
     }
   }
 
-  return normals;
+  return (norma) ? normalize(normals) : normals;
 }
 
 DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpace, bool constantRadii, double k) {
@@ -281,6 +438,81 @@ DOFVector<double> getAverage(DOFVector<double> f) {
       for (int j = (i+1)%3; i != j; j = (j+1)%3) {
         dofj = localIndices[j];
         rval[dofi] += c * f[dofj]; 
+      }
+    }
+  }
+
+  return rval;
+}
+
+DOFVector<WorldVector<double> > getAverage(DOFVector<WorldVector<double> > v, double midPointWeight) {
+  const FiniteElemSpace *feSpace = v.getFeSpace();
+  DOFVector<WorldVector<double> > rval(feSpace, v.getName() + "Average");
+  rval = WorldVector<double>(DEFAULT_VALUE, 0.0);
+
+
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+  int numBasFcts = basFcts->getNumber();
+  std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+  DOFAdmin *admin = feSpace->getAdmin();
+  DegreeOfFreedom dofi;
+  DegreeOfFreedom dofj;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    
+    for (int i = 0; i < 3; i++) {
+      dofi = localIndices[i];
+
+      rval[dofi] += midPointWeight * v[dofi];
+      
+      for (int j = (i+1)%3; i != j; j = (j+1)%3) {
+        dofj = localIndices[j];
+        rval[dofi] += 0.5 * v[dofj]; 
+      }
+    }
+  }
+
+  return rval;
+}
+
+DOFVector<WorldVector<double> > getAverageDefects(DOFVector<WorldVector<double> > v, double midPointWeight) {
+  const FiniteElemSpace *feSpace = v.getFeSpace();
+  DOFVector<WorldVector<double> > rval(feSpace, v.getName() + "Average");
+  rval = WorldVector<double>(DEFAULT_VALUE, 0.0);
+
+  DOFVector<int> conns = getConnections(feSpace);
+
+  const BasisFunction *basFcts = feSpace->getBasisFcts();
+  int numBasFcts = basFcts->getNumber();
+  std::vector<DegreeOfFreedom> localIndices(numBasFcts);
+  DOFAdmin *admin = feSpace->getAdmin();
+  DegreeOfFreedom dofi;
+  DegreeOfFreedom dofj;
+
+  TraverseStack stack;
+  for (ElInfo *el = stack.traverseFirst(feSpace->getMesh(), -1, Mesh::CALL_LEAF_EL | Mesh::FILL_COORDS | Mesh::FILL_DET); el; el = stack.traverseNext(el)) {
+    basFcts->getLocalIndices(el->getElement(), admin, localIndices);
+    
+    bool toAverage = false;
+    for (int i = 0; i < 3 ; i++) {
+      dofi = localIndices[i];
+      if (conns[dofi] < 6) {
+        toAverage = true;
+        break;
+      }
+    }
+      
+
+    for (int i = 0; i < 3; i++) {
+      dofi = localIndices[i];
+
+      rval[dofi] += midPointWeight * v[dofi];
+      
+      for (int j = (i+1)%3; toAverage && i != j; j = (j+1)%3) {
+        dofj = localIndices[j];
+        rval[dofi] += 0.5 * v[dofj]; 
       }
     }
   }

@@ -14,6 +14,12 @@ class ElVolumesInfo2d {
 
     double getDiameter();
 
+    // Angle on vertex
+    double getAngle(int i);
+
+    // Sin(Angle) on vertex
+    double getSin(int i);
+
   protected:
     WorldVector<double> dualVertexVol;
     WorldVector<double> oppEdgeLen;

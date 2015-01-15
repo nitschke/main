@@ -62,4 +62,15 @@ namespace AMDiS {
     WorldVector<double> rVec = elInfo->getCoord(0) - cc;
     return 2.0 * sqrt(dot(rVec, rVec));
   }
+
+  double ElVolumesInfo2d::getAngle(int i) {
+     //return atan2(getDualOppEdgeLen(i), 0.5 * getOppEdgeLen(i));
+     return asin(getSin(i));
+  }
+
+  double ElVolumesInfo2d::getSin(int i) {
+    double len1 = getOppEdgeLen((i+1)%3);
+    double len2 = getOppEdgeLen((i+2)%3);
+    return 0.5 * elInfo->getDet() / (len1 * len2);
+  }
 }

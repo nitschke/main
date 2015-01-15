@@ -22,8 +22,12 @@ namespace AMDiS {
 
   DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v, std::string resName = "v_i");
 
+  DOFVector<WorldVector<double> > normalize(const DOFVector<WorldVector<double> >& v);
+
   void printError(const DOFVector<double> &dofv,const DOFVector<double> &sol, string name);
 
   void printError(SystemVector &sysv, int i0 ,int i1, int i2, const DOFVector<WorldVector<double> > &sol, string name);
+
+  void printError(const  DOFVector<WorldVector<double> > dofv, const DOFVector<WorldVector<double> > &sol, string name);
 
 }

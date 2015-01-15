@@ -77,11 +77,14 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
 
-  int oh = 0;
+  DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());
+
+  //int oh = 0;
+  int oh = -3;
   for (int i = 0; i < 3; i++) {
     // N
-    sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
-    sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
+    //sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
+    //sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
     for (int j = 0; j < 3; j++) {
        int pos = matIndex(i,j) + oh + 3;
        // -II_ij
@@ -89,8 +92,11 @@ int main(int argc, char* argv[])
        II->setFactor(-1.0);
        sphere.addMatrixOperator(II, pos, pos);
        // [d(N_j)]_i
-       PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
-       sphere.addMatrixOperator(dN, pos, j+oh);
+       //PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
+       //sphere.addMatrixOperator(dN, pos, j+oh);
+       GradDofWorldVecDEC *dN = new GradDofWorldVecDEC(i, j, &vertexNormals, sphere.getFeSpace(pos), sphere.getFeSpace(pos));
+       dN->setFactor(-1.0);
+       sphere.addVectorOperator(dN, pos);
     }
   }
   

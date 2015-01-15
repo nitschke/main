@@ -176,6 +176,23 @@ DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v, std::
   return rval;
 }
 
+
+  DOFVector<WorldVector<double> > normalize(const DOFVector<WorldVector<double> >& v)
+  {
+    FUNCNAME("normalize vectors");
+
+    DOFVector<WorldVector<double> >::Iterator vIterator(const_cast<DOFVector<WorldVector<double> >*>(&v), USED_DOFS);
+
+    DOFVector<WorldVector<double> > rval(v.getFeSpace(), v.getName() + string("_normalized"));
+    DOFVector<WorldVector<double> >::Iterator rvalIterator(&rval, USED_DOFS);
+    
+    for (vIterator.reset(), rvalIterator.reset(); !vIterator.end(); ++vIterator, ++rvalIterator) {
+      *rvalIterator = (1. / wvnorm(*vIterator)) * *vIterator; 
+    }
+
+    return rval;
+  }
+
 // alte berechnungen faelschlicherweise mit l2norm -_-
   void printError(const DOFVector<double> &dofv,const DOFVector<double> &sol, string name) {
     DOFVector<double> err = minus(dofv,sol);
@@ -188,6 +205,16 @@ DOFVector<double> getComp(int i, const DOFVector<WorldVector<double> >& v, std::
 
   void printError(SystemVector &sysv, int i0 ,int i1, int i2, const DOFVector<WorldVector<double> > &sol, string name) {
     DOFVector<WorldVector<double> > dofv = toWorld(*sysv.getDOFVector(i0), *sysv.getDOFVector(i1), *sysv.getDOFVector(i2));
+    DOFVector<double> err = minus(dofv,sol);
+    DOFVector<double> solMag = mag(sol);
+    cout << "************ " << name << " ************" << endl;
+    cout << "L2Err_" << name << "....... " << err.L2Norm() << endl;
+    cout << "MaxErr_" << name << "...... " << err.absMax() << endl;
+    cout << "L2ErrRel_" << name << ".... " << (err.L2Norm() / solMag.L2Norm()) << endl;
+    cout << "MaxErrRel_" << name << "... " << (err.absMax() / solMag.absMax()) << endl << endl;
+  }
+
+  void printError(const  DOFVector<WorldVector<double> > dofv, const DOFVector<WorldVector<double> > &sol, string name) {
     DOFVector<double> err = minus(dofv,sol);
     DOFVector<double> solMag = mag(sol);
     cout << "************ " << name << " ************" << endl;
