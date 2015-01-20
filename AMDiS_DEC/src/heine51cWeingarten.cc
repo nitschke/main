@@ -6,6 +6,7 @@
 #include "WorldVectorHelper.h"
 #include "MatrixHelper.h"
 #include "DOFVHelper.h"
+#include "quadratic.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -134,6 +135,7 @@ int main(int argc, char* argv[])
 
   AMDiS::init(argc, argv);
 
+
   // ===== create projection =====
   new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-8);
 
@@ -151,9 +153,11 @@ int main(int argc, char* argv[])
 					       adaptInfo);
   
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());
-  DOFVector<WorldVector<double> > vertexNormals = getNormalsEdgeReciprocalAverage(sphere.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = getNormalsEdgeReciprocalAverage(sphere.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = getNormalsRootEdgeReciprocalAverage(sphere.getFeSpace());
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsVoronoiAverage(sphere.getFeSpace(),true);
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsBeltramiAverage(sphere.getFeSpace());
+  DOFVector<WorldVector<double> > vertexNormals = getNormalsRandomAverage(sphere.getFeSpace());
 
   //vertexNormals = normalize(getAverageDefects(vertexNormals, 2.0));
   //int oh = 0;
@@ -218,6 +222,8 @@ int main(int argc, char* argv[])
   mwriter.appendData(sphere.getFeSpace(),true);
 
   sphere.writeFiles(adaptInfo, true);
+
+  Quadratic quad(sphere.getFeSpace());
 
   AMDiS::finalize();
 }

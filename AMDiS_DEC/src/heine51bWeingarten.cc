@@ -115,6 +115,25 @@ public:
   }
 };
 
+class NormalVec : public AbstractFunction< WorldVector<double>, WorldVector<double> >
+{
+public:
+  NormalVec() : AbstractFunction< WorldVector<double>, WorldVector<double> >(0), n0(0), n1(1), n2(2) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& x) const
+  {
+    WorldVector<double> rval;
+    rval[0] = n0(x);
+    rval[1] = n1(x);
+    rval[2] = n2(x);
+    return rval;
+  }
+
+private:
+  Normal n0;
+  Normal n1;
+  Normal n2;
+};
 
 
 
@@ -144,12 +163,14 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
   
+  DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());  
 
-  int oh = 0;
+  int oh = -3;
+  //int oh = 0;
   for (int i = 0; i < 3; i++) {
     // N
-    sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
-    sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
+    //sphere.addMatrixOperator(new SimpleDEC(sphere.getFeSpace(i+oh), sphere.getFeSpace(i+oh)), i+oh, i+oh);
+    //sphere.addVectorOperator(new DualPrimalNormalDEC(i, sphere.getFeSpace(i+oh)), i+oh);
     for (int j = 0; j < 3; j++) {
        int pos = matIndex(i,j) + oh + 3;
        //int pos = matIndex(i,j) + oh;
@@ -158,11 +179,12 @@ int main(int argc, char* argv[])
        II->setFactor(-1.0);
        sphere.addMatrixOperator(II, pos, pos);
        // [d(N_j)]_i
-       PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
-       sphere.addMatrixOperator(dN, pos, j+oh);
+       //PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, sphere.getFeSpace(pos), sphere.getFeSpace(j+oh));
+       //sphere.addMatrixOperator(dN, pos, j+oh);
        //PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), sphere.getFeSpace(pos), sphere.getFeSpace(pos));
-       //dN->setFactor(-1.0);
-       //sphere.addVectorOperator(dN, pos);
+       GradDofWorldVecDEC *dN = new GradDofWorldVecDEC(i, j, &vertexNormals, sphere.getFeSpace(pos), sphere.getFeSpace(pos));       
+       dN->setFactor(-1.0);
+       sphere.addVectorOperator(dN, pos);
     }
   }
   
@@ -198,9 +220,17 @@ int main(int argc, char* argv[])
   printError(mcWeingarten, mcDOFV, "MeanWeingarten");
   VtkVectorWriter::writeFile(mcWeingarten, "output/MeanWeingarten.vtu");
 
+  DOFVector<WorldVector<double> > normalDOFV(sphere.getFeSpace(),"Normal");
+  normalDOFV.interpol(new NormalVec());
+  VtkVectorWriter::writeFile(normalDOFV, string("output/exactNormals.vtu"));
+  VtkVectorWriter::writeFile(vertexNormals, string("output/avNormals.vtu"));
+  printError(normalDOFV, vertexNormals , "Normal");
+
   //MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
   //mwriter.appendData(sphere.getFeSpace(),true);
 
+  
+  
   //sphere.writeFiles(adaptInfo, true);
 
   AMDiS::finalize();

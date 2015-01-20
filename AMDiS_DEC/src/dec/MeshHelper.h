@@ -23,6 +23,8 @@ DOFVector<double> getVoronoiRadiiDualApprox(const FiniteElemSpace *feSpace);
 // Area weighted
 DOFVector<WorldVector<double> > getNormals(const FiniteElemSpace *feSpace, bool norma = false);
 
+DOFVector<WorldVector<double> > getNormalsNotAverage(const FiniteElemSpace *feSpace);
+
 DOFVector<WorldVector<double> > getNormalsVoronoiAverage(const FiniteElemSpace *feSpace, bool norma = false);
 
 DOFVector<WorldVector<double> > getNormalsConnectionAverage(const FiniteElemSpace *feSpace, bool normalize = false);
@@ -35,6 +37,12 @@ DOFVector<WorldVector<double> > getNormalsAngleEdgeReciprocalAverage(const Finit
 
 //normalized
 DOFVector<WorldVector<double> > getNormalsEdgeReciprocalAverage(const FiniteElemSpace *feSpace);
+
+//normalized
+DOFVector<WorldVector<double> > getNormalsRootEdgeReciprocalAverage(const FiniteElemSpace *feSpace);
+
+//normalized
+DOFVector<WorldVector<double> > getNormalsRandomAverage(const FiniteElemSpace *feSpace);
 
 //normalized; only for positive mean curvature
 DOFVector<WorldVector<double> > getNormalsBeltramiAverage(const FiniteElemSpace *feSpace);
