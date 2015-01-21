@@ -6,6 +6,7 @@
 #include "WorldVectorHelper.h"
 #include "MatrixHelper.h"
 #include "DOFVHelper.h"
+#include "quadraticSpline.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -165,6 +166,12 @@ int main(int argc, char* argv[])
   
   DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());  
 
+  mtl::dense2D<double> mat = mtl::dense2D<double>(0, 9);
+  mtl::dense2D<double> mat2 = mtl::dense2D<double>(0, 9);
+  cout << num_rows(mat) << endl;
+  QuadraticSpline quad(sphere.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
+
   int oh = -3;
   //int oh = 0;
   for (int i = 0; i < 3; i++) {
@@ -229,6 +236,7 @@ int main(int argc, char* argv[])
   //MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
   //mwriter.appendData(sphere.getFeSpace(),true);
 
+  //quad.writeVTK(string("output/approxSurvace.vtu"));
   
   
   //sphere.writeFiles(adaptInfo, true);

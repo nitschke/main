@@ -7,6 +7,7 @@
 #include "MatrixHelper.h"
 #include "DOFVHelper.h"
 #include "quadratic.h"
+#include "quadraticSpline.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -157,7 +158,12 @@ int main(int argc, char* argv[])
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsRootEdgeReciprocalAverage(sphere.getFeSpace());
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsVoronoiAverage(sphere.getFeSpace(),true);
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsBeltramiAverage(sphere.getFeSpace());
-  DOFVector<WorldVector<double> > vertexNormals = getNormalsRandomAverage(sphere.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = getNormalsRandomAverage(sphere.getFeSpace());
+  Quadratic quad(sphere.getFeSpace());
+  DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
+  
+  QuadraticSpline quadS(sphere.getFeSpace());
+
 
   //vertexNormals = normalize(getAverageDefects(vertexNormals, 2.0));
   //int oh = 0;
@@ -223,7 +229,6 @@ int main(int argc, char* argv[])
 
   sphere.writeFiles(adaptInfo, true);
 
-  Quadratic quad(sphere.getFeSpace());
 
   AMDiS::finalize();
 }
