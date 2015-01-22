@@ -164,13 +164,10 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
   
-  DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());  
+  //DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());  
 
-  mtl::dense2D<double> mat = mtl::dense2D<double>(0, 9);
-  mtl::dense2D<double> mat2 = mtl::dense2D<double>(0, 9);
-  cout << num_rows(mat) << endl;
   QuadraticSpline quad(sphere.getFeSpace());
-  //DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
+  DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
 
   int oh = -3;
   //int oh = 0;

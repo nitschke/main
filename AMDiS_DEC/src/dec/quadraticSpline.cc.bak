@@ -8,10 +8,10 @@ QuadraticSpline::QuadraticSpline(const FiniteElemSpace *finiteElemSpace) :
     coeffs(feSpace, "coeffs")
 {
   cout << "*** calculate quardratic spline surface approximation ***" << endl;
-  coeffs = mtl::dense_vector<double>(10);
+  coeffs = mtl::dense_vector<double>(9);
 
   DOFVector<mtl::dense2D<double> > terms(feSpace, "qwertz");
-  terms = mtl::dense2D<double>(0, 10);
+  terms = mtl::dense2D<double>(0, 9);
   
   const BasisFunction *basFcts = feSpace->getBasisFcts();
   int numBasFcts = basFcts->getNumber();
@@ -28,14 +28,13 @@ QuadraticSpline::QuadraticSpline(const FiniteElemSpace *finiteElemSpace) :
       dof = localIndices[i];
       mtl::dense2D<double> *locMat = &(terms[dof]);
       int r = num_rows(*locMat);
-      WorldVector<double> x = el->getCoord(i);
-      WorldVector<double> next_x = el->getCoord((i+1)%3) - x;
-      WorldVector<double> opp_x = el->getOppCoord(i) - x;
+      WorldVector<double> next_x = el->getCoord((i+1)%3);
+      WorldVector<double> opp_x = el->getOppCoord(i);
       // TODO: expensive?
       if (visited[dof]) {
-        locMat->change_dim(r + 2, 10, true);
+        locMat->change_dim(r + 2, 9, true);
       } else {
-        locMat->change_dim(r + 3, 10, true);
+        locMat->change_dim(r + 3, 9, true);
       }
       for (int k = 0; k < 3; k++) {
         int k1 = (k+1)%3;
@@ -44,20 +43,18 @@ QuadraticSpline::QuadraticSpline(const FiniteElemSpace *finiteElemSpace) :
         (*locMat)[r][k] = 0.5 * next_x[k] * next_x[k];
         (*locMat)[r][k+3] = next_x[k1] * next_x[k2];
         (*locMat)[r][k+6]= next_x[k];
-        (*locMat)[r][9]= 1.0;
         // opposite vertex
         (*locMat)[r+1][k] = 0.5 * opp_x[k] * opp_x[k];
         (*locMat)[r+1][k+3] = opp_x[k1] * opp_x[k2];
         (*locMat)[r+1][k+6]= opp_x[k];
-        (*locMat)[r+1][9]= 1.0;
       }
       if (!visited[dof]) {
+        WorldVector<double> x = el->getCoord(i);
         for (int k = 0; k < 3; k++){
         // vertex self
           (*locMat)[r+2][k] = 0.5 * x[k] * x[k];
           (*locMat)[r+2][k+3] = x[(k+1)%3] * x[(k+2)%3];
           (*locMat)[r+2][k+6]= x[k];
-          (*locMat)[r+2][9]= 1.0;
         }
         visited[dof] = true;
       }
@@ -69,29 +66,28 @@ QuadraticSpline::QuadraticSpline(const FiniteElemSpace *finiteElemSpace) :
   DOFVector<mtl::dense_vector<double> >::Iterator coeffsIter(&coeffs, USED_DOFS);
   
   for (termsIter.reset(), coeffsIter.reset(); !coeffsIter.end(); ++termsIter, ++coeffsIter) {
-    mtl::dense2D<double> sysMat(10,10); 
+    mtl::dense2D<double> sysMat(9,9); 
     sysMat = trans(*termsIter) * (*termsIter);
-    mtl::dense_vector<double> rhs(10);
-    rhs = 0.0;
-    //rhs = trans(*termsIter) * mtl::dense_vector<double>(num_rows(*termsIter), 1.0);
+    mtl::dense_vector<double> rhs(9); 
+    rhs = trans(*termsIter) * mtl::dense_vector<double>(num_rows(*termsIter), 1.0);
     
-    ////precond
-    //mtl::dense2D<double> L(9,9);
-    //L = 0.0;
-    //for (int i = 0 ; i < 9; i++) {
-    //  L[i][i] = 1./sysMat[i][i];
-    //}
-    //mtl::dense2D<double> LA(9,9);
-    //LA = L * sysMat;
-    //mtl::dense_vector<double> Lb(9);
-    //Lb = L * rhs;
+    //precond
+    mtl::dense2D<double> L(9,9);
+    L = 0.0;
+    for (int i = 0 ; i < 9; i++) {
+      L[i][i] = 1./sysMat[i][i];
+    }
+    mtl::dense2D<double> LA(9,9);
+    LA = L * sysMat;
+    mtl::dense_vector<double> Lb(9);
+    Lb = L * rhs;
 
-    //*coeffsIter = inv(LA) * Lb;
-    *coeffsIter = inv(sysMat) * rhs;
-    mtl::dense_vector<double> eig(10) ;
-    //eig = qr_algo(LA,100);
-    eig = qr_algo(sysMat,100);
-    cout << (eig[0]/eig[9]) << endl;
+    *coeffsIter = inv(LA) * Lb;
+    //*coeffsIter = inv(sysMat) * rhs;
+    mtl::dense_vector<double> eig(9) ;
+    eig = qr_algo(LA,100);
+    //eig = qr_algo(sysMat,100);
+    cout << (eig[0]/eig[8]) << endl;
     //cout << (*termsIter) << endl;
     //cout << LA << endl;
 

@@ -159,10 +159,10 @@ int main(int argc, char* argv[])
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsVoronoiAverage(sphere.getFeSpace(),true);
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsBeltramiAverage(sphere.getFeSpace());
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsRandomAverage(sphere.getFeSpace());
-  Quadratic quad(sphere.getFeSpace());
+
+  //Quadratic quad(sphere.getFeSpace());
+  QuadraticSpline quad(sphere.getFeSpace());
   DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
-  
-  QuadraticSpline quadS(sphere.getFeSpace());
 
 
   //vertexNormals = normalize(getAverageDefects(vertexNormals, 2.0));
