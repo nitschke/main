@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
 					       &sphere,
 					       adaptInfo);
   
-  //DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());
+  DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsEdgeReciprocalAverage(sphere.getFeSpace());
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsRootEdgeReciprocalAverage(sphere.getFeSpace());
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsVoronoiAverage(sphere.getFeSpace(),true);
@@ -161,8 +161,8 @@ int main(int argc, char* argv[])
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsRandomAverage(sphere.getFeSpace());
 
   //Quadratic quad(sphere.getFeSpace());
-  QuadraticSpline quad(sphere.getFeSpace());
-  DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
+  //QuadraticSpline quad(sphere.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
 
 
   //vertexNormals = normalize(getAverageDefects(vertexNormals, 2.0));

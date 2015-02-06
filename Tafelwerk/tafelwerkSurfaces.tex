@@ -1,0 +1,48 @@
+\documentclass{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+  \section{Arbitrary p.d. metric}
+    \subsection{Assumptions}
+      \begin{itemize}
+        \item \( Ind(M) = 0 \)
+        \item \( g =
+      \begin{bmatrix}
+        g_{11} & g_{12} \\
+        g_{21} & g_{22}
+      \end{bmatrix} (\textbf{p.d.}) \)
+      \end{itemize}
+
+    \subsection{General proberties}
+      \( \alpha \in \Omega^{p}(M) \),  \( \beta \in \Omega^{q}(M) \),  \( \gamma \in \Omega^{r}(M) \)
+      \subsubsection{Wedge product \( \wedge \)}
+      \begin{itemize}
+        \item \( \alpha\wedge\beta = (-1)^{pq}\beta\wedge\alpha \)
+            (\textbf{anti-/commutativ})
+        \item \textbf{associativ} (\( \alpha\wedge\beta\wedge\gamma \))
+        \item \( \left( c_{1}\alpha + c_{2}\beta \right)\wedge\gamma
+                  = c_{1}\alpha\wedge\gamma + c_{2}\beta\wedge\gamma\)
+              (\textbf{bilinear})
+      \end{itemize}
+
+    \subsection{Wedge product \( \wedge \)}
+      \( f\in \Omega^{0}(M)\),
+      \( \tilde{f}\in \Omega^{0}(M) \),
+      \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \),
+      \( \beta:= b_{1}dx^{1} + b_{2}dx^{2} \in \Omega^{1}(M) \),
+      \( \omega:= w_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \)
+      \begin{itemize}
+        \item \( f\tilde{f}= f\wedge\tilde{f} = \tilde{f}\wedge f \in \Omega^{0}(M) \)
+        \item \( f\alpha := f\wedge\alpha = \alpha\wedge f =  fa_{1}dx^{1} + fa_{2}dx^{2} \in \Omega^{1}(M)\)
+        \item \( \alpha\wedge\beta = - \beta\wedge\alpha = \left( a_{1}b_{2} - a_{2}b_{1} \right) dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \)
+        \item \( f\omega := f\wedge\omega = \omega\wedge f = fw_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \)
+      \end{itemize}
+        
+  
+\end{document}
