@@ -6,17 +6,20 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+
 \begin{document}
 
-  \section{Arbitrary p.d. metric}
+  \section{Arbitrary s.p.d. metric}
     \subsection{Assumptions}
       \begin{itemize}
         \item \( Ind(M) = 0 \)
         \item \( g =
       \begin{bmatrix}
         g_{11} & g_{12} \\
-        g_{21} & g_{22}
-      \end{bmatrix} (\textbf{p.d.}) \)
+        g_{12} & g_{22}
+      \end{bmatrix} (\textbf{s.p.d.}) \)
       \end{itemize}
 
     \subsection{General proberties}
@@ -31,6 +34,21 @@
               (\textbf{bilinear})
       \end{itemize}
 
+      \subsubsection{Exterior derivative \( \exd \)}
+        \begin{itemize}
+          \item \( \exd\circ\exd = 0 \) (\textbf{complex proberty})
+          \item \( \exd\left( \alpha \wedge \beta \right) = \exd\alpha\wedge\beta + (-1)^{p}\alpha\wedge\exd\beta \)
+                (\textbf{product rule})
+        \end{itemize}
+
+      \subsubsection{Hodge star \( * \)}
+        \begin{itemize}
+          \item \( \alpha \wedge *\beta = \beta \wedge *\alpha = \left\langle \alpha,\beta \right\rangle\mu \)
+          \item \( *1 = \mu \) \quad(\( *\mu = 1 \))
+          \item \( **\alpha = (-1)^{p}\alpha \)
+          \item \( \left\langle \alpha, \beta \right\rangle =  \left\langle *\alpha, *\beta \right\rangle\)
+        \end{itemize}
+
     \subsection{Wedge product \( \wedge \)}
       \( f\in \Omega^{0}(M)\),
       \( \tilde{f}\in \Omega^{0}(M) \),
@@ -42,6 +60,38 @@
         \item \( f\alpha := f\wedge\alpha = \alpha\wedge f =  fa_{1}dx^{1} + fa_{2}dx^{2} \in \Omega^{1}(M)\)
         \item \( \alpha\wedge\beta = - \beta\wedge\alpha = \left( a_{1}b_{2} - a_{2}b_{1} \right) dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \)
         \item \( f\omega := f\wedge\omega = \omega\wedge f = fw_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \)
+      \end{itemize}
+      
+    \subsection{Exterior derivative \( \exd \)}
+      \( f\in \Omega^{0}(M)\), 
+      \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \)
+      \begin{itemize}
+        \item \( \exd f = \partial_{1}fdx^{1} + \partial_{2}fdx^{2} \)
+        \item \( \exd\alpha = \left( \partial_{1}a_{2} - \partial_{2}a_{1} \right) dx^{1}\wedge dx^{2}\)
+      \end{itemize}
+
+    \subsection{Hodge star \( * \)}
+      \( f\in \Omega^{0}(M)\),
+      \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \),
+      \( \omega:= w_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \)
+      \begin{itemize}
+        \item \( *f = f\mu = \sqrt{|g|}f dx^{1}\wedge dx^{2}\)
+        \item \( *\alpha = \sqrt{|g|}\left( -\left( a_{1}g^{12} + a_{2}g^{22} \right)dx^{1} 
+                                            +\left( a_{1}g^{11} + a_{2}g^{21} \right)dx^{2}\right) \)
+        \item \( (*a)_{\mu} =  \left( -1 \right)^{\mu} \sqrt{|g|} g^{\nu\bar{\mu}}a_{\nu}
+                          = \left( -1 \right)^{\mu} \sqrt{|g|} a^{\bar{\mu}}\)
+                          (\textbf{Ricci})
+        \item \( *\omega = \frac{w_{12}}{\sqrt{|g|}} \)
+      \end{itemize}
+
+    \subsection{Rising and lowering indices \( \sharp \) / \( \flat \)}
+      \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \),
+      \( \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2} \)
+      \begin{itemize}
+        \item \( \alpha^{\sharp} = \left( g^{11}a_{1}+g^{12}a_{2} \right)\partial_{1} + \left( g^{21}a_{1}+g^{22}a_{2} \right)\partial_{2}\)
+        \item \( a^{\mu} = g^{\mu\nu}a_{\nu}\) (\textbf{Ricci})
+        \item \( \vecflat{v} = \left( g_{11}v^{1} + g_{12}v^{2} \right)dx^{1} + \left( g_{21}v^{1} + g_{22}v^{2} \right)dx^{2} \)
+        \item \( v_{\mu} = g_{\mu\nu}v^{\nu} \) (\textbf{Ricci})
       \end{itemize}
         
   

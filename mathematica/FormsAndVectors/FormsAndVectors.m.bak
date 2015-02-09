@@ -1,0 +1,115 @@
+(* ::Package:: *)
+
+BeginPackage["FormsAndVectors`"]
+
+OneForm2D::usage = 
+ 	"OneForm[f1,f2] construct a 1-Form f1dx+f2dy as  {1,{f1,f2}}"
+TwoForm2D::usage =
+ 	"TwoForm2D[w12] construct a 2-form w12dx\[And]dy as {2,{w12}}"
+NullForm2D::usage =
+ 	"NullForm2D[f] construct a 0-form f as {0,{f}}"
+
+IsNullForm::usage = "IsNullForm[alpha] is True if alpha is a 0-form"
+IsOneForm::usage = "IsOneForm[alpha] is True if alpha is a 1-form"
+IsTwoForm::usage = "IsTwoForm[alpha] is True if alpha is a 2-form"
+
+PrintPForm::usage = "PrintForm[alpha] print alpha"
+
+Wedge::usage = "Wedge[alpha,beta] = alpha^beta"
+
+TestAll::usage = "TestAll[] do all tests"
+TestWedge::usage = "TestWedge[] test the wedge product"
+TestPrint::usage = "TestPrint[] test the output"
+
+Begin["Private`"]
+
+NullForm2D[f_] := {0,{f}}
+OneForm2D[f1_, f2_] := {1,{f1, f2}}
+TwoForm2D[w12_] := {2,{w12}}
+
+IsNullForm[alpha_] := alpha[[1]] == 0
+IsOneForm[alpha_] :=  alpha[[1]] == 1
+IsTwoForm[alpha_] :=  alpha[[1]] == 2
+
+PrintPForm[alpha_] := 
+	Which[IsNullForm[alpha],
+			Print[alpha[[2,1]]],
+		  IsOneForm[alpha],
+			Print[alpha[[2,1]],"dx + ",alpha[[2,2]],"dy"],
+		  IsTwoForm[alpha],
+			Print[alpha[[2,1]],"dx\[And]dy"]
+	]
+
+Wedge[alpha_, beta_] := 
+ 	Which[
+		  IsNullForm[alpha],
+			{beta[[1]], alpha[[2]]*beta[[2]]},
+  		IsOneForm[alpha],
+  			Which[
+					IsNullForm[beta],
+						{1, beta[[2]]*alpha[[2]]}
+    				IsOneForm[beta],
+    					{2,{alpha[[2,1]] beta[[2,2]] - alpha[[2,2]] beta[[2,1]]}},
+    				True,
+						Print["Wedge::Cant determine"];
+						$Failed
+    			],
+		   IsTwoForm[alpha] && IsNullForm[beta],
+		   {2,beta[[2]]*alpha[[2]]},
+   		True,
+  			  Print["Wedge::Cant determine"];
+				$Failed
+  	]
+
+TestPrint := Module[
+					{f=NullForm2D[Tan[x*y]],
+					 alpha = OneForm2D[Sin[x],Cos[y]],
+					 omega = TwoForm2D[Exp[x+y]]},
+					x:= "x";
+					y:= "y";
+					PrintPForm[f];
+					PrintPForm[alpha];
+					PrintPForm[omega];
+				]
+
+TestWedge := Module[
+					{f1=NullForm2D[Tan[x*y]],
+					 f2=NullForm2D[Cot[x*y]],
+					 alpha1 = OneForm2D[Sin[x],Cos[y]],
+					 alpha2 = OneForm2D[1/Cos[y],Cos[y]],
+					 omega = TwoForm2D[Exp[x+y]]},
+					x:= "x";
+					y:= "y";
+					Print[PrintPForm[f1]," \[And] ",f2, "="]
+					PrintPForm[Wedge[f1,f2]];
+					PrintPForm[alpha1];
+					PrintPForm[omega];
+				]
+
+End[]
+
+EndPackage[]
+
+
+
+
+
+"FormsAndVectors`"
+
+
+"OneForm[f1,f2] construct a 1-Form f1dx^1+f2dx^2 as  {f1,f2}"
+
+
+"TwoForm2D[w12] construct a 2-form w12dx^1\[And]dx^2 as {{w12}}"
+
+
+"OneForm[alpha] is True if alpha is a 1-form"
+
+
+"Wedge[alpha,beta] = alpha^beta"
+
+
+"Private`"
+
+
+"Private`"

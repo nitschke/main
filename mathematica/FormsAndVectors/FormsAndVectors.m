@@ -2,40 +2,32 @@
 
 BeginPackage["FormsAndVectors`"]
 
-OneForm2D::usage = 
- 	"OneForm[f1,f2] construct a 1-Form f1dx^1+f2dx^2 as  {f1,f2}"
-TwoForm2D::usage =
- 	"TwoForm2D[w12] construct a 2-form w12dx^1\[And]dx^2 as {{w12}}"
+Wedge11::usage = "Wedge product of two 1-forms";
 
-IsNullForm::usage = "IsNullForm[alpha] is True if alpha is a 0-form"
-IsOneForm::usage = "IsOneForm[alpha] is True if alpha is a 1-form"
-IsTwoForm::usage = "IsTwoForm[alpha] is True if alpha is a 2-form"
+ExD0::usage = "Exterior derivativ of a 0-form";
+ExD1::usage = "Exterior derivativ of a 1-form";
 
-Wedge::usage = "Wedge[alpha,beta] = alpha^beta"
+Sharp1::usage = "Rise the indices of a 1-form";
+Flat1::usage = "Lower the indices of a Vector";
+
+Hodge0::usage = "Hodge-Star of a 0-form";
+Hodge1::usage = "Hodge-Star of a 1-form";
+Hodge2::usage = "Hodge-Star of a 2-form";
 
 Begin["Private`"]
 
-OneForm2D[f1_, f2_] := {f1, f2}
-TwoForm2D[w12_] := {{w12}}
+Wedge11[alpha_,beta_] := {{alpha[[1]]*beta[[2]] - alpha[[2]]*beta[[1]]}}
 
-IsNullForm[alpha_] := ArrayDepth[alpha] == 0
-IsOneForm[alpha_] := ArrayDepth[alpha] == 1
-IsTwoForm[alpha_] := ArrayDepth[alpha] == 2
+ExD0[f_,x_,y_] :=  {D[f,x],D[f,y]}
+ExD1[alpha_,x_,y_] := {{D[alpha[[2]],x] - D[alpha[[1]],y]}}
 
-Wedge[alpha_, beta_] := 
- 	Which[
-  		IsOneForm[alpha],
-  			Which[
-    				IsOneForm[beta],
-    					{{alpha[[1]] beta[[2]] - alpha[[2]] beta[[1]]}},
-    				True,
-						Print["Wedge::Cant determine"];
-						$Failed
-    					(*"Wedge::Cant determine"*)
-    			],
-   		True,
-  			"Wedge::Cant determine"
-  	]
+Sharp1[alpha_,g_] := Inverse[g].alpha
+Flat1[v_,g_] := g.v
+
+muVal[g_]:= Sqrt[Det[g]] (*Sqrt[Abs[Det[g]]]*)
+Hodge0[f_,g_] := {{muVal[g]f}}
+Hodge1[alpha_,g_] := muVal[g]{{0,-1},{1,0}}.(Transpose[Inverse[g]].alpha)
+Hodge2[omega_,g_] := omega[[1,1]]/muVal[g]
 
 End[]
 
@@ -43,24 +35,3 @@ EndPackage[]
 
 
 
-
-
-"FormsAndVectors`"
-
-
-"OneForm[f1,f2] construct a 1-Form f1dx^1+f2dx^2 as  {f1,f2}"
-
-
-"TwoForm2D[w12] construct a 2-form w12dx^1\[And]dx^2 as {{w12}}"
-
-
-"OneForm[alpha] is True if alpha is a 1-form"
-
-
-"Wedge[alpha,beta] = alpha^beta"
-
-
-"Private`"
-
-
-"Private`"
