@@ -1,0 +1,505 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     15107,        496]
+NotebookOptionsPosition[     13139,        421]
+NotebookOutlinePosition[     13474,        436]
+CellTagsIndexPosition[     13431,        433]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "FormsAndVectors`"}]], "Input",
+ CellChangeTimes->{{3.632558196991672*^9, 3.632558212034603*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"r", "=", "1"}], ";"}], 
+  RowBox[{"(*", "radius", "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632558173721089*^9, 3.6325581850907917`*^9}, {
+  3.6325582187072573`*^9, 3.632558263553483*^9}, {3.6325584054475393`*^9, 
+  3.632558436797127*^9}, {3.632559004372201*^9, 3.632559012589505*^9}, {
+  3.632559521302576*^9, 3.632559533092573*^9}, {3.632561065691058*^9, 
+  3.632561073063854*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"paraMap", " ", "=", " ", 
+    RowBox[{"r", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sin", "[", "u", "]"}], 
+        RowBox[{"Cos", "[", "v", "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Sin", "[", "u", "]"}], 
+        RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+       RowBox[{"Cos", "[", "u", "]"}]}], "}"}]}]}], " ", ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"parametric", " ", "map"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.6325594462856207`*^9, 3.6325595254240217`*^9}, 
+   3.6325610578996487`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"g", "=", 
+  RowBox[{
+   RowBox[{"MetricFromPara", "[", 
+    RowBox[{"paraMap", ",", "u", ",", "v"}], "]"}], " ", "//", "Simplify", 
+   " ", 
+   RowBox[{"(*", "getMetric", "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.632559544178996*^9, 3.6325595814851294`*^9}, {
+  3.6325610255676003`*^9, 3.632561045511777*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"1", ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     SuperscriptBox[
+      RowBox[{"Sin", "[", "u", "]"}], "2"]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.6325595715870733`*^9, 3.632559582509837*^9}, 
+   3.63256088796126*^9, {3.6325610220632763`*^9, 3.632561075442689*^9}, 
+   3.63256143037386*^9, 3.632561628263213*^9, 3.632562107049148*^9, 
+   3.6325629101401443`*^9, 3.632564006742649*^9, 3.632564405606048*^9, 
+   3.632564901993095*^9, 3.632566067644928*^9, 3.632568902664338*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"zFun", "=", 
+  RowBox[{"paraMap", "[", 
+   RowBox[{"[", "3", "]"}], "]"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"define", " ", "0"}], "-", "form"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632561219509944*^9, 3.63256124201007*^9}, {
+  3.632561620850473*^9, 3.632561621385674*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Cos", "[", "u", "]"}]], "Output",
+ CellChangeTimes->{3.632561244402092*^9, 3.6325614303781633`*^9, 
+  3.632561628266058*^9, 3.6325621070650663`*^9, 3.632562910146825*^9, 
+  3.632564006744879*^9, 3.6325644056086597`*^9, 3.632564902001527*^9, 
+  3.632566067659361*^9, 3.632568902673637*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"gradZFun", "=", 
+  RowBox[{
+   RowBox[{"Grad0", "[", 
+    RowBox[{"zFun", ",", "u", ",", "v", ",", "g"}], "]"}], "//", "Simplify", 
+   " ", 
+   RowBox[{"(*", 
+    RowBox[{"gradient", " ", "of", " ", "zFun"}], "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.6325613862309713`*^9, 3.632561423700939*^9}, {
+  3.632561624346896*^9, 3.632561634537793*^9}, {3.632562076587162*^9, 
+  3.632562081642148*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"-", 
+    RowBox[{"Sin", "[", "u", "]"}]}], ",", "0"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.63256143038573*^9, 3.63256162826875*^9, {3.632562082257697*^9, 
+   3.632562107082635*^9}, 3.6325629101498613`*^9, 3.632564006747334*^9, 
+   3.632564405611465*^9, 3.632564902004999*^9, 3.63256606768149*^9, 
+   3.632568902689191*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GlobalVecFromPara", "[", 
+   RowBox[{"gradZFun", ",", "paraMap", ",", "u", ",", "v"}], "]"}], " ", "//",
+   "Simplify", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"result", " ", "in", " ", "a", " ", "global", " ", 
+     RowBox[{"(", 
+      RowBox[{"x", ",", "y", ",", "z"}], ")"}]}], "-", "vector"}], 
+   "*)"}]}]], "Input",
+ CellChangeTimes->{{3.6325621096413193`*^9, 3.6325621967439003`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{"Cos", "[", "u", "]"}]}], " ", 
+    RowBox[{"Cos", "[", "v", "]"}], " ", 
+    RowBox[{"Sin", "[", "u", "]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{"Cos", "[", "u", "]"}]}], " ", 
+    RowBox[{"Sin", "[", "u", "]"}], " ", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   SuperscriptBox[
+    RowBox[{"Sin", "[", "u", "]"}], "2"]}], "}"}]], "Output",
+ CellChangeTimes->{{3.6325621678522263`*^9, 3.63256219821058*^9}, 
+   3.632562910152512*^9, 3.632564006749861*^9, 3.6325644056140337`*^9, 
+   3.632564902008471*^9, 3.632566067701652*^9, 3.632568902702839*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"xzFun", "=", 
+  RowBox[{
+   RowBox[{"paraMap", "[", 
+    RowBox[{"[", "1", "]"}], "]"}], 
+   RowBox[{"paraMap", "[", 
+    RowBox[{"[", "3", "]"}], "]"}], " ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"define", " ", "0"}], "-", 
+     RowBox[{"form", " ", 
+      RowBox[{"(", "Eigenfunction", ")"}]}]}], "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.632562954937993*^9, 3.632563003697856*^9}, {
+  3.632563078201652*^9, 3.632563092917541*^9}, {3.632563135109947*^9, 
+  3.632563142442391*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Cos", "[", "u", "]"}], " ", 
+  RowBox[{"Cos", "[", "v", "]"}], " ", 
+  RowBox[{"Sin", "[", "u", "]"}]}]], "Output",
+ CellChangeTimes->{{3.632562994512269*^9, 3.632563004288735*^9}, {
+   3.632563083351465*^9, 3.6325630937855873`*^9}, 3.632563145006459*^9, 
+   3.632564006767083*^9, 3.632564405636292*^9, 3.632564902011424*^9, 
+   3.632566067722486*^9, 3.632568902717145*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"LBeltrami0", "[", 
+    RowBox[{"xzFun", ",", "u", ",", "v", ",", "g"}], "]"}], "/", "xzFun"}], 
+  " ", "//", "Simplify", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "Eigenvalue", " ", "to", " ", "xzFun", " ", "of", " ", "the", " ", 
+     "Laplace"}], "-", "Beltrami"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.63256301618255*^9, 3.6325630649080973`*^9}, {
+  3.632563149328539*^9, 3.6325632024358397`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "6"}]], "Output",
+ CellChangeTimes->{{3.6325630568342667`*^9, 3.632563085806209*^9}, 
+   3.6325631572105837`*^9, 3.632563209341176*^9, 3.6325640067696447`*^9, 
+   3.632564405638538*^9, 3.6325649020292997`*^9, 3.632566067742922*^9, 
+   3.632568902732999*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"vec", " ", "=", " ", 
+  RowBox[{"{", 
+   RowBox[{"0", ",", 
+    RowBox[{"1", "/", 
+     RowBox[{"Sin", "[", "u", "]"}]}]}], "}"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"define", " ", "vector"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632563645633069*^9, 3.63256371878164*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", 
+   RowBox[{"Csc", "[", "u", "]"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.632563705654666*^9, 3.632563719313601*^9}, 
+   3.632564006772245*^9, 3.632564405640777*^9, 3.6325649020316763`*^9, 
+   3.6325660677640257`*^9, 3.6325689027507467`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GlobalVecFromPara", "[", 
+   RowBox[{"vec", ",", "paraMap", ",", " ", "u", ",", " ", "v"}], "]"}], " ", 
+  
+  RowBox[{"(*", 
+   RowBox[{"global", " ", "vector"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632564597811173*^9, 3.632564622640836*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"-", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   RowBox[{"Cos", "[", "v", "]"}], ",", "0"}], "}"}]], "Output",
+ CellChangeTimes->{{3.632564600478239*^9, 3.632564624789584*^9}, 
+   3.632564902033986*^9, 3.632566067766822*^9, 3.6325689027686663`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"alpha", " ", "=", " ", 
+  RowBox[{"Flat1", "[", 
+   RowBox[{"vec", ",", "g"}], "]"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "lower", " ", "indices", " ", "of", " ", "vec", " ", "to", " ", "get", 
+     " ", "1"}], "-", "form"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632563725113831*^9, 3.632563794094137*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", 
+   RowBox[{"Sin", "[", "u", "]"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.6325637904112797`*^9, 3.6325637959091787`*^9}, 
+   3.632564006776146*^9, 3.632564405643218*^9, 3.6325649020362587`*^9, 
+   3.6325660677698507`*^9, 3.6325689027850437`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"LBAlpha", " ", "=", " ", 
+  RowBox[{
+   RowBox[{"LBeltrami1", "[", 
+    RowBox[{"alpha", ",", "u", ",", "v", ",", "g"}], "]"}], " ", "//", 
+   "Simplify", 
+   RowBox[{"(*", 
+    RowBox[{"Laplace", "-", "Beltrami"}], "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.6325638506780252`*^9, 3.63256386256179*^9}, {
+  3.632563908204431*^9, 3.632563977862212*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", 
+   RowBox[{"-", 
+    RowBox[{"Csc", "[", "u", "]"}]}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.632563978862768*^9, 3.632564006793374*^9}, 
+   3.632564405645871*^9, 3.632564902038581*^9, 3.632566067776894*^9, 
+   3.632568902787888*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Sharp1", "[", 
+   RowBox[{"LBAlpha", ",", "g"}], "]"}], "//", "Simplify", " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "rise", " ", "the", " ", "indices", " ", "to", " ", "get", " ", "vector"}],
+    "*)"}]}]], "Input",
+ CellChangeTimes->{{3.6325640556680183`*^9, 3.6325640914626303`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", 
+   RowBox[{"-", 
+    SuperscriptBox[
+     RowBox[{"Csc", "[", "u", "]"}], "3"]}]}], "}"}]], "Output",
+ CellChangeTimes->{3.632564098180684*^9, 3.632564405648361*^9, 
+  3.632564902040731*^9, 3.6325660677807407`*^9, 3.632568902790818*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"LBVec", " ", "=", " ", 
+  RowBox[{
+   RowBox[{"LBeltrami1Vec", "[", 
+    RowBox[{"vec", ",", "u", ",", "v", ",", "g"}], "]"}], " ", "//", 
+   "Simplify", 
+   RowBox[{"(*", 
+    RowBox[{"short", " ", "version"}], "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.632564334379346*^9, 3.632564400678109*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", 
+   RowBox[{"-", 
+    SuperscriptBox[
+     RowBox[{"Csc", "[", "u", "]"}], "3"]}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.632564401213677*^9, 3.63256440567455*^9}, 
+   3.6325649020610657`*^9, 3.632566067784481*^9, 3.6325689027937317`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GlobalVecFromPara", "[", 
+   RowBox[{"LBVec", ",", "paraMap", ",", " ", "u", ",", " ", "v"}], "]"}], "//",
+   "Simplify", " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{"result", " ", "in", " ", "global", " ", "vector"}], 
+   "*)"}]}]], "Input",
+ CellChangeTimes->{{3.6325644155350113`*^9, 3.6325644681973877`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    SuperscriptBox[
+     RowBox[{"Csc", "[", "u", "]"}], "2"], " ", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{"Cos", "[", "v", "]"}]}], " ", 
+    SuperscriptBox[
+     RowBox[{"Csc", "[", "u", "]"}], "2"]}], ",", "0"}], "}"}]], "Output",
+ CellChangeTimes->{3.632564469307083*^9, 3.632564902063266*^9, 
+  3.632566067787588*^9, 3.632568902796713*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LDeRham1", "[", 
+   RowBox[{"alpha", ",", "u", ",", "v", ",", "g"}], "]"}], "//", "Simplify", 
+  " ", 
+  RowBox[{"(*", 
+   RowBox[{"Laplace", "-", "De", "-", "Rham"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632566000352605*^9, 3.632566059893689*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", 
+   RowBox[{"Csc", "[", "u", "]"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.632566067803994*^9, 3.632568902800946*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GlobalVecFromPara", "[", 
+   RowBox[{
+    RowBox[{"LDeRham1Vec", "[", 
+     RowBox[{"vec", ",", "u", ",", "v", ",", "g"}], "]"}], ",", "paraMap", 
+    ",", " ", "u", ",", " ", "v"}], "]"}], "//", "Simplify", "  ", 
+  RowBox[{"(*", 
+   RowBox[{"as", " ", "global", " ", "vector"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632566564029291*^9, 3.632566599751029*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", 
+     SuperscriptBox[
+      RowBox[{"Csc", "[", "u", "]"}], "2"]}], " ", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   RowBox[{
+    RowBox[{"Cos", "[", "v", "]"}], " ", 
+    SuperscriptBox[
+     RowBox[{"Csc", "[", "u", "]"}], "2"]}], ",", "0"}], "}"}]], "Output",
+ CellChangeTimes->{3.6325666022892838`*^9, 3.632568902803536*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 867},
+WindowMargins->{{Automatic, 0}, {Automatic, 13}},
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (November 7, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 126, 2, 30, "Input"],
+Cell[686, 24, 430, 9, 30, "Input"],
+Cell[1119, 35, 573, 17, 50, "Input"],
+Cell[CellGroupData[{
+Cell[1717, 56, 335, 8, 30, "Input"],
+Cell[2055, 66, 584, 13, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2676, 84, 316, 8, 30, "Input"],
+Cell[2995, 94, 312, 5, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3344, 104, 420, 10, 30, "Input"],
+Cell[3767, 116, 380, 9, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4184, 130, 428, 11, 50, "Input"],
+Cell[4615, 143, 651, 17, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5303, 165, 515, 14, 30, "Input"],
+Cell[5821, 181, 408, 8, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6266, 194, 457, 12, 50, "Input"],
+Cell[6726, 208, 285, 5, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7048, 218, 300, 8, 30, "Input"],
+Cell[7351, 228, 294, 6, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7682, 239, 283, 7, 30, "Input"],
+Cell[7968, 248, 303, 7, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8308, 260, 351, 9, 30, "Input"],
+Cell[8662, 271, 298, 6, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8997, 282, 377, 9, 30, "Input"],
+Cell[9377, 293, 286, 7, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9700, 305, 316, 8, 30, "Input"],
+Cell[10019, 315, 286, 7, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10342, 327, 323, 8, 30, "Input"],
+Cell[10668, 337, 290, 7, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10995, 349, 342, 8, 50, "Input"],
+Cell[11340, 359, 445, 13, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11822, 377, 288, 7, 30, "Input"],
+Cell[12113, 386, 168, 4, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12318, 395, 401, 9, 50, "Input"],
+Cell[12722, 406, 401, 12, 34, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
