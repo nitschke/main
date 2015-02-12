@@ -67,7 +67,9 @@
       \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \)
       \begin{itemize}
         \item \( \exd f = \partial_{1}fdx^{1} + \partial_{2}fdx^{2} \)
+        \item \( \left( \exd f \right)_{\mu} = \partial_{\mu}f \)  (\textbf{Ricci})
         \item \( \exd\alpha = \left( \partial_{1}a_{2} - \partial_{2}a_{1} \right) dx^{1}\wedge dx^{2}\)
+        \item \( (\exd\alpha)_{12} = (-1)^{\mu-1}\partial_{\mu}a_{\bar{\mu}} \) (\textbf{Ricci})
       \end{itemize}
 
     \subsection{Hodge star \( * \)}
@@ -93,6 +95,17 @@
         \item \( \vecflat{v} = \left( g_{11}v^{1} + g_{12}v^{2} \right)dx^{1} + \left( g_{12}v^{1} + g_{22}v^{2} \right)dx^{2} \)
         \item \( v_{\mu} = g_{\mu\nu}v^{\nu} \) (\textbf{Ricci})
       \end{itemize}
+
+    \subsection{Conclusions}
+    \(  \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2} \)
+    \begin{itemize}
+      \item \(
+        \begin{aligned}[t]
+            \text{Div}\vec{v} &= -\delta\vecflat{v} = *\exd * \vecflat{v}&\\
+                                 &= \sum_{i=1,2} \frac{1}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} v^{i}&\\
+                                 &= \sum_{i=1,2} \frac{v^{i}}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} + \partial_{i}v^{i}
+        \end{aligned}\)
+    \end{itemize}
         
   
 \end{document}
