@@ -8,6 +8,9 @@
 
 \newcommand{\exd}{\mathbf{d}}
 \newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+\renewcommand{\i}{\mathbf{i}}
+\renewcommand{\L}{\mathbf{\mathcal{L}}}
+
 
 \begin{document}
 
@@ -19,11 +22,13 @@
       \begin{bmatrix}
         g_{11} & g_{12} \\
         g_{12} & g_{22}
-      \end{bmatrix} (\textbf{s.p.d.}) \)
+      \end{bmatrix}  = g_{11}\left( dx^{1} \right)^{2} + 2g_{12}dx^{1}dx^{2} + g_{22}\left( dx^{2} \right)^{2}
+        (\textbf{s.p.d.}) \)
       \end{itemize}
 
     \subsection{General proberties}
-      \( \alpha \in \Omega^{p}(M) \),  \( \beta \in \Omega^{q}(M) \),  \( \gamma \in \Omega^{r}(M) \)
+      \( \alpha \in \Omega^{p}(M) \),  \( \beta \in \Omega^{q}(M) \),  \( \gamma \in \Omega^{r}(M) \),
+      \( \vec{v} \in \mathcal{V}(M) \)
       \subsubsection{Wedge product \( \wedge \)}
       \begin{itemize}
         \item \( \alpha\wedge\beta = (-1)^{pq}\beta\wedge\alpha \)
@@ -34,19 +39,40 @@
               (\textbf{bilinear})
       \end{itemize}
 
-      \subsubsection{Exterior derivative \( \exd \)}
+      \subsubsection{Exterior derivative \( \exd:\Omega^{p}(M)\rightarrow\Omega^{p+1}(M) \)}
         \begin{itemize}
           \item \( \exd\circ\exd = 0 \) (\textbf{complex proberty})
           \item \( \exd\left( \alpha \wedge \beta \right) = \exd\alpha\wedge\beta + (-1)^{p}\alpha\wedge\exd\beta \)
-                (\textbf{product rule})
+                (\textbf{product rule, \( \wedge \)-antiderivation})
         \end{itemize}
 
-      \subsubsection{Hodge star \( * \)}
+      \subsubsection{Hodge star \( *:\Omega^{p}(M)\rightarrow\Omega^{2-p}(M) \)}
         \begin{itemize}
           \item \( \alpha \wedge *\beta = \beta \wedge *\alpha = \left\langle \alpha,\beta \right\rangle\mu \)
           \item \( *1 = \mu \) \quad(\( *\mu = 1 \))
           \item \( **\alpha = (-1)^{p}\alpha \)
           \item \( \left\langle \alpha, \beta \right\rangle =  \left\langle *\alpha, *\beta \right\rangle\)
+        \end{itemize}
+
+      \subsubsection{Contraction \( \i:\left(\mathcal{V}\times\Omega^{p}\right)(M)\rightarrow\Omega^{p-1}(M) \) (inner product)}
+        \begin{itemize}
+          \item \( \i_{\vec{v}}\alpha\left( \vec{t}_{1},\ldots\vec{t}_{p-1} \right) = \alpha\left(\vec{v}, \vec{t}_{1},\ldots\vec{t}_{p-1} \right) \)
+          \item \( f\i_{\vec{v}}\alpha = \i_{f\vec{v}}\alpha 
+                                       = \i_{\vec{v}}f\alpha \)
+                (\textbf{bilinear})
+          \item \( \i_{\vec{v}}\left( \alpha\wedge\beta \right) 
+                    = \left( \i_{\vec{v}}\alpha \right)\wedge\beta + (-1)^{p}\alpha\wedge\left( \i_{\vec{v}}\beta \right)\)
+                (\textbf{\( \wedge \)-antiderivation})
+        \end{itemize}
+
+      \subsubsection{Lie-derivative \( \L:\left(\mathcal{V}\times\Omega^{p}\right)(M)\rightarrow\Omega^{p}(M) \)}
+        \begin{itemize}
+          \item \(\L_{\vec{v}}\alpha = \i_{\vec{v}}\exd\alpha + \exd\i_{\vec{v}}\alpha\) 
+          (\textbf{Cartans magic formular})
+          \item  \( \L_{f\vec{v}}\alpha = f\L_{\vec{v}}\alpha + \exd f\wedge\i_{\vec{v}}\alpha\)
+          \item \( \L_{\vec{v}}\left( \alpha\wedge\beta \right) = \L_{\vec{v}}\alpha\wedge\beta + \alpha\wedge\L_{\vec{v}}\beta\)
+          \item \(\L_{\vec{v}}\exd\alpha = \exd\L_{\vec{v}}\alpha \)
+          \item \(\L_{\vec{v}}\i_{\vec{v}}\alpha = \i_{\vec{v}}\L_{\vec{v}}\alpha \)
         \end{itemize}
 
     \subsection{Wedge product \( \wedge \)}
@@ -88,7 +114,7 @@
 
     \subsection{Rising and lowering indices \( \sharp \) / \( \flat \)}
       \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \),
-      \( \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2} \)
+      \( \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2}\in\mathcal{V}(M) \)
       \begin{itemize}
         \item \( \alpha^{\sharp} = \left( g^{11}a_{1}+g^{12}a_{2} \right)\partial_{1} + \left( g^{12}a_{1}+g^{22}a_{2} \right)\partial_{2}\)
         \item \( a^{\mu} = g^{\mu\nu}a_{\nu}\) (\textbf{Ricci})
@@ -96,8 +122,32 @@
         \item \( v_{\mu} = g_{\mu\nu}v^{\nu} \) (\textbf{Ricci})
       \end{itemize}
 
+    \subsection{Contraction \( \i \)}
+      \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \),
+      \( \omega:= w_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M)\)
+      \( \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2}\in\mathcal{V}(M) \)
+      \begin{itemize}
+        \item \( \i_{\vec{v}}\alpha = \alpha\left( \vec{v} \right) = a_{1}v^{1} + a_{2}v^{2} \)
+        \item \( \i_{\vec{v}}\omega = w_{12}\left( -v^{2}dx^{1} + v^{1}dx^{2} \right) \)
+      \end{itemize}
+
+    \subsection{Lie-derivative \( \L \)}
+       \( f\in \Omega^{0}(M)\),
+       \( \alpha:= a_{1}dx^{1} + a_{2}dx^{2} \in \Omega^{1}(M) \),
+       \( \omega:= w_{12}dx^{1}\wedge dx^{2} \in \Omega^{2}(M) \),
+       \( \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2}\in\mathcal{V}(M) \)
+       \begin{itemize}
+        \item \( \L_{\vec{v}}f = v^{1}\partial_{1}f + v^{2}\partial_{2}f \)
+        \item \( \L_{\vec{v}}\alpha = \sum_{i,k=1,2} \left(v^{k}\partial_{k}a_{i}dx^{i} + a_{i}\partial_{k}v^{i}dx^{k}\right) \)
+        \item \( \L_{\vec{v}}\omega = \left( \partial_{1}\left( w_{12}v^{1} \right) 
+                                        +  \partial_{2}\left( w_{12}v^{2} \right)\right) dx^{1}\wedge dx^{2}\)
+        \item \( \L_{\vec{v}}\omega = \left(w_{12}\partial_{\mu}v^{\mu} + v^{\mu}\partial_{\mu}w_{12}\right) dx^{1}\wedge dx^{2} \)
+           (\textbf{Ricci})
+       \end{itemize}
+
+
     \subsection{Conclusions}
-    \(  \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2} \)
+    \(  \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2}\in\mathcal{V}(M) \)
     \begin{itemize}
       \item \(
         \begin{aligned}[t]

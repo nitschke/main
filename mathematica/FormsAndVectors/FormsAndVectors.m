@@ -42,6 +42,17 @@ LDeRham1::usage = "Laplace-De-Rham (\[Delta]d+d\[Delta]) of a 1-form";
 LDeRham1Vec::usage = "Laplace-De-Rham (\[Delta]d+d\[Delta]) of a vector (with pre-flat and post-sharp)";
 LDeRham2::usage = "aplace-De-Rham (d\[Delta]) of a 2-form";
 
+LieD0::usage = "Lie-derivative of a 0-form";
+LieD1::usage = "Lie-derivative of a 1-form";
+LieD2::usage = "Lie-derivative of a 2-form";
+
+Inner1::usage = "Contraction of a 1-form";
+Inner2::usage = "Contraction of a 2-form";
+
+DotForm1::usage = "Dot product of 1-forms";
+
+DoubleDotFormForm11::usage = "Double dot product (:) of of 1-forms of 1-form";
+
 Begin["Private`"]
 
 MetricFromPara[paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, Outer[Dot,{Dx,Dy},{Dx,Dy},1]]
@@ -86,9 +97,24 @@ LDeRham1[alpha_,x_,y_,g_] := -LBeltrami1[alpha,x,y,g] - LCoBeltrami1[alpha,x,y,g
 LDeRham1Vec[vec_,x_,y_,g_] := Sharp1[LDeRham1[Flat1[vec,g],x,y,g],g]
 LDeRham2[omega_,x_,y_,g_] := -LCoBeltrami2[omega,x,y,g]
 
+LieD0[vec_,f_,x_,y_] := vec.ExD0[f,x,y]
+LieD1[vec_,alpha_,x_,y_] := {vec[[1]]D[alpha[[1]],x] + vec[[2]]D[alpha[[1]],y] + alpha[[1]]D[vec[[1]],x] + alpha[[2]]D[vec[[2]],x],
+							  vec[[1]]D[alpha[[2]],x] + vec[[2]]D[alpha[[2]],y] + alpha[[1]]D[vec[[1]],y] + alpha[[2]]D[vec[[2]],y]}
+LieD2[vec_,omega_,x_,y_] := {{D[omega[[1,1]]vec[1],x] + D[omega[[1,1]]vec[2],y]}}
+
+Inner1[vec_,alpha_] := vec.alpha
+Inner2[vec_,omega_] := omega[[1,1]]{-vec[[2]],vec[[1]]}
+
+DotForm1[alpha_,beta_,g_] := alpha.Sharp1[beta,g]
+
+DoubleDotFormForm11[sigma_,tau_,g_] := DotForm1[sigma[[1]],tau[[All,1]],g] + DotForm1[sigma[[2]],tau[[All,2]],g]
+
 End[]
 
 EndPackage[]
+
+
+
 
 
 
