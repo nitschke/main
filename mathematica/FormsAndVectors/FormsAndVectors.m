@@ -45,13 +45,14 @@ LDeRham2::usage = "aplace-De-Rham (d\[Delta]) of a 2-form";
 LieD0::usage = "Lie-derivative of a 0-form";
 LieD1::usage = "Lie-derivative of a 1-form";
 LieD2::usage = "Lie-derivative of a 2-form";
+LieDT02::usage = "Lie-derivative of a (0,2)-Tensor";
 
 Inner1::usage = "Contraction of a 1-form";
 Inner2::usage = "Contraction of a 2-form";
 
 DotForm1::usage = "Dot product of 1-forms";
 
-DoubleDotFormForm11::usage = "Double dot product (:) of of 1-forms of 1-form";
+DoubleDotFormForm11::usage = "Double dot product (:) of 1-forms of 1-forms";
 
 Begin["Private`"]
 
@@ -98,20 +99,28 @@ LDeRham1Vec[vec_,x_,y_,g_] := Sharp1[LDeRham1[Flat1[vec,g],x,y,g],g]
 LDeRham2[omega_,x_,y_,g_] := -LCoBeltrami2[omega,x,y,g]
 
 LieD0[vec_,f_,x_,y_] := vec.ExD0[f,x,y]
-LieD1[vec_,alpha_,x_,y_] := {vec[[1]]D[alpha[[1]],x] + vec[[2]]D[alpha[[1]],y] + alpha[[1]]D[vec[[1]],x] + alpha[[2]]D[vec[[2]],x],
-							  vec[[1]]D[alpha[[2]],x] + vec[[2]]D[alpha[[2]],y] + alpha[[1]]D[vec[[1]],y] + alpha[[2]]D[vec[[2]],y]}
+(*LieD1[vec_,alpha_,x_,y_] := {vec[[1]]D[alpha[[1]],x] + vec[[2]]D[alpha[[1]],y] + alpha[[1]]D[vec[[1]],x] + alpha[[2]]D[vec[[2]],x],
+							  vec[[1]]D[alpha[[2]],x] + vec[[2]]D[alpha[[2]],y] + alpha[[1]]D[vec[[1]],y] + alpha[[2]]D[vec[[2]],y]}*)
+LieD1[vec_,alpha_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[j]]D[alpha[[i]],xv[[j]]] + alpha[[j]]D[vec[[j]],xv[[i]]],{j,1,2}],{i,1,2}]]
 LieD2[vec_,omega_,x_,y_] := {{D[omega[[1,1]]vec[1],x] + D[omega[[1,1]]vec[2],y]}}
+LieDT02[vec_,sigma_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[k]]D[sigma[[i,j]],xv[[k]]]+sigma[[k,j]]D[vec[[k]],xv[[i]]]+sigma[[i,k]]D[vec[[k]],xv[[j]]],{k,1,2}],{i,1,2},{j,1,2}]]
 
 Inner1[vec_,alpha_] := vec.alpha
 Inner2[vec_,omega_] := omega[[1,1]]{-vec[[2]],vec[[1]]}
 
 DotForm1[alpha_,beta_,g_] := alpha.Sharp1[beta,g]
 
-DoubleDotFormForm11[sigma_,tau_,g_] := DotForm1[sigma[[1]],tau[[All,1]],g] + DotForm1[sigma[[2]],tau[[All,2]],g]
+DoubleDotFormForm11[sigma_,tau_,g_] := Module[{gInv=Inverse[g]}, Sum[sigma[[i,k]]gInv[[i,l]]gInv[[k,s]]tau[[l,s]],{i,1,2},{k,1,2},{l,1,2},{s,1,2}]]
 
 End[]
 
 EndPackage[]
+
+
+
+
+
+
 
 
 
