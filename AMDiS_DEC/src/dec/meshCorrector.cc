@@ -1,6 +1,9 @@
 #include "AMDiS.h"
 #include "meshCorrector.h"
 #include "MeshHelper.h"
+#include "io/VtkVectorWriter.h"
+#include "io/MacroWriter.h"
+
 
 namespace AMDiS {
 
@@ -107,7 +110,7 @@ namespace AMDiS {
     double tol1 = 1.0e-1;
     double tol2 = 1.0e-6;
     F = getConnectionForces(feSpace, true);
-    VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(0) + ".vtu"));
+    io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(0) + ".vtu"));
     double fNew;
     double fOld = getMaxMagnitude(F);
     double hh = h;
@@ -134,7 +137,7 @@ namespace AMDiS {
       double tmp = (fOld - fNew) / fOld;
       minusCounter = (tmp < 0) ? (minusCounter+1) : 0;
       if (minusCounter > 500) {
-        VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_EndAt_" + boost::lexical_cast<std::string>(i) + ".vtu"));
+        io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_EndAt_" + boost::lexical_cast<std::string>(i) + ".vtu"));
         return;
         hh *= 0.8;
         minusCounter = 0;
@@ -152,10 +155,10 @@ namespace AMDiS {
 
       infowriter.appendData(feSpace);
       if (i%nVerbose == 0) cout << i << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
-      if (i%10 == 0) VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(i) + ".vtu"));
+      if (i%10 == 0) io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(i) + ".vtu"));
       if (i%10 == 0) {
         DataCollector<double> dc(feSpace);
-        MacroWriter::writeMacro(&dc, string("output/meshOut" + name + "_" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
+        io::MacroWriter::writeMacro(&dc, string("output/meshOut" + name + "_" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
       }
     }
   }

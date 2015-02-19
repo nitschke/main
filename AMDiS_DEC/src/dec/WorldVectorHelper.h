@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
 namespace AMDiS {
 
 inline double dot(const WorldVector<double> &v1, const WorldVector<double> &v2) {

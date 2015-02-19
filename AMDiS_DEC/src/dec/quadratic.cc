@@ -1,6 +1,8 @@
 #include "quadratic.h"
 #include "DOFVHelper.h"
 #include "phiProjection.h"
+#include "io/VtkVectorWriter.h"
+using namespace io;
 
 Quadratic::Quadratic(const FiniteElemSpace *finiteElemSpace) : 
   coeffs(9),

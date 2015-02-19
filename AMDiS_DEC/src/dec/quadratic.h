@@ -1,6 +1,6 @@
 #include "AMDiS.h"
 
-
+using namespace std;
 using namespace AMDiS;
 class Quadratic {
 

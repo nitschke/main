@@ -1,5 +1,6 @@
 #include "AMDiS.h"
 
+using namespace std;
 namespace AMDiS {
 
   const DOFVector<double>& minus(const DOFVector<double>& x, const DOFVector<double>& y);

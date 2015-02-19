@@ -7,6 +7,8 @@
 #include "MatrixHelper.h"
 #include "DOFVHelper.h"
 #include "quadraticSpline.h"
+#include "io/VtkVectorWriter.h"
+#include "NormalsApproximator.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -67,7 +69,7 @@ public:
   double operator()(const WorldVector<double>& x) const 
   {
     WorldVector<double> rval = dPhi(x);
-    return ((1.0/sqrt(dot(rval,rval))) * rval)[i];
+    return ((1.0/sqrt(AMDiS::dot(rval,rval))) * rval)[i];
   }
 
 private:
@@ -166,8 +168,12 @@ int main(int argc, char* argv[])
   
   //DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(sphere.getFeSpace());  
 
-  QuadraticSpline quad(sphere.getFeSpace());
-  DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
+  //QuadraticSpline quad(sphere.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = quad.getNormals();
+
+  DOFVector<WorldVector<double> > vertexNormals(sphere.getFeSpace(), "NApp");
+  NormalsApproximator napp(&vertexNormals, NULL);
+  napp.fillNormals();
 
   int oh = -3;
   //int oh = 0;
@@ -205,29 +211,29 @@ int main(int argc, char* argv[])
   }
 
   DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
-  VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
 
 
   DOFVector<double> gcDOFV(sphere.getFeSpace(),"GaussCurvExact");
   gcDOFV.interpol(new GC());
-  VtkVectorWriter::writeFile(gcDOFV, string("output/gaussExact.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(gcDOFV, string("output/gaussExact.vtu"));
 
   DOFVector<double> mcDOFV(sphere.getFeSpace(),"MeanCurvExact");
   mcDOFV.interpol(new MC());
-  VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
 
   DOFVector<double> gcWeingarten = prod01(eigDofVector);
   printError(gcWeingarten, gcDOFV, "GaussWeingarten");
-  VtkVectorWriter::writeFile(gcWeingarten, "output/GaussWeingarten.vtu");
+  AMDiS::io::VtkVectorWriter::writeFile(gcWeingarten, "output/GaussWeingarten.vtu");
 
   DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
   printError(mcWeingarten, mcDOFV, "MeanWeingarten");
-  VtkVectorWriter::writeFile(mcWeingarten, "output/MeanWeingarten.vtu");
+  AMDiS::io::VtkVectorWriter::writeFile(mcWeingarten, "output/MeanWeingarten.vtu");
 
   DOFVector<WorldVector<double> > normalDOFV(sphere.getFeSpace(),"Normal");
   normalDOFV.interpol(new NormalVec());
-  VtkVectorWriter::writeFile(normalDOFV, string("output/exactNormals.vtu"));
-  VtkVectorWriter::writeFile(vertexNormals, string("output/avNormals.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(normalDOFV, string("output/exactNormals.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(vertexNormals, string("output/avNormals.vtu"));
   printError(normalDOFV, vertexNormals , "Normal");
 
   //MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");
