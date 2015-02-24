@@ -5,6 +5,8 @@
 #include "WorldVectorHelper.h"
 #include "DOFVHelper.h"
 #include "torusProjection.h"
+#include "io/VtkVectorWriter.h"
+#include "NormalsApproximator.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -133,7 +135,16 @@ int main(int argc, char* argv[])
   AdaptStationary *adapt = new AdaptStationary("torus->adapt",
 					       &torus,
 					       adaptInfo);
-  
+
+  //DOFVector<WorldVector<double> > vertexNormals = getNormalsAngleEdgeReciprocalAverage(torus.getFeSpace());
+  //DOFVector<WorldVector<double> > vertexNormals = getNormals(torus.getFeSpace(),true);
+
+  DOFVector<WorldVector<double> > vertexNormals(torus.getFeSpace(), "NApp");
+  //DOFVector<double> cn(torus.getFeSpace(), "CNum");
+  //NormalsApproximator napp(&vertexNormals, NULL, &cn);
+  NormalsApproximator napp(&vertexNormals, NULL);
+  napp.fillNormals();
+  //AMDiS::io::VtkVectorWriter::writeFile(cn, string("output/condNumbers.vtu"));
 
   int oh = 0;
   for (int i = 0; i < 3; i++) {
@@ -151,7 +162,10 @@ int main(int argc, char* argv[])
        //PrimalPrimalGradDEC *dN = new PrimalPrimalGradDEC(i, torus.getFeSpace(pos), torus.getFeSpace(j+oh));
        //torus.addMatrixOperator(dN, pos, j+oh);
        // with known normal
-       PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), torus.getFeSpace(pos), torus.getFeSpace(j+oh));
+       //PrimalPrimalGradFunctionDEC *dN = new PrimalPrimalGradFunctionDEC(i, new Normal(j), torus.getFeSpace(pos), torus.getFeSpace(j+oh));
+       //dN->setFactor(-1.0);
+       //torus.addVectorOperator(dN, pos);
+       GradDofWorldVecDEC *dN = new GradDofWorldVecDEC(i, j, &vertexNormals, torus.getFeSpace(pos), torus.getFeSpace(pos));
        dN->setFactor(-1.0);
        torus.addVectorOperator(dN, pos);
     }
@@ -170,28 +184,29 @@ int main(int argc, char* argv[])
   }
 
   DOFVector<WorldVector<double> > eigDofVector = getEigenVals(IIDV);
-  VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(eigDofVector, string("output/eigenVals.vtu"));
 
   DOFVector<double> gcDOFV(torus.getFeSpace(),"GaussCurvExact");
   gcDOFV.interpol(new GC());
-  VtkVectorWriter::writeFile(gcDOFV, string("output/gaussExact.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(gcDOFV, string("output/gaussExact.vtu"));
 
   DOFVector<double> mcDOFV(torus.getFeSpace(),"MeanCurvExact");
   mcDOFV.interpol(new MC());
-  VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(mcDOFV, string("output/meanExact.vtu"));
 
   DOFVector<double> gcWeingarten = prod01(eigDofVector);
-  VtkVectorWriter::writeFile(gcWeingarten, string("output/gaussWeingarten.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(gcWeingarten, string("output/gaussWeingarten.vtu"));
   printError(gcWeingarten, gcDOFV, "GaussWeingarten");
 
   DOFVector<double> mcWeingarten = halfSum01(eigDofVector);
-  VtkVectorWriter::writeFile(mcWeingarten, string("output/meanWeingarten.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(mcWeingarten, string("output/meanWeingarten.vtu"));
   printError(mcWeingarten, mcDOFV, "MeanWeingarten");
 
   DOFVector<WorldVector<double> > normalDOFV(torus.getFeSpace(),"Normal");
   normalDOFV.interpol(new NormalVec());
-  VtkVectorWriter::writeFile(normalDOFV, string("output/normals.vtu"));
-  printError(*(torus.getSolution()), 0, 1, 2, normalDOFV, "Normal");
+  AMDiS::io::VtkVectorWriter::writeFile(normalDOFV, string("output/exactNormals.vtu"));
+  AMDiS::io::VtkVectorWriter::writeFile(vertexNormals, string("output/avNormals.vtu"));
+  printError(vertexNormals, normalDOFV, "Normal");
 
 
   MeshInfoCSVWriter mwriter("/dev/null/nonaynever.csv");

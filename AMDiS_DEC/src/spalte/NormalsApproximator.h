@@ -6,6 +6,7 @@
 #include "QubicGeometryQuantities.h"
 #include "QuadricGeometryQuantities.h"
 #include "MyHelpers.h"
+#include "MeshHelper.h"
 
 
 using namespace std;
@@ -16,7 +17,10 @@ using namespace itl;
 class NormalsApproximator
 {
 public:
-	NormalsApproximator( DOFVector<WorldVector<double> > *normals_ , WorldVector<DOFVector<double>* >* normalsX_ , Projection *proj_ = NULL ) : normals(normals_) ,normalsX(normalsX_), proj(proj_)
+	NormalsApproximator( DOFVector<WorldVector<double> > *normals_ , 
+                        WorldVector<DOFVector<double>* >* normalsX_ , 
+                        DOFVector<double> *conditions_ = NULL, 
+                        Projection *proj_ = NULL ) : normals(normals_) ,normalsX(normalsX_), proj(proj_), conditions(conditions_)
 	{
 		mode = 3 ;
 		Initfile::get( "user parameter->NormalsApproximator->mode" , mode );
@@ -46,6 +50,8 @@ public:
 
 
 private:
+  DOFVector<double> *conditions;
+
 	DOFVector<mtl::dense_vector<double> > *coefficientDOFVector;
 	DOFVector<WorldVector<double> > *normals , *coords;
 	WorldVector<DOFVector<double>* > *normalsX ;
@@ -320,17 +326,43 @@ private:
 		fillNormalsWeighted();
 		
 		int nBasisFct = 10 ;
+    nBasisFct += 6;
 		int additional_points = 18;
 		int degree = 2;
 		Initfile::get( "user parameter->NormalsApproximator->additional_points" , additional_points );
+
+    bool adaptive = false;
+    Initfile::get( "user parameter->NormalsApproximator->adaptive" , adaptive );
+    double adaptiveTol = 0.1;
+    Initfile::get( "user parameter->NormalsApproximator->adaptive tol" , adaptiveTol );
+
+    bool average = false;
+    Initfile::get( "user parameter->NormalsApproximator->average" , average );
+    double nAv = 0.1;
+    Initfile::get( "user parameter->NormalsApproximator->average n" , nAv );
+
+
+    double c2 = 1.0;
+
 		
 		// CREATE COORDS DOF
 		updateCoords();
 		
+    // normals precalculation for orientation preserving and adaptivity
+    DOFVector<WorldVector<double> > normalsSimple = AMDiS::getNormals(feSpace, true);
+
+
 		// DOF ITERATORS
+    DOFIterator<double> *condIter = NULL; 
+    if (conditions) {
+      condIter = new DOFIterator<double>(conditions, USED_DOFS); 
+      condIter->reset();
+    }
+    DOFIterator<WorldVector<double> > normalsSimpleIter(&normalsSimple, USED_DOFS);
 		DOFIterator<WorldVector<double> > coordsIter(coords, USED_DOFS);
 		DOFIterator<WorldVector<double> > normalsIter(normals, USED_DOFS);
 		DOFIterator<mtl::dense_vector<double> > coeffIter( coefficientDOFVector , USED_DOFS );
+    normalsSimpleIter.reset();
 		coordsIter.reset();
 		normalsIter.reset();
 		coeffIter.reset();
@@ -339,11 +371,15 @@ private:
 		KD_Tree_Dof *tree = provideKDTree( feSpace );
 		tree->reinit();
 		
-		for (  ; !coordsIter.end() , !normalsIter.end() , !coeffIter.end() ; ++coordsIter , ++normalsIter , ++coeffIter )
+    size_t numPointsBasic = nBasisFct + additional_points ;
+    size_t numPoints = numPointsBasic;
+    int iPoint = 0;
+    int nTry = 0;
+    std::vector<WorldVector<double> > NTmp(nAv);
+		for (  ; !coordsIter.end() , !normalsIter.end() , !coeffIter.end(), !normalsSimpleIter.end() ; ++coordsIter , ++normalsIter , ++coeffIter, ++normalsSimpleIter, ++iPoint )
 		{
 			// SEARCH FOR EVERY COORD THE numPoints NEAREST POINTS IN COORDS SET (DEPENDS ON MESH REFINEMENT LEVEL)
 			WorldVector<double> p = (*coordsIter) ;
-			size_t numPoints = nBasisFct + additional_points ; // 10 basisFunctions and 40 additional Points
 			std::vector<DegreeOfFreedom> indices(numPoints);
 			std::vector<double> distances(numPoints);
 			tree->query(p.begin(), numPoints, &indices[0], &distances[0]);
@@ -365,6 +401,7 @@ private:
 			TEST_EXIT( points.size() >= numPoints )( "Nicht genügend Stützstellen gefunden!\n" );
 			size_t i = 0;
 			size_t dim = 10 ;
+      dim += 6;
 			mtl::dense2D<double> A(numPoints,dim), B(dim,dim);
 			mtl::dense_vector<double> b(numPoints, 1.0), c(dim), y(dim, 1.0);
 			std::vector<WorldVector<double> >::const_iterator pointsIter;
@@ -372,6 +409,7 @@ private:
 			for ( pointsIter = points.begin() , weightsIter = weights.begin() ; pointsIter != points.end() && i < numPoints ,  weightsIter != weights.end() ; ++pointsIter , ++weightsIter , ++i )
 			{
 				WorldVector<double> x = *pointsIter ;
+        //cout << "*** " <<  x << endl;
 				double w = 1.0 ;
 				if ( weighting )
 					w = *weightsIter ;
@@ -385,22 +423,94 @@ private:
 				A[i][7] = w * 3.0 * x[0]*x[2]*x[2] ;
 				A[i][8] = w * 3.0 * x[1]*x[1]*x[2] ;
 				A[i][9] = w * 3.0 * x[1]*x[2]*x[2] ;
+        
+        A[i][10] = c2 * w * 3.0 * x[0]*x[0] ;
+        A[i][11] = c2 * w * 6.0 * x[0]*x[1] ;
+        A[i][12] = c2 * w * 6.0 * x[0]*x[2] ;
+        A[i][13] = c2 * w * 3.0 * x[1]*x[1] ;
+        A[i][14] = c2 * w * 6.0 * x[1]*x[2] ;
+        A[i][15] = c2 * w * 3.0 * x[2]*x[2] ;
+
 				b[i] = w ;
 			}
+      //cout << endl;
 			
 			// SOLVE LEAST SQUARE PROBLEM
 			c = trans(A)*b;
 			B = trans(A)*A;
 			solveLGS( B , c , y );
+
+      //condition
+      if (conditions) {
+        mtl::dense_vector<double> eig(dim) ;
+        eig = qr_algo(B,100);
+        *(*condIter) = abs(eig[0]/eig[dim-1]);
+        //cout << *(*condIter) << endl;
+        ++(*condIter);
+      }
 			
 			// FILL IN NORMAL VECTOR WITH THE APPROXIMATION OF TEH SURFACE BY A QUADRIK
 			WorldVector<double> x = *coordsIter ;
-			(*normalsIter)[0] = QubicGeometryQuantities::getN0( y , p );
-			(*normalsIter)[1] = QubicGeometryQuantities::getN1( y , p );
-			(*normalsIter)[2] = QubicGeometryQuantities::getN2( y , p );
-			
-			// UPDATE COEFFICIENT DOF VECTOR
-			*coeffIter = y ;
+			//(*normalsIter)[0] = QubicGeometryQuantities::getN0( y , p );
+			//(*normalsIter)[1] = QubicGeometryQuantities::getN1( y , p );
+			//(*normalsIter)[2] = QubicGeometryQuantities::getN2( y , p );
+      double x2 = x[0]*x[0];
+      double y2 = x[1]*x[1];
+      double z2 = x[2]*x[2];
+      double xy = 2.0*x[0]*x[1];
+      double xz = 2.0*x[0]*x[2];
+      double yz = 2.0*x[1]*x[2];
+      (*normalsIter)[0] = y[0]*x2 + y[5]*y2 + y[7]*z2 + y[3]*xy + y[4]*xz + y[6]*yz;
+      (*normalsIter)[1] = y[3]*x2 + y[1]*y2 + y[9]*z2 + y[5]*xy + y[6]*xz + y[8]*yz;
+      (*normalsIter)[2] = y[4]*x2 + y[8]*y2 + y[2]*z2 + y[6]*xy + y[7]*xz + y[9]*yz;
+
+      (*normalsIter)[0] += c2 * 2.0 * (y[10]*x[0] + y[11]*x[1] + y[12]*x[2]); 
+      (*normalsIter)[1] += c2 * 2.0 * (y[11]*x[0] + y[13]*x[1] + y[14]*x[2]); 
+      (*normalsIter)[2] += c2 * 2.0 * (y[12]*x[0] + y[14]*x[1] + y[15]*x[2]); 
+
+
+      //ensure orientation
+      if (AMDiS::dot(*normalsSimpleIter, *normalsIter) < 0) (*normalsIter) *= -1.0;
+
+      //normalize
+      (*normalsIter) *= 1./sqrt(AMDiS::dot(*normalsIter, *normalsIter));
+
+      //tol test
+      double res = 0.0;
+      if (adaptive) {
+      //res = AMDiS::norm((*normalsIter)-(*normalsSimpleIter));
+      //res =  mtl::two_norm(B*y - c);
+      //res =  mtl::two_norm(A*y - b) / numPoints;
+      mtl::dense_vector<double> eig(dim);
+      eig = qr_algo(B,2);
+      res = abs(eig[0]/eig[dim-1]);
+      }
+      if (adaptive && res > adaptiveTol && !average) {
+        numPoints += 100;
+        if (nTry!= 0 && !(nTry%100))
+          MSG("NormalsApproximator::fillNormalsQubic at %d: TOL(%e > %e) not reached , increase additional_points locally to %d\n",
+                  iPoint, res, adaptiveTol, numPoints-nBasisFct);
+        --coordsIter; --normalsIter; --coeffIter; --normalsSimpleIter; --iPoint;
+        ++nTry;
+        if (conditions) --(*condIter);
+      } else if (average && nTry < nAv) {
+        NTmp[nTry] = *normalsIter;
+        numPoints += 1;
+        --coordsIter; --normalsIter; --coeffIter; --normalsSimpleIter; --iPoint;
+        ++nTry;
+      } else {
+        // UPDATE COEFFICIENT DOF VECTOR
+			  *coeffIter = y ;
+        numPoints = numPointsBasic;
+        nTry = 0;
+        if (average) {
+          (*normalsIter) = vectorMedian(NTmp);
+          (*normalsIter) *= 1./sqrt(AMDiS::dot(*normalsIter, *normalsIter));
+        }
+        if (!(iPoint%1000)) cout << iPoint << endl;
+      }
+
+
 			
 		}
 		
@@ -408,10 +518,30 @@ private:
 		/// SYNCH NORMALS VECTOR!!
 		Parallel::MeshDistributor::globalMeshDistributor->synchVector( *normals ) ;
 		#endif
-		transform(normals,normalsX);
+    if (normalsX) {
+      MSG("NormalsApproximator::fillNormalsQubic::transform(normals,normalsX)\n");
+		  transform(normals,normalsX);
+      MSG("NormalsApproximator::fillNormalsQubic::transform(normals,normalsX) done\n");
+    }
 		
 		MSG("NormalsApproximator::fillNormalsQubic() done\n");
 	}
+
+  WorldVector<double> vectorMedian(std::vector<WorldVector<double> > vecs){
+    int n = vecs.size();
+    for (int k = n ; k > 1; k--) {
+      for (int i = 0; i < k-1; i++) {
+        for (int p= 0; p < 3; p++) {
+          if ((vecs[i])[p] > (vecs[i+1])[p]) {
+            double tmp = (vecs[i])[p];
+            (vecs[i])[p] = (vecs[i+1])[p];
+            (vecs[i+1])[p] = tmp;
+          }
+        }
+      }
+    }
+    return vecs[n/2];
+  }
 	
 	/*
 	 * SIMPLE CALCULATION OF THE NORMALS WITH LOCAL WEIGHTING
