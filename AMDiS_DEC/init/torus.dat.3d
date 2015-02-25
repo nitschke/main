@@ -31,7 +31,7 @@ torus->output->AMDiS format: 0
 torus->output->ARH format: 0
 
 
-user parameter->NormalsApproximator->mode:					4 % 0: fillNormalsTraverse(fillNormalsQuadric) ; 1: fillNormalsQuadric ; 2: fillNormalsWeighted ; 3: fillNormalsSimple ; 4: fillNormalsQubic
+user parameter->NormalsApproximator->mode:					5 % 0: fillNormalsTraverse(fillNormalsQuadric) ; 1: fillNormalsQuadric ; 2: fillNormalsWeighted ; 3: fillNormalsSimple ; 4: fillNormalsQubic
 user parameter->NormalsApproximator->weighting:					0
 user parameter->NormalsApproximator->weighting->factor:				0.1
 user parameter->NormalsApproximator->additional_points:				1
@@ -40,5 +40,5 @@ user parameter->NormalsApproximator->adaptive: 0
 user parameter->NormalsApproximator->adaptive tol: 1.e+15
 
 user parameter->NormalsApproximator->average: 1
-user parameter->NormalsApproximator->average n: 20
+user parameter->NormalsApproximator->average n: 100
 

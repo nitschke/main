@@ -84,6 +84,9 @@ private:
 			case 4 :
 				fillNormalsQubic();
 				break;
+			case 5 :
+				fillNormalsQubicExt();
+				break;
 			default :
 				fillNormalsWeighted();
 				break;
@@ -301,7 +304,8 @@ private:
 		MSG("NormalsApproximator::fillNormalsQuadric() done\n");
 	}
 	
-	/*
+
+  /*
 	 * CALCULATE NORMALS ACCORDING TO AN APPROXIMATION BY USING A QUBIC OF THE FORM
 	 *     \sum_{i,j,k=0}^3 a_{ijk} * x_i * x_j * x_k + c = 0
 	 * HERE, THE POINTS AROUND EACH GRID POINT IS SEARCHED BY USING A KDTREE STRUCTURE
@@ -315,6 +319,111 @@ private:
 	 * ARE FILLED ACCORDING TO THIS APPROXIMATION
 	 */
 	void fillNormalsQubic()
+	{
+		FUNCNAME( "NormalsApproximator::fillNormalsQubic()" );
+		const FiniteElemSpace *feSpace = normals->getFeSpace();
+		MSG("NormalsApproximator::fillNormalsQubic()\n");
+		using namespace mtl;
+		using namespace itl;
+		//using namespace experimental;
+		
+		fillNormalsWeighted();
+		
+		int nBasisFct = 10 ;
+		int additional_points = 18;
+		int degree = 2;
+		Initfile::get( "user parameter->NormalsApproximator->additional_points" , additional_points );
+		
+		// CREATE COORDS DOF
+		updateCoords();
+		
+		// DOF ITERATORS
+		DOFIterator<WorldVector<double> > coordsIter(coords, USED_DOFS);
+		DOFIterator<WorldVector<double> > normalsIter(normals, USED_DOFS);
+		DOFIterator<mtl::dense_vector<double> > coeffIter( coefficientDOFVector , USED_DOFS );
+		coordsIter.reset();
+		normalsIter.reset();
+		coeffIter.reset();
+		
+		// PROVIDE KD TREE
+		KD_Tree_Dof *tree = provideKDTree( feSpace );
+		tree->reinit();
+		
+		for (  ; !coordsIter.end() , !normalsIter.end() , !coeffIter.end() ; ++coordsIter , ++normalsIter , ++coeffIter )
+		{
+			// SEARCH FOR EVERY COORD THE numPoints NEAREST POINTS IN COORDS SET (DEPENDS ON MESH REFINEMENT LEVEL)
+			WorldVector<double> p = (*coordsIter) ;
+			size_t numPoints = nBasisFct + additional_points ; // 10 basisFunctions and 40 additional Points
+			std::vector<DegreeOfFreedom> indices(numPoints);
+			std::vector<double> distances(numPoints);
+			tree->query(p.begin(), numPoints, &indices[0], &distances[0]);
+			
+			// CALCULATE MAX. DISTANCES FOR WEIGHTING AND BUILD WEIGHTING VECTOR
+			double dMax = 0.0 ;
+			for ( size_t j = 0; j < distances.size(); ++j )
+				dMax = ( dMax < distances[j] ? distances[j] : dMax ) ;
+			std::vector<WorldVector<double> > points;
+			std::vector<double> weights;
+			double r = 0.01;
+			for ( size_t j = 0; j < indices.size(); ++j )
+			{
+				points.push_back( tree->m_data[indices[j]] );
+				weights.push_back( std::pow( r , (distances[j]/dMax)*(distances[j]/dMax) ) );
+			}
+			
+			// PROVIDE MATRICES FOR LEAST SQUARE APPROACH
+			TEST_EXIT( points.size() >= numPoints )( "Nicht genügend Stützstellen gefunden!\n" );
+			size_t i = 0;
+			size_t dim = 10 ;
+			mtl::dense2D<double> A(numPoints,dim), B(dim,dim);
+			mtl::dense_vector<double> b(numPoints, 1.0), c(dim), y(dim, 1.0);
+			std::vector<WorldVector<double> >::const_iterator pointsIter;
+			std::vector<double>::const_iterator weightsIter;
+			for ( pointsIter = points.begin() , weightsIter = weights.begin() ; pointsIter != points.end() && i < numPoints ,  weightsIter != weights.end() ; ++pointsIter , ++weightsIter , ++i )
+			{
+				WorldVector<double> x = *pointsIter ;
+				double w = 1.0 ;
+				if ( weighting )
+					w = *weightsIter ;
+				A[i][0] = w * x[0]*x[0]*x[0] ;
+				A[i][1] = w * x[1]*x[1]*x[1] ;
+				A[i][2] = w * x[2]*x[2]*x[2] ;
+				A[i][3] = w * 3.0 * x[0]*x[0]*x[1] ;
+				A[i][4] = w * 3.0 * x[0]*x[0]*x[2] ;
+				A[i][5] = w * 3.0 * x[0]*x[1]*x[1] ;
+				A[i][6] = w * 6.0 * x[0]*x[1]*x[2] ;
+				A[i][7] = w * 3.0 * x[0]*x[2]*x[2] ;
+				A[i][8] = w * 3.0 * x[1]*x[1]*x[2] ;
+				A[i][9] = w * 3.0 * x[1]*x[2]*x[2] ;
+				b[i] = w ;
+			}
+			
+			// SOLVE LEAST SQUARE PROBLEM
+			c = trans(A)*b;
+			B = trans(A)*A;
+			solveLGS( B , c , y );
+			
+			// FILL IN NORMAL VECTOR WITH THE APPROXIMATION OF TEH SURFACE BY A QUADRIK
+			WorldVector<double> x = *coordsIter ;
+			(*normalsIter)[0] = QubicGeometryQuantities::getN0( y , p );
+			(*normalsIter)[1] = QubicGeometryQuantities::getN1( y , p );
+			(*normalsIter)[2] = QubicGeometryQuantities::getN2( y , p );
+			
+			// UPDATE COEFFICIENT DOF VECTOR
+			*coeffIter = y ;
+			
+		}
+		
+		#ifdef HAVE_PARALLEL_DOMAIN_AMDIS
+		/// SYNCH NORMALS VECTOR!!
+		Parallel::MeshDistributor::globalMeshDistributor->synchVector( *normals ) ;
+		#endif
+		transform(normals,normalsX);
+		
+		MSG("NormalsApproximator::fillNormalsQubic() done\n");
+	}
+
+	void fillNormalsQubicExt()
 	{
 		FUNCNAME( "NormalsApproximator::fillNormalsQubic()" );
 		const FiniteElemSpace *feSpace = normals->getFeSpace();
@@ -505,6 +614,7 @@ private:
         nTry = 0;
         if (average) {
           (*normalsIter) = vectorMedian(NTmp);
+          //(*normalsIter) = vectorHuberKMean(NTmp);
           (*normalsIter) *= 1./sqrt(AMDiS::dot(*normalsIter, *normalsIter));
         }
         if (!(iPoint%1000)) cout << iPoint << endl;
@@ -541,6 +651,60 @@ private:
       }
     }
     return vecs[n/2];
+  }
+
+  inline WorldVector<double> vectorHuberKMean(std::vector<WorldVector<double> > vecs){
+    //cout << vecs << endl;
+    double k = 1.28;
+    int maxIter = 10;
+    double tol = 1.e-6;
+
+    int n = vecs.size();
+    WorldVector<double> median = vectorMedian(vecs);
+    std::vector<WorldVector<double> > vecsTmp(n);
+    for (int i = 0; i < n; ++i) 
+      for (int j = 0; j < 3; ++j) 
+        (vecsTmp[i])[j] = abs((vecs[i])[j] - median[j]); 
+    WorldVector<double> MAD = vectorMedian(vecsTmp);
+    
+    int nIter = 0;
+    double res;
+    WorldVector<double> z;
+    WorldVector<double> w;
+    WorldVector<double> mean = median;
+    WorldVector<double> meanOld;
+    WorldVector<double> num;
+    WorldVector<double> den;
+    while ( (res > tol && nIter < maxIter) || !nIter) {
+    //cout << mean << endl;
+      for (int i = 0; i < n; ++i) {
+        z = (vecs[i] - mean);
+        for (int j = 0; j < 3; ++j) z[j] /= MAD[j];
+        w = vectorHuberKWeight(z, k);
+        num.set(0.0);
+        den.set(0.0);
+        for (int j = 0; j < 3; ++j) { 
+          num[j] += (vecs[i])[j] * w[j];
+          den[j] += w[j];
+        }
+      }
+      meanOld = mean;
+      for (int j = 0; j < 3; ++j) mean[j] = num[j] / den[j];
+      res = AMDiS::norm(mean - meanOld);
+      nIter++;
+    }
+    //cout << mean << endl << endl;
+    if (nIter == maxIter) cout << res << endl;
+    return mean;
+  }
+
+  inline WorldVector<double> vectorHuberKWeight(WorldVector<double> z, double k) {
+    WorldVector<double> rval;
+    for (int i = 0; i < 3; i++) {
+      double absZi = abs(z[i]);
+      rval[i] = (absZi > k) ? (k/absZi) : 1.0;
+    }
+    return rval;
   }
 	
 	/*
