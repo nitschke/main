@@ -1,6 +1,6 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/sphereIko250k.3d
+sphereMesh->macro file name:       ./macro/sphereIko1k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 %sphereMesh->macro file name:       ./macro/heine51c_5k.3d
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
@@ -36,7 +36,14 @@ meshCorrector->nMax: 500
 
 edgeForces->k: 0.75   % in [0,1]
 
-user parameter->NormalsApproximator->mode:					1 % 0: fillNormalsTraverse(fillNormalsQuadric) ; 1: fillNormalsQuadric ; 2: fillNormalsWeighted ; 3: fillNormalsSimple ; 4: fillNormalsQubic
+user parameter->NormalsApproximator->mode:					4 % 0: fillNormalsTraverse(fillNormalsQuadric) ; 1: fillNormalsQuadric ; 2: fillNormalsWeighted ; 3: fillNormalsSimple ; 4: fillNormalsQubic
 user parameter->NormalsApproximator->weighting:					1
 user parameter->NormalsApproximator->weighting->factor:				0.01
-user parameter->NormalsApproximator->additional_points:				30
+user parameter->NormalsApproximator->additional_points:				10
+
+user parameter->NormalsApproximator->adaptive: 0
+user parameter->NormalsApproximator->adaptive tol: 1.e+15
+
+user parameter->NormalsApproximator->average: 0
+user parameter->NormalsApproximator->average n: 20
+

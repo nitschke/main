@@ -2,6 +2,7 @@
 #include "decOperator.h"
 #include "MatrixHelper.h"
 #include "DOFVHelper.h"
+#include "WorldVectorHelper.h"
 #include "io/VtkVectorWriter.h"
 #include "NormalsApproximator.h"
 
