@@ -1,0 +1,159 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4569,        150]
+NotebookOptionsPosition[      3933,        123]
+NotebookOutlinePosition[      4271,        138]
+CellTagsIndexPosition[      4228,        135]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "FormsAndVectors`"}]], "Input",
+ CellChangeTimes->{{3.632558196991672*^9, 3.632558212034603*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"r", "=", "1"}], ";"}], 
+  RowBox[{"(*", "radius", "*)"}]}]], "Input",
+ CellChangeTimes->{{3.632558173721089*^9, 3.6325581850907917`*^9}, {
+  3.6325582187072573`*^9, 3.632558263553483*^9}, {3.6325584054475393`*^9, 
+  3.632558436797127*^9}, {3.632559004372201*^9, 3.632559012589505*^9}, {
+  3.632559521302576*^9, 3.632559533092573*^9}, {3.632561065691058*^9, 
+  3.632561073063854*^9}, {3.632676959573063*^9, 3.632676970470628*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"paraMap", " ", "=", " ", 
+    RowBox[{"r", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sin", "[", "u", "]"}], 
+        RowBox[{"Cos", "[", "v", "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Sin", "[", "u", "]"}], 
+        RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+       RowBox[{"Cos", "[", "u", "]"}]}], "}"}]}]}], " ", ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"parametric", " ", "map"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.6325594462856207`*^9, 3.6325595254240217`*^9}, 
+   3.6325610578996487`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"g", "=", 
+  RowBox[{
+   RowBox[{"MetricFromPara", "[", 
+    RowBox[{"paraMap", ",", "u", ",", "v"}], "]"}], " ", "//", "Simplify", 
+   " ", 
+   RowBox[{"(*", "getMetric", "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.632559544178996*^9, 3.6325595814851294`*^9}, {
+  3.6325610255676003`*^9, 3.632561045511777*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"1", ",", "0"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     SuperscriptBox[
+      RowBox[{"Sin", "[", "u", "]"}], "2"]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.6325595715870733`*^9, 3.632559582509837*^9}, 
+   3.63256088796126*^9, {3.6325610220632763`*^9, 3.632561075442689*^9}, 
+   3.63256143037386*^9, 3.632561628263213*^9, 3.632562107049148*^9, 
+   3.6325629101401443`*^9, 3.632564006742649*^9, 3.632564405606048*^9, 
+   3.632564901993095*^9, 3.632566067644928*^9, 3.632568902664338*^9, 
+   3.632676342004862*^9, 3.632676453205429*^9, {3.6326769631006403`*^9, 
+   3.632676974149733*^9}, {3.6331687531229877`*^9, 3.633168772093294*^9}, 
+   3.634294610855669*^9, 3.63429777825139*^9, 3.634360319214946*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"vec", "=", 
+  RowBox[{"{", 
+   RowBox[{"0", ",", "1"}], "}"}], " ", 
+  RowBox[{"(*", "vector", "*)"}]}]], "Input",
+ CellChangeTimes->{{3.634294834354747*^9, 3.634294858745579*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", "1"}], "}"}]], "Output",
+ CellChangeTimes->{3.63429486058934*^9, 3.634297778279818*^9, 
+  3.6343603192246523`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GlobalVecFromPara", "[", 
+   RowBox[{"vec", ",", "paraMap", ",", "u", ",", "v"}], "]"}], "//", 
+  "Simplify"}]], "Input",
+ CellChangeTimes->{{3.634360278199059*^9, 3.6343603102991247`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{"Sin", "[", "u", "]"}]}], " ", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   RowBox[{
+    RowBox[{"Cos", "[", "v", "]"}], " ", 
+    RowBox[{"Sin", "[", "u", "]"}]}], ",", "0"}], "}"}]], "Output",
+ CellChangeTimes->{{3.634360311034837*^9, 3.6343603192406*^9}}]
+}, Open  ]]
+},
+WindowSize->{1280, 975},
+WindowMargins->{{Automatic, 1024}, {Automatic, 0}},
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (November 7, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 126, 2, 30, "Input"],
+Cell[686, 24, 476, 9, 30, "Input"],
+Cell[1165, 35, 573, 17, 30, "Input"],
+Cell[CellGroupData[{
+Cell[1763, 56, 335, 8, 30, "Input"],
+Cell[2101, 66, 801, 16, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2939, 87, 204, 5, 30, "Input"],
+Cell[3146, 94, 163, 4, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3346, 103, 224, 5, 30, "Input"],
+Cell[3573, 110, 344, 10, 30, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
