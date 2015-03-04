@@ -1,5 +1,6 @@
 #include "AMDiS.h"
 #include "EdgeMesh.h"
+#include "DofEdgeVector.h"
 #include "io/VtkVectorWriter.h"
 
 using namespace std;
@@ -27,6 +28,68 @@ public:
   }
 };
 
+// exact 1-form : beta = dz
+class Beta : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Beta() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
+  {
+    WorldVector<double> gradF;
+    gradF[0] = - x[0]*x[2];
+    gradF[1] = - x[1]*x[2];
+    gradF[2] = 1.0 - x[2]*x[2];
+    return  gradF * vec;
+  }
+};
+
+// <beta,[p,q]>
+class Beta_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Beta_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  q[2] - p[2];
+  }
+};
+
+// exact 1-form : gamma = d(xyz)
+class Gamma : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Gamma() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
+  {
+    WorldVector<double> gradF;
+    for (int i = 0; i < 3; i++) {
+      int ii = (i+1)%3;
+      int iii = (i+2)%3;
+      gradF[i] = x[ii] * x[iii] * (1.0 - 3.0*x[i]*x[i]);
+    }
+    return  gradF * vec;
+  }
+};
+
+// <gamma,[p,q]>
+class Gamma_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Gamma_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  q[0]*q[1]*q[2] - p[0]*p[1]*p[2];
+  }
+};
+
 //projection
 class Proj : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
 
@@ -38,8 +101,6 @@ class Proj : public AbstractFunction<WorldVector<double>, WorldVector<double> > 
   {
     return x / sqrt(x * x);
   }
-
-
 };
 
 //jacobi matrix of projection
@@ -84,8 +145,29 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
 
-  EdgeMesh edgeMesh(sphere.getFeSpace());
+  const EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
+
+  //DofEdgeVector alphad(edgeMesh, "alpha_d");
+  //alphad.interpolGL4(new Alpha(), new Proj(), new JProj());
   
+  //DofEdgeVector betad(edgeMesh, "beta_d");
+  //betad.interpolGL4(new Beta(), new Proj(), new JProj());
+  //DofEdgeVector betadExact(edgeMesh, "beta_d_exact");
+  //betadExact.set(new Beta_d());
+  //DofEdgeVector diff = betad - betadExact;
+  //cout << "Error: " << diff.L2Norm() << endl;
+  
+  DofEdgeVector gammad(edgeMesh, "gamma_d");
+  gammad.interpolGL4(new Gamma(), new Proj(), new JProj());
+  DofEdgeVector gammadExact(edgeMesh, "gamma_d_exact");
+  gammadExact.set(new Gamma_d());
+  DofEdgeVector diff = gammad - gammadExact;
+  cout << "Error GL4: " << diff.L2Norm() << endl;
+  gammad.interpolSimple(new Gamma());
+  diff = gammad - gammadExact;
+  cout << "Error Simple: " << diff.L2Norm() << endl;
+
+
 
   //// === create adapt info ===
   //AdaptInfo *adaptInfo = new AdaptInfo("sphere->adapt", sphere.getNumComponents());

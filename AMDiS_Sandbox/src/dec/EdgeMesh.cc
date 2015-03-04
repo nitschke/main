@@ -5,6 +5,7 @@ using namespace AMDiS;
 inline DofEdge orient(DofEdge edge);
 inline bool contain(DofEdge edge, vector<DofEdge> edgeVec, int n); 
 
+//TODO: improve (now O(n^2)!)
 EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
   Mesh *mesh = feSpace->getMesh();
 
@@ -30,7 +31,7 @@ inline DofEdge orient(DofEdge edge) {
 }
 
 inline bool contain(DofEdge edge, vector<DofEdge> edgeVec, int n) {
-  for (int i = 0; i <= n; i++) 
+  for (int i = n; i >= 0; i--) 
     if (edgeVec[i] == edge) return true;
   return false;
 }
