@@ -1,6 +1,6 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/heine51b_250k_improved.3d
+sphereMesh->macro file name:       ./macro/heine51b_2k_improved.3d
 %sphereMesh->macro file name:       ./macro/sphereIko50k.3d
 sphereMesh->global refinements:    0
 sphereMesh->check:                0
@@ -8,7 +8,7 @@ sphereMesh->check:                0
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              4 %12 %9 %4 %13 %16
+sphere->components:              12 %12 %9 %4 %13 %16
 
 sphere->solver:                bicgstab2 %cg %tfqmr
 sphere->solver->max iteration: 1000
@@ -31,3 +31,8 @@ meshCorrector->h: 0.006
 meshCorrector->nMax: 500
 
 edgeForces->k: 0.75   % in [0,1]
+
+user parameter->NormalsApproximator->mode:					4 % 0: fillNormalsTraverse(fillNormalsQuadric) ; 1: fillNormalsQuadric ; 2: fillNormalsWeighted ; 3: fillNormalsSimple ; 4: fillNormalsQubic
+user parameter->NormalsApproximator->weighting:					0
+user parameter->NormalsApproximator->weighting->factor:				0.001
+user parameter->NormalsApproximator->additional_points:				27

@@ -6,6 +6,7 @@
 #include <fstream>
 
 
+using namespace std;
 namespace AMDiS {
 
 DOFVector<int> getConnections(const FiniteElemSpace *feSpace);
