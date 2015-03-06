@@ -27,7 +27,21 @@ public:
             AbstractFunction<WorldMatrix<double>, WorldVector<double> > *jproj);
 
   // lin approx of the abstract edge (= edge itself) and trapz-rule
-  void interpolSimple(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha);
+  void interpolLinTrapz(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha);
+  
+  // use the midpoint rule and linear edge and assume that is a eligible interpoint, where the edge lie in the tangential space (see mean value theorem)
+  void interpolLinMidpoint(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha);
+
+  // use the midpoint rule and assume that is a eligible interpoint, where the edge lie in the tangential space (see mean value theorem)
+  void interpolMidpoint(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha,
+                        AbstractFunction<WorldVector<double>, WorldVector<double> > *proj);
+
+  // Newton-Cotes 
+  void interpolNC(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha,
+                  int n,
+                        AbstractFunction<WorldVector<double>, WorldVector<double> > *proj=NULL);
+
+
 
   // L2-Norm on K^(1)
   double L2Norm() {

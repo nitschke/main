@@ -14,10 +14,15 @@ public:
 
   const FiniteElemSpace* getFeSpace() const {return feSpace;}
 
+  int getNumberOfEdges() const {return edgeRefs.size();} 
+  
+  DofEdge getEdge(int i) const {return edgeRefs[i];} 
+
+  const vector<DofEdge>* getEdges() const {return &edgeRefs;}
 
 private:
   const FiniteElemSpace *feSpace;
-  vector<vector<DegreeOfFreedom> > edges;
+  vector<DofEdge> edgeRefs;
 
 };
 

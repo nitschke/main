@@ -147,26 +147,62 @@ int main(int argc, char* argv[])
 
   const EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
-  //DofEdgeVector alphad(edgeMesh, "alpha_d");
-  //alphad.interpolGL4(new Alpha(), new Proj(), new JProj());
-  
-  //DofEdgeVector betad(edgeMesh, "beta_d");
-  //betad.interpolGL4(new Beta(), new Proj(), new JProj());
-  //DofEdgeVector betadExact(edgeMesh, "beta_d_exact");
-  //betadExact.set(new Beta_d());
-  //DofEdgeVector diff = betad - betadExact;
-  //cout << "Error: " << diff.L2Norm() << endl;
-  
+ 
+  cout << endl << "********** Gamma *************" << endl;
   DofEdgeVector gammad(edgeMesh, "gamma_d");
   gammad.interpolGL4(new Gamma(), new Proj(), new JProj());
   DofEdgeVector gammadExact(edgeMesh, "gamma_d_exact");
   gammadExact.set(new Gamma_d());
   DofEdgeVector diff = gammad - gammadExact;
   cout << "Error GL4: " << diff.L2Norm() << endl;
-  gammad.interpolSimple(new Gamma());
+  gammad.interpolLinTrapz(new Gamma());
   diff = gammad - gammadExact;
-  cout << "Error Simple: " << diff.L2Norm() << endl;
+  cout << "Error LinTrapz: " << diff.L2Norm() << endl;
+  gammad.interpolLinMidpoint(new Gamma());
+  diff = gammad - gammadExact;
+  cout << "Error LinMidpoint: " << diff.L2Norm() << endl;
+  gammad.interpolMidpoint(new Gamma(), new Proj());
+  diff = gammad - gammadExact;
+  cout << "Error Midpoint: " << diff.L2Norm() << endl;
+  gammad.interpolNC(new Gamma(), 3);
+  diff = gammad - gammadExact;
+  cout << "Error LinSimpson: " << diff.L2Norm() << endl;
+  gammad.interpolNC(new Gamma(), 3, new Proj());
+  diff = gammad - gammadExact;
+  cout << "Error Simpson: " << diff.L2Norm() << endl;
+  gammad.interpolNC(new Gamma(), 7);
+  diff = gammad - gammadExact;
+  cout << "Error LinWeddle: " << diff.L2Norm() << endl;
+  gammad.interpolNC(new Gamma(), 7, new Proj());
+  diff = gammad - gammadExact;
+  cout << "Error Weddle: " << diff.L2Norm() << endl;
 
+  cout << endl << "********** Alpha *************" << endl;
+  DofEdgeVector alphadGL4(edgeMesh, "alpha_d_GL4");
+  alphadGL4.interpolGL4(new Alpha(), new Proj(), new JProj());
+  
+  DofEdgeVector alphad(edgeMesh, "alpha_d");
+  alphad.interpolLinTrapz(new Alpha());
+  diff = alphad - alphadGL4;
+  cout << "Error LinTrapz: " << diff.L2Norm() << endl;
+  alphad.interpolLinMidpoint(new Alpha());
+  diff = alphad - alphadGL4;
+  cout << "Error LinMidpoint: " << diff.L2Norm() << endl;
+  alphad.interpolMidpoint(new Alpha(), new Proj());
+  diff = alphad - alphadGL4;
+  cout << "Error Midpoint: " << diff.L2Norm() << endl;
+  alphad.interpolNC(new Alpha(), 3);
+  diff = alphad - alphadGL4;
+  cout << "Error LinSimpson: " << diff.L2Norm() << endl;
+  alphad.interpolNC(new Alpha(), 3, new Proj());
+  diff = alphad - alphadGL4;
+  cout << "Error Simpson: " << diff.L2Norm() << endl;
+  alphad.interpolNC(new Alpha(), 7);
+  diff = alphad - alphadGL4;
+  cout << "Error LinWeddle: " << diff.L2Norm() << endl;
+  alphad.interpolNC(new Alpha(), 7, new Proj());
+  diff = alphad - alphadGL4;
+  cout << "Error Weddle: " << diff.L2Norm() << endl;
 
 
   //// === create adapt info ===
