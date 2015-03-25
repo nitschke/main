@@ -56,4 +56,20 @@ private:
   int nEdges;
 };
 
+inline ostream &operator <<(ostream &out, const EdgeElement &eel) {
+  out << eel.edgeDof << "(" << eel.dofEdge.first << "," << eel.dofEdge.second << "): " << endl;
+  out << "left  face: " << *(eel.infoLeft) << endl;
+  out << "right face: " << *(eel.infoRight) << endl;
+  return out;
+}
+
+inline ostream &operator <<(ostream &out, const EdgeMesh &eMesh) {
+  out << eMesh.getNumberOfEdges() << " edges:" << endl;
+  vector<EdgeElement>::const_iterator eIter = eMesh.getEdges()->begin();
+  for (; eIter != eMesh.getEdges()->end(); ++eIter) {
+    out << *eIter;
+  }
+  return out;
+}
+
 #endif

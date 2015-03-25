@@ -177,8 +177,9 @@ int main(int argc, char* argv[])
   diff = gammad - gammadExact;
   cout << "Error Weddle: " << diff.L2Norm() << endl;
 
-  DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpEdgeRingLinMod();
-  AMDiS::io::VtkVectorWriter::writeFile(gammaSharp, string("output/gammaSharp.vtu"));
+  //DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpEdgeRingLinMod();
+  //DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpFaceAverage();
+  //AMDiS::io::VtkVectorWriter::writeFile(gammaSharp, string("output/gammaSharp.vtu"));
 
   cout << endl << "********** Alpha *************" << endl;
   DofEdgeVector alphadGL4(edgeMesh, "alpha_d_GL4");
@@ -208,8 +209,8 @@ int main(int argc, char* argv[])
   cout << "Error Weddle: " << diff.L2Norm() << endl;
 
   DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpFaceAverage();
-  //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpEdgeRingLinMod();
-  //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpHirani();
+  ////DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpEdgeRingLinMod();
+  ////DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpHirani();
   AMDiS::io::VtkVectorWriter::writeFile(alphaSharp, string("output/alphaSharp.vtu"));
 
   //// === create adapt info ===

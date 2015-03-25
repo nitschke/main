@@ -3,7 +3,9 @@
 
 #include "AMDiS.h"
 
-namespace AMDiS {
+using namespace AMDiS;
+using namespace std;
+
 
 class ElVolumesInfo2d {
   
@@ -33,6 +35,7 @@ class ElVolumesInfo2d {
     // Sin(Angle) on vertex
     double getSin(int i);
 
+
   protected:
     WorldVector<double> dualVertexVol;
     WorldVector<double> oppEdgeLen;
@@ -43,6 +46,17 @@ class ElVolumesInfo2d {
 
     const ElInfo *elInfo;
 };
+    
+inline ostream &operator <<(ostream &out, const ElVolumesInfo2d &volInfo) {
+  Element *el = volInfo.getElInfo()->getElement();
+  for (int i = 0; i < 3 ; ++i) {
+    out << el->getDof(i,0) << " "; 
+  }
+  return out;
 }
+
+
+
+
 
 #endif
