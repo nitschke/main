@@ -236,7 +236,8 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
   //cout << *edgeMesh << endl;
-  DegreeOfFreedom coutDOF = 50401;
+  //DegreeOfFreedom coutDOF = 50401;
+  DegreeOfFreedom coutDOF = 541;
   bool verbose = false;
 
 
@@ -253,7 +254,7 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
       list<EdgeElement>::iterator edgeIter = edgeRings[dof].begin();
       for (; edgeIter != edgeRings[dof].end(); ++edgeIter) {
         if (verbose) cout << "--- Edge: " << *edgeIter;
-        ElVolumesInfo2d *face = edgeIter->infoLeft;
+        ElVolumesInfo2d *face = (edgeIter->dofEdge.first == dof) ? edgeIter->infoLeft : edgeIter->infoRight;
         int i = face->getLocal(dof);
         int ii = (i+1)%3;
         int iii = (i+2)%3;
@@ -272,11 +273,11 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
 
         WorldVector<double> edge0 = face->getElInfo()->getCoord(ii) - v;
         WorldVector<double> edge1 = face->getElInfo()->getCoord(iii) - v;
-        if (edgeIter->dofEdge.second == dof) {
-          WorldVector<double> tmp(edge0);
-          edge0 = edge1;
-          edge1 = tmp;
-        }
+        //if (edgeIter->dofEdge.second == dof) {
+        //  WorldVector<double> tmp(edge0);
+        //  edge0 = edge1;
+        //  edge1 = tmp;
+        //}
 
         double len02 = face->getOppEdgeLen(iii) * face->getOppEdgeLen(iii);
         double len12 = face->getOppEdgeLen(ii) * face->getOppEdgeLen(ii);
