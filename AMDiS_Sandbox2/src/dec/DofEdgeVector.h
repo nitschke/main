@@ -12,7 +12,7 @@ class DofEdgeVector {
 public:
 
   DofEdgeVector(const EdgeMesh *edgeMesh_, std::string name_) : 
-      edgeMesh(edgeMesh_), name(name_), edgeVals(edgeMesh->getSize()) {}
+      edgeMesh(edgeMesh_), name(name_), edgeVals(edgeMesh->getNumberOfEdges()) {}
 
   const vector<double>* getEdgeVector() const {return &edgeVals;}
 
@@ -41,9 +41,11 @@ public:
                   int n,
                         AbstractFunction<WorldVector<double>, WorldVector<double> > *proj=NULL);
 
-  DOFVector<WorldVector<double> > getSharpOnVertices();
+  DOFVector< WorldVector<double> > getSharpEdgeRingLinMod();
 
+  DOFVector< WorldVector<double> > getSharpHirani();
 
+  DOFVector< WorldVector<double> > getSharpFaceAverage();
 
   // L2-Norm on K^(1)
   double L2Norm() {
@@ -82,3 +84,4 @@ DofEdgeVector operator-(DofEdgeVector a, const DofEdgeVector& b) {
 }
 
 #endif
+

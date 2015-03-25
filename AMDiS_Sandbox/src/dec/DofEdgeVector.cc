@@ -24,10 +24,13 @@ void DofEdgeVector::interpolGL4(BinaryAbstractFunction<double, WorldVector<doubl
   a[2] = a[1];
   a[3] = a[0];
 
-  vector<DofEdge>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+
+  vector<DofEdge> dofEdges = edgeMesh->getCompressedDofEdges();
+  vector<DofEdge>::const_iterator edgeIter = dofEdges.begin();
   vector<double>::iterator valIter = edgeVals.begin();
-  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
+  for (; edgeIter != dofEdges.end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
     (*valIter) = 0.0;
+    //cout << edgeIter->first << " , " << edgeIter->second <<  endl;
     WorldVector<double> p = coords[edgeIter->first];
     WorldVector<double> q = coords[edgeIter->second];
     for (int i= 0; i < 4; i++) {
@@ -44,9 +47,10 @@ void DofEdgeVector::interpolLinTrapz(BinaryAbstractFunction<double, WorldVector<
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
-  vector<DofEdge>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<DofEdge> dofEdges = edgeMesh->getCompressedDofEdges();
+  vector<DofEdge>::const_iterator edgeIter = dofEdges.begin();
   vector<double>::iterator valIter = edgeVals.begin();
-  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
+  for (; edgeIter != dofEdges.end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
     WorldVector<double> p = coords[edgeIter->first];
     WorldVector<double> q = coords[edgeIter->second];
     WorldVector<double> sigma = q - p;
@@ -58,9 +62,10 @@ void DofEdgeVector::interpolLinMidpoint(BinaryAbstractFunction<double, WorldVect
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
-  vector<DofEdge>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<DofEdge> dofEdges = edgeMesh->getCompressedDofEdges();
+  vector<DofEdge>::const_iterator edgeIter = dofEdges.begin();
   vector<double>::iterator valIter = edgeVals.begin();
-  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
+  for (; edgeIter != dofEdges.end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
     WorldVector<double> p = coords[edgeIter->first];
     WorldVector<double> q = coords[edgeIter->second];
     (*valIter) = (*alpha)(0.5 * (p + q), q - p);
@@ -72,9 +77,10 @@ void DofEdgeVector::interpolMidpoint(BinaryAbstractFunction<double, WorldVector<
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
-  vector<DofEdge>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<DofEdge> dofEdges = edgeMesh->getCompressedDofEdges();
+  vector<DofEdge>::const_iterator edgeIter = dofEdges.begin();
   vector<double>::iterator valIter = edgeVals.begin();
-  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
+  for (; edgeIter != dofEdges.end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
     WorldVector<double> p = coords[edgeIter->first];
     WorldVector<double> q = coords[edgeIter->second];
     (*valIter) = (*alpha)((*proj)(0.5 * (p + q)), q - p);
@@ -123,9 +129,10 @@ void DofEdgeVector::interpolNC(BinaryAbstractFunction<double, WorldVector<double
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
-  vector<DofEdge>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<DofEdge> dofEdges = edgeMesh->getCompressedDofEdges();
+  vector<DofEdge>::const_iterator edgeIter = dofEdges.begin();
   vector<double>::iterator valIter = edgeVals.begin();
-  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
+  for (; edgeIter != dofEdges.end() || valIter != edgeVals.end(); ++edgeIter, ++valIter){
     WorldVector<double> p = coords[edgeIter->first];
     WorldVector<double> q = coords[edgeIter->second];
     (*valIter) = 0.0;
@@ -158,10 +165,23 @@ void DofEdgeVector::set(BinaryAbstractFunction<double, WorldVector<double>, Worl
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
-  vector<DofEdge>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<DofEdge> dofEdges = edgeMesh->getCompressedDofEdges();
+  vector<DofEdge>::const_iterator edgeIter = dofEdges.begin();
   vector<double>::iterator valIter = edgeVals.begin();
-  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter) {
+  for (; edgeIter != dofEdges.end() || valIter != edgeVals.end(); ++edgeIter, ++valIter) {
     (*valIter) = (*alpha_d)(coords[edgeIter->first], coords[edgeIter->second]);
   }
 }
 
+DOFVector<double> DofEdgeVector::getSharpOnVertices(){
+  DOFVector< WorldVector<double> > coords(edgeMesh->getFeSpace(), "coords");
+  edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+
+  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), "sharp");
+  DOFVector< WorldVector<double> >::Iterator sharpIter(&sharp, USED_DOFS);
+
+  for (sharpIter.reset(); !sharpIter.end(); ++sharpIter) {
+    
+  }
+
+}
