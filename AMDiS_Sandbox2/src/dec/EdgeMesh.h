@@ -45,6 +45,8 @@ public:
 
   DOFVector< list<EdgeElement> > getEdgeRings() const;
 
+  map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > getFaceEdges() const;
+
  
 
 

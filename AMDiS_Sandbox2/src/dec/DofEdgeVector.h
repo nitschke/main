@@ -47,6 +47,8 @@ public:
 
   DOFVector< WorldVector<double> > getSharpFaceAverage();
 
+  map<int, std::vector<double> > getSharpOnFaces();
+
   // L2-Norm on K^(1)
   double L2Norm() {
     vector<double>::iterator valIter = edgeVals.begin();

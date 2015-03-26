@@ -237,23 +237,23 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
 
   //cout << *edgeMesh << endl;
   //DegreeOfFreedom coutDOF = 50401;
-  DegreeOfFreedom coutDOF = 541;
-  bool verbose = false;
+  //DegreeOfFreedom coutDOF = 4;
+  //bool verbose = false;
 
 
   DOFAdmin *admin = edgeMesh->getFeSpace()->getAdmin();
   for (DegreeOfFreedom dof = 0; dof < sharp.getSize() ; dof++) {
     if (!admin->isDofFree(dof)) {
-      verbose = (dof == coutDOF) ? true : false;
+      //verbose = (dof == coutDOF) ? true : false;
       sharp[dof] = 0.0;
       
       WorldVector<double> v = coords[dof];
-      if (verbose) cout << "*** DOF: " << dof << " (" << v << ") ***" << endl;
+      //if (verbose) cout << "*** DOF: " << dof << " (" << v << ") ***" << endl;
       
       double voronoiVol = 0.0;
       list<EdgeElement>::iterator edgeIter = edgeRings[dof].begin();
       for (; edgeIter != edgeRings[dof].end(); ++edgeIter) {
-        if (verbose) cout << "--- Edge: " << *edgeIter;
+        //if (verbose) cout << "--- Edge: " << *edgeIter;
         ElVolumesInfo2d *face = (edgeIter->dofEdge.first == dof) ? edgeIter->infoLeft : edgeIter->infoRight;
         int i = face->getLocal(dof);
         int ii = (i+1)%3;
@@ -263,7 +263,7 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
         //find next edge with the same face in the ring TODO: improve
         list<EdgeElement>::iterator edge1it = edgeRings[dof].begin();
         while ( (edge1it->infoLeft != face && edge1it->infoRight != face) || edge1it == edgeIter ) ++edge1it;
-        if (verbose) cout << "+++ Edge: " << *edge1it << endl;
+        //if (verbose) cout << "+++ Edge: " << *edge1it << endl;
 
 
         double alpha0 = edgeVals[edgeIter->edgeDof];
@@ -273,11 +273,6 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
 
         WorldVector<double> edge0 = face->getElInfo()->getCoord(ii) - v;
         WorldVector<double> edge1 = face->getElInfo()->getCoord(iii) - v;
-        //if (edgeIter->dofEdge.second == dof) {
-        //  WorldVector<double> tmp(edge0);
-        //  edge0 = edge1;
-        //  edge1 = tmp;
-        //}
 
         double len02 = face->getOppEdgeLen(iii) * face->getOppEdgeLen(iii);
         double len12 = face->getOppEdgeLen(ii) * face->getOppEdgeLen(ii);
@@ -287,9 +282,12 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
         double a0 = (len12 * alpha0 - scal * alpha1) / det;
         double a1 = (len02 * alpha1 - scal * alpha0) / det;
 
-        double locVoronoiVol = face->getDualVertexVol(i);
+
+        //double locVoronoiVol = face->getDualVertexVol(i); //VoronoiAverage
+        //double locVoronoiVol = 1.0; //unweighted average
+        double locVoronoiVol = face->getSin(i) / (face->getOppEdgeLen(ii) * face->getOppEdgeLen(iii)); //sphere average
         
-        if (verbose) cout << (a0 * edge0 + a1 * edge1) << endl;
+        //if (verbose) cout << (a0 * edge0 + a1 * edge1) << endl;
         sharp[dof] += locVoronoiVol * (a0 * edge0 + a1 * edge1);
         voronoiVol += locVoronoiVol;
       }
@@ -297,4 +295,54 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
     }
   }
   return sharp; 
+}
+
+map<int, std::vector<double> > DofEdgeVector::getSharpOnFaces() {
+  map<int, std::vector<double> > sharp;
+  map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > faceEdges = edgeMesh->getFaceEdges();
+
+  DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+  edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+
+  for (map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > >::const_iterator faceEdgesIter = faceEdges.begin();
+        faceEdgesIter != faceEdges.end(); ++faceEdgesIter) {
+    ElVolumesInfo2d* face = (faceEdgesIter->second).first;
+    WorldVector<double> elSharp;
+    elSharp = 0.0;
+    double weightSum = 0.0;
+    for (int k = 0; k < 3; ++k){
+      EdgeElement e0 = ((faceEdgesIter->second).second)[k];
+      EdgeElement e1 = ((faceEdgesIter->second).second)[(k+1)%3];
+
+      double alpha0 = edgeVals[e0.edgeDof];
+      double alpha1 = edgeVals[e1.edgeDof];
+    
+      WorldVector<double> edge0 = coords[e0.dofEdge.second] - coords[e0.dofEdge.first];
+      WorldVector<double> edge1 = coords[e1.dofEdge.second] - coords[e1.dofEdge.first];
+
+
+      double len02 = edge0 * edge0;
+      double len12 = edge1 * edge1;
+      double scal = edge0 * edge1;
+      double det = len02 * len12 - scal * scal;
+
+      double a0 = (len12 * alpha0 - scal * alpha1) / det;
+      double a1 = (len02 * alpha1 - scal * alpha0) / det;
+
+      double locWeight = 1.0;
+      //if (e0.dofEdge.first == e1.dofEdge.first || e0.dofEdge.first == e1.dofEdge.second) {
+      //  locWeight = face->getDualVertexVol(face->getLocal(e0.dofEdge.first));
+      //} else {
+      //  locWeight = face->getDualVertexVol(face->getLocal(e0.dofEdge.second));
+      //}
+      weightSum += locWeight;
+
+      elSharp += locWeight * (a0 * edge0 + a1 * edge1);
+    }
+    elSharp *= 1.0 / weightSum;
+    //cout << elSharp << endl;
+    sharp[faceEdgesIter->first] = vector<double>(elSharp.begin(), elSharp.end());
+    //cout << sharp[faceEdgesIter->first][0] << " " << sharp[faceEdgesIter->first][1] << " " << sharp[faceEdgesIter->first][2] << endl;
+  }
+  return sharp;
 }

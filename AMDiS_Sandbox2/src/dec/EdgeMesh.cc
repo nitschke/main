@@ -60,3 +60,17 @@ DOFVector< list<EdgeElement> > EdgeMesh::getEdgeRings() const {
 }
 
 
+map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > EdgeMesh::getFaceEdges() const {
+  map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > faceEdges;
+  for (vector<EdgeElement>::const_iterator edgeIter = edges.begin();
+       edgeIter != edges.end(); ++edgeIter) {
+    int indexLeft = edgeIter->infoLeft->getElInfo()->getElement()->getIndex();
+    faceEdges[indexLeft].first = edgeIter->infoLeft;   
+    faceEdges[indexLeft].second.push_back(*edgeIter);   
+
+    int indexRight = edgeIter->infoRight->getElInfo()->getElement()->getIndex();
+    faceEdges[indexRight].first = edgeIter->infoRight;   
+    faceEdges[indexRight].second.push_back(*edgeIter);   
+  }
+  return faceEdges;
+}
