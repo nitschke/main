@@ -22,6 +22,10 @@ class ElVolumesInfo2d {
       return it->second;
     }
 
+    int getOppVertexLocal(DofEdge dofEdge) {
+      return 3 - getLocal(dofEdge.first) - getLocal(dofEdge.second);
+    }
+
     double getDualVertexVol(int i) {return dualVertexVol[i];}
     double getOppEdgeLen(int i) {return oppEdgeLen[i];}
     double getDualOppEdgeLen(int i) {return dualOppEdgeLen[i];}

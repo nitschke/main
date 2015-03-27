@@ -150,71 +150,17 @@ int main(int argc, char* argv[])
   //cout << *edgeMesh << endl;
 
  
-  cout << endl << "********** Gamma *************" << endl;
-  DofEdgeVector gammad(edgeMesh, "gamma_d");
-  gammad.interpolGL4(new Gamma(), new Proj(), new JProj());
-  DofEdgeVector gammadExact(edgeMesh, "gamma_d_exact");
-  gammadExact.set(new Gamma_d());
-  DofEdgeVector diff = gammad - gammadExact;
-  cout << "Error GL4: " << diff.L2Norm() << endl;
-  gammad.interpolLinTrapz(new Gamma());
-  diff = gammad - gammadExact;
-  cout << "Error LinTrapz: " << diff.L2Norm() << endl;
-  gammad.interpolLinMidpoint(new Gamma());
-  diff = gammad - gammadExact;
-  cout << "Error LinMidpoint: " << diff.L2Norm() << endl;
-  gammad.interpolMidpoint(new Gamma(), new Proj());
-  diff = gammad - gammadExact;
-  cout << "Error Midpoint: " << diff.L2Norm() << endl;
-  gammad.interpolNC(new Gamma(), 3);
-  diff = gammad - gammadExact;
-  cout << "Error LinSimpson: " << diff.L2Norm() << endl;
-  gammad.interpolNC(new Gamma(), 3, new Proj());
-  diff = gammad - gammadExact;
-  cout << "Error Simpson: " << diff.L2Norm() << endl;
-  gammad.interpolNC(new Gamma(), 7);
-  diff = gammad - gammadExact;
-  cout << "Error LinWeddle: " << diff.L2Norm() << endl;
-  gammad.interpolNC(new Gamma(), 7, new Proj());
-  diff = gammad - gammadExact;
-  cout << "Error Weddle: " << diff.L2Norm() << endl;
-
-  //DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpEdgeRingLinMod();
-  DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpFaceAverage();
-  AMDiS::io::VtkVectorWriter::writeFile(gammaSharp, string("output/gammaSharp.vtu"));
-
   cout << endl << "********** Alpha *************" << endl;
   DofEdgeVector alphadGL4(edgeMesh, "alpha_d_GL4");
   alphadGL4.interpolGL4(new Alpha(), new Proj(), new JProj());
-  
-  DofEdgeVector alphad(edgeMesh, "alpha_d");
-  alphad.interpolLinTrapz(new Alpha());
-  diff = alphad - alphadGL4;
-  cout << "Error LinTrapz: " << diff.L2Norm() << endl;
-  alphad.interpolLinMidpoint(new Alpha());
-  diff = alphad - alphadGL4;
-  cout << "Error LinMidpoint: " << diff.L2Norm() << endl;
-  alphad.interpolMidpoint(new Alpha(), new Proj());
-  diff = alphad - alphadGL4;
-  cout << "Error Midpoint: " << diff.L2Norm() << endl;
-  alphad.interpolNC(new Alpha(), 3);
-  diff = alphad - alphadGL4;
-  cout << "Error LinSimpson: " << diff.L2Norm() << endl;
-  alphad.interpolNC(new Alpha(), 3, new Proj());
-  diff = alphad - alphadGL4;
-  cout << "Error Simpson: " << diff.L2Norm() << endl;
-  alphad.interpolNC(new Alpha(), 7);
-  diff = alphad - alphadGL4;
-  cout << "Error LinWeddle: " << diff.L2Norm() << endl;
-  alphad.interpolNC(new Alpha(), 7, new Proj());
-  diff = alphad - alphadGL4;
-  cout << "Error Weddle: " << diff.L2Norm() << endl;
 
-  //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpFaceAverage();
-  //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpEdgeRingLinMod();
-  //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpHirani();
-  DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpEdgeRing();
+  DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpFaceAverage();
   AMDiS::io::VtkVectorWriter::writeFile(alphaSharp, string("output/alphaSharp.vtu"));
+
+  DofEdgeVector lbAlpha = alphadGL4.laplaceBeltrami();
+  DOFVector< WorldVector<double> > lbAlphaSharp = lbAlpha.getSharpFaceAverage();
+  AMDiS::io::VtkVectorWriter::writeFile(lbAlphaSharp, string("output/lbAlphaSharp.vtu"));
+
 
   //map<int, std::vector<double> > alphaFaceSharp = alphadGL4.getSharpOnFaces();
   //AMDiS::io::ElementFileWriter::writeFile(alphaFaceSharp, sphere.getFeSpace()->getMesh(), "output/alphaFaceSharp");

@@ -25,3 +25,6 @@ include_directories(src/dec)
 add_executable(sphereSharp src/sphereSharp.cc)
 target_link_libraries(sphereSharp ${BASIS_LIBS} dec)
 
+add_executable(sphereLaplace src/sphereLaplace.cc)
+target_link_libraries(sphereLaplace ${BASIS_LIBS} dec)
+

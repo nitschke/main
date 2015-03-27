@@ -9,24 +9,27 @@ using namespace AMDiS;
 using namespace std;
 
 
-/*          /\
- *         /  \
- *        /    \
- *       /      \
- *      /  left  \
- *first ---------> second
- *      \  right /
- *       \      /
- *        \    /
- *         \  /
- *          \/
+/*                  /\
+ *                 /  \
+ *     left.first /    \ left.second
+ *               /      \
+ *              /  left  \
+ *        first ---------> second
+ *              \  right /
+ *               \      /
+ *    right.first \    / right.second
+ *                 \  /
+ *                  \/
  */
 struct EdgeElement {
   DegreeOfFreedom edgeDof; // aka int  -> edge index
   DofEdge dofEdge;         // aka pair<int,int> -> (first,second) vertex index
 
   ElVolumesInfo2d *infoLeft;
+  pair<EdgeElement*, EdgeElement*> edgesLeft;
+
   ElVolumesInfo2d *infoRight;
+  pair<EdgeElement*, EdgeElement*> edgesRight;
 };
 
 
@@ -62,6 +65,8 @@ inline ostream &operator <<(ostream &out, const EdgeElement &eel) {
   out << eel.edgeDof << "(" << eel.dofEdge.first << "," << eel.dofEdge.second << "): " << endl;
   out << "left  face: " << *(eel.infoLeft) << endl;
   out << "right face: " << *(eel.infoRight) << endl;
+  out << "left  edges (first, second): " << eel.edgesLeft.first->edgeDof << " " <<  eel.edgesLeft.second->edgeDof << endl;
+  out << "right edges (first, second): " << eel.edgesRight.first->edgeDof << " " <<  eel.edgesRight.second->edgeDof << endl;
   return out;
 }
 

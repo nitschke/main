@@ -21,6 +21,10 @@ public:
   // set alpha_d([p,q]) = <alpha, [p,q]>
   void set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d);
 
+  // set  <alpha, sigma^1> = val (for all sigma^1)
+  void set(double val);
+
+
   // Gauss-Legendre-Intigration (n=4) of I_edge[alpha]
   void interpolGL4(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha,
             AbstractFunction<WorldVector<double>, WorldVector<double> > *proj,
@@ -47,7 +51,12 @@ public:
 
   DOFVector< WorldVector<double> > getSharpFaceAverage();
 
+  // not stable
+  DOFVector< WorldVector<double> > getSharpEdgeRing();
+
   map<int, std::vector<double> > getSharpOnFaces();
+
+  DofEdgeVector laplaceBeltrami();
 
   // L2-Norm on K^(1)
   double L2Norm() {
@@ -67,6 +76,12 @@ public:
       (*rvalIter) -= (*aIter);
     }
     return *this;
+  }
+
+  inline double& operator[](DegreeOfFreedom dof) 
+  {
+    //TODO: test exits
+    return edgeVals[dof];
   }
 
   

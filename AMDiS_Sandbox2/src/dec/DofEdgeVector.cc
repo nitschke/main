@@ -164,6 +164,12 @@ void DofEdgeVector::set(BinaryAbstractFunction<double, WorldVector<double>, Worl
   }
 }
 
+void DofEdgeVector::set(double val) {
+  vector<double>::iterator valIter = edgeVals.begin();
+  for (; valIter != edgeVals.end(); ++valIter) {
+    (*valIter) = val;
+  }
+}
 
 DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRingLinMod(){
   using namespace mtl;
@@ -283,9 +289,9 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
         double a1 = (len02 * alpha1 - scal * alpha0) / det;
 
 
-        //double locVoronoiVol = face->getDualVertexVol(i); //VoronoiAverage
+        double locVoronoiVol = face->getDualVertexVol(i); //VoronoiAverage
         //double locVoronoiVol = 1.0; //unweighted average
-        double locVoronoiVol = face->getSin(i) / (face->getOppEdgeLen(ii) * face->getOppEdgeLen(iii)); //sphere average
+        //double locVoronoiVol = face->getSin(i) / (face->getOppEdgeLen(ii) * face->getOppEdgeLen(iii)); //sphere average
         
         //if (verbose) cout << (a0 * edge0 + a1 * edge1) << endl;
         sharp[dof] += locVoronoiVol * (a0 * edge0 + a1 * edge1);
@@ -296,6 +302,56 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
   }
   return sharp; 
 }
+
+
+DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRing() {
+  using namespace mtl;
+  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), "Sharp");
+  DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
+ 
+  DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+  edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+
+  DOFAdmin *admin = edgeMesh->getFeSpace()->getAdmin();
+  for (DegreeOfFreedom dof = 0; dof < sharp.getSize() ; dof++) {
+    if (!admin->isDofFree(dof)) {
+      int n = edgeRings[dof].size(); // Number of edges
+      dense2D<double> G(n,n); // Gramian matrix of the edge vectors
+      dense_vector<double> alpha(n); // discrete 1-form on edges
+
+      // TODO: respect the symmetry to reduce the effort
+      list<EdgeElement>::iterator edgeIter1 = edgeRings[dof].begin();
+      for (int i1 = 0; edgeIter1 != edgeRings[dof].end(); ++edgeIter1, ++i1) {
+        alpha[i1] = edgeVals[edgeIter1->edgeDof]; // < alpha , sigma^1_i1 >
+
+        WorldVector<double> e1 = coords[edgeIter1->dofEdge.second] - coords[edgeIter1->dofEdge.first]; //  sigma^1_i1 (vector)
+        list<EdgeElement>::iterator edgeIter2 = edgeRings[dof].begin();
+        for (int i2 = 0; edgeIter2 != edgeRings[dof].end(); ++edgeIter2, ++i2) {
+          WorldVector<double> e2 = coords[edgeIter2->dofEdge.second] - coords[edgeIter2->dofEdge.first]; //  sigma^1_i2 (vector)
+          G[i1][i2] = e1 * e2; // (sigma^1_i1).(sigma^1_i2)
+        }
+      }
+
+      dense_vector<double> a(n); // coeff. vector: alpha^# = a_i * sigma^1_i
+      a = lu_solve(G,alpha);
+      //cout  << G << endl;
+      dense_vector<double> eig(n);
+      //eig = eigenvalue_symmetric(G);
+      //eig = qr_algo(G,20);
+      //cout << "cond: " << (eig[0] / eig[n-1]) << endl;
+
+      sharp[dof] = 0.0;
+      list<EdgeElement>::iterator edgeIter = edgeRings[dof].begin();
+      for (int i = 0; edgeIter != edgeRings[dof].end(); ++edgeIter, ++i) {
+        sharp[dof] += a[i] * (coords[edgeIter->dofEdge.second] - coords[edgeIter->dofEdge.first]);
+      }
+    }
+  }
+
+  return sharp;
+}
+
+
 
 map<int, std::vector<double> > DofEdgeVector::getSharpOnFaces() {
   map<int, std::vector<double> > sharp;
@@ -345,4 +401,41 @@ map<int, std::vector<double> > DofEdgeVector::getSharpOnFaces() {
     //cout << sharp[faceEdgesIter->first][0] << " " << sharp[faceEdgesIter->first][1] << " " << sharp[faceEdgesIter->first][2] << endl;
   }
   return sharp;
+}
+
+
+DofEdgeVector DofEdgeVector::laplaceBeltrami() {
+  DofEdgeVector lB(edgeMesh, "LaplaceBeltrami");
+  //lB.set(0.0);
+  
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    // Left + (I've got the PMA)
+    ElVolumesInfo2d *T = edgeIter->infoLeft;
+    double dualEdgeLenLeft = T->getDualOppEdgeLen(T->getOppVertexLocal(edgeIter->dofEdge));
+
+    double sumOnT = edgeVals[edgeIter->edgeDof];
+    EdgeElement *e1 = edgeIter->edgesLeft.first;
+    EdgeElement *e2 = edgeIter->edgesLeft.second;
+    sumOnT += (e1->infoLeft == T) ? edgeVals[e1->edgeDof] : -edgeVals[e1->edgeDof];
+    sumOnT += (e2->infoLeft == T) ? edgeVals[e2->edgeDof] : -edgeVals[e2->edgeDof];
+    lB[edgeIter->edgeDof] = sumOnT / T->getVol();
+
+    // Right -
+    T = edgeIter->infoRight;
+    int oppVertexLocalR = T->getOppVertexLocal(edgeIter->dofEdge);
+    double dualEdgeLenRight = T->getDualOppEdgeLen(oppVertexLocalR);
+
+    sumOnT = edgeVals[edgeIter->edgeDof];
+    e1 = edgeIter->edgesRight.first;
+    e2 = edgeIter->edgesRight.second;
+    sumOnT += (e1->infoRight == T) ? edgeVals[e1->edgeDof] : -edgeVals[e1->edgeDof];
+    sumOnT += (e2->infoRight == T) ? edgeVals[e2->edgeDof] : -edgeVals[e2->edgeDof];
+    lB[edgeIter->edgeDof] += sumOnT / T->getVol();
+
+    //scale
+    lB[edgeIter->edgeDof] *= - T->getOppEdgeLen(oppVertexLocalR) / (dualEdgeLenLeft + dualEdgeLenRight);
+  }
+
+  return lB;
 }

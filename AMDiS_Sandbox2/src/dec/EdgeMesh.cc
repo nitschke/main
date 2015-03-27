@@ -41,10 +41,48 @@ EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
     }
   }
 
+  // ref volInfos
   for (int i = 0; i < edges.size(); ++i) {
     edges[i].infoLeft = elVols[macroIndex[i].first];
     edges[i].infoRight = elVols[macroIndex[i].second];
   }
+
+  // get edge neighs TODO: improve
+  // map macroIndex -> vector of the 3 edge facettes
+  map<int, vector<EdgeElement*> > faceEdges;
+  for (vector<EdgeElement>::iterator edgeIter = edges.begin();
+       edgeIter != edges.end(); ++edgeIter) {
+    faceEdges[edgeIter->infoLeft->getElInfo()->getElement()->getIndex()].push_back(&(*edgeIter));
+    faceEdges[edgeIter->infoRight->getElInfo()->getElement()->getIndex()].push_back(&(*edgeIter));
+  }
+  // iterate over the macros
+  map<int, vector<EdgeElement*> >::iterator feIter = faceEdges.begin();
+  for (; feIter != faceEdges.end(); ++feIter) {
+    Element *face = mesh->getMacroElement(feIter->first)->getElement();
+    for (int i = 0; i < 3; ++i) {
+      int ii = (i+1)%3;
+      int iii = (i+2)%3;
+      EdgeElement* e0 = (feIter->second)[i];
+      EdgeElement* e1 = (feIter->second)[ii];
+      EdgeElement* e2 = (feIter->second)[iii];
+      // is e1 first or second?
+      pair<EdgeElement*, EdgeElement*> edgeNeigh;
+      if (e0->dofEdge.first == e1->dofEdge.first || e0->dofEdge.first == e1->dofEdge.second) {
+        edgeNeigh.first = e1;
+        edgeNeigh.second = e2;
+      } else {
+         edgeNeigh.first = e2;
+         edgeNeigh.second = e1;
+      }
+      // is face left of e0?
+      if (e0->infoLeft->getElInfo()->getElement() == face) {
+        e0->edgesLeft = edgeNeigh;
+      } else {
+        e0->edgesRight = edgeNeigh;
+      }
+    }
+  }
+
 }
 
 DOFVector< list<EdgeElement> > EdgeMesh::getEdgeRings() const {
