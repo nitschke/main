@@ -439,3 +439,110 @@ DofEdgeVector DofEdgeVector::laplaceBeltrami() {
 
   return lB;
 }
+
+//TODO: improve (everthing is do twice)
+DofEdgeVector DofEdgeVector::laplaceCoBeltrami() {
+  DofEdgeVector lCB(edgeMesh, "LaplaceCoBeltrami");
+  //lCB.set(0.0);
+  
+  DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    // q-part on [p,q]
+    DegreeOfFreedom vdof = edgeIter->dofEdge.second;
+    double sumv = 0.0;
+    double voronoiVol = 0.0;
+    for (list<EdgeElement>::const_iterator ringIter = edgeRings[vdof].begin();
+         ringIter != edgeRings[vdof].end(); ++ringIter) {
+      double l = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
+      double lStar =   ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
+                     + ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
+      double eval = (lStar / l) * edgeVals[ringIter->edgeDof];
+      sumv += (ringIter->dofEdge.first == vdof) ? eval : -eval;
+      
+      // TODO: not double the vol
+      voronoiVol +=   ringIter->infoLeft->getDualVertexVol(ringIter->infoLeft->getLocal(vdof))
+                    + ringIter->infoRight->getDualVertexVol(ringIter->infoRight->getLocal(vdof));
+    }
+    voronoiVol *= 0.5;
+    lCB[edgeIter->edgeDof] = sumv / voronoiVol;
+
+    // p-part on [p,q]
+    vdof = edgeIter->dofEdge.first;
+    sumv = 0.0;
+    voronoiVol = 0.0;
+    for (list<EdgeElement>::const_iterator ringIter = edgeRings[vdof].begin();
+         ringIter != edgeRings[vdof].end(); ++ringIter) {
+      double l = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
+      double lStar =   ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
+                     + ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
+      double eval = (lStar / l) * edgeVals[ringIter->edgeDof];
+      sumv += (ringIter->dofEdge.first == vdof) ? -eval : eval;
+      
+      // TODO: not double the vol
+      voronoiVol +=   ringIter->infoLeft->getDualVertexVol(ringIter->infoLeft->getLocal(vdof))
+                    + ringIter->infoRight->getDualVertexVol(ringIter->infoRight->getLocal(vdof));
+    }
+    voronoiVol *= 0.5;
+    lCB[edgeIter->edgeDof] += sumv / voronoiVol;
+  }
+
+  return lCB;
+}
+
+
+void DofEdgeVector::writeFile(string name) const {
+    boost::iostreams::filtering_ostream file;
+    file.push(boost::iostreams::file_descriptor_sink(name, std::ios::trunc));
+  file << "<?xml version=\"1.0\"?>\n";
+	file << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">\n";
+	file << "  <UnstructuredGrid>\n";
+	file << "    <Piece NumberOfPoints=\"" << edgeMesh->getFeSpace()->getMesh()->getNumberOfVertices()
+	     << "\" NumberOfCells=\"" << edgeVals.size() << "\">\n";
+	file << "      <Points>\n";
+	file << "        <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">\n";
+
+    DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+    edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+    DOFAdmin *admin = edgeMesh->getFeSpace()->getAdmin();
+    for (DegreeOfFreedom dof = 0; dof < coords.getSize() ; dof++) {
+      if (!admin->isDofFree(dof)) {
+        file << coords[dof] << endl;
+      }
+    }
+  file << "        </DataArray>\n";
+	file << "      </Points>\n";
+	file << "      <Cells>\n";
+	file << "        <DataArray type=\"Int32\" Name=\"offsets\">\n";
+    for (int i = 1; i <= edgeVals.size(); ++i) {
+      file << (i *  2) << endl;
+    }
+  file << "        </DataArray>\n";
+	file << "        <DataArray type=\"UInt8\" Name=\"types\">\n";
+    for (int i = 1; i <= edgeVals.size(); ++i) {
+      file << 3 << endl;
+    }
+  file << "        </DataArray>\n";
+	file << "        <DataArray type=\"Int32\" Name=\"connectivity\">\n";
+    vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+    for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+      file << edgeIter->dofEdge.first << " " << edgeIter->dofEdge.second << endl;
+    }
+  file << "        </DataArray>\n";    
+	file << "      </Cells>\n";
+	file << "      <CellData>\n";
+  file << "        <DataArray type=\"Float32\" Name=\""
+	     << this->name
+	     << "\" format=\"ascii\">\n";
+    vector<double>::const_iterator valIter = edgeVals.begin();
+    for (; valIter != edgeVals.end() ; ++valIter) {
+      file << (*valIter) << endl;
+    }
+  file << "        </DataArray>\n";
+  file << "      </CellData>\n";
+	file << "    </Piece>\n";
+	file << "  </UnstructuredGrid>\n";
+	file << "</VTKFile>\n";
+
+}

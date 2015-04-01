@@ -50,6 +50,9 @@ public:
 
   map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > getFaceEdges() const;
 
+  // volume of the edge skeleton (Vol(|K^(1)|)...length of all edges)
+  double getVol() const;
+
  
 
 

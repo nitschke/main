@@ -11,7 +11,7 @@ using namespace AMDiS;
 // ===== function definitions ================================================
 // ===========================================================================
 
-// 1-form
+// 1-form -> Rot(z)
 class Alpha : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
@@ -29,41 +29,75 @@ public:
   }
 };
 
-// exact 1-form : beta = dz
-class Beta : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+// <alpha,[p,q]>
+class Alpha_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
-  Beta() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
-
-  /// Implementation of AbstractFunction::operator().
-  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
-  {
-    WorldVector<double> gradF;
-    gradF[0] = - x[0]*x[2];
-    gradF[1] = - x[1]*x[2];
-    gradF[2] = 1.0 - x[2]*x[2];
-    return  gradF * vec;
-  }
-};
-
-// <beta,[p,q]>
-class Beta_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
-{
-public:
-  Beta_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+  Alpha_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
   {
-    return  q[2] - p[2];
+    double p1 = p[0];
+    double p2 = p[1];
+    double p3 = p[2];
+    double q1 = q[0];
+    double q2 = q[1];
+    double q3 = q[2];
+    return 2.*(p2*q1 - 1.*p1*q2)*atan((-1. + p1*q1 + p2*q2 + p3*q3)*pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + 
+       pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5))*
+   pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + 
+     pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5);
   }
 };
 
-// exact 1-form : gamma = d(xyz)
-class Gamma : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+
+// Laplace-Beltrami of alpha
+class LbAlpha : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
-  Gamma() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+  LbAlpha() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
+  {
+    double con2 = 1.0; //contra coords
+    WorldVector<double> conBasis2; //contra basis vectors
+    conBasis2[0] = -x[1];
+    conBasis2[1] = x[0];
+    conBasis2[2] = 0.0;
+    return -2.0 * (con2 * conBasis2) * vec;
+  }
+};
+
+// <lbalpha,[p,q]>
+class LbAlpha_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  LbAlpha_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    double p1 = p[0];
+    double p2 = p[1];
+    double p3 = p[2];
+    double q1 = q[0];
+    double q2 = q[1];
+    double q3 = q[2];
+    return -4.*(p2*q1 - 1.*p1*q2)*atan((-1. + p1*q1 + p2*q2 + p3*q3)*pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + 
+       pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5))*
+   pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + 
+     pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5);
+  }
+};
+
+
+// exact 1-form : gamma = d(xyz)
+class DXYZ : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  DXYZ() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
@@ -79,10 +113,10 @@ public:
 };
 
 // <gamma,[p,q]>
-class Gamma_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+class DXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
-  Gamma_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+  DXYZ_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
@@ -90,6 +124,169 @@ public:
     return  q[0]*q[1]*q[2] - p[0]*p[1]*p[2];
   }
 };
+
+// rot(x*y*z)
+class RotXYZ : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  RotXYZ() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
+  {
+    WorldVector<double> rot;
+    for (int i = 0; i < 3; i++) {
+      int ii = (i+1)%3;
+      int iii = (i+2)%3;
+      rot[i] = x[i] * (x[ii]*x[ii] - x[iii]*x[iii]);
+    }
+    return  rot * vec;
+  }
+};
+
+// <Rot(xyz),[p,q]>
+class RotXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  RotXYZ_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    double p1 = p[0];
+    double p2 = p[1];
+    double p3 = p[2];
+    double q1 = q[0];
+    double q2 = q[1];
+    double q3 = q[2];
+    return 0.25*pow(1. + p1*q1 + p2*q2 + p3*q3,-2.)*(12.*(-1.*p3*q2 + p2*q3)*
+      atan(pow((-1. + p1*q1 + p2*q2 + p3*q3)/(-1. - 1.*p1*q1 - 1.*p2*q2 - 1.*p3*q3),0.5))*
+      (q2*q3*pow(p2,4.)*(-3. + 4.*pow(q2,2.) + 3.*pow(q3,2.)) + 
+        q2*(p1*p3*q1*(-1.*pow(q2,2.) - 3.*pow(q3,2.) + pow(p3,2.)*(-1. + pow(q2,2.) + 4.*pow(q3,2.))) + 
+           q3*(-1. + pow(p3,2.))*(-1.*pow(q2,2.) - 1.*pow(q3,2.) + pow(p3,2.)*(-3. + 3.*pow(q2,2.) + 4.*pow(q3,2.)))) + 
+        q2*pow(p2,2.)*(p1*p3*q1*(-3. + 4.*pow(q2,2.) + 7.*pow(q3,2.)) + 
+           q3*(3. - 5.*pow(q2,2.) - 4.*pow(q3,2.) + pow(p3,2.)*(-8. + 9.*pow(q2,2.) + 9.*pow(q3,2.)))) + 
+        pow(p2,3.)*(p1*q1*q3*(-1. + 4.*pow(q2,2.) + pow(q3,2.)) + 
+           p3*(1. + 4.*pow(q2,4.) - 4.*pow(q3,2.) + pow(q2,2.)*(-5. + 9.*pow(q3,2.)) + 3.*pow(q3,4.))) + 
+        p2*(-1.*p1*q1*q3*(3.*pow(q2,2.) + pow(q3,2.)) + p1*q1*q3*pow(p3,2.)*(-3. + 7.*pow(q2,2.) + 4.*pow(q3,2.)) + 
+           p3*(-3.*pow(q2,4.) + pow(q2,2.)*(3. - 8.*pow(q3,2.)) + 3.*pow(q3,2.) - 3.*pow(q3,4.)) + 
+           pow(p3,3.)*(1. + 3.*pow(q2,4.) - 5.*pow(q3,2.) + pow(q2,2.)*(-4. + 9.*pow(q3,2.)) + 4.*pow(q3,4.))))*
+      pow((-1. - 1.*p1*q1 - 1.*p2*q2 - 1.*p3*q3)*pow(-1. + p1*q1 + p2*q2 + p3*q3,5),-0.5) + 
+     2.*pow(-1. + p1*q1 + p2*q2 + p3*q3,-2.)*(p1*p3*q1*(q2 - 2.*q3)*q3*(q2 + 2.*q3)*(pow(q2,2.) + pow(q3,2.)) - 
+        4.*p1*q1*q3*pow(p3,5.)*(-1. + pow(q2,2.) + 2.*pow(q3,2.)) + 
+        q2*pow(p2,5.)*(4.*p1*q1*(-1. + 2.*pow(q2,2.) + pow(q3,2.)) + p3*q3*(-3. + 4.*pow(q2,2.) + 3.*pow(q3,2.))) + 
+        p1*q1*q3*pow(p3,3.)*(-1.*pow(q2,4.) + pow(q2,2.)*(-1. + 8.*pow(q3,2.)) + 8.*pow(q3,4.)) + 
+        q2*pow(p2,3.)*(p1*q1*(-8.*pow(q2,4.) + pow(p3,2.)*(-3. + 8.*pow(q2,2.) - 3.*pow(q3,2.)) + pow(q3,2.) - 8.*pow(q2,2.)*pow(q3,2.) + 
+              pow(q3,4.)) + p3*q3*(2. + 5.*pow(p3,2.)*pow(q2,2.) - 4.*pow(q2,4.) - 5.*(pow(p3,2.) + pow(q2,2.))*pow(q3,2.) + 3.*pow(q3,4.))) + 
+        p2*q2*(-1.*p1*q1*(-4.*pow(q2,4.) - 3.*pow(q2,2.)*pow(q3,2.) + pow(p3,4.)*(-1. + pow(q2,2.) + 4.*pow(q3,2.)) + 
+              pow(p3,2.)*(pow(q2,2.) + 4.*pow(q2,4.) - 3.*pow(q2,2.)*pow(q3,2.) - 4.*pow(q3,4.)) + pow(q3,4.)) + 
+           p3*q3*(pow(p3,4.)*(3. - 3.*pow(q2,2.) - 4.*pow(q3,2.)) + (q2 - 1.*q3)*(q2 + q3)*(-2. + 3.*pow(q2,2.) + 3.*pow(q3,2.)) + 
+              pow(p3,2.)*(-2. - 3.*pow(q2,4.) + 5.*pow(q2,2.)*pow(q3,2.) + 4.*pow(q3,4.)))) + 
+        pow(p3,2.)*(2.*pow(q2,6.) - 1.*(-3. + pow(q2,2.))*pow(q2,2.)*pow(q3,2.) + (5. - 11.*pow(q2,2.))*pow(q3,4.) - 8.*pow(q3,6.)) + 
+        pow(p2,2.)*(8.*pow(q2,6.) + p1*q1*q3*pow(p3,3.)*(3. + 3.*pow(q2,2.) - 8.*pow(q3,2.)) + pow(q2,2.)*(-3. + pow(q3,2.))*pow(q3,2.) + 
+           pow(q2,4.)*(-5. + 11.*pow(q3,2.)) + pow(p3,4.)*
+            (-1. + 2.*pow(q2,4.) + 11.*pow(q3,2.) - 1.*pow(q2,2.)*(1. + 5.*pow(q3,2.)) - 12.*pow(q3,4.)) + 
+           p1*p3*q1*q3*(-4.*pow(q2,4.) + pow(q3,2.) - 3.*pow(q2,2.)*pow(q3,2.) + 4.*pow(q3,4.)) - 
+           1.*(q2 - 1.*q3)*(q2 + q3)*pow(p3,2.)*(-3. + 8.*pow(q2,4.) - 1.*pow(q3,2.) + pow(q2,2.)*(-1. + 13.*pow(q3,2.)) + 8.*pow(q3,4.)) - 
+           2.*pow(q3,6.)) + pow(p2,4.)*(-8.*pow(q2,6.) - 12.*pow(q2,4.)*pow(q3,2.) + p1*p3*q1*q3*(-1. + 4.*pow(q2,2.) + pow(q3,2.)) + 
+           pow(p3,2.)*(1. + 12.*pow(q2,4.) + pow(q3,2.) + pow(q2,2.)*(-11. + 5.*pow(q3,2.)) - 2.*pow(q3,4.)) - 1.*pow(q3,4.) - 
+           1.*pow(q2,2.)*(-5. + pow(q3,2.) + 2.*pow(q3,4.)) + pow(q3,6.)) + 
+        pow(p3,4.)*(pow(q2,4.) - 1.*pow(q2,6.) + (-5. + pow(q2,2.) + 2.*pow(q2,4.))*pow(q3,2.) + 12.*pow(q2,2.)*pow(q3,4.) + 8.*pow(q3,6.)) - 
+        1.*pow(p3,6.)*(8.*(-1. + pow(q2,2.))*pow(q3,2.) + 8.*pow(q3,4.) + pow(-1. + pow(q2,2.),2.)) + 
+        pow(p2,6.)*(8.*pow(q2,4.) + 8.*pow(q2,2.)*(-1. + pow(q3,2.)) + pow(-1. + pow(q3,2.),2.)) - 
+        1.*(q2 - 1.*q3)*(q2 + q3)*pow(pow(q2,2.) + pow(q3,2.),2.)));
+  }
+};
+
+
+// Laplace-Beltrami of rot(x*y*z) -> -12*rot(x*y*z)
+class LbRotXYZ : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  LbRotXYZ() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
+  {
+    WorldVector<double> rot;
+    for (int i = 0; i < 3; i++) {
+      int ii = (i+1)%3;
+      int iii = (i+2)%3;
+      rot[i] = x[i] * (x[ii]*x[ii] - x[iii]*x[iii]);
+    }
+    return  -12.0 * (rot * vec);
+  }
+};
+
+
+// <LbRot(xyz),[p,q]>
+class LbRotXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  LbRotXYZ_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    double p1 = p[0];
+    double p2 = p[1];
+    double p3 = p[2];
+    double q1 = q[0];
+    double q2 = q[1];
+    double q3 = q[2];
+    return -3.*pow(1. + p1*q1 + p2*q2 + p3*q3,-2.)*(12.*(-1.*p3*q2 + p2*q3)*
+      atan(pow((-1. + p1*q1 + p2*q2 + p3*q3)/(-1. - 1.*p1*q1 - 1.*p2*q2 - 1.*p3*q3),0.5))*
+      (q2*q3*pow(p2,4.)*(-3. + 4.*pow(q2,2.) + 3.*pow(q3,2.)) + 
+        q2*(p1*p3*q1*(-1.*pow(q2,2.) - 3.*pow(q3,2.) + pow(p3,2.)*(-1. + pow(q2,2.) + 4.*pow(q3,2.))) + 
+           q3*(-1. + pow(p3,2.))*(-1.*pow(q2,2.) - 1.*pow(q3,2.) + pow(p3,2.)*(-3. + 3.*pow(q2,2.) + 4.*pow(q3,2.)))) + 
+        q2*pow(p2,2.)*(p1*p3*q1*(-3. + 4.*pow(q2,2.) + 7.*pow(q3,2.)) + 
+           q3*(3. - 5.*pow(q2,2.) - 4.*pow(q3,2.) + pow(p3,2.)*(-8. + 9.*pow(q2,2.) + 9.*pow(q3,2.)))) + 
+        pow(p2,3.)*(p1*q1*q3*(-1. + 4.*pow(q2,2.) + pow(q3,2.)) + 
+           p3*(1. + 4.*pow(q2,4.) - 4.*pow(q3,2.) + pow(q2,2.)*(-5. + 9.*pow(q3,2.)) + 3.*pow(q3,4.))) + 
+        p2*(-1.*p1*q1*q3*(3.*pow(q2,2.) + pow(q3,2.)) + p1*q1*q3*pow(p3,2.)*(-3. + 7.*pow(q2,2.) + 4.*pow(q3,2.)) + 
+           p3*(-3.*pow(q2,4.) + pow(q2,2.)*(3. - 8.*pow(q3,2.)) + 3.*pow(q3,2.) - 3.*pow(q3,4.)) + 
+           pow(p3,3.)*(1. + 3.*pow(q2,4.) - 5.*pow(q3,2.) + pow(q2,2.)*(-4. + 9.*pow(q3,2.)) + 4.*pow(q3,4.))))*
+      pow((-1. - 1.*p1*q1 - 1.*p2*q2 - 1.*p3*q3)*pow(-1. + p1*q1 + p2*q2 + p3*q3,5),-0.5) + 
+     2.*pow(-1. + p1*q1 + p2*q2 + p3*q3,-2.)*(p1*p3*q1*(q2 - 2.*q3)*q3*(q2 + 2.*q3)*(pow(q2,2.) + pow(q3,2.)) - 
+        4.*p1*q1*q3*pow(p3,5.)*(-1. + pow(q2,2.) + 2.*pow(q3,2.)) + 
+        q2*pow(p2,5.)*(4.*p1*q1*(-1. + 2.*pow(q2,2.) + pow(q3,2.)) + p3*q3*(-3. + 4.*pow(q2,2.) + 3.*pow(q3,2.))) + 
+        p1*q1*q3*pow(p3,3.)*(-1.*pow(q2,4.) + pow(q2,2.)*(-1. + 8.*pow(q3,2.)) + 8.*pow(q3,4.)) + 
+        q2*pow(p2,3.)*(p1*q1*(-8.*pow(q2,4.) + pow(p3,2.)*(-3. + 8.*pow(q2,2.) - 3.*pow(q3,2.)) + pow(q3,2.) - 8.*pow(q2,2.)*pow(q3,2.) + 
+              pow(q3,4.)) + p3*q3*(2. + 5.*pow(p3,2.)*pow(q2,2.) - 4.*pow(q2,4.) - 5.*(pow(p3,2.) + pow(q2,2.))*pow(q3,2.) + 3.*pow(q3,4.))) + 
+        p2*q2*(-1.*p1*q1*(-4.*pow(q2,4.) - 3.*pow(q2,2.)*pow(q3,2.) + pow(p3,4.)*(-1. + pow(q2,2.) + 4.*pow(q3,2.)) + 
+              pow(p3,2.)*(pow(q2,2.) + 4.*pow(q2,4.) - 3.*pow(q2,2.)*pow(q3,2.) - 4.*pow(q3,4.)) + pow(q3,4.)) + 
+           p3*q3*(pow(p3,4.)*(3. - 3.*pow(q2,2.) - 4.*pow(q3,2.)) + (q2 - 1.*q3)*(q2 + q3)*(-2. + 3.*pow(q2,2.) + 3.*pow(q3,2.)) + 
+              pow(p3,2.)*(-2. - 3.*pow(q2,4.) + 5.*pow(q2,2.)*pow(q3,2.) + 4.*pow(q3,4.)))) + 
+        pow(p3,2.)*(2.*pow(q2,6.) - 1.*(-3. + pow(q2,2.))*pow(q2,2.)*pow(q3,2.) + (5. - 11.*pow(q2,2.))*pow(q3,4.) - 8.*pow(q3,6.)) + 
+        pow(p2,2.)*(8.*pow(q2,6.) + p1*q1*q3*pow(p3,3.)*(3. + 3.*pow(q2,2.) - 8.*pow(q3,2.)) + pow(q2,2.)*(-3. + pow(q3,2.))*pow(q3,2.) + 
+           pow(q2,4.)*(-5. + 11.*pow(q3,2.)) + pow(p3,4.)*
+            (-1. + 2.*pow(q2,4.) + 11.*pow(q3,2.) - 1.*pow(q2,2.)*(1. + 5.*pow(q3,2.)) - 12.*pow(q3,4.)) + 
+           p1*p3*q1*q3*(-4.*pow(q2,4.) + pow(q3,2.) - 3.*pow(q2,2.)*pow(q3,2.) + 4.*pow(q3,4.)) - 
+           1.*(q2 - 1.*q3)*(q2 + q3)*pow(p3,2.)*(-3. + 8.*pow(q2,4.) - 1.*pow(q3,2.) + pow(q2,2.)*(-1. + 13.*pow(q3,2.)) + 8.*pow(q3,4.)) - 
+           2.*pow(q3,6.)) + pow(p2,4.)*(-8.*pow(q2,6.) - 12.*pow(q2,4.)*pow(q3,2.) + p1*p3*q1*q3*(-1. + 4.*pow(q2,2.) + pow(q3,2.)) + 
+           pow(p3,2.)*(1. + 12.*pow(q2,4.) + pow(q3,2.) + pow(q2,2.)*(-11. + 5.*pow(q3,2.)) - 2.*pow(q3,4.)) - 1.*pow(q3,4.) - 
+           1.*pow(q2,2.)*(-5. + pow(q3,2.) + 2.*pow(q3,4.)) + pow(q3,6.)) + 
+        pow(p3,4.)*(pow(q2,4.) - 1.*pow(q2,6.) + (-5. + pow(q2,2.) + 2.*pow(q2,4.))*pow(q3,2.) + 12.*pow(q2,2.)*pow(q3,4.) + 8.*pow(q3,6.)) - 
+        1.*pow(p3,6.)*(8.*(-1. + pow(q2,2.))*pow(q3,2.) + 8.*pow(q3,4.) + pow(-1. + pow(q2,2.),2.)) + 
+        pow(p2,6.)*(8.*pow(q2,4.) + 8.*pow(q2,2.)*(-1. + pow(q3,2.)) + pow(-1. + pow(q3,2.),2.)) - 
+        1.*(q2 - 1.*q3)*(q2 + q3)*pow(pow(q2,2.) + pow(q3,2.),2.)));
+  }
+};
+
+
+// e.g. Laplace-Beltrami of exact forms
+class Zero : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Zero() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& coords, const WorldVector<double>& vec) const 
+  {
+    return 0.0;
+  }
+};
+
 
 //projection
 class Proj : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
@@ -151,15 +348,109 @@ int main(int argc, char* argv[])
 
  
   cout << endl << "********** Alpha *************" << endl;
-  DofEdgeVector alphadGL4(edgeMesh, "alpha_d_GL4");
-  alphadGL4.interpolGL4(new Alpha(), new Proj(), new JProj());
+  cout <<         "*** Laplace-Beltrami ***" << endl;
+  DofEdgeVector alphad(edgeMesh, "alpha_GL4");
+  //alphad.interpolGL4(new Alpha(), new Proj(), new JProj());
+  //alphad.interpolLinTrapz(new Alpha());
+  alphad.set(new Alpha_d());
+  alphad.writeFile("output/alpha.vtu");
 
-  DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpFaceAverage();
+  DOFVector< WorldVector<double> > alphaSharp = alphad.getSharpFaceAverage();
   AMDiS::io::VtkVectorWriter::writeFile(alphaSharp, string("output/alphaSharp.vtu"));
 
-  DofEdgeVector lbAlpha = alphadGL4.laplaceBeltrami();
+  DofEdgeVector lbAlpha = alphad.laplaceBeltrami();
   DOFVector< WorldVector<double> > lbAlphaSharp = lbAlpha.getSharpFaceAverage();
   AMDiS::io::VtkVectorWriter::writeFile(lbAlphaSharp, string("output/lbAlphaSharp.vtu"));
+
+  DofEdgeVector lbAlphaSol(edgeMesh, "lbAlpha");
+  //lbAlphaSol.interpolGL4(new LbAlpha(), new Proj(), new JProj());
+  lbAlphaSol.set(new LbAlpha_d());
+  double error = lbAlpha.error(lbAlphaSol);
+  cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
+  cout << "Error   : " << error << endl;
+  cout << "ErrorMax: " << lbAlpha.errorMax(lbAlphaSol) << endl;
+
+  DofEdgeVector lbAlphaError = lbAlphaSol - lbAlpha;
+  lbAlphaError.writeFile("output/lbAlphaErrorEdges.vtu");
+  DOFVector< WorldVector<double> > lbAlphaErrorSharp = lbAlphaError.getSharpFaceAverage();
+  AMDiS::io::VtkVectorWriter::writeFile(lbAlphaErrorSharp, string("output/lbAlphaSharpError.vtu"));
+
+  cout <<         "*** Laplace-CoBeltrami ***" << endl;
+  DofEdgeVector lcbAlpha = alphad.laplaceCoBeltrami();
+  lcbAlpha.writeFile("output/lcbalpha.vtu");
+
+  DofEdgeVector lcbAlphaSol(edgeMesh, "lcbAlpha");
+  lcbAlphaSol.set(0.0);
+
+  error = lcbAlpha.error(lcbAlphaSol);
+  cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
+  cout << "Error   : " << error << endl;
+  cout << "ErrorMax: " << lcbAlpha.errorMax(lcbAlphaSol) << endl;
+
+  cout <<         "*** Laplace-deRham ***" << endl;
+  DofEdgeVector ldrAlpha(edgeMesh, "ldrAlpha");
+  ldrAlpha.set(0.0);
+  ldrAlpha -= lbAlpha;
+  ldrAlpha -= lcbAlpha;
+  ldrAlpha.writeFile("output/ldralpha.vtu");
+  
+  DofEdgeVector ldrAlphaSol(edgeMesh, "ldrAlpha");
+  ldrAlphaSol.set(0.0);
+  ldrAlphaSol -= lbAlphaSol;
+
+  error = ldrAlpha.error(ldrAlphaSol);
+  cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
+  cout << "Error   : " << error << endl;
+  cout << "ErrorMax: " << ldrAlpha.errorMax(ldrAlphaSol) << endl;
+
+
+
+
+
+
+  //cout << endl << "********** Rot(x*y*z) *************" << endl;
+  //DofEdgeVector rotxyz(edgeMesh, "rotxyz");
+  ////rotxyz.interpolGL4(new RotXYZ(), new Proj(), new JProj());
+  //rotxyz.interpolLinTrapz(new RotXYZ());
+  ////rotxyz.set(new RotXYZ_d());
+  //rotxyz.writeFile("output/rotxyz.vtu");
+  //DOFVector< WorldVector<double> > rotxyzSharp = rotxyz.getSharpFaceAverage();
+  //AMDiS::io::VtkVectorWriter::writeFile(rotxyzSharp, string("output/rotxyzSharp.vtu"));
+
+  //DofEdgeVector lbrotxyz = rotxyz.laplaceBeltrami();
+  //lbrotxyz.writeFile("output/lbrotxyz.vtu");
+
+  //DofEdgeVector lbrotxyzSol(edgeMesh, "lbRotXYZSol");
+  //lbrotxyzSol.interpolGL4(new LbRotXYZ(), new Proj(), new JProj());
+  ////lbrotxyz.set(new LbRotXYZ_d());
+  //lbrotxyzSol.writeFile("output/lbrotxyzSol.vtu");
+  //double errorrotxyz = lbrotxyz.error(lbrotxyzSol);
+  //cout << "Error l2: " << (errorrotxyz * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << errorrotxyz << endl;
+  //cout << "ErrorMax: " << lbrotxyz.errorMax(lbrotxyzSol) << endl;
+
+  
+  //cout << endl << "********** d(x*y*z) *************" << endl;
+  //DofEdgeVector dxyz(edgeMesh, "dxyz");
+  ////dxyz.interpolGL4(new DXYZ(), new Proj(), new JProj());
+  //dxyz.interpolNC(new DXYZ(), 7, new Proj());
+  ////dxyz.interpolLinTrapz(new DXYZ());
+  ////dxyz.set(new DXYZ_d());
+  //dxyz.writeFile("output/dxyz.vtu");
+  //DOFVector< WorldVector<double> > dxyzSharp = dxyz.getSharpFaceAverage();
+  //AMDiS::io::VtkVectorWriter::writeFile(dxyzSharp, string("output/dxyzSharp.vtu"));
+
+  //DofEdgeVector lbdxyz = dxyz.laplaceBeltrami();
+  //lbdxyz.writeFile("output/lbdxyz.vtu");
+
+  //DofEdgeVector lbdxyzSol(edgeMesh, "lbDXYZSol");
+  //lbdxyzSol.set(0.0);
+  //lbdxyzSol.writeFile("output/lbdxyzSol.vtu");
+  //double errordxyz = lbdxyz.error(lbdxyzSol);
+  //cout << "Error l2: " << (errordxyz * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << errordxyz << endl;
+  //cout << "ErrorMax: " << lbdxyz.errorMax(lbdxyzSol) << endl;
+
 
 
   //map<int, std::vector<double> > alphaFaceSharp = alphadGL4.getSharpOnFaces();

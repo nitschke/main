@@ -29,6 +29,29 @@ public:
   }
 };
 
+// <alpha,[p,q]>
+class Alpha_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Alpha_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    double p1 = p[0];
+    double p2 = p[1];
+    double p3 = p[2];
+    double q1 = q[0];
+    double q2 = q[1];
+    double q3 = q[2];
+    return 2.*(p2*q1 - 1.*p1*q2)*atan((-1. + p1*q1 + p2*q2 + p3*q3)*pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + 
+       pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5))*
+   pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + 
+     pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5);
+  }
+};
+
+
 // exact 1-form : beta = dz
 class Beta : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
@@ -156,28 +179,28 @@ int main(int argc, char* argv[])
   DofEdgeVector gammadExact(edgeMesh, "gamma_d_exact");
   gammadExact.set(new Gamma_d());
   DofEdgeVector diff = gammad - gammadExact;
-  cout << "Error GL4: " << diff.L2Norm() << endl;
+  cout << "Error GL4: " << diff.l2Norm() << endl;
   gammad.interpolLinTrapz(new Gamma());
   diff = gammad - gammadExact;
-  cout << "Error LinTrapz: " << diff.L2Norm() << endl;
+  cout << "Error LinTrapz: " << diff.l2Norm() << endl;
   gammad.interpolLinMidpoint(new Gamma());
   diff = gammad - gammadExact;
-  cout << "Error LinMidpoint: " << diff.L2Norm() << endl;
+  cout << "Error LinMidpoint: " << diff.l2Norm() << endl;
   gammad.interpolMidpoint(new Gamma(), new Proj());
   diff = gammad - gammadExact;
-  cout << "Error Midpoint: " << diff.L2Norm() << endl;
+  cout << "Error Midpoint: " << diff.l2Norm() << endl;
   gammad.interpolNC(new Gamma(), 3);
   diff = gammad - gammadExact;
-  cout << "Error LinSimpson: " << diff.L2Norm() << endl;
+  cout << "Error LinSimpson: " << diff.l2Norm() << endl;
   gammad.interpolNC(new Gamma(), 3, new Proj());
   diff = gammad - gammadExact;
-  cout << "Error Simpson: " << diff.L2Norm() << endl;
+  cout << "Error Simpson: " << diff.l2Norm() << endl;
   gammad.interpolNC(new Gamma(), 7);
   diff = gammad - gammadExact;
-  cout << "Error LinWeddle: " << diff.L2Norm() << endl;
+  cout << "Error LinWeddle: " << diff.l2Norm() << endl;
   gammad.interpolNC(new Gamma(), 7, new Proj());
   diff = gammad - gammadExact;
-  cout << "Error Weddle: " << diff.L2Norm() << endl;
+  cout << "Error Weddle: " << diff.l2Norm() << endl;
 
   //DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpEdgeRingLinMod();
   DOFVector< WorldVector<double> > gammaSharp = gammadExact.getSharpFaceAverage();
@@ -187,28 +210,33 @@ int main(int argc, char* argv[])
   DofEdgeVector alphadGL4(edgeMesh, "alpha_d_GL4");
   alphadGL4.interpolGL4(new Alpha(), new Proj(), new JProj());
   
+  DofEdgeVector alphaExact(edgeMesh, "alphaExact");
+  alphaExact.set(new Alpha_d());
+  DofEdgeVector diff2 = alphadGL4 - alphaExact;
+  cout << "Error GL4: " << diff2.l2Norm() << endl;
+
   DofEdgeVector alphad(edgeMesh, "alpha_d");
   alphad.interpolLinTrapz(new Alpha());
   diff = alphad - alphadGL4;
-  cout << "Error LinTrapz: " << diff.L2Norm() << endl;
+  cout << "Error LinTrapz: " << diff.l2Norm() << endl;
   alphad.interpolLinMidpoint(new Alpha());
   diff = alphad - alphadGL4;
-  cout << "Error LinMidpoint: " << diff.L2Norm() << endl;
+  cout << "Error LinMidpoint: " << diff.l2Norm() << endl;
   alphad.interpolMidpoint(new Alpha(), new Proj());
   diff = alphad - alphadGL4;
-  cout << "Error Midpoint: " << diff.L2Norm() << endl;
+  cout << "Error Midpoint: " << diff.l2Norm() << endl;
   alphad.interpolNC(new Alpha(), 3);
   diff = alphad - alphadGL4;
-  cout << "Error LinSimpson: " << diff.L2Norm() << endl;
+  cout << "Error LinSimpson: " << diff.l2Norm() << endl;
   alphad.interpolNC(new Alpha(), 3, new Proj());
   diff = alphad - alphadGL4;
-  cout << "Error Simpson: " << diff.L2Norm() << endl;
+  cout << "Error Simpson: " << diff.l2Norm() << endl;
   alphad.interpolNC(new Alpha(), 7);
   diff = alphad - alphadGL4;
-  cout << "Error LinWeddle: " << diff.L2Norm() << endl;
+  cout << "Error LinWeddle: " << diff.l2Norm() << endl;
   alphad.interpolNC(new Alpha(), 7, new Proj());
   diff = alphad - alphadGL4;
-  cout << "Error Weddle: " << diff.L2Norm() << endl;
+  cout << "Error Weddle: " << diff.l2Norm() << endl;
 
   //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpFaceAverage();
   //DOFVector< WorldVector<double> > alphaSharp = alphadGL4.getSharpEdgeRingLinMod();

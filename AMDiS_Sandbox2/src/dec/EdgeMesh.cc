@@ -112,3 +112,12 @@ map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > EdgeMesh::getFaceEdges()
   }
   return faceEdges;
 }
+
+double EdgeMesh::getVol() const {
+  double vol = 0.0;
+  for (vector<EdgeElement>::const_iterator edgeIter = edges.begin();
+       edgeIter != edges.end(); ++edgeIter) {
+    vol += edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);    
+  }
+  return vol;
+}

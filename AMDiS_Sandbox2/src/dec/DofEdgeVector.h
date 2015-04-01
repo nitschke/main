@@ -14,9 +14,16 @@ public:
   DofEdgeVector(const EdgeMesh *edgeMesh_, std::string name_) : 
       edgeMesh(edgeMesh_), name(name_), edgeVals(edgeMesh->getNumberOfEdges()) {}
 
+  //copy-constructor (shallow mesh copy)
+  DofEdgeVector(const DofEdgeVector &dev) : edgeMesh(dev.getEdgeMesh()),
+                                            name(dev.getName()),
+                                            edgeVals(*dev.getEdgeVector()) {}
+
   const vector<double>* getEdgeVector() const {return &edgeVals;}
 
   const EdgeMesh* getEdgeMesh() const {return edgeMesh;}
+
+  const string getName() const {return name;}
 
   // set alpha_d([p,q]) = <alpha, [p,q]>
   void set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d);
@@ -56,16 +63,43 @@ public:
 
   map<int, std::vector<double> > getSharpOnFaces();
 
+  // - delta * d = rot*rot
   DofEdgeVector laplaceBeltrami();
 
-  // L2-Norm on K^(1)
-  double L2Norm() {
+  // - d * delta = grad * div
+  DofEdgeVector laplaceCoBeltrami();
+
+  // l2-Norm -> L2-Norm on K^(1)
+  double l2Norm() {
     vector<double>::iterator valIter = edgeVals.begin();
     double norm2 = 0.0;
     for (; valIter != edgeVals.end(); ++valIter){
       norm2 += (*valIter) * (*valIter);
     }
     return sqrt(norm2);
+  }
+
+  // Error: l2Norm(alpha - solution) / Vol(K^(1))
+  double error(const DofEdgeVector &sol) {
+    DofEdgeVector errVec(*this);
+    errVec -= sol;
+    return errVec.l2Norm() / edgeMesh->getVol();
+  }
+
+  double absMax() {
+    double max = -1.0;
+    vector<double>::iterator valIter = edgeVals.begin();
+    for (; valIter != edgeVals.end(); ++valIter) {
+      double absVal = abs(*valIter);
+      if (absVal > max) max = absVal;
+    }
+    return max;
+  }
+
+  double errorMax(const DofEdgeVector &sol) {
+    DofEdgeVector errVec(*this);
+    errVec -= sol;
+    return errVec.absMax();
   }
 
   DofEdgeVector& operator-=(const DofEdgeVector& a) {
@@ -84,6 +118,9 @@ public:
     return edgeVals[dof];
   }
 
+
+  void writeFile(string name) const;
+  
   
  
 private:
