@@ -112,7 +112,7 @@ public:
   }
 };
 
-// <gamma,[p,q]>
+// <dxyz,[p,q]>
 class DXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
@@ -122,6 +122,19 @@ public:
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
   {
     return  q[0]*q[1]*q[2] - p[0]*p[1]*p[2];
+  }
+};
+
+// <Lcbdxyz,[p,q]>
+class LcbDXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  LcbDXYZ_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  -12.*(q[0]*q[1]*q[2] - p[0]*p[1]*p[2]);
   }
 };
 
@@ -347,61 +360,61 @@ int main(int argc, char* argv[])
   //cout << *edgeMesh << endl;
 
  
-  cout << endl << "********** Alpha *************" << endl;
-  cout <<         "*** Laplace-Beltrami ***" << endl;
-  DofEdgeVector alphad(edgeMesh, "alpha_GL4");
-  //alphad.interpolGL4(new Alpha(), new Proj(), new JProj());
+  //cout << endl << "********** Alpha *************" << endl;
+  //cout <<         "*** Laplace-Beltrami ***" << endl;
+  //DofEdgeVector alphad(edgeMesh, "alpha_GL4");
+  ////alphad.interpolGL4(new Alpha(), new Proj(), new JProj());
   //alphad.interpolLinTrapz(new Alpha());
-  alphad.set(new Alpha_d());
-  alphad.writeFile("output/alpha.vtu");
+  ////alphad.set(new Alpha_d());
+  //alphad.writeFile("output/alpha.vtu");
 
-  DOFVector< WorldVector<double> > alphaSharp = alphad.getSharpFaceAverage();
-  AMDiS::io::VtkVectorWriter::writeFile(alphaSharp, string("output/alphaSharp.vtu"));
+  //DOFVector< WorldVector<double> > alphaSharp = alphad.getSharpFaceAverage();
+  //AMDiS::io::VtkVectorWriter::writeFile(alphaSharp, string("output/alphaSharp.vtu"));
 
-  DofEdgeVector lbAlpha = alphad.laplaceBeltrami();
-  DOFVector< WorldVector<double> > lbAlphaSharp = lbAlpha.getSharpFaceAverage();
-  AMDiS::io::VtkVectorWriter::writeFile(lbAlphaSharp, string("output/lbAlphaSharp.vtu"));
+  //DofEdgeVector lbAlpha = alphad.laplaceBeltrami();
+  //DOFVector< WorldVector<double> > lbAlphaSharp = lbAlpha.getSharpFaceAverage();
+  //AMDiS::io::VtkVectorWriter::writeFile(lbAlphaSharp, string("output/lbAlphaSharp.vtu"));
 
-  DofEdgeVector lbAlphaSol(edgeMesh, "lbAlpha");
-  //lbAlphaSol.interpolGL4(new LbAlpha(), new Proj(), new JProj());
-  lbAlphaSol.set(new LbAlpha_d());
-  double error = lbAlpha.error(lbAlphaSol);
-  cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
-  cout << "Error   : " << error << endl;
-  cout << "ErrorMax: " << lbAlpha.errorMax(lbAlphaSol) << endl;
+  //DofEdgeVector lbAlphaSol(edgeMesh, "lbAlpha");
+  ////lbAlphaSol.interpolGL4(new LbAlpha(), new Proj(), new JProj());
+  //lbAlphaSol.set(new LbAlpha_d());
+  //double error = lbAlpha.error(lbAlphaSol);
+  //cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << error << endl;
+  //cout << "ErrorMax: " << lbAlpha.errorMax(lbAlphaSol) << endl;
 
-  DofEdgeVector lbAlphaError = lbAlphaSol - lbAlpha;
-  lbAlphaError.writeFile("output/lbAlphaErrorEdges.vtu");
-  DOFVector< WorldVector<double> > lbAlphaErrorSharp = lbAlphaError.getSharpFaceAverage();
-  AMDiS::io::VtkVectorWriter::writeFile(lbAlphaErrorSharp, string("output/lbAlphaSharpError.vtu"));
+  //DofEdgeVector lbAlphaError = lbAlphaSol - lbAlpha;
+  //lbAlphaError.writeFile("output/lbAlphaErrorEdges.vtu");
+  //DOFVector< WorldVector<double> > lbAlphaErrorSharp = lbAlphaError.getSharpFaceAverage();
+  //AMDiS::io::VtkVectorWriter::writeFile(lbAlphaErrorSharp, string("output/lbAlphaSharpError.vtu"));
 
-  cout <<         "*** Laplace-CoBeltrami ***" << endl;
-  DofEdgeVector lcbAlpha = alphad.laplaceCoBeltrami();
-  lcbAlpha.writeFile("output/lcbalpha.vtu");
+  //cout <<         "*** Laplace-CoBeltrami ***" << endl;
+  //DofEdgeVector lcbAlpha = alphad.laplaceCoBeltrami();
+  //lcbAlpha.writeFile("output/lcbalpha.vtu");
 
-  DofEdgeVector lcbAlphaSol(edgeMesh, "lcbAlpha");
-  lcbAlphaSol.set(0.0);
+  //DofEdgeVector lcbAlphaSol(edgeMesh, "lcbAlpha");
+  //lcbAlphaSol.set(0.0);
 
-  error = lcbAlpha.error(lcbAlphaSol);
-  cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
-  cout << "Error   : " << error << endl;
-  cout << "ErrorMax: " << lcbAlpha.errorMax(lcbAlphaSol) << endl;
+  //error = lcbAlpha.error(lcbAlphaSol);
+  //cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << error << endl;
+  //cout << "ErrorMax: " << lcbAlpha.errorMax(lcbAlphaSol) << endl;
 
-  cout <<         "*** Laplace-deRham ***" << endl;
-  DofEdgeVector ldrAlpha(edgeMesh, "ldrAlpha");
-  ldrAlpha.set(0.0);
-  ldrAlpha -= lbAlpha;
-  ldrAlpha -= lcbAlpha;
-  ldrAlpha.writeFile("output/ldralpha.vtu");
-  
-  DofEdgeVector ldrAlphaSol(edgeMesh, "ldrAlpha");
-  ldrAlphaSol.set(0.0);
-  ldrAlphaSol -= lbAlphaSol;
+  //cout <<         "*** Laplace-deRham ***" << endl;
+  //DofEdgeVector ldrAlpha(edgeMesh, "ldrAlpha");
+  //ldrAlpha.set(0.0);
+  //ldrAlpha -= lbAlpha;
+  //ldrAlpha -= lcbAlpha;
+  //ldrAlpha.writeFile("output/ldralpha.vtu");
+  //
+  //DofEdgeVector ldrAlphaSol(edgeMesh, "ldrAlpha");
+  //ldrAlphaSol.set(0.0);
+  //ldrAlphaSol -= lbAlphaSol;
 
-  error = ldrAlpha.error(ldrAlphaSol);
-  cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
-  cout << "Error   : " << error << endl;
-  cout << "ErrorMax: " << ldrAlpha.errorMax(ldrAlphaSol) << endl;
+  //error = ldrAlpha.error(ldrAlphaSol);
+  //cout << "Error l2: " << (error * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << error << endl;
+  //cout << "ErrorMax: " << ldrAlpha.errorMax(ldrAlphaSol) << endl;
 
 
 
@@ -410,13 +423,14 @@ int main(int argc, char* argv[])
 
   //cout << endl << "********** Rot(x*y*z) *************" << endl;
   //DofEdgeVector rotxyz(edgeMesh, "rotxyz");
-  ////rotxyz.interpolGL4(new RotXYZ(), new Proj(), new JProj());
-  //rotxyz.interpolLinTrapz(new RotXYZ());
+  //rotxyz.interpolGL4(new RotXYZ(), new Proj(), new JProj());
+  ////rotxyz.interpolLinTrapz(new RotXYZ());
   ////rotxyz.set(new RotXYZ_d());
   //rotxyz.writeFile("output/rotxyz.vtu");
   //DOFVector< WorldVector<double> > rotxyzSharp = rotxyz.getSharpFaceAverage();
   //AMDiS::io::VtkVectorWriter::writeFile(rotxyzSharp, string("output/rotxyzSharp.vtu"));
 
+  //cout <<         "*** Laplace-Beltrami ***" << endl;
   //DofEdgeVector lbrotxyz = rotxyz.laplaceBeltrami();
   //lbrotxyz.writeFile("output/lbrotxyz.vtu");
 
@@ -429,29 +443,83 @@ int main(int argc, char* argv[])
   //cout << "Error   : " << errorrotxyz << endl;
   //cout << "ErrorMax: " << lbrotxyz.errorMax(lbrotxyzSol) << endl;
 
+  //cout <<         "*** Laplace-CoBeltrami ***" << endl;
+  //DofEdgeVector lcbrotxyz = rotxyz.laplaceCoBeltrami();
+  //lcbrotxyz.writeFile("output/lcbrotxyz.vtu");
+
+  //DofEdgeVector lcbrotxyzSol(edgeMesh, "lcbrotxyz");
+  //lcbrotxyzSol.set(0.0);
+
+  //errorrotxyz = lcbrotxyz.error(lcbrotxyzSol);
+  //cout << "Error l2: " << (errorrotxyz * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << errorrotxyz << endl;
+  //cout << "ErrorMax: " << lcbrotxyz.errorMax(lcbrotxyzSol) << endl;
+
+  //cout <<         "*** Laplace-deRham ***" << endl;
+  //DofEdgeVector ldrrotxyz(edgeMesh, "ldrrotxyz");
+  //ldrrotxyz.set(0.0);
+  //ldrrotxyz -= lbrotxyz;
+  //ldrrotxyz -= lcbrotxyz;
+  //ldrrotxyz.writeFile("output/ldrrotxyz.vtu");
+  //
+  //DofEdgeVector ldrrotxyzSol(edgeMesh, "ldrrotxyz");
+  //ldrrotxyzSol.set(0.0);
+  //ldrrotxyzSol -= lbrotxyzSol;
+
+  //errorrotxyz = ldrrotxyz.error(ldrrotxyzSol);
+  //cout << "Error l2: " << (errorrotxyz * edgeMesh->getVol()) << endl;
+  //cout << "Error   : " << errorrotxyz << endl;
+  //cout << "ErrorMax: " << ldrrotxyz.errorMax(ldrrotxyzSol) << endl;
   
-  //cout << endl << "********** d(x*y*z) *************" << endl;
-  //DofEdgeVector dxyz(edgeMesh, "dxyz");
-  ////dxyz.interpolGL4(new DXYZ(), new Proj(), new JProj());
-  //dxyz.interpolNC(new DXYZ(), 7, new Proj());
-  ////dxyz.interpolLinTrapz(new DXYZ());
-  ////dxyz.set(new DXYZ_d());
-  //dxyz.writeFile("output/dxyz.vtu");
-  //DOFVector< WorldVector<double> > dxyzSharp = dxyz.getSharpFaceAverage();
-  //AMDiS::io::VtkVectorWriter::writeFile(dxyzSharp, string("output/dxyzSharp.vtu"));
+  cout << endl << "********** d(x*y*z) *************" << endl;
+  DofEdgeVector dxyz(edgeMesh, "dxyz");
+  //dxyz.interpolGL4(new DXYZ(), new Proj(), new JProj());
+  dxyz.interpolNC(new DXYZ(), 7, new Proj());
+  //dxyz.interpolLinTrapz(new DXYZ());
+  //dxyz.set(new DXYZ_d());
+  dxyz.writeFile("output/dxyz.vtu");
+  DOFVector< WorldVector<double> > dxyzSharp = dxyz.getSharpFaceAverage();
+  AMDiS::io::VtkVectorWriter::writeFile(dxyzSharp, string("output/dxyzSharp.vtu"));
 
-  //DofEdgeVector lbdxyz = dxyz.laplaceBeltrami();
-  //lbdxyz.writeFile("output/lbdxyz.vtu");
+  cout <<         "*** Laplace-CoBeltrami ***" << endl;
+  DofEdgeVector lbdxyz = dxyz.laplaceBeltrami();
+  lbdxyz.writeFile("output/lbdxyz.vtu");
 
-  //DofEdgeVector lbdxyzSol(edgeMesh, "lbDXYZSol");
-  //lbdxyzSol.set(0.0);
-  //lbdxyzSol.writeFile("output/lbdxyzSol.vtu");
-  //double errordxyz = lbdxyz.error(lbdxyzSol);
-  //cout << "Error l2: " << (errordxyz * edgeMesh->getVol()) << endl;
-  //cout << "Error   : " << errordxyz << endl;
-  //cout << "ErrorMax: " << lbdxyz.errorMax(lbdxyzSol) << endl;
+  DofEdgeVector lbdxyzSol(edgeMesh, "lbDXYZSol");
+  lbdxyzSol.set(0.0);
+  lbdxyzSol.writeFile("output/lbdxyzSol.vtu");
+  double errordxyz = lbdxyz.error(lbdxyzSol);
+  cout << "Error l2: " << (errordxyz * edgeMesh->getVol()) << endl;
+  cout << "Error   : " << errordxyz << endl;
+  cout << "ErrorMax: " << lbdxyz.errorMax(lbdxyzSol) << endl;
 
+  cout <<         "*** Laplace-CoBeltrami ***" << endl;
+  DofEdgeVector lcbdxyz = dxyz.laplaceCoBeltrami();
+  lcbdxyz.writeFile("output/lcbdxyz.vtu");
 
+  DofEdgeVector lcbdxyzSol(edgeMesh, "lcbdxyz");
+  lcbdxyzSol.set(new LcbDXYZ_d());
+
+  errordxyz = lcbdxyz.error(lcbdxyzSol);
+  cout << "Error l2: " << (errordxyz * edgeMesh->getVol()) << endl;
+  cout << "Error   : " << errordxyz << endl;
+  cout << "ErrorMax: " << lcbdxyz.errorMax(lcbdxyzSol) << endl;
+
+  cout <<         "*** Laplace-deRham ***" << endl;
+  DofEdgeVector ldrdxyz(edgeMesh, "ldrdxyz");
+  ldrdxyz.set(0.0);
+  ldrdxyz -= lbdxyz;
+  ldrdxyz -= lcbdxyz;
+  ldrdxyz.writeFile("output/ldrdxyz.vtu");
+  
+  DofEdgeVector ldrdxyzSol(edgeMesh, "ldrdxyz");
+  ldrdxyzSol.set(0.0);
+  ldrdxyzSol -= lcbdxyzSol;
+
+  errordxyz = ldrdxyz.error(ldrdxyzSol);
+  cout << "Error l2: " << (errordxyz * edgeMesh->getVol()) << endl;
+  cout << "Error   : " << errordxyz << endl;
+  cout << "ErrorMax: " << ldrdxyz.errorMax(ldrdxyzSol) << endl;
 
   //map<int, std::vector<double> > alphaFaceSharp = alphadGL4.getSharpOnFaces();
   //AMDiS::io::ElementFileWriter::writeFile(alphaFaceSharp, sphere.getFeSpace()->getMesh(), "output/alphaFaceSharp");
