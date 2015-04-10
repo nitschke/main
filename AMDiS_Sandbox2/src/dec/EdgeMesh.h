@@ -8,6 +8,12 @@
 using namespace AMDiS;
 using namespace std;
 
+typedef enum {
+  FIRSTVERTEX = 1,
+  SECONDVERTEX = 2,
+  LEFTFACE = 3,
+  RIGHTFACE = 4
+} EdgeRingIteratorType;
 
 /*                  /\
  *                 /  \
@@ -30,6 +36,81 @@ struct EdgeElement {
 
   ElVolumesInfo2d *infoRight;
   pair<EdgeElement*, EdgeElement*> edgesRight;
+
+  // const_iterator over edges (always counterclockwise)
+  // FIRSTVERTEX : iterator over the edge ring of edge.first vertex
+  // SECONDVERTEX: iterator over the edge ring of edge.second vertex
+  // LEFTFACE    : iterator over the edge ring of the left face (i.e. 3 edges)
+  // RIGHTFACE   : iterator over the edge ring of the right face (i.e. 3 edges)
+  class EdgeRingIterator {
+    public:
+      EdgeRingIterator(const EdgeElement *eel, EdgeRingIteratorType type) : t(type), start(eel), position(eel) {
+        switch(t) {
+          case FIRSTVERTEX: refVert = &(eel->dofEdge.first); break;
+          case SECONDVERTEX: refVert = &(eel->dofEdge.second); break;
+          case LEFTFACE: refFace = eel->infoLeft; break;
+          case RIGHTFACE: refFace = eel->infoRight; break;
+          default: ERROR_EXIT("unknow iterator type for EdgeRingIterator");
+        }
+        counter = 0;
+      }
+
+      // Prefix operator++
+      const EdgeRingIterator& operator++() {
+        switch(t) {
+          case FIRSTVERTEX: 
+                    position = position->edgesLeft.first; 
+                    if (position->dofEdge.second == *refVert) t = SECONDVERTEX;
+                    break;
+          case SECONDVERTEX: 
+                    position = position->edgesRight.second; 
+                    if (position->dofEdge.first == *refVert) t = FIRSTVERTEX;
+                    break;
+          case LEFTFACE:
+                    position = position->edgesLeft.second; 
+                    if (position->infoRight == refFace) t = RIGHTFACE;
+                    break;
+          case RIGHTFACE:
+                    position = position->edgesRight.first; 
+                    if (position->infoLeft == refFace) t = LEFTFACE;
+                    break;
+          default: ERROR_EXIT("unknow iterator type for EdgeRingIterator");
+        }
+        counter++;
+        return *this;
+      }
+
+      // dereference operator*
+      const EdgeElement operator*() {
+        return *position;
+      }
+
+      // dereference operator->
+      const EdgeElement* operator->() {
+        return position;
+      }
+
+      // only true after every cycle
+      bool isEnd() {
+        return start == position && counter > 0;
+      }
+
+      // after one cycle: counter gives the number of edges in the ring
+      unsigned short getCounter() {
+        return counter;
+      }
+
+    private:
+      const EdgeElement *start;
+      const EdgeElement *position;
+
+      EdgeRingIteratorType t;
+
+      const DegreeOfFreedom *refVert = NULL;
+      const ElVolumesInfo2d *refFace = NULL;
+
+      unsigned short counter;
+  };
 };
 
 

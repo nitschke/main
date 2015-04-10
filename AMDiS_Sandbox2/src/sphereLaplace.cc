@@ -1,6 +1,7 @@
 #include "AMDiS.h"
 #include "EdgeMesh.h"
 #include "DofEdgeVector.h"
+#include "EdgeProblemStat.h"
 #include "io/VtkVectorWriter.h"
 #include "io/ElementFileWriter.h"
 
@@ -356,8 +357,20 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
 
-  const EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
+  EdgeProblemStat eSphere(sphere.getFeSpace());
+  const EdgeMesh *edgeMesh = eSphere.getMesh();
+
   //cout << *edgeMesh << endl;
+  //vector<EdgeElement>::const_iterator eIter = edgeMesh->getEdges()->begin();
+  //for (; eIter != edgeMesh->getEdges()->end(); ++eIter) {
+  //  cout << "*RefEdge*: " << *eIter << endl;
+  //  cout << "***Ring***" << endl;
+  //  EdgeElement::EdgeRingIterator ringIter(&(*eIter), FIRSTVERTEX);
+  //  for (; !ringIter.isEnd(); ++ringIter) {
+  //    cout << ringIter->dofEdge.first << " " << ringIter->dofEdge.second << endl;
+  //  }
+  //  cout << "counter: " << ringIter.getCounter() << endl << endl;;
+  //}
 
  
   //cout << endl << "********** Alpha *************" << endl;

@@ -445,16 +445,13 @@ DofEdgeVector DofEdgeVector::laplaceCoBeltrami() {
   DofEdgeVector lCB(edgeMesh, "LaplaceCoBeltrami");
   //lCB.set(0.0);
   
-  DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
-
   vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
   for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
     // q-part on [p,q]
     DegreeOfFreedom vdof = edgeIter->dofEdge.second;
     double sumv = 0.0;
     double voronoiVol = 0.0;
-    for (list<EdgeElement>::const_iterator ringIter = edgeRings[vdof].begin();
-         ringIter != edgeRings[vdof].end(); ++ringIter) {
+    for (EdgeElement::EdgeRingIterator ringIter(&(*edgeIter), SECONDVERTEX); !ringIter.isEnd(); ++ringIter) {
       double l = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
       double lStar =   ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
                      + ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
@@ -472,8 +469,7 @@ DofEdgeVector DofEdgeVector::laplaceCoBeltrami() {
     vdof = edgeIter->dofEdge.first;
     sumv = 0.0;
     voronoiVol = 0.0;
-    for (list<EdgeElement>::const_iterator ringIter = edgeRings[vdof].begin();
-         ringIter != edgeRings[vdof].end(); ++ringIter) {
+    for (EdgeElement::EdgeRingIterator ringIter(&(*edgeIter), FIRSTVERTEX); !ringIter.isEnd(); ++ringIter) {
       double l = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
       double lStar =   ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
                      + ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
