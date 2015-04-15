@@ -1,15 +1,22 @@
 #include "DecProblemStat.h"
-#include "AMDiS.h"
+#include "DecOperator.h"
+#include "EdgeOperator.h"
 
-DecProblemStat::DecProblemStat(ProblemStat *problem) 
-        : emesh(NULL),
+using namespace AMDiS;
+using namespace dec;
+
+DecProblemStat::DecProblemStat(ProblemStat *problem, EdgeMesh *edgeMesh) 
+        : emesh(edgeMesh),
           sysMat(NULL),
           rhs(NULL),
           ps(problem),
-          nComponents(problem->getNumComponents())
+          n(-1),
+          nComponents(problem->getNumComponents()),
+          ns(nComponents),
           matrixOperators(nComponents, nComponents),
           vectorOperators(nComponents),
-          spaceTypes(nComponents) {
+          spaceTypes(nComponents),
+          fullSolution(NULL) {
   spaceTypes.fill(UNDEFINEDSPACE);
 }
 
@@ -22,7 +29,7 @@ void DecProblemStat::addMatrixOperator(DecOperator *op, int row, int col, double
   SpaceType colType = op->getRowType();
   
   // if there is no EdgeMesh but needed
-  if ((!eMesh) && (rowType == EDGESPACE || colType == EDGESPACE) emesh = new EdgeMesh(ps->getFeSpace());
+  if ((!emesh) && (rowType == EDGESPACE || colType == EDGESPACE)) emesh = new EdgeMesh(ps->getFeSpace());
   
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
   if (!spaceTypes[col]) spaceTypes[col] = colType; 
@@ -42,7 +49,7 @@ void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor)
   SpaceType rowType = op->getRowType();
   
   // if there is no EdgeMesh but needed
-  if ((!eMesh) && (rowType == EDGESPACE) emesh = new EdgeMesh(ps->getFeSpace());
+  if ((!emesh) && (rowType == EDGESPACE)) emesh = new EdgeMesh(ps->getFeSpace());
   
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
 
@@ -53,50 +60,99 @@ void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor)
 }
 
 void DecProblemStat::assembleSystem() {
-  int n = 0;
-  vector<int> ns(nComponents);
-  for (int i = 0; i < nComponents; ++i) {
-     TEST_EXIT(!spaceTypes[i])("Space %d is not set!", i);
-     switch (spaceTypes[i]) {
-       case EDGESPACE:
-                ns[i] = emesh->getNumberOfEdges();
-                n += ns[i]; 
-                break;
-       default: 
-                ERROR_EXIT("SpaceType %d is unknown or not implemented", spaceTypes[i]);
-     }
+  if ( n < 0 ) {   // not precalc 
+    n = 0;
+    for (int i = 0; i < nComponents; ++i) {
+       TEST_EXIT(spaceTypes[i])("Space %d is not set!", i);
+       switch (spaceTypes[i]) {
+         case EDGESPACE:
+                  ns[i] = emesh->getNumberOfEdges();
+                  n += ns[i]; 
+                  break;
+         default: 
+                  ERROR_EXIT("SpaceType %d is unknown or not implemented", spaceTypes[i]);
+       }
+    }
   }
 
-  sysMat = new SparseMatrix(n, n);
-  rhs = new denseVector(n);
+  if (!sysMat) sysMat = new SparseMatrix(n, n);
+  if (!rhs) rhs = new DenseVector(n);
 
   int ohrow = 0; //overhead
   for (int r = 0; r < nComponents; ++r) {
     int ohcol = 0; //overhead
     for( int c = 0; c < nComponents; ++c) {
-      assembleMatrixBlock(matrixOperators[r][c], spaceType[c], ohrow, ohcol);
+      switch(spaceTypes[r] + 3*spaceTypes[c]) {
+        case 8: //EDGESPACE x EDGESPACE
+            assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
+            break;
+        default:
+          ERROR_EXIT("Das haette nicht passieren duerfen!");
+      }
       ohcol += ns[c];
     }
-    //assembleVectorBlock(vectorOperators[r], ???, ohrow);
+    switch(spaceTypes[r]) {
+      case EDGESPACE:
+          assembleVectorBlock_Edge(vectorOperators[r], ohrow);
+          break;
+      default:
+        ERROR_EXIT("Das haette nicht passieren duerfen!");
+    }
     ohrow += ns[r];
   }
 }
 
-void DecProblemStat::assembleMatrixBlock(list<DecOperator*> &ops, SpaceType colType, int ohrow, int ohcol) {
-  list<DecOperator*>::const_iterator opIter.begin(); 
-  switch (colType) {
-    case EDGESPACE:
-          //TODO: nochmal durchdenken, ich bin raus!
-          for (; opIter != ops.end(); ++opIter) {
-            EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
-            double factor = eop->getFactor();
-            list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
-            for (; termIter != eop->end(); ++termIter) {
-              
-            }
-          }
-          break;
-    default:
-          ERROR_EXIT("Das haette nicht passieren duerfen!");
+inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops, int ohrow, int ohcol) {
+  typedef typename mtl::Collection<SparseMatrix>::value_type vtype;
+  mtl::matrix::inserter<SparseMatrix, update_plus<vtype> > insSysMat(*sysMat);
+  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+  for (; opIter != ops.end(); ++opIter) {
+    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
+    double factor = eop->getFactor();
+    list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
+    for (; termIter != eop->end(); ++termIter) {
+      //TODO: implement edgeMesh::iterator
+      vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+      for (int r = ohrow; edgeIter != emesh->getEdges()->end(); ++r, ++edgeIter) {
+        edgeRowValMapper mapper = (*termIter)->evalRow(*edgeIter, factor);
+        edgeRowValMapper::iterator mapIter = mapper.begin();
+        for (; mapIter != mapper.end(); ++mapIter) {
+          int c = ohcol + mapIter->first;
+          insSysMat[r][c] << mapIter->second;
+        }
+      }
+    }
   }
+}
+
+inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow) {
+  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+  for (; opIter != ops.end(); ++opIter) {
+    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
+    double factor = eop->getFactor();
+    list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
+    for (; termIter != eop->end(); ++termIter) {
+      //TODO: implement edgeMesh::iterator
+      vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+      for (int r = ohrow; edgeIter != emesh->getEdges()->end(); ++r, ++edgeIter) {
+        double val = 0.0;
+        edgeRowValMapper mapper = (*termIter)->evalRow(*edgeIter, factor);
+        edgeRowValMapper::iterator mapIter = mapper.begin();
+        for (; mapIter != mapper.end(); ++mapIter) {
+          val += mapIter->second;
+        }
+        (*rhs)[r] = val;
+      }
+    }
+  }
+}
+
+
+void DecProblemStat::solve() {
+  using namespace mtl;
+  using namespace itl;
+  if (!fullSolution) fullSolution = new DenseVector(n);
+  pc::identity<SparseMatrix> P(*sysMat);
+  noisy_iteration<double> iter(*rhs, 500, 1.e-6);
+  cgs(*sysMat, *fullSolution, *rhs, P, iter);
 }

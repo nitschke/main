@@ -1,11 +1,13 @@
 #ifndef DOFEDGEVECTOR_H
 #define DOFEDGEVECTOR_H
 
-#include "AMDiS.h"
+#include "Dec_fwd.h"
 #include "EdgeMesh.h"
 
-using namespace AMDiS;
 using namespace std;
+
+namespace AMDiS { namespace dec {
+
 
 class DofEdgeVector {
 
@@ -124,18 +126,30 @@ public:
   
  
 private:
+
+  void set(const DenseVector &vec) {
+    using namespace mtl;
+    int n = size(vec);
+    TEST_EXIT(n == edgeVals.size())("uncool!\n");
+    for (int i = 0; i < n; ++i) {
+      edgeVals[i] = vec[i];
+    }
+  }
+
   const EdgeMesh *edgeMesh;
 
+  //TODO: change to mtl-vector -> no copy operation (see private set)
   vector<double> edgeVals;
 
   std::string name;
 
+  friend class DecProblemStat;
 };
 
 
-DofEdgeVector operator-(DofEdgeVector a, const DofEdgeVector& b) {
+inline DofEdgeVector operator-(DofEdgeVector a, const DofEdgeVector& b) {
   return a -= b;
 }
 
+}}
 #endif
-

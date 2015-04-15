@@ -1,12 +1,12 @@
 #ifndef EDGEMESH_H
 #define EDGEMESH_H
 
-#include "AMDiS.h"
-#include "elVolumesInfo2d.h"
+#include "Dec_fwd.h"
+#include "ElVolumesInfo2d.h" // <<(ElVolumesInfo2d&)
 
 
-using namespace AMDiS;
 using namespace std;
+namespace AMDiS { namespace dec {
 
 typedef enum {
   FIRSTVERTEX = 1,
@@ -163,4 +163,5 @@ inline ostream &operator <<(ostream &out, const EdgeMesh &eMesh) {
   return out;
 }
 
+}}
 #endif

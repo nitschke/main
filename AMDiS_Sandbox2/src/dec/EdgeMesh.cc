@@ -1,6 +1,7 @@
 #include "EdgeMesh.h"
 
 using namespace AMDiS;
+using namespace dec;
 
 EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
   Flag fillFlags = Mesh::FILL_COORDS | Mesh::FILL_DET | Mesh::FILL_GRD_LAMBDA;

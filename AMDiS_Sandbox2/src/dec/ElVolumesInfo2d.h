@@ -3,9 +3,8 @@
 
 #include "AMDiS.h"
 
-using namespace AMDiS;
 using namespace std;
-
+namespace AMDiS { namespace dec {
 
 class ElVolumesInfo2d {
   
@@ -69,6 +68,6 @@ inline ostream &operator <<(ostream &out, const ElVolumesInfo2d &volInfo) {
 
 
 
-
+}}
 
 #endif

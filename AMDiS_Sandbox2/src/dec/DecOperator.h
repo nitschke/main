@@ -1,10 +1,23 @@
 #ifndef DECOPERATOR_H
 #define DECOPERATOR_H
 
-#include "DecOperatorTerm.h"
+#include "Dec_fwd.h"
+
+namespace AMDiS { namespace dec {
+
 
 class DecOperator {
 public:
+
+  DecOperator() 
+    : colType(UNDEFINEDSPACE), 
+      rowType(UNDEFINEDSPACE) 
+      {factor = NULL;}
+
+  DecOperator(SpaceType rowType_)
+    : colType(UNDEFINEDSPACE), 
+      rowType(rowType_) 
+      {factor = NULL;}
   
   SpaceType getColType() {return colType;}
   SpaceType getRowType() {return rowType;}
@@ -14,12 +27,15 @@ public:
   double getFactor() {
     return (!factor) ? 1.0 : *factor; 
   }
+
+virtual ~DecOperator() {};
   
 protected:
- SpaceType colType = 0;
- SpaceType rowType = 0;
+ SpaceType colType;
+ SpaceType rowType;
 
- double *factor = NULL;
-}
+ double *factor;
+};
 
+}}
 #endif

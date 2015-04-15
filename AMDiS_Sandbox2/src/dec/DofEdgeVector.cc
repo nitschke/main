@@ -1,5 +1,9 @@
 #include "DofEdgeVector.h"
 
+using namespace AMDiS;
+using namespace dec;
+
+
 // t in [-1,1]
 inline WorldVector<double> linTrans(double t, WorldVector<double> p,  WorldVector<double> q) {
   return 0.5 * ((1.0 - t) * p + (1.0 + t) * q);

@@ -1,23 +1,24 @@
-#ifndef DECOPERATORTERM_h
+#ifndef DECOPERATORTERM_H
 #define DECOPERATORTERM_H
 
-typedef enum {
-  UNDEFINEDSPACE = 0,
-  VERTEXSPACE= 1,
-  EDGESPACE = 2,
-  FACESPACE = 3
-} SpaceType;
+namespace AMDiS { namespace dec {
 
 
 class DecOperatorTerm {
 public:
+
+  DecOperatorTerm(SpaceType rowType_ = UNDEFINEDSPACE, SpaceType colType_ = UNDEFINEDSPACE)
+    : colType(colType_),
+      rowType(rowType_) {}
   
   SpaceType getColType() {return colType;}
   SpaceType getRowType() {return rowType;}
   
-protected:
- SpaceType colType = 0; //maps from
- SpaceType rowType = 0; //maps to
-}
 
+protected:
+ SpaceType colType; //maps to SpaceType
+ SpaceType rowType; //maps from SpaceType
+};
+
+}}
 #endif
