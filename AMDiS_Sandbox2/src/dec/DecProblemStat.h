@@ -56,6 +56,7 @@ public:
     for (int k = 0; k < i; ++k) oh += ns[k];
     mtl::irange range(oh, oh + ns[i]);
     soli.set((*fullSolution)[range]);
+    return soli;
   }
 
 private:

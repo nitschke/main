@@ -359,38 +359,67 @@ int main(int argc, char* argv[])
   alpha.set(new Alpha_d());
   alpha.writeFile("output/alpha.vtu");
 
+  DofEdgeVector dxyz(edgeMesh, "dxyz");
+  dxyz.set(new DXYZ_d());
+  dxyz.writeFile("output/dxyz.vtu");
+
 
   DecProblemStat decSphere(&sphere, edgeMesh);
 
 
-  EdgeOperator matrixOperator;
-  matrixOperator.addTerm(new IdentityAtEdges());
-  decSphere.addMatrixOperator(matrixOperator, 0, 0);
+  double two = 2.0;
+  // 4*alpha = 4*alpha
+  EdgeOperator matrix00_0;
+  matrix00_0.addTerm(new IdentityAtEdges());
+  matrix00_0.addTerm(new IdentityAtEdges());
+  decSphere.addMatrixOperator(matrix00_0, 0, 0);
 
-  EdgeOperator vectorOperator;
-  vectorOperator.addTerm(new Discrete1FormAtEdges(&alpha));
-  decSphere.addVectorOperator(vectorOperator, 0);
+  EdgeOperator matrix00_1;
+  matrix00_1.addTerm(new IdentityAtEdges());
+  matrix00_1.addTerm(new IdentityAtEdges());
+  decSphere.addMatrixOperator(matrix00_1, 0, 0);
+
+  EdgeOperator vector0_0;
+  vector0_0.addTerm(new EdgeVecAtEdges(&alpha, two));
+  decSphere.addVectorOperator(vector0_0, 0, &two);
+
+
+  // dxyz + alpha= dxyz  + alpha
+  EdgeOperator matrix01;
+  matrix01.addTerm(new IdentityAtEdges());
+  decSphere.addMatrixOperator(matrix01, 0, 1);
+
+  EdgeOperator matrix11;
+  matrix11.addTerm(new IdentityAtEdges());
+  decSphere.addMatrixOperator(matrix11, 1, 1);
+
+  EdgeOperator vector1;
+  vector1.addTerm(new EdgeVecAtEdges(&dxyz));
+  vector1.addTerm(new EdgeVecAtEdges(&alpha));
+  decSphere.addVectorOperator(vector1, 1);
+
+  
+
 
   decSphere.assembleSystem();
 
   decSphere.solve();
 
 
-  SparseMatrix sysMat = decSphere.getSysMat();
-  cout << sysMat << endl;
+  //SparseMatrix sysMat = decSphere.getSysMat();
+  //cout << sysMat << endl;
 
-  DenseVector rhs = decSphere.getRhs();
-  cout << rhs << endl;
+  //DenseVector rhs = decSphere.getRhs();
+  //cout << rhs << endl;
 
-  DenseVector fsol = decSphere.getFullSolution();
-  cout << fsol << endl;
+  //DenseVector fsol = decSphere.getFullSolution();
+  //cout << fsol << endl;
 
-  cout << "HUHU-1 at sphereSimple.cc" << endl; 
   DofEdgeVector sol0 = decSphere.getSolution(0);
-  cout << "HUHU-2 at sphereSimple.cc" << endl; 
   sol0.writeFile("output/sol0.vtu");
-  cout << "HUHU-3 at sphereSimple.cc" << endl; 
 
+  DofEdgeVector sol1 = decSphere.getSolution(1);
+  sol1.writeFile("output/sol1.vtu");
 
 
   //// === create adapt info ===

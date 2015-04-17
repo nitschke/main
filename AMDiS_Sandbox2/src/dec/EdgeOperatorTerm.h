@@ -18,9 +18,10 @@ public:
 };
 
 
-class  Discrete1FormAtEdges: public EdgeOperatorTerm {
+// < alpha, edge >
+class  EdgeVecAtEdges: public EdgeOperatorTerm {
 public:
-  Discrete1FormAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
+  EdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
       : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f) {};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
@@ -30,6 +31,8 @@ private:
   double fac;
 };
 
+
+// < 1 , edge >
 class  IdentityAtEdges: public EdgeOperatorTerm {
 public:
   IdentityAtEdges(double f = 1.0) 
@@ -40,6 +43,34 @@ public:
 private:
   double fac;
 };
+
+
+// < Delta_B(alpha) , edge >
+class  LaplaceBeltramiAtEdges: public EdgeOperatorTerm {
+public:
+  LaplaceBeltramiAtEdges(double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), fac(f) {};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+};
+
+
+
+// < Delta_CB(alpha) , edge >
+class  LaplaceCoBeltramiAtEdges: public EdgeOperatorTerm {
+public:
+  LaplaceCoBeltramiAtEdges(double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), fac(f) {};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+};
+
 
 
 }}

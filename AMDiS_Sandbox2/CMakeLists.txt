@@ -28,6 +28,9 @@ target_link_libraries(sphereSharp ${BASIS_LIBS} dec)
 add_executable(sphereLaplace src/sphereLaplace.cc)
 target_link_libraries(sphereLaplace ${BASIS_LIBS} dec)
 
+add_executable(sphereLaplaceTest src/sphereLaplaceTest.cc)
+target_link_libraries(sphereLaplaceTest ${BASIS_LIBS} dec)
+
 add_executable(sphereSimple src/sphereSimple.cc)
 target_link_libraries(sphereSimple ${BASIS_LIBS} dec)
 

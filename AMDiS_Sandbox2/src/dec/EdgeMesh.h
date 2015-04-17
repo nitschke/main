@@ -100,6 +100,22 @@ struct EdgeElement {
         return counter;
       }
 
+      // return iteratorType, this can be useful, because the type change iff the orientation change.
+      EdgeRingIteratorType getType() {
+        return t;
+      }
+
+      // return the reference face for a *FACE iteration
+      // or the next face in iteration direction (counterclockwise) for a *VERTEX iteration 
+      const ElVolumesInfo2d getFace() {
+        if (t == RIGHTFACE || t == LEFTFACE) {
+          return refFace;
+        } else {
+          if (t == FIRSTVERTEX) return position->infoLeft;
+          if (t == SECONDVERTEX) return position->infoRight;
+        }
+      }
+
     private:
       const EdgeElement *start;
       const EdgeElement *position;
