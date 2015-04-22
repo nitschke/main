@@ -27,6 +27,8 @@ public:
 
   const string getName() const {return name;}
 
+  void setName(std::string name_) {name = name_;}
+
   // set alpha_d([p,q]) = <alpha, [p,q]>
   void set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d);
 
@@ -104,6 +106,16 @@ public:
     return errVec.absMax();
   }
 
+  DofEdgeVector& operator+=(const DofEdgeVector& a) {
+    //TODO: test exits
+    vector<double>::const_iterator aIter = a.getEdgeVector()->begin();
+    vector<double>::iterator rvalIter = edgeVals.begin();
+    for (; aIter != a.getEdgeVector()->end() || rvalIter != edgeVals.end() ; ++aIter, ++rvalIter) {
+      (*rvalIter) += (*aIter);
+    }
+    return *this;
+  }
+
   DofEdgeVector& operator-=(const DofEdgeVector& a) {
     //TODO: test exits
     vector<double>::const_iterator aIter = a.getEdgeVector()->begin();
@@ -120,8 +132,15 @@ public:
     return edgeVals[dof];
   }
 
+  inline double& operator[](const EdgeElement &eel) 
+  {
+    //TODO: test exits
+    return edgeVals[eel.edgeDof];
+  }
+
 
   void writeFile(string name) const;
+
   
   
  
@@ -146,6 +165,10 @@ private:
   friend class DecProblemStat;
 };
 
+
+inline DofEdgeVector operator+(DofEdgeVector a, const DofEdgeVector& b) {
+  return a += b;
+}
 
 inline DofEdgeVector operator-(DofEdgeVector a, const DofEdgeVector& b) {
   return a -= b;

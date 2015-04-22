@@ -44,7 +44,7 @@ struct EdgeElement {
   // RIGHTFACE   : iterator over the edge ring of the right face (i.e. 3 edges)
   class EdgeRingIterator {
     public:
-      EdgeRingIterator(const EdgeElement *eel, EdgeRingIteratorType type) : t(type), start(eel), position(eel) {
+      EdgeRingIterator(const EdgeElement *eel, EdgeRingIteratorType type) : t(type), reft(type), start(eel), position(eel) {
         switch(t) {
           case FIRSTVERTEX: refVert = &(eel->dofEdge.first); break;
           case SECONDVERTEX: refVert = &(eel->dofEdge.second); break;
@@ -105,9 +105,32 @@ struct EdgeElement {
         return t;
       }
 
+      // return true if the edge sign induced from vertex resp. face differ from the beginning sign.
+      // This mean for ...
+      // FIRSTVERTEX : true if edge point to reference vertex
+      // SECONDVERTEX: false if edge point to reference vertex
+      // LEFTFACE    : false if edge point in counterclockwise direction
+      // RIGHTFACE   : true if edge point in counterclockwise direction
+      bool changedSign() {
+        return t != reft;
+      }
+
+      // true if the edge point outward from the reference Vertex
+      bool pointOutward() {
+        if (reft == FIRSTVERTEX) return (t == reft);
+        if (reft == SECONDVERTEX) return (t != reft);
+        ERROR_EXIT("Wrong iterator type for EdgeElement::EdgeRingIterator::pointOutward. Only *VERTEX iteration are permitted.");
+      }
+
+      bool pointCounterclockwise() {
+        if (reft == LEFTFACE) return t == reft;
+        if (reft == RIGHTFACE) return t != reft;
+        ERROR_EXIT("Wrong iterator type for EdgeElement::EdgeRingIterator::pointCounterclockwise. Only *FACE iteration are permitted.");
+      }
+
       // return the reference face for a *FACE iteration
       // or the next face in iteration direction (counterclockwise) for a *VERTEX iteration 
-      const ElVolumesInfo2d getFace() {
+      const ElVolumesInfo2d* getFace() {
         if (t == RIGHTFACE || t == LEFTFACE) {
           return refFace;
         } else {
@@ -121,6 +144,7 @@ struct EdgeElement {
       const EdgeElement *position;
 
       EdgeRingIteratorType t;
+      EdgeRingIteratorType reft;
 
       const DegreeOfFreedom *refVert = NULL;
       const ElVolumesInfo2d *refFace = NULL;

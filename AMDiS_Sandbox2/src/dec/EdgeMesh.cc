@@ -4,6 +4,10 @@ using namespace AMDiS;
 using namespace dec;
 
 EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
+  FUNCNAME("EdgeMesh::EdgeMesh");
+  MSG("Init EdgeMesh ...\n");
+  Timer t;
+  
   Flag fillFlags = Mesh::FILL_COORDS | Mesh::FILL_DET | Mesh::FILL_GRD_LAMBDA;
 
   Mesh *mesh = feSpace->getMesh();
@@ -84,6 +88,7 @@ EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
     }
   }
 
+  MSG("done (needed %.5f seconds)\n", t.elapsed());
 }
 
 DOFVector< list<EdgeElement> > EdgeMesh::getEdgeRings() const {

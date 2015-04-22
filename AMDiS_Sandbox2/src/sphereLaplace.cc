@@ -1,11 +1,10 @@
-#include "AMDiS.h"
-#include "EdgeMesh.h"
-#include "DofEdgeVector.h"
+#include "Dec.h"
 #include "io/VtkVectorWriter.h"
 #include "io/ElementFileWriter.h"
 
 using namespace std;
 using namespace AMDiS;
+using namespace dec;
 
 // ===========================================================================
 // ===== function definitions ================================================
@@ -356,7 +355,7 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
 
-  const EdgeMesh *edgeMesh = eSphere.getMesh();
+  EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
   //cout << *edgeMesh << endl;
   //vector<EdgeElement>::const_iterator eIter = edgeMesh->getEdges()->begin();
@@ -492,7 +491,7 @@ int main(int argc, char* argv[])
   DOFVector< WorldVector<double> > dxyzSharp = dxyz.getSharpFaceAverage();
   AMDiS::io::VtkVectorWriter::writeFile(dxyzSharp, string("output/dxyzSharp.vtu"));
 
-  cout <<         "*** Laplace-CoBeltrami ***" << endl;
+  cout <<         "*** Laplace-Beltrami ***" << endl;
   DofEdgeVector lbdxyz = dxyz.laplaceBeltrami();
   lbdxyz.writeFile("output/lbdxyz.vtu");
 

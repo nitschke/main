@@ -13,12 +13,12 @@ class ElVolumesInfo2d {
     
     const ElInfo *getElInfo() const {return elInfo;}
 
-    double getVol() {return 0.5 * elInfo->getDet();}
+    double getVol() const {return 0.5 * elInfo->getDet();}
 
-    double getDualVertexVol(int i) {return dualVertexVol[i];}
-    double getOppEdgeLen(int i) {return oppEdgeLen[i];}
-    double getDualOppEdgeLen(int i) {return dualOppEdgeLen[i];}
-    WorldVector<double> getCircumcenter() {return cc;}
+    double getDualVertexVol(int i) const {return dualVertexVol[i];}
+    double getOppEdgeLen(int i) const {return oppEdgeLen[i];}
+    double getDualOppEdgeLen(int i) const {return dualOppEdgeLen[i];}
+    WorldVector<double> getCircumcenter() const {return cc;}
 
     double getDiameter();
 
@@ -28,25 +28,25 @@ class ElVolumesInfo2d {
     // Sin(Angle) on vertex
     double getSin(int i);
 
-    int getLocal(DegreeOfFreedom dof) {
-      std::map<DegreeOfFreedom, int>::iterator it = dofToLocal.find(dof);
+    int getLocal(DegreeOfFreedom dof) const {
+      std::map<DegreeOfFreedom, int>::const_iterator it = dofToLocal.find(dof);
       TEST_EXIT(it != dofToLocal.end())("ElVolumesInfo2d::getLocal: Element dont contain this global DOF!");
       return it->second;
     }
 
-    int getOppVertexLocal(DofEdge dofEdge) {
+    int getOppVertexLocal(DofEdge dofEdge) const {
       return 3 - getLocal(dofEdge.first) - getLocal(dofEdge.second);
     }
 
-    double getEdgeLen(DofEdge dofEdge) {
+    double getEdgeLen(DofEdge dofEdge) const {
       return getOppEdgeLen(getOppVertexLocal(dofEdge));
     }
 
-    double getDualEdgeLen(DofEdge dofEdge) {
+    double getDualEdgeLen(DofEdge dofEdge) const {
       return getDualOppEdgeLen(getOppVertexLocal(dofEdge));
     }
 
-    double getDualVertexVol(DegreeOfFreedom dof) {
+    double getDualVertexVol_global(DegreeOfFreedom dof) const {
       return getDualVertexVol(getLocal(dof));
     }
 

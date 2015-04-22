@@ -60,6 +60,10 @@ void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor)
 }
 
 void DecProblemStat::assembleSystem() {
+  FUNCNAME("DecProblemStat::assembleSystem()");
+  MSG("Assemble System ... \n");
+  Timer t;
+
   if ( n < 0 ) {   // not precalc 
     n = 0;
     for (int i = 0; i < nComponents; ++i) {
@@ -100,6 +104,8 @@ void DecProblemStat::assembleSystem() {
     }
     ohrow += ns[r];
   }
+
+  MSG("done (needed %.5f seconds)\n", t.elapsed());
 }
 
 inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops, int ohrow, int ohcol) {
@@ -125,6 +131,7 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
   }
 }
 
+//TODO: act on sol or not?
 inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow) {
   list<DecOperator*>::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
@@ -141,7 +148,7 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
         for (; mapIter != mapper.end(); ++mapIter) {
           val += mapIter->second;
         }
-        (*rhs)[r] = val;
+        (*rhs)[r] += val;
       }
     }
   }
@@ -151,8 +158,33 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
 void DecProblemStat::solve() {
   using namespace mtl;
   using namespace itl;
+  FUNCNAME("DecProblemStat::solve()");
+
+  string solverName = "cgs";
+  Parameters::get(ps->getName() + "->solver", solverName);
+  double tol = 1.e-6;
+  Parameters::get(ps->getName() + "->solver->tolerance", tol);
+  int maxIter = 1000;
+  Parameters::get(ps->getName() + "->solver->max iteration", maxIter);
+
+  MSG("Solve system ... \n");
+  Timer t;
+
   if (!fullSolution) fullSolution = new DenseVector(n);
-  pc::identity<SparseMatrix> P(*sysMat);
-  noisy_iteration<double> iter(*rhs, 500, 1.e-6);
-  cgs(*sysMat, *fullSolution, *rhs, P, iter);
+  pc::identity<SparseMatrix> L(*sysMat);
+  pc::identity<SparseMatrix> R(*sysMat);
+  cyclic_iteration<double> iter(*rhs, maxIter, tol);
+  switch (solverName) {
+    case "cgs" : cgs(*sysMat, *fullSolution, *rhs, L, iter); break;
+    case "umfpack" : umfpack_solve(*sysMat, *fullSolution, *rhs); break;
+    case "bicgstab2" : bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, 2); break;
+    case "bicgstab_ell" : int ell = 3;
+                          Parameters::get(ps->getName() + "->solver->ell", ell);
+                          bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, ell);
+                          break;
+    case "tfqmr" : tfqmr(*sysMat, *fullSolution, *rhs, L, R, iter); break;
+    default : ERROR_EXIT("Solver %s is not known\n", solverName);
+  }
+
+  MSG("solving needed %.5f seconds\n", t.elapsed());
 }

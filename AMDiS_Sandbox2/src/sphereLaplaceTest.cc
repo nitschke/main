@@ -1,4 +1,5 @@
 #include "Dec.h"
+#include "io/VtkVectorWriter.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -49,7 +50,7 @@ public:
 };
 
 
-// Laplace-Beltrami of alpha
+// Laplace-Beltrami of alpha -> -2 * alpha
 class LbAlpha : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
@@ -122,7 +123,7 @@ public:
   }
 };
 
-// <Lcbdxyz,[p,q]>
+// <Lcbdxyz,[p,q]> -> -12 * dxyz
 class LcbDXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
@@ -178,7 +179,7 @@ public:
 
 
 
-// e.g. Laplace-Beltrami of exact forms
+// e.g. Laplace-Beltrami of exact forms or Laplace-CoBeltrami of co-exact forms
 class Zero : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
@@ -253,26 +254,36 @@ int main(int argc, char* argv[])
   alpha.set(new Alpha_d());
   alpha.writeFile("output/alpha.vtu");
 
-  DofEdgeVector lb_alpha(edgeMesh, "lb_alpha");
-  alpha.set(new LbAlpha_d());
-  alpha.writeFile("output/lbalpha.vtu");
+  //DofEdgeVector lb_alpha(edgeMesh, "lb_alpha");
+  //alpha.set(new LbAlpha_d());
+  //alpha.writeFile("output/lbalpha.vtu");
 
 
   DofEdgeVector dxyz(edgeMesh, "dxyz");
   dxyz.set(new DXYZ_d());
   dxyz.writeFile("output/dxyz.vtu");
 
+  //DofEdgeVector lcb_dxyz(edgeMesh, "lcb_dxyz");
+  //lcb_dxyz.set(new LcbDXYZ_d());
+  //lcb_dxyz.writeFile("output/lcbdxyz.vtu");
+
 
   DecProblemStat decSphere(&sphere, edgeMesh);
 
+ // -LaplaceDeRham
+  EdgeOperator LaplaceOperator;
+  LaplaceOperator.addTerm(new LaplaceBeltramiAtEdges());
+  LaplaceOperator.addTerm(new LaplaceCoBeltramiAtEdges());
+  decSphere.addMatrixOperator(LaplaceOperator, 0, 0);
 
-  EdgeOperator LBMOperator;
-  LBMOperator.addTerm(new LaplaceBeltramiAtEdges());
-  decSphere.addMatrixOperator(LBMOperator, 0, 0);
+  EdgeOperator IOperator;
+  IOperator.addTerm(new IdentityAtEdges());
+  decSphere.addMatrixOperator(IOperator, 0, 0);
 
 
   EdgeOperator VOperator;
-  VOperator.addTerm(new EdgeVecAtEdges(&lb_alpha));
+  VOperator.addTerm(new EdgeVecAtEdges(&alpha, -1.0));
+  VOperator.addTerm(new EdgeVecAtEdges(&dxyz, -11.0));
   decSphere.addVectorOperator(VOperator, 0);
 
 
@@ -293,6 +304,17 @@ int main(int argc, char* argv[])
 
   DofEdgeVector sol0 = decSphere.getSolution(0);
   sol0.writeFile("output/sol0.vtu");
+  DOFVector< WorldVector<double> > sol0Sharp = sol0.getSharpFaceAverage();
+  AMDiS::io::VtkVectorWriter::writeFile(sol0Sharp, string("output/sol0Sharp.vtu"));
+
+  //DofEdgeVector sol0Exact = dxyz;
+  DofEdgeVector sol0Exact = dxyz + alpha;
+  sol0Exact.setName("Sol0_exact");
+  sol0Exact.writeFile("output/sol0Exact.vtu");
+  DOFVector< WorldVector<double> > sol0ExactSharp = sol0Exact.getSharpFaceAverage();
+  AMDiS::io::VtkVectorWriter::writeFile(sol0ExactSharp, string("output/sol0ExactSharp.vtu"));
+  
+
 
   //DofEdgeVector sol1 = decSphere.getSolution(1);
   //sol1.writeFile("output/sol1.vtu");

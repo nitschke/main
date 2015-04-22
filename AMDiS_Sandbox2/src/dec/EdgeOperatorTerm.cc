@@ -56,28 +56,41 @@ edgeRowValMapper LaplaceBeltramiAtEdges::evalRow(const EdgeElement &eel, double 
 }
 
 
-edgeRowValMapper LaplaceBeltramiAtEdges::evalRow(const EdgeElement &eel, double factor) {
+edgeRowValMapper LaplaceCoBeltramiAtEdges::evalRow(const EdgeElement &eel, double factor) {
   edgeRowValMapper rowMapper;
+  double f = fac * factor;
 
   // TODO: precalculatingn dual vols: ~O(6V)->O(V)
   // first dual volume
   double dvol1 = 0.0;
   for (EdgeElement::EdgeRingIterator eIter(&eel, FIRSTVERTEX); !eIter.isEnd(); ++eIter) {
-    dvol1 += eIter.getFace()->getDualVertexVol(eel->dofEdge.first);
+    dvol1 += eIter.getFace()->getDualVertexVol_global(eel.dofEdge.first);
   }
   // second dual volume
   double dvol2 = 0.0;
   for (EdgeElement::EdgeRingIterator eIter(&eel, SECONDVERTEX); !eIter.isEnd(); ++eIter) {
-    dvol2 += eIter.getFace()->getDualVertexVol(eel->dofEdge.second);
+    dvol2 += eIter.getFace()->getDualVertexVol_global(eel.dofEdge.second);
   }
 
   // first vertex iteration
   for (EdgeElement::EdgeRingIterator eIter(&eel, FIRSTVERTEX); !eIter.isEnd(); ++eIter) {
     // TODO: also precalculating: ~O(12E)->O(E)
-    double metric = (  eIter->InfoLeft->getDualEdgeLen(eIter->dofEdge)
-                     + eIter->InfoRight->getDualEdgeLen(eIter->dofEdge) )
-                   / eIter->InfoLeft->getEdgeLen(eIter->dofEdge);
-    ...
+    double metric = (  eIter->infoLeft->getDualEdgeLen(eIter->dofEdge)
+                     + eIter->infoRight->getDualEdgeLen(eIter->dofEdge) )
+                   / eIter->infoLeft->getEdgeLen(eIter->dofEdge);
+    rowMapper[eIter->edgeDof] = f * ((eIter.pointOutward()) ? (-metric / dvol1) : (metric / dvol1));
+  }
+  //second vertex iteration
+  EdgeElement::EdgeRingIterator eIter(&eel, SECONDVERTEX);
+  // update on eel manually (first iterator object)
+  rowMapper[eIter->edgeDof] -= f * ((  eIter->infoLeft->getDualEdgeLen(eIter->dofEdge)
+                            + eIter->infoRight->getDualEdgeLen(eIter->dofEdge) )
+                            / eIter->infoLeft->getEdgeLen(eIter->dofEdge)) / dvol2;
+  for (++eIter; !eIter.isEnd(); ++eIter) {
+    double metric = (  eIter->infoLeft->getDualEdgeLen(eIter->dofEdge)
+                     + eIter->infoRight->getDualEdgeLen(eIter->dofEdge) )
+                   / eIter->infoLeft->getEdgeLen(eIter->dofEdge);
+    rowMapper[eIter->edgeDof] = f * ((eIter.pointOutward()) ? (metric / dvol2) : (-metric / dvol2));
   }
 
   return rowMapper;
