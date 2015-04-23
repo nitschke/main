@@ -106,6 +106,10 @@ void DecProblemStat::assembleSystem() {
   }
 
   MSG("done (needed %.5f seconds)\n", t.elapsed());
+  int nnz = sysMat->nnz();
+  int numRows = sysMat->num_rows();
+  int numCols = sysMat->num_cols();
+  MSG("Fill-in of assembled (%ix%i)-Matrix: %i (approx. %.1f per row)\n", numRows, numCols, nnz, ((double)(nnz)/numRows)); 
 }
 
 inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops, int ohrow, int ohcol) {
@@ -131,7 +135,7 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
   }
 }
 
-//TODO: act on sol or not?
+//TODO: act on uhold if is set in operator
 inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow) {
   list<DecOperator*>::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
@@ -146,7 +150,11 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
         edgeRowValMapper mapper = (*termIter)->evalRow(*edgeIter, factor);
         edgeRowValMapper::iterator mapIter = mapper.begin();
         for (; mapIter != mapper.end(); ++mapIter) {
-          val += mapIter->second;
+          if (eop->uhold) {
+            val += mapIter->second * ((*(eop->uhold))[mapIter->first]);
+          } else {
+            val += mapIter->second;
+          }
         }
         (*rhs)[r] += val;
       }
@@ -167,24 +175,49 @@ void DecProblemStat::solve() {
   int maxIter = 1000;
   Parameters::get(ps->getName() + "->solver->max iteration", maxIter);
 
-  MSG("Solve system ... \n");
+  MSG("Solve system ... (with %s)\n", solverName.c_str());
   Timer t;
 
   if (!fullSolution) fullSolution = new DenseVector(n);
   pc::identity<SparseMatrix> L(*sysMat);
   pc::identity<SparseMatrix> R(*sysMat);
   cyclic_iteration<double> iter(*rhs, maxIter, tol);
-  switch (solverName) {
-    case "cgs" : cgs(*sysMat, *fullSolution, *rhs, L, iter); break;
-    case "umfpack" : umfpack_solve(*sysMat, *fullSolution, *rhs); break;
-    case "bicgstab2" : bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, 2); break;
-    case "bicgstab_ell" : int ell = 3;
+  while (true) {
+    if (solverName == "cgs") {cgs(*sysMat, *fullSolution, *rhs, L, iter); break;}
+    if (solverName == "umfpack") {umfpack_solve(*sysMat, *fullSolution, *rhs); break;}
+    if (solverName == "bicgstab2") {bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, 2); break;}
+    if (solverName == "bicgstab_ell") { int ell = 3;
                           Parameters::get(ps->getName() + "->solver->ell", ell);
                           bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, ell);
-                          break;
-    case "tfqmr" : tfqmr(*sysMat, *fullSolution, *rhs, L, R, iter); break;
-    default : ERROR_EXIT("Solver %s is not known\n", solverName);
+                          break;}
+    if (solverName == "tfqmr") {tfqmr(*sysMat, *fullSolution, *rhs, L, R, iter); break;}
+    ERROR_EXIT("Solver %s is not known\n", solverName.c_str());
   }
 
   MSG("solving needed %.5f seconds\n", t.elapsed());
+}
+
+void DecProblemStat::writeSolution(string nameAddition) {
+  string basename = "output/" + ps->getName;
+  Parameters::get(ps->getName() + "->output->filename", basename);
+  
+  bool writeSharps = false;
+  Parameters::get(ps->getName() + "->output->edgeForms sharp", writeSharps);
+
+  bool writeFlats = false;
+  Parameters::get(ps->getName() + "->output->edgeForms flat", writeFlats);
+
+  for (int i = 0; i < nComponents; ++i) {
+    switch(spaceTypes[i]) {
+       string bni = basename;
+       bni << i;
+      case EDGESPACE:
+          EdgeVector soli = getSolution(i);
+          if (writeFlats) soli.writeFile(bni + nameAddition + ".vtu");
+          if (writeSharps) io::VtkVectorWriter::writeFile(soli.getSharpFaceAverage(), bni + "Sharp" + nameAddition + ".vtu");
+          break;
+      default:
+        ERROR_EXIT("Das haette nicht passieren duerfen!");
+    }
+  }
 }

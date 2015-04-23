@@ -1,5 +1,5 @@
-#ifndef EDGEPROBLEMSTAT_H
-#define EDGEPROBLEMSTAT_H
+#ifndef DECPROBLEMSTAT_H
+#define DECPROBLEMSTAT_H
 
 #include "Dec_fwd.h"
 #include "DofEdgeVector.h"
@@ -14,6 +14,10 @@ public:
 
   const EdgeMesh* getMesh() {
     return emesh;
+  }
+
+  const ProblemStat* getProblemStat() {
+    return ps;
   }
 
   void addMatrixOperator(DecOperator *op, int row, int col, double *factor = NULL);
@@ -59,6 +63,8 @@ public:
     return soli;
   }
 
+  void writeSolution(string nameAddition = "");
+
 private:
 
   inline void assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops, int ohrow, int ohcol);
@@ -88,6 +94,7 @@ private:
 
   DenseVector *fullSolution;
 
+  friend class DecProblemInstat; 
 };
 
 }}

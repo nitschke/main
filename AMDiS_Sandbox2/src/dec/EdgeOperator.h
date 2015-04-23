@@ -11,7 +11,15 @@ namespace AMDiS { namespace dec {
 class EdgeOperator : public DecOperator {
 public:
   
-  EdgeOperator() : DecOperator(EDGESPACE) {}
+  EdgeOperator() : DecOperator(EDGESPACE) {
+    uhold = NULL;
+  }
+
+  // work on uhold, so their will change in time
+  void setUhOld(EdgeVector *oldSolution) {
+    if (uhold) delete uhold;
+    uhold = oldSolution;
+  }
 
   void addTerm(EdgeOperatorTerm *term);
 
@@ -28,6 +36,10 @@ public:
 private:
 
   list< EdgeOperatorTerm* > opTs;
+
+  EdgeVector *uhold;
+
+  friend class DecProblemStat;
 };
 
 }}
