@@ -198,7 +198,7 @@ void DecProblemStat::solve() {
 }
 
 void DecProblemStat::writeSolution(string nameAddition) {
-  string basename = "output/" + ps->getName;
+  string basename = "output/" + ps->getName();
   Parameters::get(ps->getName() + "->output->filename", basename);
   
   bool writeSharps = false;
@@ -208,13 +208,16 @@ void DecProblemStat::writeSolution(string nameAddition) {
   Parameters::get(ps->getName() + "->output->edgeForms flat", writeFlats);
 
   for (int i = 0; i < nComponents; ++i) {
+    string bni = basename + boost::lexical_cast<std::string>(i);
     switch(spaceTypes[i]) {
-       string bni = basename;
-       bni << i;
-      case EDGESPACE:
-          EdgeVector soli = getSolution(i);
-          if (writeFlats) soli.writeFile(bni + nameAddition + ".vtu");
-          if (writeSharps) io::VtkVectorWriter::writeFile(soli.getSharpFaceAverage(), bni + "Sharp" + nameAddition + ".vtu");
+      case EDGESPACE: {
+            DofEdgeVector soli = getSolution(i);
+            if (writeFlats) soli.writeFile(bni + nameAddition + ".vtu");
+            if (writeSharps) {
+              DOFVector< WorldVector<double> > soliSharp = soli.getSharpFaceAverage();
+              io::VtkVectorWriter::writeFile(soliSharp, bni + "Sharp" + nameAddition + ".vtu");
+            }
+          }
           break;
       default:
         ERROR_EXIT("Das haette nicht passieren duerfen!");

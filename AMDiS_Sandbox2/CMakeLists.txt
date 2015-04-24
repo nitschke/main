@@ -34,3 +34,5 @@ target_link_libraries(sphereLaplaceTest ${BASIS_LIBS} dec)
 add_executable(sphereSimple src/sphereSimple.cc)
 target_link_libraries(sphereSimple ${BASIS_LIBS} dec)
 
+add_executable(sphereDeRhamDiffusion src/sphereDeRhamDiffusion.cc)
+target_link_libraries(sphereDeRhamDiffusion ${BASIS_LIBS} dec)

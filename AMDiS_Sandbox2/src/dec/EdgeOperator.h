@@ -4,6 +4,7 @@
 #include "Dec_fwd.h"
 #include "DecOperator.h"
 #include "EdgeOperatorTerm.h"
+#include "DofEdgeVector.h"
 
 namespace AMDiS { namespace dec {
 
@@ -16,9 +17,13 @@ public:
   }
 
   // work on uhold, so their will change in time
-  void setUhOld(EdgeVector *oldSolution) {
-    if (uhold) delete uhold;
+  void setUhOld(DofEdgeVector *oldSolution) {
+    //if (uhold) delete uhold;
     uhold = oldSolution;
+  }
+
+  bool isUhOldSet() {
+    return uhold;
   }
 
   void addTerm(EdgeOperatorTerm *term);
@@ -37,7 +42,7 @@ private:
 
   list< EdgeOperatorTerm* > opTs;
 
-  EdgeVector *uhold;
+  DofEdgeVector *uhold;
 
   friend class DecProblemStat;
 };

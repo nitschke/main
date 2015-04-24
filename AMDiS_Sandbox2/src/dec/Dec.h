@@ -8,6 +8,7 @@
 #include "DecOperator.h"
 #include "DecOperatorTerm.h"
 #include "DecProblemStat.h"
+#include "DecProblemInstat.h"
 #include "DofEdgeVector.h"
 #include "EdgeMesh.h"
 #include "EdgeOperator.h"

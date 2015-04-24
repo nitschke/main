@@ -17,14 +17,20 @@ public:
 
   void solve();
 
+  void initTimestep();
+
   void closeTimestep();
 
   double *getTimePtr() {
-    return &t
+    return &t;
   }
 
   double *getTauPtr() {
-    return tau;
+    return &tau;
+  }
+
+  double *getInvTauPtr() {
+    return &inv_tau;
   }
 
   unsigned int getTimestep() {
@@ -45,6 +51,12 @@ double t; //current time
 double tau; //time step size
 unsigned int step; // current time step
 
+Timer timer;
+
+double inv_tau; // 1 / tau
+
+bool writeSolutions;
+unsigned int writeEveryithTimestep;
 };
 
 }}

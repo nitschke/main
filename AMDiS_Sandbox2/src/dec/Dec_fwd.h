@@ -9,6 +9,7 @@ namespace AMDiS {
     class DecOperator;
     class DecOperatorTerm;
     class DecProblemStat;
+    class DecProblemInstat;
     class DofEdgeVector;
     class EdgeMesh;
     class ElVolumesInfo2d;
