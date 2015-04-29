@@ -141,6 +141,8 @@ public:
 
   void writeFile(string name) const;
 
+  ~DofEdgeVector() {};
+
   
   
  

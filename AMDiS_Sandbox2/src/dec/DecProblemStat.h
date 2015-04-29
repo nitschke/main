@@ -3,6 +3,7 @@
 
 #include "Dec_fwd.h"
 #include "DofEdgeVector.h"
+#include "SolverInterface.h"
 
 using namespace std;
 namespace AMDiS { namespace dec {
@@ -93,6 +94,8 @@ private:
   Vector< SpaceType > spaceTypes;
 
   DenseVector *fullSolution;
+
+  SolverInterface solver;
 
   friend class DecProblemInstat; 
 };

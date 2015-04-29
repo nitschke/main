@@ -2,6 +2,7 @@
 #include "DecOperator.h"
 #include "EdgeOperator.h"
 
+
 using namespace AMDiS;
 using namespace dec;
 
@@ -16,7 +17,8 @@ DecProblemStat::DecProblemStat(ProblemStat *problem, EdgeMesh *edgeMesh)
           matrixOperators(nComponents, nComponents),
           vectorOperators(nComponents),
           spaceTypes(nComponents),
-          fullSolution(NULL) {
+          fullSolution(NULL),
+          solver(ps->getName()){
   spaceTypes.fill(UNDEFINEDSPACE);
 }
 
@@ -168,33 +170,10 @@ void DecProblemStat::solve() {
   using namespace itl;
   FUNCNAME("DecProblemStat::solve()");
 
-  string solverName = "cgs";
-  Parameters::get(ps->getName() + "->solver", solverName);
-  double tol = 1.e-6;
-  Parameters::get(ps->getName() + "->solver->tolerance", tol);
-  int maxIter = 1000;
-  Parameters::get(ps->getName() + "->solver->max iteration", maxIter);
-
-  MSG("Solve system ... (with %s)\n", solverName.c_str());
-  Timer t;
-
   if (!fullSolution) fullSolution = new DenseVector(n);
-  pc::identity<SparseMatrix> L(*sysMat);
-  pc::identity<SparseMatrix> R(*sysMat);
-  cyclic_iteration<double> iter(*rhs, maxIter, tol);
-  while (true) {
-    if (solverName == "cgs") {cgs(*sysMat, *fullSolution, *rhs, L, iter); break;}
-    if (solverName == "umfpack") {umfpack_solve(*sysMat, *fullSolution, *rhs); break;}
-    if (solverName == "bicgstab2") {bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, 2); break;}
-    if (solverName == "bicgstab_ell") { int ell = 3;
-                          Parameters::get(ps->getName() + "->solver->ell", ell);
-                          bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, ell);
-                          break;}
-    if (solverName == "tfqmr") {tfqmr(*sysMat, *fullSolution, *rhs, L, R, iter); break;}
-    ERROR_EXIT("Solver %s is not known\n", solverName.c_str());
-  }
 
-  MSG("solving needed %.5f seconds\n", t.elapsed());
+  solver.init(sysMat);
+  solver.solve(*rhs, *fullSolution);
 }
 
 void DecProblemStat::writeSolution(string nameAddition) {

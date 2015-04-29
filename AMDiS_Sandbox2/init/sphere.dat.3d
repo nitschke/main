@@ -1,16 +1,16 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphereIko10k.3d
+sphereMesh->macro file name:       ./macro/sphereIko1k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 sphereMesh->global refinements:    0
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              1
+sphere->components:              3
 
-sphere->solver:                bicgstab_ell %tfqmr
+sphere->solver:                bicgstab2
 sphere->solver->ell:           2
 sphere->solver->max iteration: 1000
 sphere->solver->info:          8
@@ -18,7 +18,7 @@ sphere->solver->tolerance:     1.e-10
 sphere->solver->left precon:   no
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        100.0
+sphere->adapt->end time:        0.1
 sphere->adapt->timestep:        0.1
 
 sphere->output->filename:         output/sphere

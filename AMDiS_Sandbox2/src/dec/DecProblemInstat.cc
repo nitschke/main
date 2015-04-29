@@ -22,7 +22,7 @@ DecProblemInstat::DecProblemInstat(DecProblemStat *probStat, DecProblemStat *ini
   TEST_EXIT(tau > 0.0)("Time step size must be positiv. Only Chuck Norris can solve PDEs correctly backward in time.");
   
   step = 0;
-  t = t0;
+  t = t0 + tau;
   inv_tau = 1. / tau;
 
   writeSolutions = true;
@@ -59,7 +59,7 @@ void DecProblemInstat::solve() {
     ERROR_EXIT("solving init problem is not implemented"); //TODO: implement
   }
 
-  while (t < t1) oneIteration();
+  while (t <= t1) oneIteration();
 }
 
 void DecProblemInstat::updateUhOlds() {

@@ -23,9 +23,8 @@ namespace AMDiS {
       FACESPACE = 3
     } SpaceType;
 
-    typedef mtl::compressed2D<double> SparseMatrix;
-    typedef mtl::dense_vector<double> DenseVector;
-
+    typedef MTLTypes::MTLMatrix SparseMatrix;
+    typedef MTLTypes::MTLVector DenseVector;
 
   }
 

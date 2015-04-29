@@ -16,14 +16,12 @@ public:
     uhold = NULL;
   }
 
-  // work on uhold, so their will change in time
-  void setUhOld(DofEdgeVector *oldSolution) {
-    //if (uhold) delete uhold;
-    uhold = oldSolution;
-  }
-
   bool isUhOldSet() {
     return uhold;
+  }
+
+  void setUhOld(const DofEdgeVector &oldSolution) {
+    uhold = new DofEdgeVector(oldSolution);
   }
 
   void addTerm(EdgeOperatorTerm *term);
@@ -40,11 +38,17 @@ public:
 
 private:
 
+  void setUhOld(DofEdgeVector *oldSolution) {
+    if (uhold) delete uhold;
+    uhold = oldSolution;
+  }
+
   list< EdgeOperatorTerm* > opTs;
 
   DofEdgeVector *uhold;
 
   friend class DecProblemStat;
+  friend class DecProblemInstat;
 };
 
 }}

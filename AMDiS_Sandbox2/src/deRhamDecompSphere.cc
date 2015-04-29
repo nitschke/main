@@ -252,7 +252,6 @@ int main(int argc, char* argv[])
   
   DofEdgeVector alpha(edgeMesh, "alpha");
   alpha.set(new Alpha_d());
-  //alpha.writeFile("output/alpha.vtu");
 
   //DofEdgeVector lb_alpha(edgeMesh, "lb_alpha");
   //alpha.set(new LbAlpha_d());
@@ -261,7 +260,6 @@ int main(int argc, char* argv[])
 
   DofEdgeVector dxyz(edgeMesh, "dxyz");
   dxyz.set(new DXYZ_d());
-  //dxyz.writeFile("output/dxyz.vtu");
 
   //DofEdgeVector lcb_dxyz(edgeMesh, "lcb_dxyz");
   //lcb_dxyz.set(new LcbDXYZ_d());
@@ -269,37 +267,71 @@ int main(int argc, char* argv[])
 
   DofEdgeVector initSol = dxyz + alpha;
   initSol.setName("initSol");
+  initSol.writeFile("output/initSol.vtu");
+  DOFVector< WorldVector<double> > initSolSharp = initSol.getSharpFaceAverage();
+  io::VtkVectorWriter::writeFile(initSolSharp, "output/initSolSharp.vtu");
+
 
   DecProblemStat decSphere(&sphere, edgeMesh);
 
   DecProblemInstat sphereInstat(&decSphere);
 
- // LaplaceDeRham
   double minusOne = -1.0;
-  EdgeOperator LaplaceOperator;
-  //LaplaceOperator.addTerm(new LaplaceBeltramiAtEdges());
-  LaplaceOperator.addTerm(new LaplaceCoBeltramiAtEdges());
-  decSphere.addMatrixOperator(LaplaceOperator, 0, 0, &minusOne);
+ // -Beltrami
+  EdgeOperator Beltrami;
+  Beltrami.addTerm(new LaplaceBeltramiAtEdges());
+  decSphere.addMatrixOperator(Beltrami, 0, 0, &minusOne);
+ // -CoBeltrami
+  EdgeOperator CoBeltrami;
+  CoBeltrami.addTerm(new LaplaceCoBeltramiAtEdges());
+  decSphere.addMatrixOperator(CoBeltrami, 1, 1, &minusOne);
+ // DeRham
+  decSphere.addMatrixOperator(Beltrami, 2, 2, &minusOne);
+  decSphere.addMatrixOperator(CoBeltrami, 2, 2, &minusOne);
 
-  // time derivative approx
-  EdgeOperator IOperator;
-  IOperator.addTerm(new IdentityAtEdges());
-  IOperator.setUhOld(initSol);
-  decSphere.addMatrixOperator(IOperator, 0, 0,sphereInstat.getInvTauPtr());
-  decSphere.addVectorOperator(IOperator, 0,sphereInstat.getInvTauPtr());
+  // time derivatives approx
+  EdgeOperator I0Operator;
+  I0Operator.addTerm(new IdentityAtEdges());
+  I0Operator.setUhOld(initSol);
+  decSphere.addMatrixOperator(I0Operator, 0, 0,sphereInstat.getInvTauPtr());
+  decSphere.addVectorOperator(I0Operator, 0,sphereInstat.getInvTauPtr());
 
+  EdgeOperator I1Operator;
+  I1Operator.addTerm(new IdentityAtEdges());
+  I1Operator.setUhOld(initSol);
+  decSphere.addMatrixOperator(I1Operator, 1, 1,sphereInstat.getInvTauPtr());
+  decSphere.addVectorOperator(I1Operator, 1,sphereInstat.getInvTauPtr());
+
+  EdgeOperator I2Operator;
+  I2Operator.addTerm(new IdentityAtEdges());
+  I2Operator.setUhOld(initSol);
+  decSphere.addMatrixOperator(I2Operator, 2, 2,sphereInstat.getInvTauPtr());
+  decSphere.addVectorOperator(I2Operator, 2,sphereInstat.getInvTauPtr());
 
 
 
   sphereInstat.solve();
   
-  decSphere.writeSolution();
+  //decSphere.writeSolution();
 
 
-  SparseMatrix sysMat = decSphere.getSysMat();
-  cout << sysMat << endl;
+  //SparseMatrix sysMat = decSphere.getSysMat();
+  int n = edgeMesh->getNumberOfEdges();
+  //mtl::dense2D<double> dmat(3*n, 3*n);
+  //dmat = sysMat;
+  //for (int i = 0; i < 3; ++i) {
+  //  for (int j = 0; j < 3; ++j) {
+  //    cout << i << "," << j << " Block ***********************" << endl;
+  //    cout << sub_matrix(dmat, i*n, (i+1)*n, j*n, (j+1)*n) << endl;
+  //  }
+  //}
+  //cout << sysMat << endl;
 
-  //DenseVector rhs = decSphere.getRhs();
+  DenseVector rhs = decSphere.getRhs();
+  for (int i = 0; i < 3; ++i) {
+    cout << i << "th subvector *****************" << endl;
+    cout << sub_vector(rhs, i*n, (i+1)*n) << endl;
+  }
   //cout << rhs << endl;
 
   //DenseVector fsol = decSphere.getFullSolution();

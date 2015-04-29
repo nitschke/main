@@ -36,3 +36,6 @@ target_link_libraries(sphereSimple ${BASIS_LIBS} dec)
 
 add_executable(sphereDeRhamDiffusion src/sphereDeRhamDiffusion.cc)
 target_link_libraries(sphereDeRhamDiffusion ${BASIS_LIBS} dec)
+
+add_executable(deRhamDecompSphere src/deRhamDecompSphere.cc)
+target_link_libraries(deRhamDecompSphere ${BASIS_LIBS} dec)
