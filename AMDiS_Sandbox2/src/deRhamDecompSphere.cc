@@ -277,15 +277,19 @@ int main(int argc, char* argv[])
   DecProblemInstat sphereInstat(&decSphere);
 
   double minusOne = -1.0;
- // -Beltrami
+  // -Beltrami
   EdgeOperator Beltrami;
   Beltrami.addTerm(new LaplaceBeltramiAtEdges());
   decSphere.addMatrixOperator(Beltrami, 0, 0, &minusOne);
- // -CoBeltrami
+  // -CoBeltrami
   EdgeOperator CoBeltrami;
   CoBeltrami.addTerm(new LaplaceCoBeltramiAtEdges());
   decSphere.addMatrixOperator(CoBeltrami, 1, 1, &minusOne);
- // DeRham
+  // DeRham
+  //EdgeOperator DeRham;
+  //DeRham.addTerm(new LaplaceBeltramiAtEdges(-1.));
+  //DeRham.addTerm(new LaplaceCoBeltramiAtEdges(-1.));
+  //decSphere.addMatrixOperator(DeRham, 2, 2);
   decSphere.addMatrixOperator(Beltrami, 2, 2, &minusOne);
   decSphere.addMatrixOperator(CoBeltrami, 2, 2, &minusOne);
 
@@ -309,14 +313,39 @@ int main(int argc, char* argv[])
   decSphere.addVectorOperator(I2Operator, 2,sphereInstat.getInvTauPtr());
 
 
+  //decSphere.assembleSystem();
+  //SparseMatrix sysMat = decSphere.getSysMat();
+  //DenseVector rhs = decSphere.getRhs();
+  //cout  << size(rhs) << endl;
+  //int n = sysMat.num_rows();
+  //double eps = 0.001;
+  //for (int i = 0; i < n; ++i) {
+  //  for (int j = 0; j < n; ++j) {
+  //    if (i == j && sysMat[i][j] != 10) cout <<  sysMat[i][j] << endl;
+  //    if (i != j && sysMat[i][j] != 0)  cout <<  sysMat[i][j] << endl;
+  //  }
+  //  if (rhs[i] != 10) cout << i << " : " <<  rhs[i] << endl;
+  //}
+  ////cout << sysMat << endl;
+
+  //decSphere.solveDeprecated();
+  
+
+
 
   sphereInstat.solve();
   
+
   //decSphere.writeSolution();
 
 
   //SparseMatrix sysMat = decSphere.getSysMat();
-  int n = edgeMesh->getNumberOfEdges();
+  //int n = edgeMesh->getNumberOfEdges();
+  //mtl::dense2D<double> dmat(3*n, 3*n);
+  //dmat = sysMat;
+  //DenseVector eig(3*n);
+  //eig = mtl::matrix::qr_algo(dmat,10);
+  //cout  << "EVs: " << eig << endl;
   //mtl::dense2D<double> dmat(3*n, 3*n);
   //dmat = sysMat;
   //for (int i = 0; i < 3; ++i) {
@@ -327,11 +356,11 @@ int main(int argc, char* argv[])
   //}
   //cout << sysMat << endl;
 
-  DenseVector rhs = decSphere.getRhs();
-  for (int i = 0; i < 3; ++i) {
-    cout << i << "th subvector *****************" << endl;
-    cout << sub_vector(rhs, i*n, (i+1)*n) << endl;
-  }
+  //DenseVector rhs = decSphere.getRhs();
+  //for (int i = 0; i < 3; ++i) {
+  //  cout << i << "th subvector *****************" << endl;
+  //  cout << sub_vector(rhs, i*n, (i+1)*n) << endl;
+  //}
   //cout << rhs << endl;
 
   //DenseVector fsol = decSphere.getFullSolution();

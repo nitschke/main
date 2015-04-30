@@ -18,8 +18,37 @@ DecProblemStat::DecProblemStat(ProblemStat *problem, EdgeMesh *edgeMesh)
           vectorOperators(nComponents),
           spaceTypes(nComponents),
           fullSolution(NULL),
-          solver(ps->getName()){
+          solver(ps->getName()),
+          animWriterFlat(NULL),
+          animWriterSharp(NULL)
+{
   spaceTypes.fill(UNDEFINEDSPACE);
+
+  writeSharps = false;
+  Parameters::get(ps->getName() + "->output->edgeForms sharp", writeSharps);
+
+  writeFlats = false;
+  Parameters::get(ps->getName() + "->output->edgeForms flat", writeFlats);
+
+  writeAnimation = false;
+  Parameters::get(ps->getName() + "->output->ParaView animation", writeAnimation);
+  //TODO: only EDGESPACEs
+  if (writeAnimation) {
+    string basename = "output/" + ps->getName();
+    Parameters::get(ps->getName() + "->output->filename", basename);
+    if (writeSharps) {
+      animWriterSharp = new Vector<AnimationWriter*>(nComponents);
+      for (int i = 0; i < nComponents; ++i) {
+        (*animWriterSharp)[i] = new AnimationWriter(basename + boost::lexical_cast<std::string>(i) + "Sharp.pvd");
+      }
+    }
+    if (writeFlats) {
+      animWriterFlat = new Vector<AnimationWriter*>(nComponents);
+      for (int i = 0; i < nComponents; ++i) {
+        (*animWriterFlat)[i] = new AnimationWriter(basename + boost::lexical_cast<std::string>(i) + ".pvd");
+      }
+    }
+  }
 }
 
 void DecProblemStat::addMatrixOperator(DecOperator *op, int row, int col, double *factor) {
@@ -84,6 +113,9 @@ void DecProblemStat::assembleSystem() {
   if (!sysMat) sysMat = new SparseMatrix(n, n);
   if (!rhs) rhs = new DenseVector(n);
 
+  *rhs = 0.0;
+  sysMat->make_empty();
+
   int ohrow = 0; //overhead
   for (int r = 0; r < nComponents; ++r) {
     int ohcol = 0; //overhead
@@ -137,7 +169,7 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
   }
 }
 
-//TODO: act on uhold if is set in operator
+//act on uhold if is set in operator
 inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow) {
   list<DecOperator*>::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
@@ -179,12 +211,6 @@ void DecProblemStat::solve() {
 void DecProblemStat::writeSolution(string nameAddition) {
   string basename = "output/" + ps->getName();
   Parameters::get(ps->getName() + "->output->filename", basename);
-  
-  bool writeSharps = false;
-  Parameters::get(ps->getName() + "->output->edgeForms sharp", writeSharps);
-
-  bool writeFlats = false;
-  Parameters::get(ps->getName() + "->output->edgeForms flat", writeFlats);
 
   for (int i = 0; i < nComponents; ++i) {
     string bni = basename + boost::lexical_cast<std::string>(i);
@@ -203,3 +229,71 @@ void DecProblemStat::writeSolution(string nameAddition) {
     }
   }
 }
+
+void DecProblemStat::writeSolution(double time, string nameAddition) {
+  string basename = "output/" + ps->getName();
+  Parameters::get(ps->getName() + "->output->filename", basename);
+  
+
+  if (writeAnimation) {
+    nameAddition += "." + boost::lexical_cast<std::string>(time);
+  }
+
+  for (int i = 0; i < nComponents; ++i) {
+    string bni = basename + boost::lexical_cast<std::string>(i);
+    switch(spaceTypes[i]) {
+      case EDGESPACE: {
+            DofEdgeVector soli = getSolution(i);
+            if (writeFlats) {
+              string fn = bni + nameAddition + ".vtu";
+              soli.writeFile(fn);
+              (*animWriterFlat)[i]->updateAnimationFile(time, fn);
+            }
+            if (writeSharps) {
+              string fn = bni + "Sharp" + nameAddition + ".vtu";
+              DOFVector< WorldVector<double> > soliSharp = soli.getSharpFaceAverage();
+              io::VtkVectorWriter::writeFile(soliSharp, fn);
+              (*animWriterSharp)[i]->updateAnimationFile(time, fn);
+            }
+          }
+          break;
+      default:
+        ERROR_EXIT("Das haette nicht passieren duerfen!");
+    }
+  }
+}
+
+void DecProblemStat::solveDeprecated() {
+  using namespace mtl;
+  using namespace itl;
+  FUNCNAME("DecProblemStat::solve()");
+
+  string solverName = "cgs";
+  Parameters::get(ps->getName() + "->solver", solverName);
+  double tol = 1.e-6;
+  Parameters::get(ps->getName() + "->solver->tolerance", tol);
+  int maxIter = 1000;
+  Parameters::get(ps->getName() + "->solver->max iteration", maxIter);
+
+  MSG("Solve system ... (with %s)\n", solverName.c_str());
+  Timer t;
+
+  if (!fullSolution) fullSolution = new DenseVector(n);
+  pc::identity<SparseMatrix> L(*sysMat);
+  pc::identity<SparseMatrix> R(*sysMat);
+  cyclic_iteration<double> iter(*rhs, maxIter, tol);
+  while (true) {
+    if (solverName == "cgs") {cgs(*sysMat, *fullSolution, *rhs, L, iter); break;}
+    if (solverName == "umfpack") {umfpack_solve(*sysMat, *fullSolution, *rhs); break;}
+    if (solverName == "bicgstab2") {bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, 2); break;}
+    if (solverName == "bicgstab_ell") { int ell = 3;
+                          Parameters::get(ps->getName() + "->solver->ell", ell);
+                          bicgstab_ell(*sysMat, *fullSolution, *rhs, L, R, iter, ell);
+                          break;}
+    if (solverName == "tfqmr") {tfqmr(*sysMat, *fullSolution, *rhs, L, R, iter); break;}
+    ERROR_EXIT("Solver %s is not known\n", solverName.c_str());
+  }
+
+  MSG("solving needed %.5f seconds\n", t.elapsed());
+}
+

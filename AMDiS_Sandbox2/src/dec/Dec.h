@@ -5,6 +5,7 @@
 
 //#include "Dec_fwd.h"
 
+#include "AnimationWriter.h"
 #include "DecOperator.h"
 #include "DecOperatorTerm.h"
 #include "DecProblemStat.h"

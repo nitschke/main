@@ -6,6 +6,7 @@
 namespace AMDiS {
   
   namespace dec {
+    class AnimationWriter;
     class DecOperator;
     class DecOperatorTerm;
     class DecProblemStat;
@@ -23,6 +24,8 @@ namespace AMDiS {
       FACESPACE = 3
     } SpaceType;
 
+    //typedef  mtl::compressed2D<double> SparseMatrix;
+    //typedef  mtl::dense_vector<double> DenseVector;
     typedef MTLTypes::MTLMatrix SparseMatrix;
     typedef MTLTypes::MTLVector DenseVector;
 

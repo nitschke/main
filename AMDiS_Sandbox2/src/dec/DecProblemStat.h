@@ -4,6 +4,7 @@
 #include "Dec_fwd.h"
 #include "DofEdgeVector.h"
 #include "SolverInterface.h"
+#include "AnimationWriter.h"
 
 using namespace std;
 namespace AMDiS { namespace dec {
@@ -50,6 +51,7 @@ public:
   }
 
   void solve();
+  void solveDeprecated();
 
   DofEdgeVector getSolution(int i) {
     TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
@@ -65,6 +67,8 @@ public:
   }
 
   void writeSolution(string nameAddition = "");
+
+  void writeSolution(double time, string nameAddition = "");
 
 private:
 
@@ -96,6 +100,13 @@ private:
   DenseVector *fullSolution;
 
   SolverInterface solver;
+
+  bool writeSharps;
+  bool writeFlats;
+
+  bool writeAnimation;
+  Vector < AnimationWriter* > *animWriterFlat;
+  Vector < AnimationWriter* > *animWriterSharp;
 
   friend class DecProblemInstat; 
 };

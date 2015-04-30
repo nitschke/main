@@ -40,7 +40,10 @@ void DecProblemInstat::closeTimestep() {
   updateUhOlds(); 
   MSG("*** End time iteration step, needed %.5f seconds ***\n\n", timer.elapsed());
 
-  if (writeSolutions && step%writeEveryithTimestep == 0) statProb->writeSolution("." + boost::lexical_cast<std::string>(step));
+  if (writeSolutions && step%writeEveryithTimestep == 0) {
+    //statProb->writeSolution("." + boost::lexical_cast<std::string>(step));
+    statProb->writeSolution(t);
+  }
   t += tau;
   step++;
 }
