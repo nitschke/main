@@ -204,8 +204,13 @@ void DecProblemStat::solve() {
 
   if (!fullSolution) fullSolution = new DenseVector(n);
 
+  MSG("Solve system ... (with %s)\n", solver.getSolverName().c_str());
+  Timer t;
+
   solver.init(sysMat);
   solver.solve(*rhs, *fullSolution);
+
+  MSG("solving needed %.5f seconds\n", t.elapsed());
 }
 
 void DecProblemStat::writeSolution(string nameAddition) {
@@ -234,10 +239,11 @@ void DecProblemStat::writeSolution(double time, string nameAddition) {
   string basename = "output/" + ps->getName();
   Parameters::get(ps->getName() + "->output->filename", basename);
   
-
-  if (writeAnimation) {
-    nameAddition += "." + boost::lexical_cast<std::string>(time);
-  }
+  //TODO: from parameterfile
+  int prec = 3;
+  ostringstream timeoss;
+  timeoss << setprecision(prec) << time;
+  nameAddition += "." + timeoss.str();
 
   for (int i = 0; i < nComponents; ++i) {
     string bni = basename + boost::lexical_cast<std::string>(i);
@@ -266,7 +272,7 @@ void DecProblemStat::writeSolution(double time, string nameAddition) {
 void DecProblemStat::solveDeprecated() {
   using namespace mtl;
   using namespace itl;
-  FUNCNAME("DecProblemStat::solve()");
+  FUNCNAME("DecProblemStat::solveDeprecated()");
 
   string solverName = "cgs";
   Parameters::get(ps->getName() + "->solver", solverName);

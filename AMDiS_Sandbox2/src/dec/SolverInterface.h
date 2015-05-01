@@ -20,7 +20,7 @@ public:
     Parameters::get(initFileStr, solverName);
     TEST_EXIT(solverName != "H2SO4")("You have to specify the parameter %s in the initfile!\n", initFileStr.c_str());
     
-    std::string solverType = "mtl_" + solverName;
+    solverType = "mtl_" + solverName;
 
     LinearSolverCreator *solverCreator = 
 	    dynamic_cast<LinearSolverCreator*>(CreatorMap<LinearSolverInterface>::getCreator(solverType, initFileStr));
@@ -45,7 +45,9 @@ public:
     runner->solve(*mat, x, b);
   }
 
-  
+  std::string getSolverName() {
+    return solverType;
+  }
 
 
 private:
@@ -54,6 +56,8 @@ private:
   LinearSolverInterface* solver;
   
   RunnerBase<SparseMatrix, DenseVector> *runner;
+
+  std::string solverType;
 };
 
 }}

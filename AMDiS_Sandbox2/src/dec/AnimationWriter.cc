@@ -5,6 +5,8 @@ using namespace AMDiS;
 using namespace dec;
 
 void AnimationWriter::updateAnimationFile(double time, string frame) {
+  //TODO: only works if animfile is in the same directory 
+  frame = frame.substr(frame.find_last_of("/") + 1); // reduce path to filename
   animFiles.push_back(make_pair(time, frame));
 
   boost::iostreams::filtering_ostream file;

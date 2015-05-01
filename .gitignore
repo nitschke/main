@@ -1,3 +1,8 @@
+## no exes and bibs
+#**
+#!**.*
+#*.so
+
 # vim
 *.swp
 
@@ -31,3 +36,9 @@
 
 #C4D
 **/backup
+
+#others
+*.tar
+*.tar.gz
+*.tar.bz
+
