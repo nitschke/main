@@ -177,7 +177,7 @@ void DofEdgeVector::set(double val) {
 
 DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRingLinMod(){
   using namespace mtl;
-  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), "Sharp");
+  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), name + "Sharp");
   DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
  
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
@@ -211,7 +211,7 @@ inline int getLocIndex(Element *el, DegreeOfFreedom dof) {
 }
 
 DOFVector< WorldVector<double> > DofEdgeVector::getSharpHirani() {
-  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), "Sharp");
+  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), name + "Sharp");
   DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
   
   WorldVector<double> faceSum;
@@ -239,7 +239,7 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpHirani() {
 
 DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
   using namespace mtl;
-  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), "Sharp");
+  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), name + "Sharp");
   DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
  
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
@@ -310,7 +310,7 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
 
 DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRing() {
   using namespace mtl;
-  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), "Sharp");
+  DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), name + "Sharp");
   DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
  
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");

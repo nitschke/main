@@ -1,0 +1,29 @@
+dimension of world:      3
+
+torusMesh->macro file name:       ./macro/torus10k_improved.3d
+%torusFlavors: (1, 2, 5, 10, 25, 50, 100, 250)k
+torusMesh->global refinements:    0
+torusMesh->check:                 0
+
+torus->mesh:                    torusMesh
+torus->dim:                     2
+torus->polynomial degree[0]:    1
+torus->components:              3
+
+torus->solver:                bicgstab_ell %tfqmr %bicgstab_ell
+torus->solver->ell:           2
+torus->solver->max iteration: 1000
+torus->solver->info:          8
+torus->solver->tolerance:     1.e-10
+torus->solver->left precon:   no
+
+torus->adapt->start time:      0.0
+torus->adapt->end time:        10.0
+torus->adapt->timestep:        0.1
+
+torus->output->filename:         output/torus
+torus->output->ParaView animation:   1
+torus->output->edgeForms sharp:        1 
+torus->output->edgeForms flat:        1 
+
+torus->output->write every i-th timestep:   1

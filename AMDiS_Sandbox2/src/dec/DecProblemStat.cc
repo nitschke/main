@@ -202,6 +202,8 @@ void DecProblemStat::solve() {
   using namespace itl;
   FUNCNAME("DecProblemStat::solve()");
 
+  TEST_EXIT(n > 0)("System is not assembled");
+
   if (!fullSolution) fullSolution = new DenseVector(n);
 
   MSG("Solve system ... (with %s)\n", solver.getSolverName().c_str());

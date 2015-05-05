@@ -126,6 +126,15 @@ public:
     return *this;
   }
 
+  DofEdgeVector& operator*=(const double& c) {
+    //TODO: test exits
+    vector<double>::iterator rvalIter = edgeVals.begin();
+    for (;rvalIter != edgeVals.end() ; ++rvalIter) {
+      (*rvalIter) *= c;
+    }
+    return *this;
+  }
+
   inline double& operator[](DegreeOfFreedom dof) 
   {
     //TODO: test exits
@@ -174,6 +183,10 @@ inline DofEdgeVector operator+(DofEdgeVector a, const DofEdgeVector& b) {
 
 inline DofEdgeVector operator-(DofEdgeVector a, const DofEdgeVector& b) {
   return a -= b;
+}
+
+inline DofEdgeVector operator*(const double& c, DofEdgeVector a) {
+  return a *= c;
 }
 
 }}

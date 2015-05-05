@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 2.8)
 
 #set(CMAKE_MODULE_PATH /home/ingo/Software/Snapshots/2015-02-19/AMDiS/sequentiell/share/amdis/)
 
-#set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-02-19/AMDiS/sequentiell/share/amdis/)
+set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-02-19/AMDiS/sequentiell/share/amdis/)
 #zuhause
-set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-03-06/AMDiS/sequentiell/share/amdis/)
+#set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-03-06/AMDiS/sequentiell/share/amdis/)
 
 find_package(AMDIS REQUIRED COMPONENTS umfpack )
 #find_package(AMDIS REQUIRED)
@@ -39,3 +39,9 @@ target_link_libraries(sphereDeRhamDiffusion ${BASIS_LIBS} dec)
 
 add_executable(deRhamDecompSphere src/deRhamDecompSphere.cc)
 target_link_libraries(deRhamDecompSphere ${BASIS_LIBS} dec)
+
+add_executable(deRhamDecompTorus src/deRhamDecompTorus.cc)
+target_link_libraries(deRhamDecompTorus ${BASIS_LIBS} dec)
+
+add_executable(hodgeDeRhamDecompTorus src/HodgeDeRhamDecompTorus.cc)
+target_link_libraries(hodgeDeRhamDecompTorus ${BASIS_LIBS} dec)

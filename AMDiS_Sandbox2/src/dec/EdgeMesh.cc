@@ -88,7 +88,7 @@ EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
     }
   }
 
-  MSG("done (needed %.5f seconds)\n", t.elapsed());
+  MSG("done (%d Edges; needed %.5f seconds)\n", nEdges, t.elapsed());
 }
 
 DOFVector< list<EdgeElement> > EdgeMesh::getEdgeRings() const {
