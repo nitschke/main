@@ -95,3 +95,60 @@ edgeRowValMapper LaplaceCoBeltramiAtEdges::evalRow(const EdgeElement &eel, doubl
 
   return rowMapper;
 }
+
+edgeRowValMapper NormOfEdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  double f = fac * factor;
+
+  ElVolumesInfo2d *infoL = eel.infoLeft;
+  ElVolumesInfo2d *infoR = eel.infoRight;
+
+  double detL = infoL->getElInfo()->getDet();
+  double detR = infoR->getElInfo()->getDet();
+  double det2InvL = 1.0 / (detL * detL);
+  double det2InvR = 1.0 / (detR * detR);
+
+  double edgeVal = (*evec)[eel];
+
+  WorldVector<double> edge = infoL->getEdge(eel.dofEdge);
+
+  EdgeElement *eelAdj;
+  WorldVector<double> edgeAdj;
+  WorldVector<double> evalVec;
+
+  // left first
+  eelAdj = eel.edgesLeft.first;
+  edgeAdj = infoL->getEdge(eelAdj->dofEdge);
+  evalVec = edgeVal * edgeAdj - (*evec)[eelAdj] * edge;
+  double scaleL1 = infoL->getDualVertexVol_global(eel.dofEdge.first);
+  double norm2L1 = det2InvL * (evalVec * evalVec);
+
+  // left second
+  eelAdj = eel.edgesLeft.second;
+  edgeAdj = infoL->getEdge(eelAdj->dofEdge);
+  evalVec = edgeVal * edgeAdj - (*evec)[eelAdj] * edge;
+  double scaleL2 = infoL->getDualVertexVol_global(eel.dofEdge.second);
+  double norm2L2 = det2InvL * (evalVec * evalVec);
+ 
+
+  // right first
+  eelAdj = eel.edgesRight.first;
+  edgeAdj = infoR->getEdge(eelAdj->dofEdge);
+  evalVec = edgeVal * edgeAdj - (*evec)[eelAdj] * edge;
+  double scaleR1 = infoR->getDualVertexVol_global(eel.dofEdge.first);
+  double norm2R1 = det2InvR * (evalVec * evalVec);
+
+  // right second
+  eelAdj = eel.edgesRight.second;
+  edgeAdj = infoR->getEdge(eelAdj->dofEdge);
+  evalVec = edgeVal * edgeAdj - (*evec)[eelAdj] * edge;
+  double scaleR2 = infoR->getDualVertexVol_global(eel.dofEdge.second);
+  double norm2R2 = det2InvR * (evalVec * evalVec);
+
+  //averaging
+  rowMapper[eel.edgeDof] = f * sqrt((scaleL1*norm2L1 + scaleL2*norm2L2 + scaleR1*norm2R1 + scaleR2*norm2R2) 
+                              / (scaleL1 + scaleL2 + scaleR1 + scaleR2));
+
+  return rowMapper;
+}
+

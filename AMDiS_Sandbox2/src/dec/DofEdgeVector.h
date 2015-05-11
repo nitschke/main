@@ -106,6 +106,8 @@ public:
     return errVec.absMax();
   }
 
+  
+
   DofEdgeVector& operator+=(const DofEdgeVector& a) {
     //TODO: test exits
     vector<double>::const_iterator aIter = a.getEdgeVector()->begin();
@@ -145,6 +147,12 @@ public:
   {
     //TODO: test exits
     return edgeVals[eel.edgeDof];
+  }
+
+  inline double& operator[](EdgeElement *eel) 
+  {
+    //TODO: test exits
+    return edgeVals[eel->edgeDof];
   }
 
 

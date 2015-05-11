@@ -73,8 +73,9 @@ double ElVolumesInfo2d::getAngle(int i) {
    return asin(getSin(i));
 }
 
-double ElVolumesInfo2d::getSin(int i) {
+double ElVolumesInfo2d::getSin(int i) const {
   double len1 = getOppEdgeLen((i+1)%3);
   double len2 = getOppEdgeLen((i+2)%3);
   return 0.5 * elInfo->getDet() / (len1 * len2);
 }
+

@@ -51,6 +51,8 @@ void DecProblemInstat::closeTimestep() {
 void DecProblemInstat::oneIteration() {
   initTimestep();
   statProb->assembleSystem();
+  //cout << statProb->getSysMat() << endl;
+  //cout << statProb->getRhs() << endl;
   statProb->solve();
   closeTimestep();
 }

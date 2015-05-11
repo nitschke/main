@@ -45,3 +45,6 @@ target_link_libraries(deRhamDecompTorus ${BASIS_LIBS} dec)
 
 add_executable(hodgeDeRhamDecompTorus src/HodgeDeRhamDecompTorus.cc)
 target_link_libraries(hodgeDeRhamDecompTorus ${BASIS_LIBS} dec)
+
+add_executable(normSphere src/NormSphere.cc)
+target_link_libraries(normSphere ${BASIS_LIBS} dec)

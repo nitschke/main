@@ -26,12 +26,16 @@ class ElVolumesInfo2d {
     double getAngle(int i);
 
     // Sin(Angle) on vertex
-    double getSin(int i);
+    double getSin(int i) const;
 
     int getLocal(DegreeOfFreedom dof) const {
       std::map<DegreeOfFreedom, int>::const_iterator it = dofToLocal.find(dof);
       TEST_EXIT(it != dofToLocal.end())("ElVolumesInfo2d::getLocal: Element dont contain this global DOF!");
       return it->second;
+    }
+
+    WorldVector<double> getEdge(DofEdge dofEdge) {
+      return elInfo->getCoord(getLocal(dofEdge.second)) - elInfo->getCoord(getLocal(dofEdge.first));
     }
 
     int getOppVertexLocal(DofEdge dofEdge) const {
@@ -49,6 +53,11 @@ class ElVolumesInfo2d {
     double getDualVertexVol_global(DegreeOfFreedom dof) const {
       return getDualVertexVol(getLocal(dof));
     }
+
+    double getSin_global(DegreeOfFreedom dof) const {
+      return getSin(getLocal(dof));
+    }
+
 
 
   protected:

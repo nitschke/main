@@ -32,7 +32,7 @@ private:
 };
 
 
-// < 1 , edge >
+// < alpha , edge >
 class  IdentityAtEdges: public EdgeOperatorTerm {
 public:
   IdentityAtEdges(double f = 1.0) 
@@ -69,6 +69,19 @@ public:
 
 private:
   double fac;
+};
+
+// < ||alpha||, edge >; averaging over all linear local spaces Span{edge, adjacent-edge} 
+class  NormOfEdgeVecAtEdges: public EdgeOperatorTerm {
+public:
+  NormOfEdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), fac(f), evec(edgeVector) {};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+  DofEdgeVector *evec;
 };
 
 

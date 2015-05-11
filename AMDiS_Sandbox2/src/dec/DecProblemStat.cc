@@ -204,7 +204,7 @@ void DecProblemStat::solve() {
 
   TEST_EXIT(n > 0)("System is not assembled");
 
-  if (!fullSolution) fullSolution = new DenseVector(n);
+  if (!fullSolution) fullSolution = new DenseVector(n, 0.0);
 
   MSG("Solve system ... (with %s)\n", solver.getSolverName().c_str());
   Timer t;
