@@ -226,8 +226,8 @@ void DecProblemStat::writeSolution(string nameAddition) {
             DofEdgeVector soli = getSolution(i);
             if (writeFlats) soli.writeFile(bni + nameAddition + ".vtu");
             if (writeSharps) {
-              DOFVector< WorldVector<double> > soliSharp = soli.getSharpFaceAverage();
-              io::VtkVectorWriter::writeFile(soliSharp, bni + "Sharp" + nameAddition + ".vtu");
+              string fn = bni + "Sharp" + nameAddition + ".vtu";
+              soli.writeSharpFile(fn, ps);
             }
           }
           break;
@@ -259,8 +259,7 @@ void DecProblemStat::writeSolution(double time, string nameAddition) {
             }
             if (writeSharps) {
               string fn = bni + "Sharp" + nameAddition + ".vtu";
-              DOFVector< WorldVector<double> > soliSharp = soli.getSharpFaceAverage();
-              io::VtkVectorWriter::writeFile(soliSharp, fn);
+              soli.writeSharpFile(fn, ps);
               (*animWriterSharp)[i]->updateAnimationFile(time, fn);
             }
           }

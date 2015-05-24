@@ -9,8 +9,9 @@ using namespace dec;
 
 edgeRowValMapper EdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
   edgeRowValMapper rowMapper;
-  DegreeOfFreedom edof = eel.edgeDof;
-  rowMapper[edof] = fac * factor * (*evec)[edof];
+  double f = fac * factor;
+  double val = (*evec)[eel.edgeDof];
+  rowMapper[eel.edgeDof] = f * ((func) ? (*func)(val) : val);
   return rowMapper;
 }
 
@@ -96,7 +97,7 @@ edgeRowValMapper LaplaceCoBeltramiAtEdges::evalRow(const EdgeElement &eel, doubl
   return rowMapper;
 }
 
-edgeRowValMapper NormOfEdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
+edgeRowValMapper NormSquaredEdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
   edgeRowValMapper rowMapper;
   double f = fac * factor;
 
@@ -146,8 +147,9 @@ edgeRowValMapper NormOfEdgeVecAtEdges::evalRow(const EdgeElement &eel, double fa
   double norm2R2 = det2InvR * (evalVec * evalVec);
 
   //averaging
-  rowMapper[eel.edgeDof] = f * sqrt((scaleL1*norm2L1 + scaleL2*norm2L2 + scaleR1*norm2R1 + scaleR2*norm2R2) 
-                              / (scaleL1 + scaleL2 + scaleR1 + scaleR2));
+  double rval = (scaleL1*norm2L1 + scaleL2*norm2L2 + scaleR1*norm2R1 + scaleR2*norm2R2) 
+                              / (scaleL1 + scaleL2 + scaleR1 + scaleR2);
+  rowMapper[eel.edgeDof] = f * ((func) ? (*func)(rval) : rval);
 
   return rowMapper;
 }

@@ -9,6 +9,93 @@ using namespace dec;
 // ===== function definitions ================================================
 // ===========================================================================
 
+class Noise_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Noise_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {
+    srand(42);
+  }
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return myrand();
+  }
+
+private:
+  inline double myrand() const{
+    return 2.0 * ((double)rand()) / RAND_MAX - 1.0;
+  }
+};
+
+
+
+class Noise : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Noise() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {
+    srand(42);
+  }
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& x, const WorldVector<double>& vec) const 
+  {
+    WorldVector<double> nv; // noise vector
+    nv[0] = myrand();
+    nv[1] = myrand();
+    nv[2] = myrand();
+    nv *= 1.0 / sqrt(nv*nv);
+    return nv * vec;
+  }
+
+private:
+  inline double myrand() const{
+    return 2.0 * ((double)rand()) / RAND_MAX - 1.0;
+  }
+};
+
+class NoiseVec : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  NoiseVec() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {
+    srand(42);
+  }
+
+  /// Implementation of AbstractFunction::operator().
+  WorldVector<double> operator()(const WorldVector<double>& x) const 
+  {
+    WorldVector<double> nv; // noise vector
+    nv[0] = myrand();
+    nv[1] = myrand();
+    nv[2] = myrand();
+    nv *= 1.0 / sqrt(nv*nv);
+    return nv;
+  }
+
+private:
+  inline double myrand() const{
+    return 2.0 * ((double)rand()) / RAND_MAX - 1.0;
+  }
+};
+
+class OneVec : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  OneVec() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  WorldVector<double> operator()(const WorldVector<double>& x) const 
+  {
+    WorldVector<double> nv; 
+    nv[0] = 1.0;
+    nv[1] = 0.0;
+    nv[2] = 0.0;
+    //nv *= 1.0 / sqrt(nv*nv);
+    return nv;
+  }
+
+};
+
 // 1-form -> Rot(z)
 class Alpha : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
@@ -226,6 +313,15 @@ class JProj : public AbstractFunction<WorldMatrix<double>, WorldVector<double> >
 
 };
 
+class SqrRoot : public AbstractFunction<double,double> {
+  public:
+  SqrRoot() : AbstractFunction<double,double>() {}
+
+  double operator()(const double &c) const {
+    return sqrt(c);
+  }
+};
+
 
 
 
@@ -250,26 +346,11 @@ int main(int argc, char* argv[])
 
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
   
-  DofEdgeVector alpha(edgeMesh, "alpha");
-  alpha.set(new Alpha_d());
-
-  //DofEdgeVector lb_alpha(edgeMesh, "lb_alpha");
-  //alpha.set(new LbAlpha_d());
-  //alpha.writeFile("output/lbalpha.vtu");
-
-
-  DofEdgeVector dxyz(edgeMesh, "dxyz");
-  dxyz.set(new DXYZ_d());
-
-  //DofEdgeVector lcb_dxyz(edgeMesh, "lcb_dxyz");
-  //lcb_dxyz.set(new LcbDXYZ_d());
-  //lcb_dxyz.writeFile("output/lcbdxyz.vtu");
-
-  DofEdgeVector initSol = alpha; //dxyz + alpha;
-  initSol.setName("initSol");
-  initSol.writeFile("output/initSol.vtu");
-  DOFVector< WorldVector<double> > initSolSharp = initSol.getSharpFaceAverage();
-  io::VtkVectorWriter::writeFile(initSolSharp, "output/initSolSharp.vtu");
+  DofEdgeVectorPD initSol(edgeMesh, "initSol");
+  initSol.set(new Noise_d(), new Noise_d());
+  //initSol.normalize();
+  //initSol.interpol(new DXYZ());
+  initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 
 
   DecProblemStat decSphere(&sphere, edgeMesh);
@@ -277,26 +358,27 @@ int main(int argc, char* argv[])
   DecProblemInstat sphereInstat(&decSphere);
 
   EdgeOperator NormAlpha;
-  NormAlpha.addTerm(new NormOfEdgeVecAtEdges(&initSol));
+  DofEdgeVector norms = initSol.getNormOnEdges();
+  NormAlpha.addTerm(new EdgeVecAtEdges(&norms));
   decSphere.addMatrixOperator(NormAlpha, 0, 0);
+  decSphere.addMatrixOperator(NormAlpha, 1, 1);
 
-  EdgeOperator Rhs;
-  Rhs.addTerm(new EdgeVecAtEdges(&initSol));
-  decSphere.addVectorOperator(Rhs, 0);
+  EdgeOperator Rhs0;
+  Rhs0.addTerm(new EdgeVecAtEdges(&initSol));
+  decSphere.addVectorOperator(Rhs0, 0);
 
-  //EdgeOperator Dt;
-  //Dt.addTerm(new IdentityAtEdges());
-  //Dt.setUhOld(initSol);
-  //decSphere.addMatrixOperator(Dt, 0, 0, sphereInstat.getInvTauPtr());
-  //decSphere.addVectorOperator(Dt, 0, sphereInstat.getInvTauPtr());
-
+  EdgeOperator Rhs1;
+  DofEdgeVector duals = initSol.getDual();
+  Rhs1.addTerm(new EdgeVecAtEdges(&duals));
+  decSphere.addVectorOperator(Rhs1, 1);
 
   decSphere.assembleSystem();
   //cout << decSphere.getSysMat() << endl;
   //cout << decSphere.getRhs() << endl;
   decSphere.solve();
-  decSphere.writeSolution();
-
+  //decSphere.writeSolution();
+  DofEdgeVectorPD solution(decSphere.getSolution(0), decSphere.getSolution(1));
+  solution.writeSharpOnEdgesFile("output/solution.vtu");
 
   //sphereInstat.solve();
 

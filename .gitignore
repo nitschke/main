@@ -1,7 +1,7 @@
 ## no exes and bibs
 #**
 #!**.*
-#*.so
+*.so
 
 # vim
 *.swp
@@ -10,6 +10,7 @@
 **CMakeFiles/
 *CMakeCache.txt
 **output/
+**output*/
 **macro/
 **output.save/
 *Makefile

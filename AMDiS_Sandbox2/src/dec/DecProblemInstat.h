@@ -13,13 +13,13 @@ public:
 
   DecProblemInstat(DecProblemStat *probStat, DecProblemStat *initStatProb = NULL);
 
-  void oneIteration();
+  virtual void oneIteration();
 
   void solve();
 
-  void initTimestep();
+  virtual void initTimestep();
 
-  void closeTimestep();
+  virtual void closeTimestep();
 
   double *getTimePtr() {
     return &t;
@@ -41,6 +41,8 @@ private:
 
 void updateUhOlds();
 void updateUhOlds_EdgeOperators(list<DecOperator*> &ops, int i);
+
+protected:
 
 DecProblemStat *statProb;
 DecProblemStat *initProb;

@@ -22,6 +22,10 @@ public:
     return ps;
   }
 
+  string getName() {
+    return ps->getName();
+  }
+
   void addMatrixOperator(DecOperator *op, int row, int col, double *factor = NULL);
   void addMatrixOperator(DecOperator &op, int row, int col, double *factor = NULL) {
     addMatrixOperator(&op, row, col, factor);

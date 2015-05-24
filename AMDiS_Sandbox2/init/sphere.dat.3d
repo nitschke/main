@@ -1,29 +1,33 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphereIko250k.3d
+sphereMesh->macro file name:       ./macro/sphereIko5k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 sphereMesh->global refinements:    0
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              1 %3
+sphere->components:              2 %3
 
 sphere->solver:                tfqmr %bicgstab_ell
 sphere->solver->ell:           2
-sphere->solver->max iteration: 1000
+sphere->solver->max iteration: 5000
 sphere->solver->info:          8
 sphere->solver->tolerance:     1.e-10
 sphere->solver->left precon:   no
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        1.0
-sphere->adapt->timestep:        0.01
+sphere->adapt->end time:        20.0
+sphere->adapt->timestep:        0.001
 
 sphere->output->filename:         output/sphere
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
+sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
 sphere->output->edgeForms flat:        1 
 
-sphere->output->write every i-th timestep:   1
+sphere->output->write every i-th timestep:   10
+
+userParameter->K0: 1.0
+userParameter->Kn: 100.0

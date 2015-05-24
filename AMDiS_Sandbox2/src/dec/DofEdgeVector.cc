@@ -355,7 +355,17 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRing() {
   return sharp;
 }
 
-
+DOFVector< WorldVector<double> > DofEdgeVector::getSharp(ProblemStat *ps) {
+  FUNCNAME("DofEdgeVector::getSharp");
+  unsigned int type = 1;
+  Parameters::get(ps->getName() + "->output->sharpType", type);
+  TEST_EXIT(type > 0 && type < 4)("invalide sharpType");
+  switch (type) {
+    case 1 : return getSharpFaceAverage();
+    case 2 : return getSharpEdgeRingLinMod();
+    case 3 : return getSharpHirani();
+  }
+}
 
 map<int, std::vector<double> > DofEdgeVector::getSharpOnFaces() {
   map<int, std::vector<double> > sharp;
@@ -491,6 +501,41 @@ DofEdgeVector DofEdgeVector::laplaceCoBeltrami() {
   return lCB;
 }
 
+DOFVector<double> DofEdgeVector::divergence() {
+  DOFVector<double> div(edgeMesh->getFeSpace(), name + "Div");
+  div.set(0.0);
+  
+  // voronoi areas on vertices
+  DOFVector<double> vvol(edgeMesh->getFeSpace(), "vvol");
+  vvol.set(0.0);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::const_iterator valIter = edgeVals.begin();
+  for (; edgeIter !=  edgeMesh->getEdges()->end(); ++edgeIter, ++valIter) {
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    double lenD = edgeIter->infoLeft->getDualEdgeLen(edgeIter->dofEdge)
+                + edgeIter->infoRight->getDualEdgeLen(edgeIter->dofEdge);
+    double divval = (lenD / lenP) * (*valIter);
+    DegreeOfFreedom dof1 = edgeIter->dofEdge.first;
+    DegreeOfFreedom dof2 = edgeIter->dofEdge.second;
+    div[dof1] += divval;
+    div[dof2] -= divval;
+
+    // this ensure that we not doubled the local voronoi areas
+    vvol[dof1] += edgeIter->infoLeft->getDualVertexVol_global(dof1);
+    vvol[dof2] += edgeIter->infoRight->getDualVertexVol_global(dof2);
+  }
+
+  // scaling with precalculated voronoi areas
+  DOFVector<double>::Iterator divIter(const_cast<DOFVector<double>*>(&div), USED_DOFS);
+  DOFVector<double>::Iterator vvolIter(const_cast<DOFVector<double>*>(&vvol), USED_DOFS);
+  for (divIter.reset(), vvolIter.reset(); !divIter.end(); ++divIter, ++vvolIter) {
+    (*divIter) /= (*vvolIter);
+  }
+
+  return div;
+}
+
 
 void DofEdgeVector::writeFile(string name) const {
     boost::iostreams::filtering_ostream file;
@@ -538,6 +583,164 @@ void DofEdgeVector::writeFile(string name) const {
     vector<double>::const_iterator valIter = edgeVals.begin();
     for (; valIter != edgeVals.end() ; ++valIter) {
       file << (*valIter) << endl;
+    }
+  file << "        </DataArray>\n";
+  file << "      </CellData>\n";
+	file << "    </Piece>\n";
+	file << "  </UnstructuredGrid>\n";
+	file << "</VTKFile>\n";
+
+}
+
+
+
+
+
+void DofEdgeVectorPD::interpol(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha) {
+  DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+  edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIterP = edgeVals.begin();
+  vector<double>::iterator valIterD = edgeDualVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end() || valIterP != edgeVals.end() || valIterD != edgeDualVals.end() ; 
+                ++edgeIter, ++valIterP, ++valIterD) {
+    WorldVector<double> p = coords[edgeIter->dofEdge.first];
+    WorldVector<double> q = coords[edgeIter->dofEdge.second];
+    WorldVector<double> ce = 0.5 * (p + q); // circumcenter of the primal edge
+    WorldVector<double> e = q - p; // primal edge = q - p
+    // set primal val
+    (*valIterP) = (*alpha)(ce, e);
+    
+    double lenP = sqrt(e*e); // length of primal edge 
+    p = edgeIter->infoRight->getCircumcenter();
+    q = edgeIter->infoLeft->getCircumcenter();
+    e = q - p; // dual edge
+    double lenD = sqrt(e*e); // length of dual edge
+    // use the identity <*alpha, primal edge> = - (lenP / lenD) <alpha, dual edge>
+    (*valIterD) = - lenP * (*alpha)(ce, e) / lenD;
+  }
+}
+
+void DofEdgeVectorPD::interpol(AbstractFunction<WorldVector<double>, WorldVector<double> > *vec) {
+  DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+  edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIterP = edgeVals.begin();
+  vector<double>::iterator valIterD = edgeDualVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end() || valIterP != edgeVals.end() || valIterD != edgeDualVals.end() ; 
+                ++edgeIter, ++valIterP, ++valIterD) {
+    WorldVector<double> p = coords[edgeIter->dofEdge.first];
+    WorldVector<double> q = coords[edgeIter->dofEdge.second];
+    WorldVector<double> ce = 0.5 * (p + q); // circumcenter of the primal edge
+    WorldVector<double> vecval = (*vec)(ce);
+    WorldVector<double> e = q - p; // primal edge = q - p
+    // set primal val
+    (*valIterP) = vecval * e;
+    
+    double lenP = sqrt(e*e); // length of primal edge 
+    p = edgeIter->infoRight->getCircumcenter();
+    q = edgeIter->infoLeft->getCircumcenter();
+    e = q - p; // dual edge
+    double lenD = sqrt(e*e); // length of dual edge
+    // use the identity <*alpha, primal edge> = - (lenP / lenD) <alpha, dual edge>
+    (*valIterD) = - lenP * (vecval * e) / lenD;
+  }
+}
+
+void DofEdgeVectorPD::normalize() {
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIterP = edgeVals.begin();
+  vector<double>::iterator valIterD = edgeDualVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD) {
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    double normInv = lenP / sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD));
+    (*valIterP) *= normInv;
+    (*valIterD) *= normInv;
+  }
+}
+
+DofEdgeVector DofEdgeVectorPD::getNormOnEdges() const{
+  DofEdgeVector norms(edgeMesh, name + "Magnitude");
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::const_iterator valIterP = edgeVals.begin();
+  vector<double>::const_iterator valIterD = edgeDualVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD) {
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    norms[edgeIter->edgeDof] = sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / lenP;
+  }
+
+  return norms;
+}
+
+vector<WorldVector<double> > DofEdgeVectorPD::getSharpVecOnEdges() {
+  vector<WorldVector<double> > sharp(edgeMesh->getNumberOfEdges());
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIterP = edgeVals.begin();
+  vector<double>::iterator valIterD = edgeDualVals.begin();
+  vector<WorldVector<double> >::iterator sharpIter = sharp.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD, ++sharpIter) {
+    DofEdge dofe = edgeIter->dofEdge;
+    double lenP = edgeIter->infoLeft->getEdgeLen(dofe);
+    double lenD = edgeIter->infoLeft->getDualEdgeLen(dofe) + edgeIter->infoRight->getDualEdgeLen(dofe);
+    WorldVector<double> eP = edgeIter->infoLeft->getEdge(dofe);
+    WorldVector<double> eD = edgeIter->infoLeft->getCircumcenter() - edgeIter->infoRight->getCircumcenter();
+    (*sharpIter) = (1.0 / lenP) * ( ((*valIterP) / lenP) * eP - ((*valIterD) / lenD) * eD);
+  }
+
+  return sharp;
+}
+
+void DofEdgeVectorPD::writeSharpOnEdgesFile(string name) {
+    boost::iostreams::filtering_ostream file;
+    file.push(boost::iostreams::file_descriptor_sink(name, std::ios::trunc));
+  file << "<?xml version=\"1.0\"?>\n";
+	file << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">\n";
+	file << "  <UnstructuredGrid>\n";
+	file << "    <Piece NumberOfPoints=\"" << edgeMesh->getFeSpace()->getMesh()->getNumberOfVertices()
+	     << "\" NumberOfCells=\"" << edgeVals.size() << "\">\n";
+	file << "      <Points>\n";
+	file << "        <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">\n";
+
+    DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+    edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+    DOFAdmin *admin = edgeMesh->getFeSpace()->getAdmin();
+    for (DegreeOfFreedom dof = 0; dof < coords.getSize() ; dof++) {
+      if (!admin->isDofFree(dof)) {
+        file << coords[dof] << endl;
+      }
+    }
+  file << "        </DataArray>\n";
+	file << "      </Points>\n";
+	file << "      <Cells>\n";
+	file << "        <DataArray type=\"Int32\" Name=\"offsets\">\n";
+    for (int i = 1; i <= edgeVals.size(); ++i) {
+      file << (i *  2) << endl;
+    }
+  file << "        </DataArray>\n";
+	file << "        <DataArray type=\"UInt8\" Name=\"types\">\n";
+    for (int i = 1; i <= edgeVals.size(); ++i) {
+      file << 3 << endl;
+    }
+  file << "        </DataArray>\n";
+	file << "        <DataArray type=\"Int32\" Name=\"connectivity\">\n";
+    vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+    for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+      file << edgeIter->dofEdge.first << " " << edgeIter->dofEdge.second << endl;
+    }
+  file << "        </DataArray>\n";    
+	file << "      </Cells>\n";
+	file << "      <CellData>\n";
+  file << "        <DataArray type=\"Float32\" NumberOfComponents=\"3\" Name=\""
+	     << this->name
+	     << "\" format=\"ascii\">\n";
+    vector<WorldVector<double> > sharp = getSharpVecOnEdges();
+    vector<WorldVector<double> >::iterator sharpIter = sharp.begin();
+    for (; sharpIter != sharp.end() ; ++sharpIter) {
+      file << (*sharpIter) << endl;
     }
   file << "        </DataArray>\n";
   file << "      </CellData>\n";

@@ -21,14 +21,17 @@ public:
 // < alpha, edge >
 class  EdgeVecAtEdges: public EdgeOperatorTerm {
 public:
-  EdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f) {};
+  EdgeVecAtEdges(DofEdgeVector *edgeVector, 
+                 AbstractFunction<double,double> *function = NULL, 
+                 double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(function) {};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
 private:
   DofEdgeVector *evec;
   double fac;
+  AbstractFunction<double,double> *func;
 };
 
 
@@ -71,17 +74,20 @@ private:
   double fac;
 };
 
-// < ||alpha||, edge >; averaging over all linear local spaces Span{edge, adjacent-edge} 
-class  NormOfEdgeVecAtEdges: public EdgeOperatorTerm {
+// < f(||alpha||), edge >; averaging over all linear local spaces Span{edge, adjacent-edge} 
+class  NormSquaredEdgeVecAtEdges: public EdgeOperatorTerm {
 public:
-  NormOfEdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), fac(f), evec(edgeVector) {};
+  NormSquaredEdgeVecAtEdges(DofEdgeVector *edgeVector, 
+                            AbstractFunction<double,double> *function = NULL, 
+                            double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), fac(f), evec(edgeVector), func(function) {};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
 private:
   double fac;
   DofEdgeVector *evec;
+  AbstractFunction<double,double> *func;
 };
 
 
