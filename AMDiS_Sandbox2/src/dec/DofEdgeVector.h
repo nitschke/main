@@ -132,6 +132,13 @@ public:
     return norm2;
   }
 
+  void evalFunction(AbstractFunction<double,double> *fun) {
+    vector<double>::iterator valIter = edgeVals.begin();
+    for (; valIter != edgeVals.end(); ++valIter) {
+      *valIter = (*fun)(*valIter);
+    }
+  }
+
   DofEdgeVector& operator+=(const DofEdgeVector& a) {
     //TODO: test exits
     vector<double>::const_iterator aIter = a.getEdgeVector()->begin();
@@ -187,6 +194,12 @@ public:
   }
 
   inline double& operator[](const EdgeElement &eel) 
+  {
+    //TODO: test exits
+    return edgeVals[eel.edgeDof];
+  }
+
+  inline double const& operator[](const EdgeElement &eel) const
   {
     //TODO: test exits
     return edgeVals[eel.edgeDof];

@@ -1,7 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+sphereMesh->macro file name:       ./macro/sphereIko250k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 sphereMesh->global refinements:    0
 
@@ -18,16 +18,18 @@ sphere->solver->tolerance:     1.e-10
 sphere->solver->left precon:   no
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        20.0
-sphere->adapt->timestep:        0.001
+sphere->adapt->end time:        5.0
+sphere->adapt->timestep:        0.0001
 
-sphere->output->filename:         output/sphere
+sphere->output->filename:         Michael250kKn1000tauE4/sphere
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
 sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
 sphere->output->edgeForms flat:        1 
 
-sphere->output->write every i-th timestep:   10
+sphere->output->write every i-th timestep:   100
 
 userParameter->K0: 1.0
-userParameter->Kn: 100.0
+userParameter->K1: 1.0  % minimize div
+userParameter->K3: 1.0  % minimize rot
+userParameter->Kn: 1000.0 % minimize norm^2 - 1

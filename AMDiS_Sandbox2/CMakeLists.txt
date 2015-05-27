@@ -49,5 +49,8 @@ target_link_libraries(hodgeDeRhamDecompTorus ${BASIS_LIBS} dec)
 add_executable(normSphere src/NormSphere.cc)
 target_link_libraries(normSphere ${BASIS_LIBS} dec)
 
+add_executable(energySphere src/EnergySphere.cc)
+target_link_libraries(energySphere ${BASIS_LIBS} dec)
+
 add_executable(directorFieldSphere src/directorFieldSphere.cc)
 target_link_libraries(directorFieldSphere ${BASIS_LIBS} dec)

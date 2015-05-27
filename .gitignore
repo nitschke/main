@@ -11,11 +11,13 @@
 *CMakeCache.txt
 **output/
 **output*/
+**Michael*Kn*/
 **macro/
 **output.save/
 *Makefile
 *.cmake
 *.csv
+*.vtu
 
 # latex stuff
 *.aux
