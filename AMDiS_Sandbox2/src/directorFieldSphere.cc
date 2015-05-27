@@ -269,7 +269,7 @@ int main(int argc, char* argv[])
   //Noise_d noiseFun(43);
   //initSol.set(&noiseFun, &noiseFun);
   initSol.interpol(new Michael(0.01));
-  //initSol.normalize();
+  initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 
   DecProblemStat decSphere(&sphere, edgeMesh);

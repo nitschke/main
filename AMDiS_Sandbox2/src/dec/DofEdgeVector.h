@@ -296,7 +296,7 @@ public:
   void interpol(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha);
   void interpol(AbstractFunction<WorldVector<double>, WorldVector<double> > *vec);
 
-  void normalize();
+  void normalize(double eps = 0.0);
 
   DofEdgeVector getNormOnEdges() const;
 

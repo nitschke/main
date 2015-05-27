@@ -649,13 +649,14 @@ void DofEdgeVectorPD::interpol(AbstractFunction<WorldVector<double>, WorldVector
   }
 }
 
-void DofEdgeVectorPD::normalize() {
+void DofEdgeVectorPD::normalize(double eps) {
   vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
   vector<double>::iterator valIterP = edgeVals.begin();
   vector<double>::iterator valIterD = edgeDualVals.begin();
   for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD) {
     double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
-    double normInv = lenP / sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD));
+    double norm = sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / lenP;
+    double normInv = (norm < eps) ? 0.0 : (1.0/norm);
     (*valIterP) *= normInv;
     (*valIterD) *= normInv;
   }
