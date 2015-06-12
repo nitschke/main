@@ -52,9 +52,9 @@ Inner2::usage = "Contraction of a 2-form";
 
 DotForm1::usage = "Dot product of 1-forms";
 
-L2Prod0::usage = "L2 Product of 0-forms"
-L2Prod1::usage = "L2 Product of 1-forms"
-L2Prod2::usage = "L2 Product of 2-forms"
+L2Prod0::usage = "L2 Product of 0-forms";
+L2Prod1::usage = "L2 Product of 1-forms";
+L2Prod2::usage = "L2 Product of 2-forms";
 
 DoubleDotFormForm11::usage = "Double dot product (:) of 1-forms of 1-forms";
 
@@ -116,13 +116,16 @@ DotForm1[alpha_,beta_,g_] := alpha.Sharp1[beta,g]
 
 L2Prod0[f1_,f2_,ivalx_,ivaly_,g_] := Integrate[f1*Hodge0[f2,g][[1,1]],ivalx,ivaly]
 L2Prod1[alpha_,beta_,ivalx_,ivaly_,g_] := Integrate[Wedge11[alpha,Hodge1[beta,g]][[1,1]],ivalx,ivaly]
-L2Prod2[omega1_,omega2_,ivalx_,ivaly_,g_] := Integrate[Hodge2[omega1,g]*omega2-[[1,1]],ivalx,ivaly]
+L2Prod2[omega1_,omega2_,ivalx_,ivaly_,g_] := Integrate[Hodge2[omega1,g]*omega2[[1,1]],ivalx,ivaly]
 
 DoubleDotFormForm11[sigma_,tau_,g_] := Module[{gInv=Inverse[g]}, Sum[sigma[[i,k]]gInv[[i,l]]gInv[[k,s]]tau[[l,s]],{i,1,2},{k,1,2},{l,1,2},{s,1,2}]]
 
 End[]
 
 EndPackage[]
+
+
+
 
 
 

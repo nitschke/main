@@ -96,6 +96,10 @@ target_link_libraries(weingarten ${BASIS_LIBS} dec)
 add_executable(gaussMean src/gaussMean.cc)
 target_link_libraries(gaussMean ${BASIS_LIBS} dec)
 
+add_executable(dirVecPhi src/dirVecPhi.cc)
+target_link_libraries(dirVecPhi ${BASIS_LIBS} dec)
+
+
 #create the output dir
 #create the output dir
 #file(MAKE_DIRECTORY output)
