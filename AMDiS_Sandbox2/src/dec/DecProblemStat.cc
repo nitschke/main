@@ -55,12 +55,10 @@ void DecProblemStat::addMatrixOperator(DecOperator *op, int row, int col, double
   TEST_EXIT(row < nComponents && col < nComponents)
       ("Cannot add matrix operator at position %d/%d. The stationary problem has only %d components!\n",
        row, col, nComponents);
+  TEST_EXIT(emesh)("No EdgeMesh!");
 
   SpaceType rowType = op->getRowType();
   SpaceType colType = op->getRowType();
-  
-  // if there is no EdgeMesh but needed
-  if ((!emesh) && (rowType == EDGESPACE || colType == EDGESPACE)) emesh = new EdgeMesh(ps->getFeSpace());
   
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
   if (!spaceTypes[col]) spaceTypes[col] = colType; 
@@ -76,11 +74,9 @@ void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor)
   TEST_EXIT(row < nComponents)
       ("Cannot add vector operator at position %d. The stationary problem has only %d components!\n",
        row, nComponents);
+  TEST_EXIT(emesh)("No EdgeMesh!");
 
   SpaceType rowType = op->getRowType();
-  
-  // if there is no EdgeMesh but needed
-  if ((!emesh) && (rowType == EDGESPACE)) emesh = new EdgeMesh(ps->getFeSpace());
   
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
 
@@ -95,18 +91,24 @@ void DecProblemStat::assembleSystem() {
   MSG("Assemble System ... \n");
   Timer t;
 
+  bool vertexMapperInit = false;
   if ( n < 0 ) {   // not precalc 
     n = 0;
     for (int i = 0; i < nComponents; ++i) {
        TEST_EXIT(spaceTypes[i])("Space %d is not set!", i);
        switch (spaceTypes[i]) {
+         case VERTEXSPACE:
+                  if (!vertexMapperInit) initDofVPosMapper();
+                  vertexMapperInit = true;
+                  ns[i] = eMesh->getFeSpace()->getMesh()->getNumberOfVertices();
+                  break;
          case EDGESPACE:
                   ns[i] = emesh->getNumberOfEdges();
-                  n += ns[i]; 
                   break;
          default: 
                   ERROR_EXIT("SpaceType %d is unknown or not implemented", spaceTypes[i]);
        }
+       n += ns[i];
     }
   }
 
@@ -121,6 +123,9 @@ void DecProblemStat::assembleSystem() {
     int ohcol = 0; //overhead
     for( int c = 0; c < nComponents; ++c) {
       switch(spaceTypes[r] + 3*spaceTypes[c]) {
+        case 4: //VERTEXSPACE x VERTEXSPACE
+            assembleMatrixBlock_VertexVertex(matrixOperators[r][c], ohrow, ohcol);
+            break;
         case 8: //EDGESPACE x EDGESPACE
             assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
             break;
@@ -169,6 +174,90 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
   }
 }
 
+inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<DecOperator*> &ops, int ohrow, int ohcol) {
+  typedef typename mtl::Collection<SparseMatrix>::value_type vtype;
+  mtl::matrix::inserter<SparseMatrix, update_plus<vtype> > insSysMat(*sysMat);
+  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+  for (; opIter != ops.end(); ++opIter) {
+    VertexOperator *vop = dynamic_cast<VertexOperator*>(*opIter);
+    double factor = vop->getFactor();
+    list< VertexOperatorTerm* >::const_iterator termIter = vop->begin();
+    for (; termIter != vop->end(); ++termIter) {
+      DOFVector<bool> visited(eMesh->getFeSpace(), "visited");
+      visited = false;
+      vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+      for (; edgeIter != emesh->getEdges()->end(); ++edgeIter) {
+        // first vertex
+        DegreeOfFreedom dof = edgeIter->dofEdge.first;
+        if (!visited[dof]) {
+          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
+          vertexRowValMapper::iterator mapIter = mapper.begin();
+          for (; mapIter != mapper.end(); ++mapIter) {
+            insSysMat[ohrow + dofVPosMapper[dof]][ohcol +  dofVPosMapper[mapIter->first]] << mapIter->second;
+          }
+        }
+        // second vertex
+        dof = edgeIter->dofEdge.second;
+        if (!visited[dof]) {
+          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
+          vertexRowValMapper::iterator mapIter = mapper.begin();
+          for (; mapIter != mapper.end(); ++mapIter) {
+            insSysMat[ohrow + dofVPosMapper[dof]][ohcol +  dofVPosMapper[mapIter->first]] << mapIter->second;
+          }
+        }
+      }
+    }
+  }
+}
+
+//act on uhold if is set in operator
+inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, int ohrow) {
+  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+  for (; opIter != ops.end(); ++opIter) {
+    VertexOperator *vop = dynamic_cast<VertexOperator*>(*opIter);
+    double factor = vop->getFactor();
+    list< VertexOperatorTerm* >::const_iterator termIter = vop->begin();
+    for (; termIter != vop->end(); ++termIter) {
+      DOFVector<bool> visited(eMesh->getFeSpace(), "visited");
+      visited = false;
+      vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+      for (; edgeIter != emesh->getEdges()->end(); ++edgeIter) {
+        // first vertex
+        DegreeOfFreedom dof = edgeIter->dofEdge.first;
+        if (!visited[dof]) {
+          double val = 0.0;
+          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
+          vertexRowValMapper::iterator mapIter = mapper.begin();
+          for (; mapIter != mapper.end(); ++mapIter) {
+            if (vop->uhold) {
+              val += mapIter->second * ((*(vop->uhold))[mapIter->first]);
+            } else {
+              val += mapIter->second;
+            }
+          }
+          (*rhs)[ohrow + dofVPosMapper[dof]] += val
+        }
+        // second vertex
+        dof = edgeIter->dofEdge.second;
+        if (!visited[dof]) {
+          double val = 0.0;
+          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
+          vertexRowValMapper::iterator mapIter = mapper.begin();
+          for (; mapIter != mapper.end(); ++mapIter) {
+            if (vop->uhold) {
+              val += mapIter->second * ((*(vop->uhold))[mapIter->first]);
+            } else {
+              val += mapIter->second;
+            }
+          }
+          (*rhs)[ohrow + dofVPosMapper[dof]] += val
+        }
+      }
+    }
+  }
+}
+
+
 //act on uhold if is set in operator
 inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow) {
   list<DecOperator*>::const_iterator opIter = ops.begin(); 
@@ -194,6 +283,28 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
       }
     }
   }
+}
+
+
+void DecProblemStat::initDofVPosMapper() {
+  FUNCNAME("DecProblemStat::initDofVPosMapper()");
+
+  DOFVector<bool> visited(eMesh->getFeSpace(), "visited");
+  visited = false;
+
+  DegreeOfFreedom dof;
+  vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+  int i = 0
+  for (; edgeIter != emesh->getEdges()->end(); ++i, ++edgeIter) {
+    //first vertex if not visited
+    dof = edgeIter->dofEdge.first;
+    if (!visited[dof]) dofVPosMapper[dof] = i;
+    //second vertex if not visited
+    dof = edgeIter->dofEdge.second;
+    if (!visited[dof]) dofVPosMapper[dof] = i;
+  }
+  int nV = eMesh->getFeSpace()->getMesh()->getNumberOfVertices();
+  TEST_EXIT(i == nV)("something went wrong: %d vertices, but %d used DOFs", nV, i);
 }
 
 

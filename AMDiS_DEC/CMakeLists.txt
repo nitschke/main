@@ -99,6 +99,9 @@ target_link_libraries(gaussMean ${BASIS_LIBS} dec)
 add_executable(dirVecPhi src/dirVecPhi.cc)
 target_link_libraries(dirVecPhi ${BASIS_LIBS} dec)
 
+add_executable(geoPotEllipsoid src/GeoPotEllipsoid.cc)
+target_link_libraries(geoPotEllipsoid ${BASIS_LIBS} dec)
+
 
 #create the output dir
 #create the output dir

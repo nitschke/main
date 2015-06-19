@@ -8,7 +8,7 @@ using namespace std;
 namespace AMDiS { namespace dec {
 
 
-typedef map<DegreeOfFreedom, double> edgeRowValMapper;
+typedef map<DegreeOfFreedom, double> edgeRowValMapper; //edge -> value
 
 class EdgeOperatorTerm : public DecOperatorTerm {
 public:

@@ -24,7 +24,14 @@ public:
     uhold = new DofEdgeVector(oldSolution);
   }
 
-  void addTerm(EdgeOperatorTerm *term);
+  void addTerm(EdgeOperatorTerm *term) {
+    if (!colType) colType = term->getColType();
+    if (colType == term->getColType()) {
+      opTs.push_back(term);
+    } else {
+      ERROR_EXIT("EdgeOperatorTerm--EdgeOperator col space type mismatch!");
+    }
+  }
 
   list< EdgeOperatorTerm* >::const_iterator begin() {return opTs.begin();}
   list< EdgeOperatorTerm* >::const_iterator end() {return opTs.end();}
