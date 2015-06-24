@@ -18,13 +18,16 @@ public:
 };
 
 
-// < alpha, edge >
+// < f(<beta,edge>) * alpha, edge >
 class  EdgeVecAtEdges: public EdgeOperatorTerm {
 public:
   EdgeVecAtEdges(DofEdgeVector *edgeVector, 
                  AbstractFunction<double,double> *function = NULL, 
                  double f = 1.0) 
       : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(function) {};
+
+  EdgeVecAtEdges(DofEdgeVector *edgeVector,  double f = 1.0)
+      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(NULL) {};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
@@ -32,6 +35,23 @@ private:
   DofEdgeVector *evec;
   double fac;
   AbstractFunction<double,double> *func;
+};
+
+// < f(<beta1,edge>, <beta2,edge>, edge) * alpha, edge >
+class  EdgeVec2AndEdgeAtEdges: public EdgeOperatorTerm {
+public:
+  EdgeVec2AndEdgeAtEdges(DofEdgeVector *edgeVector1, DofEdgeVector *edgeVector2,
+                 TertiaryAbstractFunction<double,double,double, EdgeElement> *function, 
+                 double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), evec1(edgeVector1), evec2(edgeVector2), fac(f), func(function) {};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  DofEdgeVector *evec1;
+  DofEdgeVector *evec2;
+  double fac;
+  TertiaryAbstractFunction<double,double,double,EdgeElement> *func;
 };
 
 

@@ -15,5 +15,7 @@
 #include "EdgeOperator.h"
 #include "EdgeOperatorTerm.h"
 #include "ElVolumesInfo2d.h"
+#include "VertexOperator.h"
+#include "VertexOperatorTerm.h"
 
 #endif

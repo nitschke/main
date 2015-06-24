@@ -29,6 +29,7 @@ typedef enum {
  */
 struct EdgeElement {
   DegreeOfFreedom edgeDof; // aka int  -> edge index
+  //TODO: pointer, so that dofCompress is consistent
   DofEdge dofEdge;         // aka pair<int,int> -> (first,second) vertex index
 
   ElVolumesInfo2d *infoLeft;

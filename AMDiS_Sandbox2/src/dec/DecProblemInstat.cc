@@ -1,5 +1,6 @@
 #include "DecProblemInstat.h"
 #include "EdgeOperator.h"
+#include "VertexOperator.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -67,10 +68,14 @@ void DecProblemInstat::solve() {
   while (t <= t1) oneIteration();
 }
 
+//TODO: implement general uhOld-concept
 void DecProblemInstat::updateUhOlds() {
   FUNCNAME("DecProblemInstat::updateUhOlds");
   for (int i = 0; i < statProb->nComponents; i++) {
     switch(statProb->spaceTypes[i]) {
+      case VERTEXSPACE:
+          updateUhOlds_VertexOperators((statProb->vectorOperators)[i], i);
+          break;
       case EDGESPACE:
           updateUhOlds_EdgeOperators((statProb->vectorOperators)[i], i);
           break;
@@ -81,11 +86,27 @@ void DecProblemInstat::updateUhOlds() {
 }
 
 void DecProblemInstat::updateUhOlds_EdgeOperators(list<DecOperator*> &ops, int i) {
+  FUNCNAME("DecProblemInstat::updateUhOlds_EdgeOperators");
   for (list<DecOperator*>::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
     EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
     if (eop->isUhOldSet()) {
-      DofEdgeVector *soli = new DofEdgeVector(statProb->getSolution(i));
+      short rProbNum = i;
+      if (eop->rProbNum > -1) {
+        rProbNum = eop->rProbNum;
+        TEST_EXIT(statProb->spaceTypes[i] == statProb->spaceTypes[rProbNum])("SpaceType mismatch");
+      }
+      DofEdgeVector *soli = new DofEdgeVector(statProb->getSolution(rProbNum));
       eop->setUhOld(soli);
+    }
+  }
+}
+
+void DecProblemInstat::updateUhOlds_VertexOperators(list<DecOperator*> &ops, int i) {
+  for (list<DecOperator*>::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
+    VertexOperator *vop = dynamic_cast<VertexOperator*>(*opIter);
+    if (vop->isUhOldSet()) {
+      DOFVector<double> *soli = new DOFVector<double>(statProb->getVertexSolution(i));
+      vop->setUhOld(soli);
     }
   }
 }

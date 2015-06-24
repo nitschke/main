@@ -11,6 +11,8 @@ EdgeMesh::EdgeMesh(const FiniteElemSpace *feSpace_): feSpace(feSpace_) {
   Flag fillFlags = Mesh::FILL_COORDS | Mesh::FILL_DET | Mesh::FILL_GRD_LAMBDA;
 
   Mesh *mesh = feSpace->getMesh();
+  //TODO: dofCompress in problemstat
+  mesh->dofCompress();
 
   nEdges = mesh->getNumberOfEdges();
 

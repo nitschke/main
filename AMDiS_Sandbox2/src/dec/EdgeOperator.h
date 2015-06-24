@@ -14,14 +14,17 @@ public:
   
   EdgeOperator() : DecOperator(EDGESPACE) {
     uhold = NULL;
+    rProbNum = -1;
   }
 
   bool isUhOldSet() {
     return uhold;
   }
 
-  void setUhOld(const DofEdgeVector &oldSolution) {
+  //TODO: revise the uhOld-concept!
+  void setUhOld(const DofEdgeVector &oldSolution, short rowProblemNumber) {
     uhold = new DofEdgeVector(oldSolution);
+    rProbNum = rowProblemNumber;
   }
 
   void addTerm(EdgeOperatorTerm *term) {
@@ -53,6 +56,7 @@ private:
   list< EdgeOperatorTerm* > opTs;
 
   DofEdgeVector *uhold;
+  short rProbNum;
 
   friend class DecProblemStat;
   friend class DecProblemInstat;

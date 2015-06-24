@@ -176,8 +176,29 @@ public:
   }
 };
 
+// <x*y*z,v> => <LB(x*y*z),v> = -12 * <x*y*z,v>
+class XYZ : public AbstractFunction<double, WorldVector<double> > {
+public:
+  XYZ(double c_) : AbstractFunction<double, WorldVector<double> >() , c(c_) {}
 
+  double operator()(const WorldVector<double> &coords) const {
+    return c * coords[0] * coords[1] * coords[2];
+  }
+private:
+  double c;
+};
 
+// <z,v> => <LB(z),v> = -2 * <z,v>
+class Z : public AbstractFunction<double, WorldVector<double> > {
+public:
+  Z(double c_) : AbstractFunction<double, WorldVector<double> >() , c(c_) {}
+
+  double operator()(const WorldVector<double> &coords) const {
+    return c * coords[2];
+  }
+private:
+  double c;
+};
 
 // e.g. Laplace-Beltrami of exact forms or Laplace-CoBeltrami of co-exact forms
 class Zero : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
@@ -254,22 +275,20 @@ int main(int argc, char* argv[])
   alpha.set(new Alpha_d());
   alpha.writeFile("output/alpha.vtu");
 
-  //DofEdgeVector lb_alpha(edgeMesh, "lb_alpha");
-  //alpha.set(new LbAlpha_d());
-  //alpha.writeFile("output/lbalpha.vtu");
-
 
   DofEdgeVector dxyz(edgeMesh, "dxyz");
   dxyz.set(new DXYZ_d());
   dxyz.writeFile("output/dxyz.vtu");
 
-  //DofEdgeVector lcb_dxyz(edgeMesh, "lcb_dxyz");
-  //lcb_dxyz.set(new LcbDXYZ_d());
-  //lcb_dxyz.writeFile("output/lcbdxyz.vtu");
+  DOFVector<double> xyz(sphere.getFeSpace(),"xyz");
+  xyz.interpol(new XYZ(1.0));
 
+  DOFVector<double> z(sphere.getFeSpace(),"z");
+  z.interpol(new Z(1.0));
 
   DecProblemStat decSphere(&sphere, edgeMesh);
 
+// *** Edge Operators *** //
  // -LaplaceDeRham
   EdgeOperator LaplaceOperator;
   LaplaceOperator.addTerm(new LaplaceBeltramiAtEdges());
@@ -286,6 +305,20 @@ int main(int argc, char* argv[])
   VOperator.addTerm(new EdgeVecAtEdges(&dxyz, -11.0));
   decSphere.addVectorOperator(VOperator, 0);
 
+// *** Vertex Operators *** //
+  VertexOperator LBOperator;
+  LBOperator.addTerm(new LaplaceBeltramiAtVertices());
+  decSphere.addMatrixOperator(LBOperator, 1, 1);
+
+  VertexOperator IVOperator;
+  IVOperator.addTerm(new IdentityAtVertices());
+  decSphere.addMatrixOperator(IVOperator, 1, 1);
+
+  VertexOperator RHSOperator;
+  RHSOperator.addTerm(new VertexVecAtVertices(&xyz, -11.0));
+  RHSOperator.addTerm(new VertexVecAtVertices(&z, -1.0));
+  decSphere.addVectorOperator(RHSOperator, 1);
+
 
 
   decSphere.assembleSystem();
@@ -295,46 +328,11 @@ int main(int argc, char* argv[])
   decSphere.writeSolution();
 
 
-  //SparseMatrix sysMat = decSphere.getSysMat();
-  //cout << sysMat << endl;
-
-  //DenseVector rhs = decSphere.getRhs();
-  //cout << rhs << endl;
-
-  //DenseVector fsol = decSphere.getFullSolution();
-  //cout << fsol << endl;
-
-  //DofEdgeVector sol0 = decSphere.getSolution(0);
-  //sol0.writeFile("output/sol0.vtu");
-  //DOFVector< WorldVector<double> > sol0Sharp = sol0.getSharpFaceAverage();
-  //AMDiS::io::VtkVectorWriter::writeFile(sol0Sharp, string("output/sol0Sharp.vtu"));
-
-  //DofEdgeVector sol0Exact = dxyz;
   DofEdgeVector sol0Exact = dxyz + alpha;
   sol0Exact.setName("Sol0_exact");
   sol0Exact.writeFile("output/sol0Exact.vtu");
   DOFVector< WorldVector<double> > sol0ExactSharp = sol0Exact.getSharpFaceAverage();
   AMDiS::io::VtkVectorWriter::writeFile(sol0ExactSharp, string("output/sol0ExactSharp.vtu"));
-  
-
-
-  //DofEdgeVector sol1 = decSphere.getSolution(1);
-  //sol1.writeFile("output/sol1.vtu");
-
-
-  //// === create adapt info ===
-  //AdaptInfo *adaptInfo = new AdaptInfo("sphere->adapt", sphere.getNumComponents());
-
-  //// === create adapt ===
-  //AdaptStationary *adapt = new AdaptStationary("sphere->adapt",
-	//				       &sphere,
-	//				       adaptInfo);
-  
-
-  // ===== start adaption loop =====
-  //adapt->adapt();
-
-  //sphere.writeFiles(adaptInfo, true);
   
   AMDiS::finalize();
 }

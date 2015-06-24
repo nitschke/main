@@ -70,7 +70,7 @@ public:
     return soli;
   }
 
-  DofEdgeVector getEdgeSolution(int i) : getSolution(int i) {}
+  DofEdgeVector getEdgeSolution(int i) {return getSolution(i);}
 
   DOFVector<double> getVertexSolution(int i) {
     TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
@@ -80,8 +80,9 @@ public:
     DOFVector<double> soli(emesh->getFeSpace(), "Sol_" + boost::lexical_cast<std::string>(i));
     int oh = 0;
     for (int k = 0; k < i; ++k) oh += ns[k];
-    DOFVector<double>::Iterator sIter(const_cast<DOFVector<double>*>(&soli), USED_DOFS);
-    for (sIter.reset(); !sIter.end(); ++sIter) sIter
+    for (int k = 0; k < ns[i]; k++) {
+      soli[k] = (*fullSolution)[oh + k];
+    }
     return soli;
   }
 
@@ -97,7 +98,6 @@ private:
   inline void assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow);
   inline void assembleVectorBlock_Vertex(list<DecOperator*> &ops, int ohrow);
 
-  void initDofVPosMapper();
 
 //TODO: DESTructur (emesh, sysmat, rhs)
 
@@ -123,9 +123,6 @@ private:
   DenseVector *fullSolution;
 
   SolverInterface solver;
-
-  // Vertex DOF -> Position in discrete vector
-  map<DegreeOfFreedom, int> dofVPosMapper;
 
   bool writeSharps;
   bool writeFlats;

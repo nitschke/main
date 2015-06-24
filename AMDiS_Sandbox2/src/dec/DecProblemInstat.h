@@ -41,6 +41,7 @@ private:
 
 void updateUhOlds();
 void updateUhOlds_EdgeOperators(list<DecOperator*> &ops, int i);
+void updateUhOlds_VertexOperators(list<DecOperator*> &ops, int i);
 
 protected:
 

@@ -15,6 +15,12 @@ edgeRowValMapper EdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) 
   return rowMapper;
 }
 
+edgeRowValMapper EdgeVec2AndEdgeAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  rowMapper[eel.edgeDof] = fac * factor * (*func)((*evec1)[eel], (*evec2)[eel], eel);
+  return rowMapper;
+}
+
 edgeRowValMapper IdentityAtEdges::evalRow(const EdgeElement &eel, double factor) {
   edgeRowValMapper rowMapper;
   rowMapper[eel.edgeDof] = fac * factor;

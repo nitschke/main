@@ -1,6 +1,7 @@
 #include "DecProblemStat.h"
 #include "DecOperator.h"
 #include "EdgeOperator.h"
+#include "VertexOperator.h"
 
 
 using namespace AMDiS;
@@ -32,7 +33,7 @@ DecProblemStat::DecProblemStat(ProblemStat *problem, EdgeMesh *edgeMesh)
 
   writeAnimation = false;
   Parameters::get(ps->getName() + "->output->ParaView animation", writeAnimation);
-  //TODO: only EDGESPACEs
+  //TODO: only EDGESPACEs -> temp.fix: VertexSolutions in FlatWriter
   if (writeAnimation) {
     string basename = "output/" + ps->getName();
     Parameters::get(ps->getName() + "->output->filename", basename);
@@ -42,12 +43,12 @@ DecProblemStat::DecProblemStat(ProblemStat *problem, EdgeMesh *edgeMesh)
         (*animWriterSharp)[i] = new AnimationWriter(basename + boost::lexical_cast<std::string>(i) + "Sharp.pvd");
       }
     }
-    if (writeFlats) {
+    //if (writeFlats) {
       animWriterFlat = new Vector<AnimationWriter*>(nComponents);
       for (int i = 0; i < nComponents; ++i) {
         (*animWriterFlat)[i] = new AnimationWriter(basename + boost::lexical_cast<std::string>(i) + ".pvd");
       }
-    }
+    //}
   }
 }
 
@@ -58,7 +59,7 @@ void DecProblemStat::addMatrixOperator(DecOperator *op, int row, int col, double
   TEST_EXIT(emesh)("No EdgeMesh!");
 
   SpaceType rowType = op->getRowType();
-  SpaceType colType = op->getRowType();
+  SpaceType colType = op->getColType();
   
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
   if (!spaceTypes[col]) spaceTypes[col] = colType; 
@@ -91,16 +92,15 @@ void DecProblemStat::assembleSystem() {
   MSG("Assemble System ... \n");
   Timer t;
 
-  bool vertexMapperInit = false;
+  //TODO: dofCompress here, if the mesh change (-> change datastruct dofEdge in EdgeElement too)
+
   if ( n < 0 ) {   // not precalc 
     n = 0;
     for (int i = 0; i < nComponents; ++i) {
        TEST_EXIT(spaceTypes[i])("Space %d is not set!", i);
        switch (spaceTypes[i]) {
          case VERTEXSPACE:
-                  if (!vertexMapperInit) initDofVPosMapper();
-                  vertexMapperInit = true;
-                  ns[i] = eMesh->getFeSpace()->getMesh()->getNumberOfVertices();
+                  ns[i] = emesh->getFeSpace()->getMesh()->getNumberOfVertices();
                   break;
          case EDGESPACE:
                   ns[i] = emesh->getNumberOfEdges();
@@ -130,11 +130,15 @@ void DecProblemStat::assembleSystem() {
             assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
             break;
         default:
-          ERROR_EXIT("Das haette nicht passieren duerfen!");
+          TEST_EXIT(matrixOperators[r][c].empty())
+                   ("Unknown SpaceType combination; RowSpace[%d] = %d; ColSpace[%d] = %d \n", r, spaceTypes[r], c, spaceTypes[c]);
       }
       ohcol += ns[c];
     }
     switch(spaceTypes[r]) {
+      case VERTEXSPACE:
+          assembleVectorBlock_Vertex(vectorOperators[r], ohrow);
+          break;
       case EDGESPACE:
           assembleVectorBlock_Edge(vectorOperators[r], ohrow);
           break;
@@ -183,27 +187,29 @@ inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<DecOperator*> 
     double factor = vop->getFactor();
     list< VertexOperatorTerm* >::const_iterator termIter = vop->begin();
     for (; termIter != vop->end(); ++termIter) {
-      DOFVector<bool> visited(eMesh->getFeSpace(), "visited");
+      DOFVector<bool> visited(emesh->getFeSpace(), "visited");
       visited = false;
       vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
       for (; edgeIter != emesh->getEdges()->end(); ++edgeIter) {
         // first vertex
         DegreeOfFreedom dof = edgeIter->dofEdge.first;
         if (!visited[dof]) {
-          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
+          vertexRowValMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
           vertexRowValMapper::iterator mapIter = mapper.begin();
           for (; mapIter != mapper.end(); ++mapIter) {
-            insSysMat[ohrow + dofVPosMapper[dof]][ohcol +  dofVPosMapper[mapIter->first]] << mapIter->second;
+            insSysMat[ohrow + dof][ohcol +  mapIter->first] << mapIter->second;
           }
+          visited[dof] = true;
         }
         // second vertex
         dof = edgeIter->dofEdge.second;
         if (!visited[dof]) {
-          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
+          vertexRowValMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
           vertexRowValMapper::iterator mapIter = mapper.begin();
           for (; mapIter != mapper.end(); ++mapIter) {
-            insSysMat[ohrow + dofVPosMapper[dof]][ohcol +  dofVPosMapper[mapIter->first]] << mapIter->second;
+            insSysMat[ohrow + dof][ohcol + mapIter->first] << mapIter->second;
           }
+          visited[dof] = true;
         }
       }
     }
@@ -218,7 +224,7 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, 
     double factor = vop->getFactor();
     list< VertexOperatorTerm* >::const_iterator termIter = vop->begin();
     for (; termIter != vop->end(); ++termIter) {
-      DOFVector<bool> visited(eMesh->getFeSpace(), "visited");
+      DOFVector<bool> visited(emesh->getFeSpace(), "visited");
       visited = false;
       vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
       for (; edgeIter != emesh->getEdges()->end(); ++edgeIter) {
@@ -226,7 +232,7 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, 
         DegreeOfFreedom dof = edgeIter->dofEdge.first;
         if (!visited[dof]) {
           double val = 0.0;
-          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
+          vertexRowValMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
           vertexRowValMapper::iterator mapIter = mapper.begin();
           for (; mapIter != mapper.end(); ++mapIter) {
             if (vop->uhold) {
@@ -235,13 +241,14 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, 
               val += mapIter->second;
             }
           }
-          (*rhs)[ohrow + dofVPosMapper[dof]] += val
+          (*rhs)[ohrow + dof] += val;
+          visited[dof] = true;
         }
         // second vertex
         dof = edgeIter->dofEdge.second;
         if (!visited[dof]) {
           double val = 0.0;
-          vertexRowMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
+          vertexRowValMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
           vertexRowValMapper::iterator mapIter = mapper.begin();
           for (; mapIter != mapper.end(); ++mapIter) {
             if (vop->uhold) {
@@ -250,7 +257,8 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, 
               val += mapIter->second;
             }
           }
-          (*rhs)[ohrow + dofVPosMapper[dof]] += val
+          (*rhs)[ohrow + dof] += val;
+          visited[dof] = true;
         }
       }
     }
@@ -286,26 +294,6 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
 }
 
 
-void DecProblemStat::initDofVPosMapper() {
-  FUNCNAME("DecProblemStat::initDofVPosMapper()");
-
-  DOFVector<bool> visited(eMesh->getFeSpace(), "visited");
-  visited = false;
-
-  DegreeOfFreedom dof;
-  vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
-  int i = 0
-  for (; edgeIter != emesh->getEdges()->end(); ++i, ++edgeIter) {
-    //first vertex if not visited
-    dof = edgeIter->dofEdge.first;
-    if (!visited[dof]) dofVPosMapper[dof] = i;
-    //second vertex if not visited
-    dof = edgeIter->dofEdge.second;
-    if (!visited[dof]) dofVPosMapper[dof] = i;
-  }
-  int nV = eMesh->getFeSpace()->getMesh()->getNumberOfVertices();
-  TEST_EXIT(i == nV)("something went wrong: %d vertices, but %d used DOFs", nV, i);
-}
 
 
 void DecProblemStat::solve() {
@@ -333,6 +321,11 @@ void DecProblemStat::writeSolution(string nameAddition) {
   for (int i = 0; i < nComponents; ++i) {
     string bni = basename + boost::lexical_cast<std::string>(i);
     switch(spaceTypes[i]) {
+      case VERTEXSPACE: {
+            DOFVector<double> soli = getVertexSolution(i);
+            io::VtkVectorWriter::writeFile(soli, bni + nameAddition + ".vtu");
+          }
+          break;
       case EDGESPACE: {
             DofEdgeVector soli = getSolution(i);
             if (writeFlats) soli.writeFile(bni + nameAddition + ".vtu");
@@ -361,6 +354,13 @@ void DecProblemStat::writeSolution(double time, string nameAddition) {
   for (int i = 0; i < nComponents; ++i) {
     string bni = basename + boost::lexical_cast<std::string>(i);
     switch(spaceTypes[i]) {
+      case VERTEXSPACE: {
+            DOFVector<double> soli = getVertexSolution(i);
+            string fn = bni + nameAddition + ".vtu";
+            io::VtkVectorWriter::writeFile(soli, fn);
+            (*animWriterFlat)[i]->updateAnimationFile(time, fn);
+          }
+          break;
       case EDGESPACE: {
             DofEdgeVector soli = getSolution(i);
             if (writeFlats) {
