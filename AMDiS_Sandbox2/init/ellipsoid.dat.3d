@@ -1,7 +1,6 @@
 dimension of world:      3
 
-%sphereMesh->macro file name:       ./macro/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+sphereMesh->macro file name:       ./macro/heine51c_5k_improved.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 sphereMesh->global refinements:    0
 
@@ -18,7 +17,7 @@ sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   diag
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        5.0
+sphere->adapt->end time:        10.0
 sphere->adapt->timestep:        1.e-2
 
 sphere->output->filename:         output/sphere
@@ -32,4 +31,4 @@ sphere->output->write every i-th timestep:   1
 userParameter->K0: 1.0
 userParameter->K1: 1.0  % minimize div
 userParameter->K3: 1.0  % minimize rot
-userParameter->Kn: 10.0 % minimize norm^2 - 1
+userParameter->Kn: 50.0 % minimize norm^2 - 1

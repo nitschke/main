@@ -175,6 +175,17 @@ public:
   // volume of the edge skeleton (Vol(|K^(1)|)...length of all edges)
   double getVol() const;
 
+  //only for debuging
+  void printVolInfos(bool ePLen = false, bool eDLen = false) {
+  vector<EdgeElement>::const_iterator eIter = edges.begin();
+    for (; eIter != edges.end(); ++eIter) {
+      cout << eIter->edgeDof << "(" << eIter->dofEdge.first << "," << eIter->dofEdge.second << "): " << endl;
+      if (ePLen) cout << " ePLen: " << eIter->infoLeft->getEdgeLen(eIter->dofEdge) << endl;
+      if (eDLen) cout << " eDLen: " << (eIter->infoLeft->getDualEdgeLen(eIter->dofEdge) 
+                                       +eIter->infoRight->getDualEdgeLen(eIter->dofEdge)) << endl;
+    }
+  }
+
  
 
 

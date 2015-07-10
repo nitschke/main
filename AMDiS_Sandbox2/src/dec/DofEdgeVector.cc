@@ -168,6 +168,19 @@ void DofEdgeVector::set(BinaryAbstractFunction<double, WorldVector<double>, Worl
   }
 }
 
+void DofEdgeVector::setDual(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d) {
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIter = edgeVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter) {
+    WorldVector<double> p = edgeIter->infoRight->getCircumcenter();
+    WorldVector<double> q = edgeIter->infoLeft->getCircumcenter();
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    double lenD = edgeIter->infoLeft->getDualEdgeLen(edgeIter->dofEdge)
+                + edgeIter->infoRight->getDualEdgeLen(edgeIter->dofEdge);
+    (*valIter) = - lenP * (*alpha_d)(p, q) / lenD;
+  }
+}
+
 void DofEdgeVector::set(double val) {
   vector<double>::iterator valIter = edgeVals.begin();
   for (; valIter != edgeVals.end(); ++valIter) {
@@ -591,8 +604,6 @@ void DofEdgeVector::writeFile(string name) const {
 	file << "</VTKFile>\n";
 
 }
-
-
 
 
 

@@ -44,6 +44,7 @@ LDeRham2::usage = "aplace-De-Rham (d\[Delta]) of a 2-form";
 
 LieD0::usage = "Lie-derivative of a 0-form";
 LieD1::usage = "Lie-derivative of a 1-form";
+LieD1Vec::usage = "Lie-derivative of a vector";
 LieD2::usage = "Lie-derivative of a 2-form";
 LieDT02::usage = "Lie-derivative of a (0,2)-Tensor";
 
@@ -106,6 +107,7 @@ LieD0[vec_,f_,x_,y_] := vec.ExD0[f,x,y]
 (*LieD1[vec_,alpha_,x_,y_] := {vec[[1]]D[alpha[[1]],x] + vec[[2]]D[alpha[[1]],y] + alpha[[1]]D[vec[[1]],x] + alpha[[2]]D[vec[[2]],x],
 							  vec[[1]]D[alpha[[2]],x] + vec[[2]]D[alpha[[2]],y] + alpha[[1]]D[vec[[1]],y] + alpha[[2]]D[vec[[2]],y]}*)
 LieD1[vec_,alpha_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[j]]D[alpha[[i]],xv[[j]]] + alpha[[j]]D[vec[[j]],xv[[i]]],{j,1,2}],{i,1,2}]]
+LieD1Vec[vec_,wec_,x_,y_]:= Module[{xv={x,y}},Table[Sum[vec[[j]]D[wec[[i]],xv[[j]]] - wec[[j]]D[vec[[j]],xv[[i]]],{j,1,2}],{i,1,2}]]
 LieD2[vec_,omega_,x_,y_] := {{D[omega[[1,1]]vec[1],x] + D[omega[[1,1]]vec[2],y]}}
 LieDT02[vec_,sigma_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[k]]D[sigma[[i,j]],xv[[k]]]+sigma[[k,j]]D[vec[[k]],xv[[i]]]+sigma[[i,k]]D[vec[[k]],xv[[j]]],{k,1,2}],{i,1,2},{j,1,2}]]
 
@@ -123,6 +125,9 @@ DoubleDotFormForm11[sigma_,tau_,g_] := Module[{gInv=Inverse[g]}, Sum[sigma[[i,k]
 End[]
 
 EndPackage[]
+
+
+
 
 
 

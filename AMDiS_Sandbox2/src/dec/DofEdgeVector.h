@@ -34,6 +34,10 @@ public:
   // set alpha_d([p,q]) = <alpha, [p,q]>
   void set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d);
 
+  // set -|e|/|*e| <alpha, *[p,q]> = <*alpha, [p,q]>
+  //TODO: rename is more interpolating (with approx |pi(e)| and |pi(*e)|)
+  void setDual(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d);
+
   // set  <alpha, sigma^1> = val (for all sigma^1)
   void set(double val);
 
@@ -290,6 +294,15 @@ public:
     DofEdgeVector::set(alpha_d);
     makeDual();
     DofEdgeVector::set(alphaDual_d);
+    makePrimal();
+  }
+
+  // eval on edge on dual edge [<alpha, e> , -|e|/|*e| <alpha, *e>]
+  void set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d) {
+    makePrimal();
+    DofEdgeVector::set(alpha_d);
+    makeDual();
+    DofEdgeVector::setDual(alpha_d);
     makePrimal();
   }
 

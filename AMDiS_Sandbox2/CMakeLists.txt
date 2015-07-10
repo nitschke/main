@@ -55,5 +55,11 @@ target_link_libraries(energySphere ${BASIS_LIBS} dec)
 add_executable(directorFieldSphere src/directorFieldSphere.cc)
 target_link_libraries(directorFieldSphere ${BASIS_LIBS} dec)
 
+add_executable(directorFieldEllipsoid src/directorFieldEllipsoid.cc)
+target_link_libraries(directorFieldEllipsoid ${BASIS_LIBS} dec)
+
 add_executable(dirCosPhi src/dirCosPhi.cc)
 target_link_libraries(dirCosPhi ${BASIS_LIBS} dec)
+
+add_executable(sphereSystemTest src/sphereSystemTest.cc)
+target_link_libraries(sphereSystemTest ${BASIS_LIBS} dec)
