@@ -127,6 +127,7 @@ void DecProblemStat::assembleSystem() {
             assembleMatrixBlock_VertexVertex(matrixOperators[r][c], ohrow, ohcol);
             break;
         case 8: //EDGESPACE x EDGESPACE
+            cout << "\nAssemble Matrixblock (" << r << "," << c << "):" <<  endl;
             assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
             break;
         default:
@@ -140,6 +141,7 @@ void DecProblemStat::assembleSystem() {
           assembleVectorBlock_Vertex(vectorOperators[r], ohrow);
           break;
       case EDGESPACE:
+          cout << "\nAssemble Vectorblock (" << r << "):" <<  endl;
           assembleVectorBlock_Edge(vectorOperators[r], ohrow);
           break;
       default:
@@ -165,6 +167,7 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
     list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
     for (; termIter != eop->end(); ++termIter) {
       //TODO: implement edgeMesh::iterator
+      Timer tot;
       vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
       for (int r = ohrow; edgeIter != emesh->getEdges()->end(); ++r, ++edgeIter) {
         edgeRowValMapper mapper = (*termIter)->evalRow(*edgeIter, factor);
@@ -174,6 +177,7 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
           insSysMat[r][c] << mapIter->second;
         }
       }
+      cout << "   " << (*termIter)->getName() << ": " << tot.elapsed() << " sec" << endl;
     }
   }
 }
@@ -275,6 +279,7 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
     list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
     for (; termIter != eop->end(); ++termIter) {
       //TODO: implement edgeMesh::iterator
+      Timer tot;
       vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
       for (int r = ohrow; edgeIter != emesh->getEdges()->end(); ++r, ++edgeIter) {
         double val = 0.0;
@@ -289,6 +294,7 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
         }
         (*rhs)[r] += val;
       }
+      cout << "   " << (*termIter)->getName() << ": " << tot.elapsed() << " sec" << endl;
     }
   }
 }

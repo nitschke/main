@@ -13,11 +13,15 @@ public:
   
   SpaceType getColType() {return colType;}
   SpaceType getRowType() {return rowType;}
+
+  std::string getName() {return name;}
   
 
 protected:
  SpaceType colType; //maps to SpaceType
  SpaceType rowType; //maps from SpaceType
+
+ std::string name;
 };
 
 }}

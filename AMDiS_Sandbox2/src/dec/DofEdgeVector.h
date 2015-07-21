@@ -280,6 +280,11 @@ public:
     if (isP) swapPD();
   }
 
+  //Dual is now primal
+  void bakeDual() {
+    swap(edgeVals, edgeDualVals);
+  }
+
   // TODO: andere datenstruktur um kopien zu vermeiden
   DofEdgeVector getDual() {
     makeDual();

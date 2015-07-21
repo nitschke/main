@@ -15,6 +15,7 @@ public:
   EdgeOperatorTerm(SpaceType colType = UNDEFINEDSPACE) : DecOperatorTerm(EDGESPACE, colType) {}
 
   virtual edgeRowValMapper evalRow(const EdgeElement &eel, double factor) {};
+
 };
 
 
@@ -24,10 +25,10 @@ public:
   EdgeVecAtEdges(DofEdgeVector *edgeVector, 
                  AbstractFunction<double,double> *function = NULL, 
                  double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(function) {};
+      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(function) {name = "EdgeVecAtEdges";};
 
   EdgeVecAtEdges(DofEdgeVector *edgeVector,  double f = 1.0)
-      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(NULL) {};
+      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(NULL) {name = "EdgeVecAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
@@ -43,7 +44,7 @@ public:
   EdgeVec2AndEdgeAtEdges(DofEdgeVector *edgeVector1, DofEdgeVector *edgeVector2,
                  TertiaryAbstractFunction<double,double,double, EdgeElement> *function, 
                  double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), evec1(edgeVector1), evec2(edgeVector2), fac(f), func(function) {};
+      : EdgeOperatorTerm(EDGESPACE), evec1(edgeVector1), evec2(edgeVector2), fac(f), func(function) {name = "EdgeVec2AndEdgeAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
@@ -59,7 +60,7 @@ private:
 class  IdentityAtEdges: public EdgeOperatorTerm {
 public:
   IdentityAtEdges(double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), fac(f) {};
+      : EdgeOperatorTerm(EDGESPACE), fac(f) {name = "IdentityAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
@@ -72,7 +73,7 @@ private:
 class  LaplaceBeltramiAtEdges: public EdgeOperatorTerm {
 public:
   LaplaceBeltramiAtEdges(double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), fac(f) {};
+      : EdgeOperatorTerm(EDGESPACE), fac(f) {name = "LaplaceBeltramiAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
@@ -86,7 +87,7 @@ private:
 class  LaplaceCoBeltramiAtEdges: public EdgeOperatorTerm {
 public:
   LaplaceCoBeltramiAtEdges(double f = 1.0) 
-      : EdgeOperatorTerm(EDGESPACE), fac(f) {};
+      : EdgeOperatorTerm(EDGESPACE), fac(f) {name = "LaplaceCoBeltramiAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 

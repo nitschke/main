@@ -26,7 +26,8 @@ with open(fn, 'rb') as f:
 for i in arange(1,n):
   #semilogx(x[0], x[i], 'k'+lineStyles[i], label=name[i], linewidth=lw)
   #plot(x[0], x[i], 'k'+lineStyles[i], label=name[i], linewidth=lw)
-  #semilogx(x[0], x[i], label=name[i], linewidth=lw)
+  #semilogy(x[0], x[i], label=name[i], linewidth=lw)
+  #loglog(x[0], x[i], label=name[i], linewidth=lw)
   plot(x[0], x[i], label=name[i], linewidth=lw)
 
 nn = len(x[4])

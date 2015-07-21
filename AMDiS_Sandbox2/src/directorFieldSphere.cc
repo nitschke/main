@@ -90,6 +90,19 @@ public:
   }
 };
 
+// <d(z^2),[p,q]>
+class DZ2_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  DZ2_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  q[2]*q[2]*q[0]*q[1] - p[2]*p[2]*p[0]*p[1];
+  }
+};
+
 // <d(xyz),[p,q]>
 class DXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
@@ -219,10 +232,10 @@ public:
   void closeTimestep() {
     double time = t;
     DecProblemInstat::closeTimestep();
-    DofEdgeVectorPD evecPD(statProb->getSolution(0), statProb->getSolution(1));
+    solPrimal = statProb->getSolution(0);
+    solDual =  statProb->getSolution(1);
+    DofEdgeVectorPD evecPD(solPrimal, solDual);
     normAlpha = evecPD.getNormOnEdges();
-    solPrimal = (DofEdgeVector)(evecPD);
-    solDual = evecPD.getDual();
 
     DofEdgeVector scaledNorm(normAlpha);
     scaledNorm.evalFunction(&delta);
@@ -325,9 +338,11 @@ int main(int argc, char* argv[])
   //dxyz.writeSharpFile("output/dxyzSharp.vtu", &sphere);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(42);
+  Noise_d noiseFun(43);
   //initSol.set(&noiseFun, new Noise_d(43,-1./3.));
-  //initSol.set(&noiseFun, &noiseFun);
+  //initSol.set(&noiseFun);
+  //initSol.set(new DZ2_d());
+  //initSol.bakeDual();
   initSol.interpol(new Michael(0.01));
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
@@ -469,5 +484,7 @@ int main(int argc, char* argv[])
   //cout << sub_matrix(mat,30,60,30,60) << endl << endl;
   //cout << decSphere.getRhs() << endl;
 
+  Timer t;
   sphereInstat.solve();
+  cout << "prob solved in " << t.elapsed() << " sec" << endl;
 }
