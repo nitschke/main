@@ -63,3 +63,6 @@ target_link_libraries(dirCosPhi ${BASIS_LIBS} dec)
 
 add_executable(sphereSystemTest src/sphereSystemTest.cc)
 target_link_libraries(sphereSystemTest ${BASIS_LIBS} dec)
+
+add_executable(movingSurfaceScalar src/movingSurfaceScalar.cc)
+target_link_libraries(movingSurfaceScalar ${BASIS_LIBS} dec)
