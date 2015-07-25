@@ -186,6 +186,16 @@ public:
     }
   }
 
+  ~EdgeMesh() {
+    vector< ElVolumesInfo2d* > elVols(feSpace->getMesh()->getMacroElements().size());
+    vector<EdgeElement>::iterator eIter = edges.begin();
+    for (; eIter != edges.end(); ++eIter) {
+      elVols[eIter->infoLeft->getElInfo()->getMacroElement()->getIndex()] = eIter->infoLeft;
+      elVols[eIter->infoRight->getElInfo()->getMacroElement()->getIndex()] = eIter->infoRight;
+    }
+    vector< ElVolumesInfo2d* >::iterator infoIter = elVols.begin();
+    for (; infoIter != elVols.end(); ++infoIter) delete (*infoIter);
+  }
  
 
 

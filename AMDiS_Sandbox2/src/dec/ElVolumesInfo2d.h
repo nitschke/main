@@ -62,6 +62,10 @@ class ElVolumesInfo2d {
       return getSin(getLocal(dof));
     }
 
+    ~ElVolumesInfo2d() {
+      delete elInfo;
+    }
+
 
 
   protected:

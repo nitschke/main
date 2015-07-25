@@ -10,13 +10,17 @@ using namespace dec;
 class InitFun : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  InitFun() : AbstractFunction<double, WorldVector<double> >() {
+  InitFun(double *timePtr) : AbstractFunction<double, WorldVector<double> >(), tptr(timePtr) {
   }
 
   double operator()(const WorldVector<double>& coords) const 
   {
-    return coords[0]*coords[0]*coords[2];
+    double t = *tptr;
+    return t*t*coords[0]*coords[0]*coords[2];
   }
+
+private:
+  double * tptr;
 };
 
 class DtFun : public AbstractFunction<double, WorldVector<double> >
@@ -28,7 +32,7 @@ public:
   double operator()(const WorldVector<double>& coords) const 
   {
     double t = *tptr;
-    return 4.0 * (1.0 - 2.0 * t) * coords[0]*coords[0]*coords[2] / (4.0 * t * (1.0 - t) + 1.0);
+    return 2.0 * t * (1.0 + 6.0*t - 8.0*t*t) * coords[0]*coords[0]*coords[2] / (4.0 * t * (1.0 - t) + 1.0);
   }
 
 private:
@@ -56,18 +60,22 @@ public:
     rhsFun = new DtFun(getTimePtr());
     rhs = DOFVector<double>(probStat->getMesh()->getFeSpace(), "RHS");
     rhs.interpol(rhsFun);
+  
+    solFun = new InitFun(getTimePtr());
+    sol = DOFVector<double>(probStat->getMesh()->getFeSpace(), "exact Solution");
+    sol.interpol(solFun);
   }
 
   void initTimestep() {
     DecProblemInstat::initTimestep();
     mmover->move(t);
     rhs.interpol(rhsFun);
+    sol.interpol(solFun);
   }
   
 
   void closeTimestep() {
     DecProblemInstat::closeTimestep();
-    sol = statProb->getVertexSolution(0);
   }
 
   DOFVector<double>* getSolPtr() {
@@ -82,6 +90,7 @@ private:
   DOFVector<double> sol;
   DOFVector<double> rhs;
   AbstractFunction<double, WorldVector<double> > *rhsFun;
+  AbstractFunction<double, WorldVector<double> > *solFun;
   MeshMover *mmover;
 };
 
@@ -105,7 +114,8 @@ int main(int argc, char* argv[])
   MeshMover mmover(edgeMesh, new StrechingSphere);
 
   DOFVector<double> init(sphere.getFeSpace(), "init");
-  init.interpol(new InitFun());
+  double zero = 0.0;
+  init.interpol(new InitFun(&zero));
   io::VtkVectorWriter::writeFile(init, "output/init.vtu");
 
 
@@ -122,6 +132,16 @@ int main(int argc, char* argv[])
   VertexOperator RHS;
   RHS.addTerm(new VertexVecAtVertices(sphereInstat.getRHSPtr()));
   decSphere.addVectorOperator(RHS, 0);
+
+  // exact
+  VertexOperator SolLeft;
+  SolLeft.addTerm(new IdentityAtVertices());
+  decSphere.addMatrixOperator(SolLeft, 1, 1);
+
+  VertexOperator SolRight;
+  SolRight.addTerm(new VertexVecAtVertices(sphereInstat.getSolPtr()));
+  decSphere.addVectorOperator(SolRight, 1);
+
 
   sphereInstat.solve();
 }

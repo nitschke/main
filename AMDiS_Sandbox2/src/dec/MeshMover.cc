@@ -34,19 +34,23 @@ MeshMover::MeshMover(EdgeMesh *eMesh,
 
 
     feSpace->getMesh()->setParametric(NULL);
+
+  for (int i = 0; i < 3; i++) {
+      (newCoords)[i] = new DOFVector<double>(feSpace, "new coord");
+    }
 }
 
 void MeshMover::move(double time) {
 
-  WorldVector<DOFVector<double> * > *newCoords = new WorldVector<DOFVector<double> * >();
-  for (int i = 0; i < 3; i++) {
-      (*newCoords)[i] = new DOFVector<double>(feSpace, "new coord");
-    }
+  //WorldVector<DOFVector<double> * > *newCoords = new WorldVector<DOFVector<double> * >();
+  //for (int i = 0; i < 3; i++) {
+  //    (newCoords)[i] = new DOFVector<double>(feSpace, "new coord");
+  //  }
   WorldVector<DOFIterator<double> * >  cIter;
   WorldVector<DOFIterator<double> * >  ncIter;
   for (int i = 0; i < 3; i++) {
     cIter[i] = new DOFIterator<double>(coordsRef[i], USED_DOFS);
-    ncIter[i] = new DOFIterator<double>((*newCoords)[i], USED_DOFS);
+    ncIter[i] = new DOFIterator<double>((newCoords)[i], USED_DOFS);
     cIter[i]->reset();
     ncIter[i]->reset();
   }
@@ -74,9 +78,10 @@ void MeshMover::move(double time) {
 
   Parametric *parametric = feSpace->getMesh()->getParametric(); 
   if (parametric) delete parametric;
-  parametric = new ParametricFirstOrder(newCoords);
+  parametric = new ParametricFirstOrder(&newCoords);
   feSpace->getMesh()->setParametric(parametric);
 
   // how much is the fish?
-  *emesh = EdgeMesh(feSpace); 
+  delete emesh;
+  emesh = new EdgeMesh(feSpace); 
 }

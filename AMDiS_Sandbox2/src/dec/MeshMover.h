@@ -21,6 +21,7 @@ private:
   FiniteElemSpace *feSpace;
   EdgeMesh *emesh;
   WorldVector<DOFVector<double> *  > coordsRef;
+  WorldVector<DOFVector<double> *  > newCoords;
   BinaryAbstractFunction<WorldVector<double>, WorldVector<double>, double> *coordsFun;
 };
 
