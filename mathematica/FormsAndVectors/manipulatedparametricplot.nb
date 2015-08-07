@@ -1,0 +1,280 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     10604,        271]
+NotebookOptionsPosition[      9878,        241]
+NotebookOutlinePosition[     10233,        257]
+CellTagsIndexPosition[     10190,        254]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "FormsAndVectors`"}]], "Input",
+ CellChangeTimes->{{3.632558196991672*^9, 3.632558212034603*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<VectorAnalysis`\>\"", "]"}]], "Input",
+ CellID->689450090],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"VGlob", "=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Cos", "[", "u", "]"}], "^", "2"}], ",", "0", ",", "0"}], 
+   "}"}]}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQBWIQ/f7/HKNMndeOLacfg+n11QKWIFqi/Is9iJ6+42QU
+iD7HHRQHop26Y/eA1X/6BKb3KcWcBNEuy76fAtE+XZo3QLTC8d1gumLGBv4s
+IH3j2lZBEN3Ry70ERK/yNAHTM15t3AyiUyZsBdP3fAL3geiSH+FgOmdz5GkQ
+veh4HJg+lWn8B0TrXb8Dpnc1p+plA2khqzlgWubVbb8cIL3FrssfRM/rqJoL
+on/V7QLT3F2XNoHomh2Bm0H0pe47n0H0qYCiLyD6ZkDQTxDtw3HqF5jetdIw
+F0i7VZwzA9HWK1KcQfRpoe9gWoKrdQqIllLuANMAB2amPA==
+  "]],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   SuperscriptBox[
+    RowBox[{"Cos", "[", "u", "]"}], "2"], ",", "0", ",", "0"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.647163097242613*^9, 3.647163125280242*^9}, 
+   3.6471637815510693`*^9, {3.647163892008011*^9, 3.647163902017181*^9}, {
+   3.647164000689445*^9, 3.647164030514237*^9}, {3.6471641040184803`*^9, 
+   3.6471641069632597`*^9}, 3.6471645625674267`*^9, 3.647165613074033*^9, {
+   3.647165730529492*^9, 3.64716573382193*^9}, 3.6471658567076883`*^9, {
+   3.6471659397070103`*^9, 3.647165945531986*^9}, 3.647166047423771*^9, {
+   3.647166421238469*^9, 3.64716644125425*^9}, 3.647166840903743*^9, 
+   3.647166928615305*^9, 3.64716798400596*^9, 3.647169171345211*^9, 
+   3.6471697144595337`*^9, 3.647169777867312*^9, 3.6471698190657377`*^9, {
+   3.647169947357036*^9, 3.64716995029495*^9}, 3.647170172130001*^9, 
+   3.647170356089196*^9, 3.647170470688905*^9, 3.647170523651774*^9, 
+   3.647171001907365*^9, 3.6471710547740717`*^9, 3.6471711067026033`*^9, 
+   3.647171616067868*^9, 3.6471717516964693`*^9, 3.647172428967189*^9, 
+   3.647173433324934*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"X0", "=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Sin", "[", "u", "]"}], 
+     RowBox[{"Cos", "[", "v", "]"}]}], ",", 
+    RowBox[{
+     RowBox[{"Sin", "[", "u", "]"}], 
+     RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+    RowBox[{"Cos", "[", "u", "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{"X", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Integrate", "[", 
+     RowBox[{"VGlob", ",", 
+      RowBox[{"{", 
+       RowBox[{"t", ",", "0", ",", "t"}], "}"}]}], "]"}], "+", "X0"}], "//", 
+   "Simplify"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"D", "[", 
+   RowBox[{"X", ",", "t"}], "]"}], "//", 
+  "Simplify"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"$Assumptions", "=", 
+   RowBox[{
+    RowBox[{"0", "<", "u"}], "&&", 
+    RowBox[{"u", "<", "\[Pi]"}], "&&", 
+    RowBox[{"t", ">", "0"}], "&&", 
+    RowBox[{"v", ">", "0"}], "&&", 
+    RowBox[{"v", "<", 
+     RowBox[{"2", "\[Pi]"}]}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.647162910704899*^9, 3.6471630034710293`*^9}, {
+  3.6471631398315563`*^9, 3.647163176960002*^9}, {3.647163217041696*^9, 
+  3.647163219104357*^9}, {3.647163261131947*^9, 3.647163275432665*^9}, {
+  3.647165463553323*^9, 3.647165473608282*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Cos", "[", "v", "]"}], " ", 
+    RowBox[{"Sin", "[", "u", "]"}]}], ",", 
+   RowBox[{
+    RowBox[{"Sin", "[", "u", "]"}], " ", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   RowBox[{"Cos", "[", "u", "]"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.647163007508025*^9, 3.647163022248213*^9}, 
+   3.647163072618471*^9, {3.647163104679825*^9, 3.647163177584303*^9}, 
+   3.647163279593649*^9, 3.6471637815716953`*^9, {3.64716389552028*^9, 
+   3.64716390202017*^9}, {3.64716400320957*^9, 3.6471640305170517`*^9}, 
+   3.647164106967396*^9, 3.647164562570376*^9, 3.64716547528867*^9, 
+   3.647165613078395*^9, 3.647165733824617*^9, 3.6471658567105513`*^9, 
+   3.64716594553965*^9, 3.64716604742649*^9, {3.6471664212457647`*^9, 
+   3.647166441260097*^9}, 3.647166840928752*^9, 3.647166928636176*^9, 
+   3.647167984019227*^9, 3.647169171351327*^9, 3.6471697144621058`*^9, 
+   3.6471697778700323`*^9, 3.647169819091935*^9, 3.647169950297907*^9, 
+   3.647170172133833*^9, 3.647170356125202*^9, 3.6471704706923323`*^9, 
+   3.647170523656456*^9, 3.6471710019113493`*^9, 3.647171054804654*^9, 
+   3.6471711067314796`*^9, 3.6471716160838203`*^9, 3.647171751700444*^9, 
+   3.647172428978286*^9, 3.647173433331903*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"t", " ", 
+     SuperscriptBox[
+      RowBox[{"Cos", "[", "u", "]"}], "2"]}], "+", 
+    RowBox[{
+     RowBox[{"Cos", "[", "v", "]"}], " ", 
+     RowBox[{"Sin", "[", "u", "]"}]}]}], ",", 
+   RowBox[{
+    RowBox[{"Sin", "[", "u", "]"}], " ", 
+    RowBox[{"Sin", "[", "v", "]"}]}], ",", 
+   RowBox[{"Cos", "[", "u", "]"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.647163007508025*^9, 3.647163022248213*^9}, 
+   3.647163072618471*^9, {3.647163104679825*^9, 3.647163177584303*^9}, 
+   3.647163279593649*^9, 3.6471637815716953`*^9, {3.64716389552028*^9, 
+   3.64716390202017*^9}, {3.64716400320957*^9, 3.6471640305170517`*^9}, 
+   3.647164106967396*^9, 3.647164562570376*^9, 3.64716547528867*^9, 
+   3.647165613078395*^9, 3.647165733824617*^9, 3.6471658567105513`*^9, 
+   3.64716594553965*^9, 3.64716604742649*^9, {3.6471664212457647`*^9, 
+   3.647166441260097*^9}, 3.647166840928752*^9, 3.647166928636176*^9, 
+   3.647167984019227*^9, 3.647169171351327*^9, 3.6471697144621058`*^9, 
+   3.6471697778700323`*^9, 3.647169819091935*^9, 3.647169950297907*^9, 
+   3.647170172133833*^9, 3.647170356125202*^9, 3.6471704706923323`*^9, 
+   3.647170523656456*^9, 3.6471710019113493`*^9, 3.647171054804654*^9, 
+   3.6471711067314796`*^9, 3.6471716160838203`*^9, 3.647171751700444*^9, 
+   3.647172428978286*^9, 3.6471734333472013`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   SuperscriptBox[
+    RowBox[{"Cos", "[", "u", "]"}], "2"], ",", "0", ",", "0"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.647163007508025*^9, 3.647163022248213*^9}, 
+   3.647163072618471*^9, {3.647163104679825*^9, 3.647163177584303*^9}, 
+   3.647163279593649*^9, 3.6471637815716953`*^9, {3.64716389552028*^9, 
+   3.64716390202017*^9}, {3.64716400320957*^9, 3.6471640305170517`*^9}, 
+   3.647164106967396*^9, 3.647164562570376*^9, 3.64716547528867*^9, 
+   3.647165613078395*^9, 3.647165733824617*^9, 3.6471658567105513`*^9, 
+   3.64716594553965*^9, 3.64716604742649*^9, {3.6471664212457647`*^9, 
+   3.647166441260097*^9}, 3.647166840928752*^9, 3.647166928636176*^9, 
+   3.647167984019227*^9, 3.647169171351327*^9, 3.6471697144621058`*^9, 
+   3.6471697778700323`*^9, 3.647169819091935*^9, 3.647169950297907*^9, 
+   3.647170172133833*^9, 3.647170356125202*^9, 3.6471704706923323`*^9, 
+   3.647170523656456*^9, 3.6471710019113493`*^9, 3.647171054804654*^9, 
+   3.6471711067314796`*^9, 3.6471716160838203`*^9, 3.647171751700444*^9, 
+   3.647172428978286*^9, 3.647173433348153*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ParametricPlot3D", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"X", "/.", 
+       RowBox[{"t", "\[Rule]", "tt"}]}], ")"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"u", ",", "0", ",", "\[Pi]"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"v", ",", "0", ",", 
+       RowBox[{"2", "\[Pi]"}]}], "}"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"tt", ",", "0", ",", "2"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.647171636721016*^9, 3.6471717426390533`*^9}, {
+  3.647171785422471*^9, 3.6471718161171513`*^9}, {3.647171859786764*^9, 
+  3.647171882635943*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`tt$$ = 0., Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`tt$$], 0, 2}}, Typeset`size$$ = {360., {197., 201.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`tt$68132$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`tt$$ = 0}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`tt$$, $CellContext`tt$68132$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ParametricPlot3D[
+        ReplaceAll[$CellContext`X, $CellContext`t -> $CellContext`tt$$], \
+{$CellContext`u, 0, Pi}, {$CellContext`v, 0, 2 Pi}], 
+      "Specifications" :> {{$CellContext`tt$$, 0, 2}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{405., {240., 245.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.647171883553604*^9, 3.647172429022887*^9, 
+  3.647173433426876*^9}]
+}, Open  ]]
+},
+Evaluator->"Local",
+WindowSize->{740, 867},
+WindowMargins->{{Automatic, 0}, {Automatic, 96}},
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (November 7, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 126, 2, 30, "Input"],
+Cell[686, 24, 100, 2, 30, "Input",
+ CellID->689450090],
+Cell[CellGroupData[{
+Cell[811, 30, 569, 14, 30, "Input"],
+Cell[1383, 46, 1107, 19, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2527, 70, 1223, 35, 88, "Input"],
+Cell[3753, 107, 1266, 23, 30, "Output"],
+Cell[5022, 132, 1381, 27, 34, "Output"],
+Cell[6406, 161, 1119, 19, 34, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7562, 185, 639, 17, 50, "Input"],
+Cell[8204, 204, 1658, 34, 502, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
