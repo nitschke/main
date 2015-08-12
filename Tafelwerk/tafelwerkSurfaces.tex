@@ -40,6 +40,7 @@
       \end{itemize}
 
       \subsubsection{Exterior derivative \( \exd:\Omega^{p}(M)\rightarrow\Omega^{p+1}(M) \)}
+        \( \alpha\in\Omega^{p}(M) \)
         \begin{itemize}
           \item \( \exd\circ\exd = 0 \) (\textbf{complex proberty})
           \item \( \exd\left( \alpha \wedge \beta \right) = \exd\alpha\wedge\beta + (-1)^{p}\alpha\wedge\exd\beta \)
@@ -73,6 +74,8 @@
           \item \( \L_{\vec{v}}\left( \alpha\wedge\beta \right) = \L_{\vec{v}}\alpha\wedge\beta + \alpha\wedge\L_{\vec{v}}\beta\)
           \item \(\L_{\vec{v}}\exd\alpha = \exd\L_{\vec{v}}\alpha \)
           \item \(\L_{\vec{v}}\i_{\vec{v}}\alpha = \i_{\vec{v}}\L_{\vec{v}}\alpha \)
+          \item \( \L_{\vec{v}}\vec{w} = \left[ \vec{v} , \vec{w} \right] = \nabla_{\vec{v}}\vec{w} - \nabla_{\vec{w}}\vec{v}\)
+          (\textbf{(Levi-Civita-)Conection \( \nabla \) is Torsion-free})
         \end{itemize}
 
     \subsection{Wedge product \( \wedge \)}
@@ -145,16 +148,64 @@
            (\textbf{Ricci})
        \end{itemize}
 
+    \subsection{Levi-Civita-Connection (Contravariant Derivative)}
+      \begin{itemize}
+        \item \( \Gamma_{ij}^{k} = g^{kl}\Gamma_{ijl} = \frac{1}{2}g^{kl}
+              \left( \partial_{i}g_{jl} + \partial_{j}g_{il} - \partial_{l}g_{ij} \right) \)
+           (\textbf{Christoffel symbols})
+        \item \( \nabla_{j}v^{i} = v^{i}_{;j} = v^{i}_{|j} = \partial_{j}v^{i} + v^{k}\Gamma_{jk}^{i} \)
+        \item \( \nabla \vec{v} := \left[ \nabla_{j}v^{i} \right]^{i}_{j} \)
+        \item \( \nabla_{i}f = \left[ \nabla f \right]_{i} = \partial_{i}f \)
+        \item \( \nabla_{\vec{v}}f = \L_{\vec{v}}f= \left\langle \vec{v}, \nabla_{\Gamma}f \right\rangle
+                  = (\exd f)(\vec{v}) = v^{i}\nabla_{i}f = v^{i}\partial_{i}f \)
+      \end{itemize}
+
+    \subsection{Shape-Operator \( S \), etc}
+    \begin{itemize}
+      \item \textbf{Second fundamental form}:\\
+        \( [I\!I]_{ij} = [S^{\flat}]_{ij} = h_{ij} = -\partial_{i}\vec{N}\cdot\partial_{j}\vec{X} 
+                      = -\left[ \nabla\vec{N} \right]_{ij}
+                      = \vec{n} \cdot \partial_{i}\partial_{j}\vec{X} \)
+      \item \textbf{Shape operator (Weingarten map)}:\\
+        \( \left[ S \right]^{i}_{j} = g^{ik}h_{kj} = -\left[ \nabla_{\Gamma}\vec{N}\right]^{i} \cdot \partial_{j}\vec{X}
+                                    = -\left[\nabla_{\Gamma}\vec{N}\right]^{i}_{j} \)
+      \item \( \left[S(\vec{v})\right]_{i} = -\left[ \nabla_{\vec{v}}\vec{N}\right]_{i} = v^{j}h_{ij} \)
+      \item \( S^{T}\alpha = \alpha S =  S(\alpha^{\sharp})   \)
+    \end{itemize}
 
     \subsection{Conclusions}
     \(  \vec{v} := v^{1}\partial_{1} + v^{2}\partial_{2}\in\mathcal{V}(M) \)
     \begin{itemize}
+      \item \( \text{Grad}f = \nabla_{\Gamma}f = \nabla^{\sharp}f = \left( \exd f \right)^{\sharp} \)\\
+            \( \left[  \text{Grad}f \right]^{i} = \nabla^{i}f =g^{ij}\nabla_{j} f = g^{ij}\partial_{j}f \)
       \item \(
         \begin{aligned}[t]
-            \text{Div}\vec{v} &= -\delta\vecflat{v} = *\exd * \vecflat{v}&\\
-                                 &= \sum_{i=1,2} \frac{1}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} v^{i}&\\
-                                 &= \sum_{i=1,2} \frac{v^{i}}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} + \partial_{i}v^{i}
-        \end{aligned}\)
+            \text{Div}\vec{v} &= -\delta\vecflat{v} = *\exd * \vecflat{v} = \nabla_{i}v^{i}
+                               = \partial_{i}v^{i} + v^{k}\Gamma_{ik}^{i} 
+                               = \partial_{i}v^{i} + v^{k}\partial_{k}\log\sqrt{|g|}\\
+                                 &= \sum_{i=1,2} \frac{1}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} v^{i}
+                                 = \sum_{i=1,2} \frac{v^{i}}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} + \partial_{i}v^{i}
+        \end{aligned}\)\\
+      \item
+        \( \text{Div} (f\vec{v}) = f\text{Div}\vec{v} + \nabla_{\vec{v}}f = f\nabla_{i}v^{i} + v^{i}\nabla_{i}f  \)
+      \item 
+        \( \Delta_{B}f = -\delta\exd f = *\exd *\exd f = \text{Div}\text{Grad}f = \nabla_{i}\nabla^{i} f
+                      = \frac{1}{\sqrt{|g|}}\partial_{j}\left( g^{ij}\sqrt{|g|}\partial_{i}f \right) \)
+    \end{itemize}
+
+    \subsection{Moving Surfaces}
+    \(  \vec{V} := \vec{v} +v_{n}\vec{N} \) (surface velocity), \( \vec{X}:M\rightarrow E^{3} \) (parametrization)
+    \begin{itemize}
+      \item \( \partial_{i}\vec{V}\cdot\partial_{j}\vec{X} = g_{jk}\nabla_{i}v^{k} - v_{n}h_{ij} 
+                                                     = \left[\left( \nabla\vec{v} - v_{n}S \right)^{\flat}\right]_{ij}\)
+      \item \( 
+          \begin{aligned}[t]
+          \frac{1}{2} \frac{d}{dt} \left\| \alpha \right\|^{2} 
+                &= \left\langle \dot{\alpha} + v_{n}S^{T}\alpha - (\nabla\vec{v})^{T}\alpha , \alpha \right\rangle
+                = \dot{\alpha}\alpha^{\sharp} + \alpha \left( v_{n} S - \nabla\vec{v}\right) \alpha^{\sharp} \\
+                &= \dot{\alpha}_{i}\alpha^{i} + v_{n}\alpha_{i}h^{i}_{j}\alpha^{j} - \alpha_{i}\left( \nabla_{j}v^{i} \right)\alpha^{j}
+          \end{aligned}\)
+                
     \end{itemize}
         
   
