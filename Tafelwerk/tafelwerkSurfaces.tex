@@ -7,12 +7,15 @@
 \usepackage{amssymb}
 
 \newcommand{\exd}{\mathbf{d}}
+\newcommand{\Div}{\text{Div}}
+\newcommand{\Rot}{\text{Rot}}
 \newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
 \renewcommand{\i}{\mathbf{i}}
 \renewcommand{\L}{\mathbf{\mathcal{L}}}
 
 
 \begin{document}
+\hoffset = -30pt
 
   \section{Arbitrary s.p.d. metric}
     \subsection{Assumptions}
@@ -73,7 +76,9 @@
           \item  \( \L_{f\vec{v}}\alpha = f\L_{\vec{v}}\alpha + \exd f\wedge\i_{\vec{v}}\alpha\)
           \item \( \L_{\vec{v}}\left( \alpha\wedge\beta \right) = \L_{\vec{v}}\alpha\wedge\beta + \alpha\wedge\L_{\vec{v}}\beta\)
           \item \(\L_{\vec{v}}\exd\alpha = \exd\L_{\vec{v}}\alpha \)
-          \item \(\L_{\vec{v}}\i_{\vec{v}}\alpha = \i_{\vec{v}}\L_{\vec{v}}\alpha \)
+          \item \(\L_{\vec{v}}\i_{\vec{v}}\alpha = \i_{\vec{v}}\L_{\vec{v}}\alpha \)\\
+                \( \Rightarrow \alpha\in\Omega^{1}(M):\ \L_{\vec{v}} \left\langle \vecflat{v}, \alpha \right\rangle  
+                                                          = \left\langle \vecflat{v}, \L_{\vec{v}}\alpha \right\rangle\)
           \item \( \L_{\vec{v}}\vec{w} = \left[ \vec{v} , \vec{w} \right] = \nabla_{\vec{v}}\vec{w} - \nabla_{\vec{w}}\vec{v}\)
           (\textbf{(Levi-Civita-)Conection \( \nabla \) is Torsion-free})
         \end{itemize}
@@ -148,13 +153,21 @@
            (\textbf{Ricci})
        \end{itemize}
 
-    \subsection{Levi-Civita-Connection (Contravariant Derivative)}
+    \subsection{Levi-Civita-Connection (co-/contravariant derivatives)}
       \begin{itemize}
         \item \( \Gamma_{ij}^{k} = g^{kl}\Gamma_{ijl} = \frac{1}{2}g^{kl}
               \left( \partial_{i}g_{jl} + \partial_{j}g_{il} - \partial_{l}g_{ij} \right) \)
            (\textbf{Christoffel symbols})
         \item \( \nabla_{j}v^{i} = v^{i}_{;j} = v^{i}_{|j} = \partial_{j}v^{i} + v^{k}\Gamma_{jk}^{i} \)
         \item \( \nabla \vec{v} := \left[ \nabla_{j}v^{i} \right]^{i}_{j} \)
+        \item \( \left[ \nabla\vecflat{v} \right]_{ji} 
+                      = \left[ \left(\nabla\vec{v}\right)g \right]_{ji}
+                      = \nabla_{j}v_{i} = v_{i;j} = v_{i|j} = \partial_{j}v_{i} - v_{k}\Gamma_{ij}^{k} 
+                      = g_{il}\nabla_{j}v^{l}\)
+        \item \( \left[ \nabla^{\sharp}\vecflat{v} \right]_{i}^{j} 
+                      = \left[ g^{-1}\left(\nabla\vec{v}\right)g \right]_{i}^{j}
+                      = \nabla^{j}v_{i} = v_{i}^{;j} = v_{i}^{|j} 
+                      = g^{jk}g_{il}\nabla_{k}v^{l}\)
         \item \( \nabla_{i}f = \left[ \nabla f \right]_{i} = \partial_{i}f \)
         \item \( \nabla_{\vec{v}}f = \L_{\vec{v}}f= \left\langle \vec{v}, \nabla_{\Gamma}f \right\rangle
                   = (\exd f)(\vec{v}) = v^{i}\nabla_{i}f = v^{i}\partial_{i}f \)
@@ -169,6 +182,8 @@
       \item \textbf{Shape operator (Weingarten map)}:\\
         \( \left[ S \right]^{i}_{j} = g^{ik}h_{kj} = -\left[ \nabla_{\Gamma}\vec{N}\right]^{i} \cdot \partial_{j}\vec{X}
                                     = -\left[\nabla_{\Gamma}\vec{N}\right]^{i}_{j} \)
+      \item \textbf{Inverse of second fundamental form}: \\
+        \( b^{ij} = \left[ I\!I^{-1}\right]^{ij} = \frac{1}{|g|K}\left[ I\!I^{\text{Adj}}\right]^{ij} \)
       \item \( \left[S(\vec{v})\right]_{i} = -\left[ \nabla_{\vec{v}}\vec{N}\right]_{i} = v^{j}h_{ij} \)
       \item \( S^{T}\alpha = \alpha S =  S(\alpha^{\sharp})   \)
     \end{itemize}
@@ -187,17 +202,67 @@
                                  = \sum_{i=1,2} \frac{v^{i}}{\sqrt{|g|}}\partial_{i} \sqrt{|g|} + \partial_{i}v^{i}
         \end{aligned}\)\\
       \item
+        \( \delta\left( f\alpha \right) = f\delta\alpha - \left\langle \exd f , \alpha \right\rangle \)
+      \item
         \( \text{Div} (f\vec{v}) = f\text{Div}\vec{v} + \nabla_{\vec{v}}f = f\nabla_{i}v^{i} + v^{i}\nabla_{i}f  \)
-      \item 
+      \item \textbf{Laplace-Beltrami operator}:\\
         \( \Delta_{B}f = -\delta\exd f = *\exd *\exd f = \text{Div}\text{Grad}f = \nabla_{i}\nabla^{i} f
                       = \frac{1}{\sqrt{|g|}}\partial_{j}\left( g^{ij}\sqrt{|g|}\partial_{i}f \right) \)
+      \item \textbf{Laplace-de Rham operator}:\\
+        \( \Delta_{dR}\alpha = \left( \delta\exd + \exd\delta \right)\alpha =:  -\left( \Delta_{B} + \Delta_{CB} \right)\alpha \)\\
+        \( \Delta_{dR}\vec{v} = \left( \Delta_{dR}\vecflat{v} \right)^{\sharp} \)
+      \item \textbf{Giaquinta-Hildebrandt operator}:\\
+        \( \Delta_{GH}f = \Box f = \text{Div}\left( K II^{-1} \exd f \right)
+                                = -\delta\left( KS^{-T}\exd f \right)
+                                = \frac{1}{\sqrt{|g|}}\partial_{j}\left( \sqrt{|g|}K b^{ij}\partial_{i}f \right)\)
+      \item 
+        \( -\delta\left( S^{T}\alpha \right) = -H\Div \alpha^{\sharp} - \Div\left(  K II^{-1} \alpha \right) - \nabla_{\alpha^{\sharp}}H
+                            = H\delta\alpha + \delta\left( KS^{-T}\alpha \right) - \left\langle \alpha , \exd H \right\rangle\) 
+        \( -\delta\left( S^{T}\exd f \right) = -H\Delta_{B}f - \Delta_{GH}f - \left\langle \exd H , \exd f \right\rangle \)
     \end{itemize}
 
-    \subsection{Moving Surfaces}
-    \(  \vec{V} := \vec{v} +v_{n}\vec{N} \) (surface velocity), \( \vec{X}:M\rightarrow E^{3} \) (parametrization)
+    \subsection{Moving Surfaces \( M(t) \)}
+    \(  \vec{V} := \vec{v} +v_{n}\vec{N} = \partial_{t}\vec{X} \) (surface velocity), \( \vec{X}:M\rightarrow E^{3} \) (parametrization)
     \begin{itemize}
       \item \( \partial_{i}\vec{V}\cdot\partial_{j}\vec{X} = g_{jk}\nabla_{i}v^{k} - v_{n}h_{ij} 
                                                      = \left[\left( \nabla\vec{v} - v_{n}S \right)^{\flat}\right]_{ij}\)
+      \item (rate-of-deformation tensor \( \pmb{d} \))\\
+        \(\begin{aligned}[t]
+            \frac{d}{dt}g &= \left( \nabla\vecflat{v} \right) + \left( \nabla\vecflat{v} \right)^{T} - 2v_{n}I\!I 
+                          = \L_{\vec{V}}g = 2 \pmb{d}\\
+            \frac{d}{dt}g_{ij} &= g_{ik}\nabla_{j}v^{k} + g_{jk}\nabla_{i}v^{k} - 2v_{n}h_{ij} = 2 d_{ij}
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \left\langle \frac{d}{dt}\vecflat{p} , \alpha \right\rangle
+                &= \dot{\vec{p}}\alpha + 2\vec{p}\pmb{d}\alpha^{\sharp}
+                = \dot{\vec{p}}\alpha + \vec{p}\left( \left(\nabla\vec{v}\right)^{T} + \left(\nabla^{\sharp}\vecflat{v}\right) 
+                       - 2*v_{n}S^{T} \right)\alpha \\
+                &= \dot{p}^{i}\alpha_{i} + p^{j}\left( \nabla_{j}v^{i} + \nabla^{i}v_{j} - 2v_{n}h^{i}_{j}\right)\alpha_{i}
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+             \frac{d}{dt}\alpha^{\sharp} &= \left[ \dot{\alpha} 
+                            + \left( 2v_{n}S^{T} 
+                            - \left( \nabla\vec{v} \right)^{T} 
+                            - \left( \nabla^{\sharp}\vecflat{v} \right) \right)\alpha \right]^{\sharp}         
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}*\omega = *\left[ \dot{\omega}  - \left( \Div\vec{v} + v_{n}H \right)\omega\right]
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}*\vecflat{p} = *\left[ \dot{\vec{p}}  + \left( \Div\vec{v} + v_{n}H \right)\vec{p}\right]^{\flat}
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}*\alpha = *\left[ \dot{\alpha} 
+                                          + \left( 2v_{n}S^{T} 
+                                                - \left( \nabla\vec{v} \right)^{T} 
+                                                - \left( \nabla^{\sharp}\vecflat{v} \right) \right)\alpha
+                                          + \left( \Div\vec{v} + v_{n}H \right)\alpha\right]
+          \end{aligned}\)
       \item \( 
           \begin{aligned}[t]
           \frac{1}{2} \frac{d}{dt} \left\| \alpha \right\|^{2} 
@@ -205,7 +270,101 @@
                 = \dot{\alpha}\alpha^{\sharp} + \alpha \left( v_{n} S - \nabla\vec{v}\right) \alpha^{\sharp} \\
                 &= \dot{\alpha}_{i}\alpha^{i} + v_{n}\alpha_{i}h^{i}_{j}\alpha^{j} - \alpha_{i}\left( \nabla_{j}v^{i} \right)\alpha^{j}
           \end{aligned}\)
-                
+      \item
+        \(\begin{aligned}[t]
+            \frac{1}{2} \frac{d}{dt} \left\| \omega \right\|^{2} &= \frac{1}{2} \frac{d}{dt} \left( *\omega \right)^{2}
+                     = \left\langle \dot\omega , \omega \right\rangle - \left( \Div\vec{v} + v_{n}H \right) \left\| \omega \right\|^{2} 
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{1}{2} \frac{d}{dt} \left\| \delta\alpha \right\|^{2} 
+                  &= \left\langle \delta\left[ \dot{\alpha} 
+                                          + \left( 2v_{n}S^{T} 
+                                                - \left( \nabla\vec{v} \right)^{T} 
+                                                - \left( \nabla^{\sharp}\vecflat{v} \right) \right)\alpha
+                                          + \left( \Div\vec{v} + v_{n}H \right)\alpha 
+                                            \right] 
+                                 , \delta\alpha\right\rangle
+                     - \left( \Div\vec{v} + v_{n}H \right) \left\| \delta\alpha \right\|^{2}
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{1}{2} \frac{d}{dt} \left\| \delta\vecflat{p} \right\|^{2} 
+                  &= \left\langle \delta\left[ \dot{\vec{p}} 
+                                          + \left( \Div\vec{v} + v_{n}H \right)\vec{p} 
+                                            \right]^{\flat}
+                                 , \delta\vecflat{p}\right\rangle
+                     - \left( \Div\vec{v} + v_{n}H \right) \left\| \delta\vecflat{p} \right\|^{2}
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}\int_{M(t)} f \mu = \int_{M(t)} \dot{f} + f\left( \Div\vec{v} + v_{n}H \right) \mu
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+              \frac{d}{dt}\int_{M(t)} \frac{1}{2} \left\| \alpha \right\|^{2} \mu
+                  = \int_{M(t)} \left\langle \dot\alpha, \alpha \right\rangle
+                                + v_{n}\left\langle S^{T}\alpha + \frac{1}{2}H\alpha, \alpha \right\rangle
+                                + \left\langle \frac{1}{2}\left(\Div\vec{v}\right)\alpha - (\nabla\vec{v})^{T}\alpha , \alpha \right\rangle
+                    \mu
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}\int_{M(t)} \frac{1}{2} \left\| \omega \right\|^{2} \mu
+                &= \int_{M(t)} \left\langle \dot\omega , \omega \right\rangle 
+                            - \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right) \left\| \omega \right\|^{2} \mu \\
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}\int_{M(t)} \frac{1}{2} \left\| \exd\vecflat{p} \right\|^{2} \mu
+                &= \int_{M(t)} \left\langle\frac{d}{dt}\vecflat{p}, \delta\exd\vecflat{p}\right\rangle
+                            - \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right) \left\| \exd\vecflat{p} \right\|^{2} \mu \\
+                &= \int_{M(t)} \dot{\vec{p}}\delta\exd\vecflat{p} 
+                      + \vec{p}\left( \left(\nabla\vec{v}\right)^{T} + \left(\nabla^{\sharp}\vecflat{v}\right) 
+                       - 2v_{n}S^{T} \right)\delta\exd\vecflat{p}\\
+                &\hspace{1cm}            - \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right) \left\| \exd\vecflat{p} \right\|^{2} \mu \\
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}\int_{M(t)} \frac{1}{2} \left\| \delta\vecflat{p} \right\|^{2} \mu
+                &= \int_{M(t)}\left\langle\frac{d}{dt}\vecflat{p}, \exd\delta\vecflat{p}\right\rangle
+                  + \left\langle \left( 2v_{n}S^{T} - \left(\nabla\vec{v}\right)^{T} - \left(\nabla^{\sharp}\vecflat{v}\right)\right)\vecflat{p}
+                                  , \exd\delta\vecflat{p} \right\rangle
+                  \\&\hspace{1cm}  
+                  + \left\langle \left( \Div\vec{v} + v_{n}H \right)\vecflat{p} , \exd\delta\vecflat{p} \right\rangle
+                  - \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right)\left\| \delta\vecflat{p} \right\|^{2} \mu \\
+                &=  \int_{M(t)} \dot{\vec{p}}\exd\delta\vecflat{p}
+                      + \left( \Div\vec{v} + v_{n}H \right)\vec{p}\exd\delta\vecflat{p}
+                      - \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right)\left\| \delta\vecflat{p} \right\|^{2} \mu 
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \frac{d}{dt}\int_{M(t)} \frac{1}{2}\left( \left\| \exd\vecflat{p} \right\|^{2} + \left\| \delta\vecflat{p} \right\|^{2} \right)\mu
+                &=  \frac{d}{dt}\int_{M(t)} \frac{1}{2}\left( \left\| \Rot\vec{p} \right\|^{2} 
+                                                            + \left\| \Div\vec{p} \right\|^{2} \right)\mu \\
+                &= \int_{M(t)} \left\langle\frac{d}{dt}\vecflat{p}, \Delta_{dR}\vecflat{p}\right\rangle 
+                    - \frac{\Div\vec{v} + v_{n}H}{2}\left( \left\| \exd\vecflat{p} \right\|^{2} + \left\| \delta\vecflat{p} \right\|^{2}  \right)
+                \\&\hspace{1cm}
+                  + \left\langle \left( \Div\vec{v} + v_{n}H \right)\vecflat{p} , \exd\delta\vecflat{p} \right\rangle
+                \\&\hspace{1cm}
+                  - \left\langle \left(\left(\nabla\vec{v}\right)^{T} + \left(\nabla^{\sharp}\vecflat{v}\right) - 2v_{n}S^{T}\right)\vecflat{p}
+                                  , \exd\delta\vecflat{p} \right\rangle \mu\\
+                &= \int_{M(t)} \left\langle \dot{\vec{p}}, \Delta_{dR}\vec{p}\right\rangle 
+                    - \frac{\Div\vec{v} + v_{n}H}{2}\left( \left\| \Rot\vec{p} \right\|^{2} 
+                                                            + \left\| \Div\vec{p} \right\|^{2}  \right)
+                \\&\hspace{1cm}
+                  +  \left( \Div\vec{v} + v_{n}H \right)\vec{p} \exd\delta\vecflat{p}
+                \\&\hspace{1cm}
+                  + \vec{p}\left(\left(\nabla\vec{v}\right)^{T} + \left(\nabla^{\sharp}\vecflat{v}\right) - 2v_{n}S^{T}\right)\delta\exd\vecflat{p} \mu\\
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+            \int_{M(t)} \left\langle \left( \Div\vec{v} + v_{n}H \right)\vecflat{p} , \exd\delta\vecflat{p} \right\rangle
+                  - \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right)\left\| \delta\vecflat{p} \right\|^{2} \mu &\\
+              &\hspace{-7cm} = \int_{M(t)} \L_{\vec{p}}\left\langle \vecflat{p}, \exd\delta\vecflat{v} + \exd\left( v_{v}H \right) \right\rangle
+                                    + \frac{1}{2}\left( \Div\vec{v} + v_{n}H \right)\left\| \delta\vecflat{p} \right\|^{2}\mu
+          \end{aligned}\)
+
     \end{itemize}
         
   

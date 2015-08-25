@@ -55,6 +55,7 @@ DotForm1::usage = "Dot product of 1-forms";
 
 CoDVecVec11::usage = "Covariant Directional Derivative \!\(\*SubscriptBox[\(\[Del]\), \(U\)]\)V";
 CoDVec1::usage = "Covariant Derivative of a vector"
+CoDForm1::usage = "Covariant Derivative of a 1-form"
 
 L2Prod0::usage = "L2 Product of 0-forms";
 L2Prod1::usage = "L2 Product of 1-forms";
@@ -134,6 +135,14 @@ CoDVec1[vec_,x_,y_,g_] :=
 	Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
 				Table[Sum[vec[[j]]*ch2[[i,j,k]],{j,2}]
 						+ D[vec[[k]],var[[i]]],
+					  {k,2},{i,2}
+				]
+		]
+
+CoDForm1[alpha_,x_,y_,g_] :=
+	Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
+				Table[-Sum[alpha[[j]]*ch2[[i,k,j]],{j,2}]
+						+ D[alpha[[k]],var[[i]]],
 					  {k,2},{i,2}
 				]
 		]
