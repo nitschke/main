@@ -15,7 +15,7 @@
 
 
 \begin{document}
-\hoffset = -30pt
+\hoffset = -50pt
 
   \section{Arbitrary s.p.d. metric}
     \subsection{Assumptions}
@@ -159,13 +159,13 @@
               \left( \partial_{i}g_{jl} + \partial_{j}g_{il} - \partial_{l}g_{ij} \right) \)
            (\textbf{Christoffel symbols})
         \item \( \nabla_{j}v^{i} = v^{i}_{;j} = v^{i}_{|j} = \partial_{j}v^{i} + v^{k}\Gamma_{jk}^{i} \)
-        \item \( \nabla \vec{v} := \left[ \nabla_{j}v^{i} \right]^{i}_{j} \)
-        \item \( \left[ \nabla\vecflat{v} \right]_{ji} 
-                      = \left[ \left(\nabla\vec{v}\right)g \right]_{ji}
+        \item \( \nabla \vec{v} := \left[ \nabla_{j}v^{i} \right]^{i}_{\ j} \)
+        \item \( \left[ \nabla\vecflat{v} \right]_{ij} 
+                      = \left[ g\left(\nabla\vec{v}\right) \right]_{ij}
                       = \nabla_{j}v_{i} = v_{i;j} = v_{i|j} = \partial_{j}v_{i} - v_{k}\Gamma_{ij}^{k} 
                       = g_{il}\nabla_{j}v^{l}\)
-        \item \( \left[ \nabla^{\sharp}\vecflat{v} \right]_{i}^{j} 
-                      = \left[ g^{-1}\left(\nabla\vec{v}\right)g \right]_{i}^{j}
+        \item \( \left[ \nabla^{\sharp}\vecflat{v} \right]_{i}^{\ j} 
+                      = \left[ g\left(\nabla\vec{v}\right)g^{-1} \right]_{i}^{j}
                       = \nabla^{j}v_{i} = v_{i}^{;j} = v_{i}^{|j} 
                       = g^{jk}g_{il}\nabla_{k}v^{l}\)
         \item \( \nabla_{i}f = \left[ \nabla f \right]_{i} = \partial_{i}f \)
@@ -356,6 +356,22 @@
                   +  \left( \Div\vec{v} + v_{n}H \right)\vec{p} \exd\delta\vecflat{p}
                 \\&\hspace{1cm}
                   + \vec{p}\left(\left(\nabla\vec{v}\right)^{T} + \left(\nabla^{\sharp}\vecflat{v}\right) - 2v_{n}S^{T}\right)\delta\exd\vecflat{p} \mu\\
+          \end{aligned}\)
+      \item
+        \(\begin{aligned}[t]
+             \frac{d}{dt}\int_{M(t)} \frac{1}{4}\left( \left\| \vec{p} \right\|^{2} - 1 \right)^{2} \mu
+                  &= \int_{M(t)}  \left( \left\| \vecflat{p} \right\|^{2} - 1 \right) \left[
+                      \left\langle\frac{d}{dt}\vecflat{p}, \vecflat{p}\right\rangle 
+                      +\left\langle \left( v_{n}S^{T} - \left(\nabla\vec{v}\right)^{T}\right)\vecflat{p}, \vecflat{p}\right\rangle 
+                  \right. \\&\hspace{5cm} \left. 
+                      + \frac{1}{4}\left( \left\| \vecflat{p} \right\|^{2} - 1 \right)
+                            \left( \Div\vec{v} + v_{n}H \right) \right] \mu\\
+                  &= \int_{M(t)} \left( \left\| \vecflat{p} \right\|^{2} - 1 \right) \left[
+                      \left\langle \dot{\vec{p}}, \vec{p} \right\rangle
+                      + \left\langle \left(\left(\nabla^{\sharp}\vecflat{v}\right)^{T} - v_{n}S\right)\vec{p}, \vec{p} \right\rangle
+                      \right. \\&\hspace{5cm} \left. 
+                      + \frac{1}{4}\left( \left\| \vec{p} \right\|^{2} - 1 \right)
+                            \left( \Div\vec{v} + v_{n}H \right)\right] \mu
           \end{aligned}\)
       \item
         \(\begin{aligned}[t]
