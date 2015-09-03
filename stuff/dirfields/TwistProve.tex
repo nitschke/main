@@ -1,0 +1,53 @@
+\documentclass{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\Div}{\text{Div}}
+\newcommand{\Rot}{\text{Rot}}
+\newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+\renewcommand{\i}{\mathbf{i}}
+\renewcommand{\L}{\mathbf{\mathcal{L}}}
+
+
+\begin{document}
+
+Frank-Oseen energy density:
+\begin{align}
+  e[\vec{p}] = \frac{K_{0}}{2}\left( \left\| \Rot\vec{p} \right\|^{2} +  \left\| \Div\vec{p} \right\|^{2}\right)
+\end{align}
+with \( \left\| \vec{p} \right\| = 1 \).
+
+\( *\vec{p} := \left( *\vecflat{p} \right)^{\sharp} \) is the Hodge dual of \( \vec{p} \), i.e. \( \vec{p}\bot (*\vec{p}) \) 
+and  \(\left\| *\vec{p} \right\| = \left\| \vec{p} \right\| = 1 \).
+\begin{align}
+  \vec{q} := \cos\phi\vec{p} + \sin\phi (*\vec{p})
+\end{align}
+is a length preserving linear combination of the orthonormal system  \( \left\{\vec{p}, *\vec{p}\right\} \), i.e. \( \left\| \vec{q} \right\| = 1 \),
+with a (space-)constant rotation angle \( \phi \), i.e. \( \exd\phi=0 \).
+Straight forward calculations implies
+\begin{align}
+   \left\| \Rot (*\vec{p}) \right\| &=  \left\| *\exd*\vecflat{p} \right\| = \left\| \Div\vec{p} \right\|\\
+   \left\| \Div (*\vec{p}) \right\| &= \left\| *\exd**\vecflat{p}  \right\| = \left\| *\exd\vecflat{p}  \right\| = \left\|\Rot\vec{p}\right\|\\ 
+   \left\| \Rot\vec{q} \right\|^{2} &= \left\| *\exd\vecflat{q} \right\|^{2} = \left\| \exd\vecflat{q} \right\|^{2} \\
+                                    &=  \cos^{2}\phi\left\| \Rot\vec{p} \right\|^{2} 
+                                      + \sin^{2}\phi\left\| \Div\vec{p} \right\|^{2}
+                                      + 2\cos\phi\sin\phi\left\langle \exd\vecflat{p}, \exd * \vecflat{p} \right\rangle\\
+  \left\| \Div\vec{q} \right\|^{2} &= \left\| *\exd*\vecflat{q} \right\|^{2} = \left\| \exd*\vecflat{q} \right\|^{2}\\
+                                   &= \cos^{2}\phi\left\| \Div\vec{p} \right\|^{2} 
+                                      + \sin^{2}\phi\left\| \Rot\vec{p} \right\|^{2}
+                                      - 2\cos\phi\sin\phi\left\langle \exd\vecflat{p}, \exd * \vecflat{p} \right\rangle
+\end{align}
+Finally we get
+\begin{align}
+  e[\vec{q}] = \frac{K_{0}}{2}\left( \left\| \Rot\vec{q} \right\|^{2} +  \left\| \Div\vec{q} \right\|^{2}\right)
+             = \frac{K_{0}}{2}\left( \left\| \Rot\vec{p} \right\|^{2} +  \left\| \Div\vec{p} \right\|^{2}\right)
+             = e[\vec{p}]
+\end{align}
+
+  
+\end{document}

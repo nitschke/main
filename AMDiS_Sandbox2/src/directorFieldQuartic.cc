@@ -2,10 +2,44 @@
 #include <fstream>
 #include "Dec.h"
 #include "ExtremeValueTracker.h"
+#include "phiProjection.h"
+
 
 using namespace std;
 using namespace AMDiS;
 using namespace dec;
+
+class Phi : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  Phi() : AbstractFunction<double, WorldVector<double> >() {}
+
+  double operator()(const WorldVector<double>& x) const 
+  {
+    double z2 = x[2] * x[2];
+    double xMz2 = x[0] - z2;
+    double yMz2 = x[1] - z2;
+    return 0.5 * (xMz2 * xMz2 + yMz2 * yMz2 + z2 - 1.0);
+  }
+};
+
+class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {}
+
+  WorldVector<double> operator()(const WorldVector<double>& x) const 
+  {
+    WorldVector<double> rval(x);
+    double z2 = x[2] * x[2];
+    rval[0] -= z2;
+    rval[1] -= z2;
+    rval[2] += 2.0 * x[2]* (2.0 * z2 - x[0] - x[1]);
+    return rval;
+  }
+};
+
+
 
 class Michael : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
 
@@ -43,8 +77,6 @@ private:
   double l;
 };
 
-
-// Twist linear form angle 0 to pi/2
 class Twist : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
 
 public:
@@ -69,31 +101,6 @@ public:
     return r;
   }
 };
-
-// twist pi/4
-class TwistQP : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
-
-public:
-  TwistQP() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {}
-
-  WorldVector<double> operator()(const WorldVector<double>& coords) const {
-    double x = coords[0];
-    double y = coords[1];
-    double z = coords[2];
-    WorldVector<double> r;
-    double eps = 1.E-6;
-    if (abs(z) < 1.0 - eps) {
-      double t1 = 1.0 / sqrt(2.0 - 2.0*z*z);
-      r[0] = (x*z - y) * t1;
-      r[1] = (y*z + x) * t1;
-      r[2] = (z*z - 1.0) * t1;
-    } else {
-      r = 0;
-    }
-    return r;
-  }
-};
-
 
 
 //length of resulting vec depends on the local edge metric
@@ -371,9 +378,7 @@ int main(int argc, char* argv[])
   AMDiS::init(argc, argv);
 
   // ===== create projection =====
-  WorldVector<double> ballCenter;
-  ballCenter.set(0.0);
-  new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
+  new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-8);
 
   // ===== create and init the scalar problem ===== 
   ProblemStat sphere("sphere");
@@ -390,13 +395,13 @@ int main(int argc, char* argv[])
   //dxyz.writeSharpFile("output/dxyzSharp.vtu", &sphere);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(43);
+  Noise_d noiseFun(42);
   //initSol.set(&noiseFun, new Noise_d(43,-1./3.));
-  //initSol.set(&noiseFun);
+  initSol.set(&noiseFun);
   //initSol.set(new DZ2_d());
   //initSol.bakeDual();
   //initSol.interpol(new Michael(0.01));
-  initSol.interpol(new TwistQP());
+  //initSol.interpol(new Twist());
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 
@@ -522,7 +527,7 @@ int main(int argc, char* argv[])
   decSphere.addVectorOperator(DtDual, 1, sphereInstat.getInvTauPtr());
 
   //EdgeOperator K;
-  //K.addTerm(new IdentityAtEdges(1.0));
+  //K.addTerm(new IdentityAtEdges(-1.0));
   //decSphere.addMatrixOperator(K, 0, 0);
   //decSphere.addMatrixOperator(K, 1, 1);
 
