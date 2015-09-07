@@ -7,6 +7,8 @@ MetricFromPara::usage = "Metric from parametricmap {x[u,v],y[u,v],z[u,v]}";
 GlobalVecFromPara::usage = "Global (x,y,z)-Vector of a given local (u,v)-Tangentialvector from parametrisation";
 LocalVecFromPara::usage = "Local (u,v)-Vector (tangential part) of a given (x,y,z)-Vector from parametrisation";
 
+GlobalTensorFromPara::usage = "give the global (euclidian) representation of a local tensor";
+
 Wedge11::usage = "Wedge product of two 1-forms";
 
 ExD0::usage = "Exterior derivativ of a 0-form";
@@ -54,8 +56,8 @@ Inner2::usage = "Contraction of a 2-form";
 DotForm1::usage = "Dot product of 1-forms";
 
 CoDVecVec11::usage = "Covariant Directional Derivative \!\(\*SubscriptBox[\(\[Del]\), \(U\)]\)V";
-CoDVec1::usage = "Covariant Derivative of a vector"
-CoDForm1::usage = "Covariant Derivative of a 1-form"
+CoDVec1::usage = "Covariant Derivative of a vector";
+CoDForm1::usage = "Covariant Derivative of a 1-form";
 
 L2Prod0::usage = "L2 Product of 0-forms";
 L2Prod1::usage = "L2 Product of 1-forms";
@@ -73,6 +75,9 @@ MetricFromPara[paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, Out
 GlobalVecFromPara[locVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, locVec[[1]]Dx + locVec[[2]]Dy]
 LocalVecFromPara[globVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, 
 										          Sharp1[{globVec.Dx, globVec.Dy},Outer[Dot,{Dx,Dy},{Dx,Dy},1]]]
+
+GlobalTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}},
+					Sum[locT[[i,j]]*Outer[Times,DX[[i]],DX[[j]]],{i,2},{j,2}]]
 
 Wedge11[alpha_,beta_] := {{alpha[[1]]*beta[[2]] - alpha[[2]]*beta[[1]]}}
 
@@ -158,6 +163,9 @@ ChristoffelSecondKind[x_,y_,g_] := Module[{gInv=Inverse[g], ch1=ChristoffelFirst
 End[]
 
 EndPackage[]
+
+
+
 
 
 
