@@ -1,0 +1,59 @@
+\documentclass{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{dsfont}
+
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\excod}{\exd^{*}} %or \delta
+\newcommand{\Div}{\text{Div}}
+\newcommand{\Rot}{\text{Rot}}
+
+\newcommand{\R}{\mathds{R}}
+
+
+% IDENTIFIERS for math mode:
+
+%surface (manifold) -> M, S, \Omega 
+\newcommand{\M}{M}
+%volume element (volume measure) -> \mu, dA, d\Omega
+\newcommand{\dA}{dA}
+%director field (contra-vector)
+\newcommand{\p}{\mathbf{p}}
+%director field (co-vector, flat of contra-vector)
+\newcommand{\pfl}{\mathbf{p}^{\flat}}
+
+
+
+\begin{document}
+
+\section{Frank Oseen Energy}
+
+In \( \R^{3} \):
+\begin{align}\label{eqFO1}
+  E = \frac{1}{2}\int_{\Omega} K_{1}\left( \nabla\cdot\p \right)^{2} 
+                        + K_{2}\left( \p\cdot\left[ \nabla\times\p \right] \right)^{2}
+                        + K_{3}\left\| \p\times\left[ \nabla\times\p \right] \right\|^{2} dV
+\end{align}
+With the Langrange identity for the \( K_{3} \)-term, we cann rewrite \eqref{eqFO1} to
+\begin{align}\label{eqFO2}
+  E = \frac{1}{2}\int_{\Omega} K_{1}\left( \nabla\cdot\p \right)^{2} 
+                        + (K_{2}-K_{3})\left( \p\cdot\left[ \nabla\times\p \right] \right)^{2}
+                        + K_{3}\left\| \p \right\|^{2}\left\| \nabla\times\p \right\|^{2} dV
+\end{align}
+If we restrict \eqref{eqFO2} to a 2-dimensional Manifold \( \M\subset\Omega \) 
+and postulate that \( \p\in T_{X}\M \) is a normalized tangential vector in \( X\in\M \), we get
+\begin{align}
+  E = \frac{1}{2} \int_{\M} K_{1}\left( \Div\p \right)^{2} + K_{3}\left( \Rot \p \right)^{2} \dA 
+\end{align}
+In terms of exterior calculus with the corresponding 1-form \( \pfl\in\Lambda^{1}(M) \), we obtain
+\begin{align}
+  E = \frac{1}{2} \int_{\M} K_{1}\left( \excod\p \right)^{2} + K_{3}\left( \exd \p \right)^{2} \dA
+\end{align}
+where \( \excod := -* \exd * \) is the \( L^{2} \)-orthogonal operator of the exterior derivative \( \exd \). 
+  
+\end{document}

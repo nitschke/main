@@ -82,7 +82,7 @@ public:
   // - d * delta = grad * div
   DofEdgeVector laplaceCoBeltrami();
 
-  DOFVector<double> divergence();
+  DOFVector<double> divergence() const;
 
   // l2-Norm -> L2-Norm on K^(1)
   double l2Norm() {
@@ -258,7 +258,7 @@ public:
       DofEdgeVector(edgeMesh_, name_), edgeDualVals(edgeMesh->getNumberOfEdges()), isP(true) {}
 
   DofEdgeVectorPD(const DofEdgeVector &primal, const DofEdgeVector &dual) 
-      : DofEdgeVector(primal), edgeDualVals(*dual.getEdgeVector()) {}
+      : DofEdgeVector(primal), edgeDualVals(*dual.getEdgeVector()), isP(true) {}
 
   bool isPrimal() {
     return isP;

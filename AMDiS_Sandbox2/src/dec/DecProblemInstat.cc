@@ -85,10 +85,10 @@ void DecProblemInstat::updateUhOlds() {
   }
 }
 
-void DecProblemInstat::updateUhOlds_EdgeOperators(list<DecOperator*> &ops, int i) {
+void DecProblemInstat::updateUhOlds_EdgeOperators(list<pair<DecOperator*, double*> > &ops, int i) {
   FUNCNAME("DecProblemInstat::updateUhOlds_EdgeOperators");
-  for (list<DecOperator*>::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
-    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
+  for (list<pair<DecOperator*, double*> >::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
+    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(opIter->first);
     if (eop->isUhOldSet()) {
       short rProbNum = i;
       if (eop->rProbNum > -1) {
@@ -101,9 +101,9 @@ void DecProblemInstat::updateUhOlds_EdgeOperators(list<DecOperator*> &ops, int i
   }
 }
 
-void DecProblemInstat::updateUhOlds_VertexOperators(list<DecOperator*> &ops, int i) {
-  for (list<DecOperator*>::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
-    VertexOperator *vop = dynamic_cast<VertexOperator*>(*opIter);
+void DecProblemInstat::updateUhOlds_VertexOperators(list<pair<DecOperator*, double*> > &ops, int i) {
+  for (list<pair<DecOperator*, double*> >::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
+    VertexOperator *vop = dynamic_cast<VertexOperator*>(opIter->first);
     if (vop->isUhOldSet()) {
       DOFVector<double> *soli = new DOFVector<double>(statProb->getVertexSolution(i));
       vop->setUhOld(soli);

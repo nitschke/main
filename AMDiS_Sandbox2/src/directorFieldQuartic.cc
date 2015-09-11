@@ -308,11 +308,18 @@ public:
     double rote = evecPD.getDirichletEnergy(0.0           , -0.5 * MinusK3);
     double energy = dive + rote + ne;
     csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
-
-    //if (t > 0.005) {
-    //  double eder = (oldEnergy - energy) / oldEnergy;
-    //  if (eder < 1.E-4 && eder > 0.0 && tau < 0.1 ) tau *= 2.0;
-    //}
+    
+    cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
+    double eps = 1.E-4;
+    if (t > 0.005) {
+      double eder = (oldEnergy - energy) / oldEnergy;
+      if (eder < eps && eder > 0.0 && tau < 1.0 ) {
+        t -= tau; // undo in closeTimestep
+        tau *= 1.5;
+        t += tau;
+        cout << "### tau -> " << tau << " ###" << endl;
+      }
+    }
     oldEnergy = energy;
   }
 

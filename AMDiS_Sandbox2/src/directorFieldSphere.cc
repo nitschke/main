@@ -278,6 +278,8 @@ public:
     Kn = -1.0;
     Parameters::get("userParameter->Kn", Kn);
     TEST_EXIT(Kn >= 0.0)("Kn must be positive");
+
+    animWriter = new AnimationWriter("output/sphereSharpOnEdges.pvd");
  }
 
 
@@ -287,6 +289,7 @@ public:
     solPrimal = statProb->getSolution(0);
     solDual =  statProb->getSolution(1);
     DofEdgeVectorPD evecPD(solPrimal, solDual);
+
     normAlpha = evecPD.getNormOnEdges();
 
     DofEdgeVector scaledNorm(normAlpha);
@@ -297,8 +300,8 @@ public:
     normDeviat += -1.0;
 
     double ne =  0.25 * Kn * normDeviat.L2NormSquared(); 
-    double dive = evecPD.getDirichletEnergy(-0.5 * MinusK1, 0.0);
-    double rote = evecPD.getDirichletEnergy(0.0           , -0.5 * MinusK3);
+    double dive = evecPD.getDirichletEnergy(-0.5 * MinusK3, 0.0);
+    double rote = evecPD.getDirichletEnergy(0.0           , -0.5 * MinusK1);
     double energy = dive + rote + ne;
     csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
 
@@ -307,6 +310,13 @@ public:
     //  if (eder < 1.E-4 && eder > 0.0 && tau < 0.1 ) tau *= 2.0;
     //}
     oldEnergy = energy;
+
+    int prec = 3;
+    ostringstream timeoss;
+    timeoss << setprecision(prec) << time;
+    string fn = "output/sphereSharpOnEdges." + timeoss.str() + ".vtu";
+    evecPD.writeSharpOnEdgesFile(fn);
+    animWriter->updateAnimationFile(time,fn);
   }
 
   DofEdgeVector* getNormPtr() {
@@ -360,6 +370,8 @@ private:
 
   Delta delta;
   ExtremeValueTracker tracker;
+
+  AnimationWriter *animWriter;
 };
 
 
@@ -413,7 +425,7 @@ int main(int argc, char* argv[])
   decSphere.addMatrixOperator(LaplaceCB, 0, 0, sphereInstat.getMinusK1Ptr());
   decSphere.addMatrixOperator(LaplaceCB, 1, 1, sphereInstat.getMinusK3Ptr());
 
-  // explicite -> need little timesteps
+  //// explicite -> need little timesteps
   //EdgeOperator Scale;
   //ValSquaredMinusOne vmo;
   //Scale.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo));
@@ -427,49 +439,6 @@ int main(int argc, char* argv[])
   //Taylor linisarisation
   //(||alpha||^2-1)*alpha
   ValSquaredMinusOne vmo;
-
-  //EdgeOperator ScalePrimal;
-  //ScalePrimal.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo, -1.0));
-  //ScalePrimal.setUhOld(initPrimal, 0);
-  //decSphere.addVectorOperator(ScalePrimal, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator ScaleDual;
-  //ScaleDual.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo, -1.0));
-  //ScaleDual.setUhOld(initDual, 1);
-  //decSphere.addVectorOperator(ScaleDual, 1, sphereInstat.getKnPtr());
-
-  //EdgeOperator Scale;
-  //Scale.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo));
-  //decSphere.addMatrixOperator(Scale, 0, 0,  sphereInstat.getKnPtr());
-  //decSphere.addMatrixOperator(Scale, 1, 1, sphereInstat.getKnPtr());
-
-  ////Grad_alpha((||alpha_Old||^2-1)*alpha_Old)*alpha_{|Old}
-  //AlphaGrad1 ag1;
-  //AlphaGrad2 ag2;
-
-  //EdgeOperator AlphaGradient1Primal;
-  //AlphaGradient1Primal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), &ag1));
-  //AlphaGradient1Primal.setUhOld(initPrimal, 0);
-  //decSphere.addMatrixOperator(AlphaGradient1Primal, 0, 0, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient1Primal, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator AlphaGradient2Primal;
-  //AlphaGradient2Primal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), &ag2));
-  //AlphaGradient2Primal.setUhOld(initDual, 1);
-  //decSphere.addMatrixOperator(AlphaGradient2Primal, 0, 1, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient2Primal, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator AlphaGradient1Dual;
-  //AlphaGradient1Dual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolDual(), sphereInstat.getSolPrimal(), &ag1));
-  //AlphaGradient1Dual.setUhOld(initDual, 1);
-  //decSphere.addMatrixOperator(AlphaGradient1Dual, 1, 1, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient1Dual, 1, sphereInstat.getKnPtr());
-
-  //EdgeOperator AlphaGradient2Dual;
-  //AlphaGradient2Dual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolDual(), sphereInstat.getSolPrimal(), &ag2));
-  //AlphaGradient2Dual.setUhOld(initPrimal, 0);
-  //decSphere.addMatrixOperator(AlphaGradient2Dual, 1, 0, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient2Dual, 1, sphereInstat.getKnPtr());
 
   EdgeOperator Norm2Primal;
   Norm2Primal.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), new ValSquared()));
@@ -493,7 +462,6 @@ int main(int argc, char* argv[])
   EdgeOperator PrimalPrimal;
   PrimalPrimal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolPrimal(), new Prod2()));
   decSphere.addMatrixOperator(PrimalPrimal, 0, 0, sphereInstat.getKnPtr());
-  //decSphere.addMatrixOperator(PrimalPrimal, 1, 1, sphereInstat.getKnPtr());
   
   EdgeOperator DualDual;
   DualDual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolDual(), sphereInstat.getSolDual(), new Prod2()));
@@ -504,9 +472,6 @@ int main(int argc, char* argv[])
   decSphere.addMatrixOperator(PrimalDual, 0, 1, sphereInstat.getKnPtr());
   decSphere.addMatrixOperator(PrimalDual, 1, 0, sphereInstat.getKnPtr());
 
-  //EdgeOperator PrimalDual2;
-  //PrimalDual2.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), new Prod2()));
-  //decSphere.addMatrixOperator(PrimalDual2, 1, 0, sphereInstat.getMinusKnPtr());
 
   // time derivation
   EdgeOperator DtPrimal;

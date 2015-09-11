@@ -32,7 +32,7 @@ for i in arange(1,n):
 
 nn = len(x[4])
 ediff = (x[4][0:nn-1] - x[4][1:nn]) / x[4][0:nn-1]
-plot(x[0][1:nn], ediff)
+plot(x[0][1:nn], ediff, label="ediff")
     
 
 grid(True)

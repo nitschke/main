@@ -514,7 +514,7 @@ DofEdgeVector DofEdgeVector::laplaceCoBeltrami() {
   return lCB;
 }
 
-DOFVector<double> DofEdgeVector::divergence() {
+DOFVector<double> DofEdgeVector::divergence() const {
   DOFVector<double> div(edgeMesh->getFeSpace(), name + "Div");
   div.set(0.0);
   

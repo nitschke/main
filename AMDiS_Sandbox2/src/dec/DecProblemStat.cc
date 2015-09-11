@@ -67,8 +67,7 @@ void DecProblemStat::addMatrixOperator(DecOperator *op, int row, int col, double
   TEST_EXIT(spaceTypes[row] == rowType)("Wrong SpaceType for the row at adding matrix operator");
   TEST_EXIT(spaceTypes[col] == colType)("Wrong SpaceType for the col at adding matrix operator");
 
-  op->setFactorRef(factor);
-  matrixOperators[row][col].push_back(op);
+  matrixOperators[row][col].push_back(make_pair(op,factor));
 }
 
 void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor) {
@@ -83,8 +82,7 @@ void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor)
 
   TEST_EXIT(spaceTypes[row] == rowType)("Wrong SpaceType for the row at adding vector operator");
 
-  op->setFactorRef(factor);
-  vectorOperators[row].push_back(op);
+  vectorOperators[row].push_back(make_pair(op,factor));
 }
 
 void DecProblemStat::assembleSystem() {
@@ -127,7 +125,7 @@ void DecProblemStat::assembleSystem() {
             assembleMatrixBlock_VertexVertex(matrixOperators[r][c], ohrow, ohcol);
             break;
         case 8: //EDGESPACE x EDGESPACE
-            cout << "\nAssemble Matrixblock (" << r << "," << c << "):" <<  endl;
+            //cout << "\nAssemble Matrixblock (" << r << "," << c << "):" <<  endl;
             assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
             break;
         default:
@@ -141,7 +139,7 @@ void DecProblemStat::assembleSystem() {
           assembleVectorBlock_Vertex(vectorOperators[r], ohrow);
           break;
       case EDGESPACE:
-          cout << "\nAssemble Vectorblock (" << r << "):" <<  endl;
+          //cout << "\nAssemble Vectorblock (" << r << "):" <<  endl;
           assembleVectorBlock_Edge(vectorOperators[r], ohrow);
           break;
       default:
@@ -157,13 +155,14 @@ void DecProblemStat::assembleSystem() {
   MSG("Fill-in of assembled (%ix%i)-Matrix: %i (approx. %.1f per row)\n", numRows, numCols, nnz, ((double)(nnz)/numRows)); 
 }
 
-inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops, int ohrow, int ohcol) {
+inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<pair<DecOperator*, double*> > &ops, int ohrow, int ohcol) {
   typedef typename mtl::Collection<SparseMatrix>::value_type vtype;
   mtl::matrix::inserter<SparseMatrix, update_plus<vtype> > insSysMat(*sysMat);
-  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+  list<pair<DecOperator*,double*> >::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
-    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
-    double factor = eop->getFactor();
+    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(opIter->first);
+    double* fref =  opIter->second;
+    double factor = (fref) ? (*fref) : 1.0;
     list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
     for (; termIter != eop->end(); ++termIter) {
       //TODO: implement edgeMesh::iterator
@@ -177,18 +176,19 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops
           insSysMat[r][c] << mapIter->second;
         }
       }
-      cout << "   " << (*termIter)->getName() << ": " << tot.elapsed() << " sec" << endl;
+      //cout << "   " << (*termIter)->getName() << ": " << tot.elapsed() << " sec" << endl;
     }
   }
 }
 
-inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<DecOperator*> &ops, int ohrow, int ohcol) {
+inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<pair<DecOperator*,double*> > &ops, int ohrow, int ohcol) {
   typedef typename mtl::Collection<SparseMatrix>::value_type vtype;
   mtl::matrix::inserter<SparseMatrix, update_plus<vtype> > insSysMat(*sysMat);
-  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+  list<pair<DecOperator*,double*> >::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
-    VertexOperator *vop = dynamic_cast<VertexOperator*>(*opIter);
-    double factor = vop->getFactor();
+    VertexOperator *vop = dynamic_cast<VertexOperator*>(opIter->first);
+    double* fref =  opIter->second;
+    double factor = (fref) ? (*fref) : 1.0;
     list< VertexOperatorTerm* >::const_iterator termIter = vop->begin();
     for (; termIter != vop->end(); ++termIter) {
       DOFVector<bool> visited(emesh->getFeSpace(), "visited");
@@ -221,11 +221,12 @@ inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<DecOperator*> 
 }
 
 //act on uhold if is set in operator
-inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, int ohrow) {
-  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+inline void DecProblemStat::assembleVectorBlock_Vertex(list<pair<DecOperator*, double*> > &ops, int ohrow) {
+  list<pair<DecOperator*, double*> >::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
-    VertexOperator *vop = dynamic_cast<VertexOperator*>(*opIter);
-    double factor = vop->getFactor();
+    VertexOperator *vop = dynamic_cast<VertexOperator*>(opIter->first);
+    double* fref =  opIter->second;
+    double factor = (fref) ? (*fref) : 1.0;
     list< VertexOperatorTerm* >::const_iterator termIter = vop->begin();
     for (; termIter != vop->end(); ++termIter) {
       DOFVector<bool> visited(emesh->getFeSpace(), "visited");
@@ -271,11 +272,12 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<DecOperator*> &ops, 
 
 
 //act on uhold if is set in operator
-inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow) {
-  list<DecOperator*>::const_iterator opIter = ops.begin(); 
+inline void DecProblemStat::assembleVectorBlock_Edge(list<pair<DecOperator*, double*> > &ops, int ohrow) {
+  list<pair<DecOperator*,double*> >::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
-    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(*opIter);
-    double factor = eop->getFactor();
+    EdgeOperator *eop = dynamic_cast<EdgeOperator*>(opIter->first);
+    double* fref =  opIter->second;
+    double factor = (fref) ? (*fref) : 1.0;
     list< EdgeOperatorTerm* >::const_iterator termIter = eop->begin();
     for (; termIter != eop->end(); ++termIter) {
       //TODO: implement edgeMesh::iterator
@@ -294,7 +296,7 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<DecOperator*> &ops, in
         }
         (*rhs)[r] += val;
       }
-      cout << "   " << (*termIter)->getName() << ": " << tot.elapsed() << " sec" << endl;
+      //cout << "   " << (*termIter)->getName() << ": " << tot.elapsed() << " sec" << endl;
     }
   }
 }

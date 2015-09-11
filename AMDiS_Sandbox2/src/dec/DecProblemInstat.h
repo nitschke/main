@@ -40,8 +40,8 @@ public:
 private:
 
 void updateUhOlds();
-void updateUhOlds_EdgeOperators(list<DecOperator*> &ops, int i);
-void updateUhOlds_VertexOperators(list<DecOperator*> &ops, int i);
+void updateUhOlds_EdgeOperators(list<pair<DecOperator*, double*> > &ops, int i);
+void updateUhOlds_VertexOperators(list<pair<DecOperator*, double*> > &ops, int i);
 
 protected:
 

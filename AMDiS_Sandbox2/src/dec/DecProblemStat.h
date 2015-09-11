@@ -92,17 +92,16 @@ public:
 
 private:
 
-  inline void assembleMatrixBlock_EdgeEdge(list<DecOperator*> &ops, int ohrow, int ohcol);
-  inline void assembleMatrixBlock_VertexVertex(list<DecOperator*> &ops, int ohrow, int ohcol);
+  inline void assembleMatrixBlock_EdgeEdge(list<pair<DecOperator*,double*> > &ops, int ohrow, int ohcol);
+  inline void assembleMatrixBlock_VertexVertex(list<pair<DecOperator*,double*> > &ops, int ohrow, int ohcol);
 
-  inline void assembleVectorBlock_Edge(list<DecOperator*> &ops, int ohrow);
-  inline void assembleVectorBlock_Vertex(list<DecOperator*> &ops, int ohrow);
+  inline void assembleVectorBlock_Edge(list<pair<DecOperator*,double*> > &ops, int ohrow);
+  inline void assembleVectorBlock_Vertex(list<pair<DecOperator*, double*> > &ops, int ohrow);
 
 
 //TODO: DESTructur (emesh, sysmat, rhs)
 
 private:
-
 
   int nComponents;
 
@@ -116,8 +115,8 @@ private:
   SparseMatrix *sysMat;
   DenseVector *rhs;
 
-  Matrix< list<DecOperator*> > matrixOperators;
-  Vector< list<DecOperator*> > vectorOperators;
+  Matrix< list<pair<DecOperator*,double*> > > matrixOperators;
+  Vector< list<pair<DecOperator*,double*> > > vectorOperators;
   Vector< SpaceType > spaceTypes;
 
   DenseVector *fullSolution;

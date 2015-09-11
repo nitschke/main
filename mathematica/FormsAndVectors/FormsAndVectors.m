@@ -8,6 +8,7 @@ GlobalVecFromPara::usage = "Global (x,y,z)-Vector of a given local (u,v)-Tangent
 LocalVecFromPara::usage = "Local (u,v)-Vector (tangential part) of a given (x,y,z)-Vector from parametrisation";
 
 GlobalTensorFromPara::usage = "give the global (euclidian) representation of a local tensor";
+LocalTensorFromPara::usage = "give the local representation of a global tensor";
 
 Wedge11::usage = "Wedge product of two 1-forms";
 
@@ -78,6 +79,10 @@ LocalVecFromPara[globVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraM
 
 GlobalTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}},
 					Sum[locT[[i,j]]*Outer[Times,DX[[i]],DX[[j]]],{i,2},{j,2}]]
+LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}, 
+															gInv=Inverse[MetricFromPara[paraMap,x,y]]},
+					gInv.Table[DX[[i]].globT.DX[[j]],{i,2},{j,2}].gInv]
+
 
 Wedge11[alpha_,beta_] := {{alpha[[1]]*beta[[2]] - alpha[[2]]*beta[[1]]}}
 

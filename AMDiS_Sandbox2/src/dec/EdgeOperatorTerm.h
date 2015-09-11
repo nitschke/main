@@ -27,7 +27,7 @@ public:
                  double f = 1.0) 
       : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(function) {name = "EdgeVecAtEdges";};
 
-  EdgeVecAtEdges(DofEdgeVector *edgeVector,  double f = 1.0)
+  EdgeVecAtEdges(DofEdgeVector *edgeVector,  double f)
       : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f), func(NULL) {name = "EdgeVecAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
