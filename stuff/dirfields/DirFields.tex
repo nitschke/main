@@ -24,36 +24,165 @@
 \newcommand{\dA}{dA}
 %director field (contra-vector)
 \newcommand{\p}{\mathbf{p}}
+\newcommand{\q}{\mathbf{q}}
 %director field (co-vector, flat of contra-vector)
 \newcommand{\pfl}{\mathbf{p}^{\flat}}
+\newcommand{\qfl}{\mathbf{q}^{\flat}}
+%Frank Oseen Energy (without Lagrange term for normalizing)
+\newcommand{\EOS}{E_{\text{OS}}}
+%Normalizing energy
+\newcommand{\EN}{E_{n}}
+%Laplace-Beltrami or Rot-Rot-Laplace
+\newcommand{\LB}{\Delta_{\text{\tiny RR}}}
+%Laplace-CoBeltrami or Grad-Div-Laplace
+\newcommand{\LCB}{\Delta_{\text{\tiny GD}}}
+%Laplace-deRham
+\newcommand{\LDR}{\Delta_{\text{\tiny dR}}}
+%Landau symbol
+\renewcommand{\O}{\mathcal{O}}
 
 
 
 \begin{document}
 
-\section{Frank Oseen Energy}
+\tableofcontents
+
+\section{Frank Oseen energy}
 
 In \( \R^{3} \):
 \begin{align}\label{eqFO1}
-  E = \frac{1}{2}\int_{\Omega} K_{1}\left( \nabla\cdot\p \right)^{2} 
+  \EOS = \frac{1}{2}\int_{\Omega} K_{1}\left( \nabla\cdot\p \right)^{2} 
                         + K_{2}\left( \p\cdot\left[ \nabla\times\p \right] \right)^{2}
                         + K_{3}\left\| \p\times\left[ \nabla\times\p \right] \right\|^{2} dV
 \end{align}
 With the Langrange identity for the \( K_{3} \)-term, we cann rewrite \eqref{eqFO1} to
 \begin{align}\label{eqFO2}
-  E = \frac{1}{2}\int_{\Omega} K_{1}\left( \nabla\cdot\p \right)^{2} 
+  \EOS = \frac{1}{2}\int_{\Omega} K_{1}\left( \nabla\cdot\p \right)^{2} 
                         + (K_{2}-K_{3})\left( \p\cdot\left[ \nabla\times\p \right] \right)^{2}
                         + K_{3}\left\| \p \right\|^{2}\left\| \nabla\times\p \right\|^{2} dV
 \end{align}
 If we restrict \eqref{eqFO2} to a 2-dimensional Manifold \( \M\subset\Omega \) 
 and postulate that \( \p\in T_{X}\M \) is a normalized tangential vector in \( X\in\M \), we get
 \begin{align}
-  E = \frac{1}{2} \int_{\M} K_{1}\left( \Div\p \right)^{2} + K_{3}\left( \Rot \p \right)^{2} \dA 
+  \EOS = \frac{1}{2} \int_{\M} K_{1}\left( \Div\p \right)^{2} + K_{3}\left( \Rot \p \right)^{2} \dA 
 \end{align}
-In terms of exterior calculus with the corresponding 1-form \( \pfl\in\Lambda^{1}(M) \), we obtain
+In terms of exterior calculus with the corresponding 1-form \( \pfl\in\Lambda^{1}(M) \), 
+,i.e. \( \left( \pfl \right)^{\sharp} = \p\), we obtain
 \begin{align}
-  E = \frac{1}{2} \int_{\M} K_{1}\left( \excod\p \right)^{2} + K_{3}\left( \exd \p \right)^{2} \dA
+  \EOS = \frac{1}{2} \int_{\M} K_{1}\left( \excod\pfl \right)^{2} + K_{3}\left( *\exd \pfl \right)^{2} \dA
 \end{align}
-where \( \excod := -* \exd * \) is the \( L^{2} \)-orthogonal operator of the exterior derivative \( \exd \). 
+where the exterior coderivative \( \excod := -* \exd * \) is the \( L^{2} \)-orthogonal operator of the exterior derivative \( \exd \). 
+(Note \( \Div\p = -\excod\pfl \) and \( \Rot\p = *\exd\pfl \)) 
+
+  \subsection{Functional derivative}
+  
+  With the  \( L^{2} \)-orthogonality of the exterior derivative and coderivative and a arbitrary \( \alpha\in\Lambda^{1}(M) \) we get
+  \begin{align}
+    \int_{\M} \left\langle\frac{\delta\EOS}{\delta\pfl} , \alpha \right\rangle \dA
+      &= \lim_{\epsilon\rightarrow 0} \frac{1}{\epsilon}\left( \EOS\left[ \pfl + \epsilon\alpha \right] - \EOS\left[ \pfl\right]\right) \\
+      &=  \lim_{\epsilon\rightarrow 0} \frac{1}{2\epsilon} \int_{\M} 
+                K_{1}\left( 2\epsilon \left( \excod\pfl \right)\left( \excod\alpha \right) 
+                            + \epsilon^{2}\left( \excod\alpha \right)^{2} \right) \\
+      &\phantom{= \lim_{\epsilon\rightarrow 0} \frac{1}{2\epsilon} \int_{\M}}
+                +K_{3}\left(2\epsilon\left\langle \exd\pfl, \exd\alpha \right\rangle
+                            + \epsilon^{2}\left\| \exd\alpha \right\|^{2}\right)\dA \\
+      &= -\int_{\M} K_{1} \left\langle \LCB\pfl, \alpha \right\rangle + K_{3} \left\langle \LB\pfl, \alpha \right\rangle \dA \\
+      &= \int_{\M} \left\langle -\left( K_{1}\LCB + K_{3}\LB\right)\pfl , \alpha \right\rangle \dA
+  \end{align}
+  where \( \LB = -\excod\exd = *\exd *\exd  \) is the Vector-Laplace-Beltrami-Operator or Rot-Rot-Laplace 
+  and \( \LCB = - \exd\excod = \exd * \exd * \) is the Vector-Laplace-CoBeltrami-Operator or Grad-Div-Laplace.
+  Hence, for a One-Constant-Approximation \( K_{1} = K_{3} =: K_{0} \), we obtain
+  \begin{align}
+    \int_{\M} \left\langle\frac{\delta\EOS}{\delta\pfl} , \alpha \right\rangle \dA
+     &= \int_{\M} \left\langle K_{0}\LDR\pfl , \alpha \right\rangle \dA
+  \end{align}
+  where \( \LDR = -\LB - \LCB = \excod\exd + \exd\excod\) is the Laplace-de Rham operator.
+  
+  \subsection{Unit vector invariance}
+  
+  If \( \p\in T_{X}\M \) is a unit vector on \( \M \), we can describe all unit vectors \(  \) in \( X\in\M \) as a rotation in the tangential space
+  with angle \( \phi\in\R \):
+  \begin{align}
+    \q = \cos\phi\p + \sin\phi\left( *\p \right)
+  \end{align}
+  \( *\p = \left( *\pfl \right)^{\sharp}\) is the Hodge dual of \( \p \), i.e. a quarter rotation of \( \p \). 
+  For a space independent angle \( \phi \), i.e. \( \exd\phi=0 \), straight forward calculations implies
+  \begin{align}
+     \left\| \Rot (*\p) \right\| &=  \left\| *\exd*\pfl \right\| = \left\| \Div\p \right\|\\
+     \left\| \Div (*\p) \right\| &= \left\| *\exd**\pfl  \right\| = \left\| *\exd\pfl  \right\| = \left\|\Rot\p\right\|\\ 
+     \left\| \Rot\q \right\|^{2} &= \left\| *\exd\qfl \right\|^{2} = \left\| \exd\qfl \right\|^{2} \\
+                                      &=  \cos^{2}\phi\left\| \Rot\p \right\|^{2} 
+                                        + \sin^{2}\phi\left\| \Div\p \right\|^{2}
+                                        + 2\cos\phi\sin\phi\left\langle \exd\pfl, \exd * \pfl \right\rangle\\
+    \left\| \Div\q \right\|^{2} &= \left\| *\exd*\qfl \right\|^{2} = \left\| \exd*\qfl \right\|^{2}\\
+                                     &= \cos^{2}\phi\left\| \Div\p \right\|^{2} 
+                                        + \sin^{2}\phi\left\| \Rot\p \right\|^{2}
+                                        - 2\cos\phi\sin\phi\left\langle \exd\pfl, \exd * \pfl \right\rangle  
+  \end{align}
+  Finally, we get for the One-Constant-Approximation of the Frank-Oseen-Energy
+  \begin{align}
+    \EOS[\q] = \EOS[\p]
+  \end{align}
+
+
+\section{Normalizing energy}
+
+To constrain \( \p \) is normalized, we add
+\begin{align}
+  \EN = \int_{\M} \frac{K_{n}}{4} \left( \left\| \p \right\|^{2} - 1 \right)^{2} \dA
+\end{align}
+to the Frank Oseen energy.
+Note that the norm defined by the metric \( g \) on the manifold \( \M \) is invariant regarding lowering or rising the indices, i.e.
+\begin{align}
+  \left\| \p \right\|^{2} = p^{i}g_{ij}p^{j} = p_{i} g^{ij} p_{j} = \left\| \pfl \right\|^{2}
+\end{align}
+
+  \subsection{Functional derivative}
+
+  By variating \( \pfl \) under the norm with an arbitrary \( \alpha\in\Lambda^{1}(\M) \), we obtain
+  \begin{align}
+    \left\| \pfl + \epsilon \alpha \right\|^{2} &= \left\| \pfl \right\|^{2} 
+                                                  + 2\epsilon\left\langle \pfl, \alpha \right\rangle
+                                                  + \epsilon^{2}\left\| \alpha \right\|^{2}
+  \end{align}
+  If we are only interesting in linear terms (in \( \epsilon \)), this leads to
+  \begin{align}
+    \left( \left\| \pfl + \epsilon \alpha \right\|^{2} - 1 \right)^{2}
+            &= \left( \left\| \pfl \right\|^{2} - 1  + 2\epsilon\left\langle \pfl, \alpha \right\rangle 
+                  + \O\left( \epsilon^{2} \right) \right)^{2}\\
+            &= \left( \left\| \pfl \right\|^{2} - 1 \right)^{2} 
+                + 4\epsilon\left(\left\| \pfl \right\|^{2} - 1 \right)\left\langle \pfl, \alpha \right\rangle
+                + \O\left( \epsilon^{2} \right)
+  \end{align}
+  Hence, we get for the functional derivative of \( \EN \)
+  \begin{align}
+    \int_{\M} \left\langle\frac{\delta\EN}{\delta\pfl} , \alpha \right\rangle \dA
+      &= \lim_{\epsilon\rightarrow 0} \frac{1}{\epsilon}\left( \EN\left[ \pfl + \epsilon\alpha \right] - \EN\left[ \pfl\right]\right) \\
+      &= \int_{\M} \left\langle K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl , \alpha \right\rangle \dA
+  \end{align}
+
+
+\section{Model equations}
+  To minimize the energy \( E := \EOS + \EN \) we choose a time evolving approach. 
+  Hence, with the fundamental lemma of calculus of variations, we will use the time depended differential equation in terms of exterior
+  calculus
+  \begin{align}
+    \partial_{t}\pfl = -\frac{\delta E}{\delta\pfl}
+                     = -K_{0}\LDR\pfl - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl
+  \end{align}
+  or in general, if we don't want to use the One-Constant-Approximation,
+  \begin{align}
+    \partial_{t}\pfl = \left( K_{1}\LCB + K_{3}\LB\right)\pfl - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl
+  \end{align}
+  Note that if we apply the Hodge operator on the whole equations, we get the Hodge dual equations
+  \begin{align}
+    \partial_{t}(*\pfl) &= -K_{0}\LDR (*\pfl) - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)(*\pfl) \\
+                        &=  \left( K_{1}\LB + K_{3}\LCB\right) (*\pfl) - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)(*\pfl)
+  \end{align}
+  which are very useful for the DEC discretization later in context.
+  But this leads to pay attention, because only in the first line (One-Constant-Approximation) we see, 
+  that the Hodge dual equations in \( *\pfl \) is the same as the primal equation in \( \pfl \). 
+  In the general case (second line), we must "swap" the Laplace operators.
+
   
 \end{document}

@@ -311,12 +311,12 @@ public:
     //}
     oldEnergy = energy;
 
-    int prec = 3;
-    ostringstream timeoss;
-    timeoss << setprecision(prec) << time;
-    string fn = "output/sphereSharpOnEdges." + timeoss.str() + ".vtu";
-    evecPD.writeSharpOnEdgesFile(fn);
-    animWriter->updateAnimationFile(time,fn);
+    //int prec = 3;
+    //ostringstream timeoss;
+    //timeoss << setprecision(prec) << time;
+    //string fn = "output/sphereSharpOnEdges." + timeoss.str() + ".vtu";
+    //evecPD.writeSharpOnEdgesFile(fn);
+    //animWriter->updateAnimationFile(time,fn);
   }
 
   DofEdgeVector* getNormPtr() {
@@ -382,10 +382,10 @@ int main(int argc, char* argv[])
 
   AMDiS::init(argc, argv);
 
-  // ===== create projection =====
-  WorldVector<double> ballCenter;
-  ballCenter.set(0.0);
-  new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
+  ///// ===== create projection =====
+  ///WorldVector<double> ballCenter;
+  ///ballCenter.set(0.0);
+  ///new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
 
   // ===== create and init the scalar problem ===== 
   ProblemStat sphere("sphere");
@@ -402,13 +402,13 @@ int main(int argc, char* argv[])
   //dxyz.writeSharpFile("output/dxyzSharp.vtu", &sphere);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(43);
+  Noise_d noiseFun(17);
   //initSol.set(&noiseFun, new Noise_d(43,-1./3.));
-  //initSol.set(&noiseFun);
+  initSol.set(&noiseFun);
   //initSol.set(new DZ2_d());
   //initSol.bakeDual();
   //initSol.interpol(new Michael(0.01));
-  initSol.interpol(new TwistQP());
+  //initSol.interpol(new TwistQP());
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

@@ -1,8 +1,8 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphereIko5k.3d
-%sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
+%sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 sphereMesh->global refinements:    0
 
@@ -33,4 +33,4 @@ sphere->output->write every i-th timestep:   1
 userParameter->K0: 1.0
 userParameter->K1: 1.0  % minimize rot
 userParameter->K3: 1.0 % minimize div
-userParameter->Kn: 100.0 % minimize norm^2 - 1
+userParameter->Kn: 200.0 % minimize norm^2 - 1
