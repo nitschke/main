@@ -260,10 +260,10 @@ public:
     csvout << "Time,Div,Rot,Norm,Full" << endl;
 
     
-    double K0 = -1.0;
-    Parameters::get("userParameter->K0", K0);
-    TEST_EXIT(K0 >= 0.0)("K0 must be positive");
-    MinusK0 = -K0;
+    //double K0 = -1.0;
+    //Parameters::get("userParameter->K0", K0);
+    //TEST_EXIT(K0 >= 0.0)("K0 must be positive");
+    //MinusK0 = -K0;
 
     double K1 = -1.0;
     Parameters::get("userParameter->K1", K1);
@@ -331,10 +331,6 @@ public:
     return &solDual;
   }
 
-  double* getMinusK0Ptr() {
-    return &MinusK0;
-  }
-
   double* getMinusK1Ptr() {
     return &MinusK1;
   }
@@ -358,7 +354,6 @@ private:
   DofEdgeVector solPrimal;
   DofEdgeVector solDual;
 
-  double MinusK0;
   double MinusK1;
   double MinusK3;
   double Kn;
@@ -402,7 +397,7 @@ int main(int argc, char* argv[])
   //dxyz.writeSharpFile("output/dxyzSharp.vtu", &sphere);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(17);
+  Noise_d noiseFun(430);
   //initSol.set(&noiseFun, new Noise_d(43,-1./3.));
   initSol.set(&noiseFun);
   //initSol.set(new DZ2_d());

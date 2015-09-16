@@ -8,6 +8,8 @@
 
 \usepackage{dsfont}
 
+\usepackage{hyperref}
+
 \newcommand{\exd}{\mathbf{d}}
 \newcommand{\excod}{\exd^{*}} %or \delta
 \newcommand{\Div}{\text{Div}}
@@ -28,18 +30,42 @@
 %director field (co-vector, flat of contra-vector)
 \newcommand{\pfl}{\mathbf{p}^{\flat}}
 \newcommand{\qfl}{\mathbf{q}^{\flat}}
+%discrete director field (co-vector, flat of contra-vector)
+\newcommand{\pflh}{\mathbf{p}^{\flat}_{h}}
+%discrete director field (contra-vector)
+\newcommand{\ph}{\mathbf{p}_{h}}
+%discrete PD director field (co-vector, flat of contra-vector)
+\newcommand{\PDpflh}{\underline{\mathbf{p}}^{\flat}_{h}}
+%discrete director field (contra-vector)
+\newcommand{\PDph}{\underline{\mathbf{p}}_{h}}
 %Frank Oseen Energy (without Lagrange term for normalizing)
 \newcommand{\EOS}{E_{\text{OS}}}
 %Normalizing energy
 \newcommand{\EN}{E_{n}}
 %Laplace-Beltrami or Rot-Rot-Laplace
-\newcommand{\LB}{\Delta_{\text{\tiny RR}}}
+\newcommand{\LB}{\Delta^{\text{\tiny RR}}}
 %Laplace-CoBeltrami or Grad-Div-Laplace
-\newcommand{\LCB}{\Delta_{\text{\tiny GD}}}
+\newcommand{\LCB}{\Delta^{\text{\tiny GD}}}
 %Laplace-deRham
-\newcommand{\LDR}{\Delta_{\text{\tiny dR}}}
+\newcommand{\LDR}{\Delta^{\text{\tiny dR}}}
+%discrete Laplace-Beltrami or Rot-Rot-Laplace
+\newcommand{\LBh}{\LB_{h}}
+%Laplace-CoBeltrami or Grad-Div-Laplace
+\newcommand{\LCBh}{\LCB_{h}}
+%Laplace-deRham
+\newcommand{\LDRh}{\LDR_{h}}
 %Landau symbol
 \renewcommand{\O}{\mathcal{O}}
+%Vertices
+\newcommand{\V}{\mathcal{V}}
+%Edges
+\newcommand{\E}{\mathcal{E}}
+%Faces
+\newcommand{\F}{\mathcal{F}}
+%edge vector
+\newcommand{\e}{\mathbf{e}}
+%vertex vector
+\renewcommand{\v}{\mathbf{v}}
 
 
 
@@ -184,5 +210,126 @@ Note that the norm defined by the metric \( g \) on the manifold \( \M \) is inv
   that the Hodge dual equations in \( *\pfl \) is the same as the primal equation in \( \pfl \). 
   In the general case (second line), we must "swap" the Laplace operators.
 
+
+
+\section{A DEC approach}
   
+For further information see for example \cite{whitney,hirani}. 
+
+  \subsection{Surface Mesh}
+    ...wellcentered manifoldlike simplicial complex, bla, bla, blub...
+
+  \subsection{Discrete 1-forms}
+
+  The main concept to represent a discrete 1-form \( \pflh\in\Lambda_{h}(K) \) is to approximate the contraction of the continuous 1-Form 
+  \( \pfl\in\Lambda(M) \) on all edges \( e\in\E \)
+  \begin{align}
+    \pflh(e) := \int_{\pi(e)}\pfl \approx \int_{0}^{1} \pfl_{X_{e}(\tau)}\left( \dot{X}_{e}(t) \right) dt = \pfl_{X_{e}(\tau)}(\e)
+  \end{align}
+  where \( \pi:K\rightarrow \M \) is the glueing map, who project the elements of the surface mesh to the manifold.
+  \( X_{e}(t) = t\v_{2} + (1-t)\v_{1} \) is the linear barycentric parametrisation of the edge \( e=\left[ v_{1}, v_{2} \right]\).
+  The existence of a intermediate value \( \tau\in\left[ 0,1 \right] \), so that \( \e\in T_{X_{e}(\tau)}M \),
+  is ensured by the mean value theorem.
+  Other discrete forms of arbitrary degree and theirs hodge duals can be interpreted in a similarly way.
+
+  \subsection{Discrete Laplace operators}
+    
+    In the discrete exterior calculus discrete Operators are defined by successively interpretation of the basic operations on the forms, 
+    like the Hodge operator \( * \) or the exterior derivative \( \exd \), as geometric operators on the simplices, 
+    like the Voronoi dual operator \( \star \) or the boundary operator \( \partial \) (see \cite{hirani}).
+    This results for example to a discrete definition of \( \LB \) for a discrete 1-form \( \pflh\in\Lambda^{1}_{h}(M) \) on a edge 
+    \(e\in\E \)
+    \begin{align}
+      \LBh\pflh(e) &:=  \left(*\exd*\exd \pflh\right)(e)
+                     = -\frac{\left| e \right|}{\left| \star e \right|} \left(\exd * \exd  \pflh\right)(\star e) \\
+                    &=  -\frac{\left| e \right|}{\left| \star e \right|} \left(* \exd  \pflh\right)(\partial\star e)
+                     = -\frac{\left| e \right|}{\left| \star e \right|} \sum_{f\succ e} s_{f,e} \left(* \exd \pflh\right) (\star f) \\
+                    &= -\frac{\left| e \right|}{\left| \star e \right|} \sum_{f\succ e} \frac{s_{f,e}}{\left| f \right|} 
+                                \left(\exd\pflh\right)(f)
+                     = -\frac{\left| e \right|}{\left| \star e \right|} \sum_{f\succ e} \frac{s_{f,e}}{\left| f \right|} \pflh(\partial f)\\
+                    &= -\frac{\left| e \right|}{\left| \star e \right|} \sum_{f\succ e} \frac{s_{f,e}}{\left| f \right|}
+                                \sum_{\tilde{e}\prec f} s_{f,\tilde{e}} \pflh(\tilde{e})
+    \end{align}
+    or for \( \LCB \)
+    \begin{align}
+      \LCBh\pflh(e) &:= \left( \exd * \exd * \pflh\right) (e)
+                      = \left( * \exd *\pflh \right) (\partial e) \\
+                     &= \sum_{v\prec e} s_{v,e} \left( * \exd * \pflh \right)(v) 
+                      = \sum_{v\prec e} \frac{s_{v,e}}{\left| \star v \right|} \left( \exd * \pflh \right)(\star v)\\
+                     &= \sum_{v\prec e} \frac{s_{v,e}}{\left| \star v \right|} \left( * \pflh \right)(\partial\star v)
+                      = -\sum_{v\prec e} \frac{s_{v,e}}{\left| \star v \right|} \sum_{\tilde{e}\succ v}
+                                s_{v,\tilde{e}} \left( * \pflh \right) (\star \tilde{e}) \\
+                     &= -\sum_{v\prec e} \frac{s_{v,e}}{\left| \star v \right|} \sum_{\tilde{e}\succ v}
+                                s_{v,\tilde{e}} \frac{\left| \star\tilde{e} \right|}{\left| \tilde{e} \right|}\pflh(\tilde{e})
+    \end{align}
+    where the sign \( s_{f,e} \) is +1 if the face \( f\succ e \) is in the left of the edge \( e \) (-1 otherwise)
+    and \( s_{v,e} \) is +1 if the edge \( e\succ v \) points to the vertex \( v \) and -1 if \( e \) points away from \( v \).
+    We see \( \LBh \), \( \LCBh \) and also \( \LDRh := -\LBh -\LCBh \) are linear operators in \( \pflh(\tilde{e}) \)
+    and therefor results in sparse matrices if the \( \pflh(\tilde{e}) \) are our degree of freedoms.
+    ...explainable figures...
+
+  \subsection{Discrete norm}
+    
+    Approximating the norm \( \left\| \pfl \right\| \) on a edge \( e\in\E \) is not so easy like the development of discrete linear
+    operators. 
+    We only know how \( \pflh \) "act" on a single edge, so \( \pflh \) gives us only one dimensional informations.
+    In other words, we only know the proportion \( \ph \cdot \e = \pflh (e)\) of the discrete contra vector field \( \ph = \left( \pflh \right)^{\sharp} \) in the
+    \( \e \) direction, but we don't know the length of \( \ph \) defined on this edge.
+
+    ...some averaging techniques and why these sucks...
+   
+    One way out is to rise the dimension of the discrete 1-forms, therefor we introduce some bases at the intersection 
+    \( c(e) = e\cap (\star e) \) of a edge and its dual edge to describe discrete contra- and covariant vector fields in a local (flat)
+    coordinate system.
+
+    The basis for contravariant vectors at \( c(e) \) is composed of
+    \begin{align}
+      \partial_{e}X &:= \e = \v_{2} - \v_{1} \\
+      \partial_{\star e}X &:= *\e =  c(f_{2}) - c(f_{1})
+    \end{align}
+    if \( e=\left[ v_{1}, v_{2} \right] \) and the face \( f_{1} \) lay right and \( f_{2} \) left of \( e \) (...figure...). 
+    This definitions are consistent with the canonical basis, if the position \( X \) is a barycentric parametrisation of the edge \( e \)
+    resp. its dual, i.e. for
+    \begin{align}
+      X_{e}(t_{e}) &= t_{e}\v_{2} + \left( 1 - t_{e} \right)\v_{2} \text{ for } t\in[0,1]\\
+      X_{\star e}(t_{\star e}) &=\begin{cases}
+                        2t_{\star e}c(e) + \left( 1 - 2t_{\star e} \right) c(f_{1}) & \text{if } t_{\star e}\in\left[ 0 , \frac{1}{2} \right] \\
+                        \left(1 - t_{\star e}\right) c(e) + \left( 2t_{\star e} - 1 \right) c(f_{1}) 
+                                & \text{if } t_{\star e}\in \left[\frac{1}{2} , 1\right]
+                      \end{cases}
+    \end{align}
+    holds \( \partial_{e}X = \partial_{t_{e}}X_{e} \) 
+    and \( \partial_{\star e}X = \frac{1}{2} \left( \partial_{t_{\star e}}X_{\star e}|_{\left[ 0 , \frac{1}{2} \right]} 
+                                                   + \partial_{t_{\star e}}X_{\star e}|_{\left[\frac{1}{2}, 1 \right]}\right) \).
+    Therefore we get the local metric tensor
+    \begin{align}
+      g_h(e) &= \left| e \right|^{2} \left( dx^{e} \right)^{2} + \left| \star e \right|^{2} \left( dx^{\star e} \right)^{2}
+    \end{align}
+    where \( \left\{  dx^{e}, dx^{\star e} \right\} \) are the dual base of \( \left\{ \partial_{e}X, \partial_{\star e}X \right\} \),
+    i.e. \( dx^{i}\left(\partial_{j}X\right) = \delta^{i}_{j} \) for \( i,j\in\left\{ e, \star e \right\} \).
+    This gives us the great possibility to define
+    \begin{align}
+      \PDpflh(e) &:= \pflh(e)dx^{e} + \pflh(\star e)  dx^{\star e} \\
+                   &= \pflh(e)dx^{e} - \frac{\left| \star e \right|}{\left| e \right|} \left(*\pflh\right)(e)  dx^{\star e} \\
+      \PDph(e) &:= \left(\PDpflh(e)\right)^{\sharp} 
+                 = \frac{1}{\left| e \right|^{2}} \pflh(e)\partial_{e}X + \frac{1}{\left|\star e \right|^{2}} \pflh(\star e)\partial_{\star e}X \\
+               & =  \frac{1}{\left| e \right|} \left( \frac{1}{\left| e \right|} \pflh(e)\partial_{e}X 
+                                                     -\frac{1}{\left|\star e \right|} \left(*\pflh\right)(e) \partial_{\star e}X\right)
+    \end{align}
+    We call \( \PDpflh(e) \) the discrete Primal-Dual-1-form (short PD-1-form) and \( \PDph \) the discrete Primal-Dual-vector field
+    (short PD-vector field).
+    Hence, we get for the square of the norm on \( c(e) \) by contract the PD-1-Form with its corresponding PD-Vector
+    \begin{align}
+      \left\| \PDpflh \right\|^{2}(e) := \left( \PDpflh\left( \PDph \right) \right)(e)
+                                       = \frac{1}{\left| e \right|^{2}}\left( \left[ \pflh(e) \right]^{2} 
+                                                                             +\left[ \left(*\pflh\right)(e) \right]^{2}\right)
+    \end{align}
+
+
+
+  
+
+\bibliography{bibl}
+\bibliographystyle{alpha}
+
 \end{document}
