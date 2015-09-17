@@ -1,7 +1,11 @@
-\documentclass{scrartcl}
+\documentclass[a4paper,11pt]{scrartcl}
+
+\usepackage[margin=2.cm]{geometry}
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
+
+\usepackage[pdftex]{graphicx}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -32,12 +36,17 @@
 \newcommand{\qfl}{\mathbf{q}^{\flat}}
 %discrete director field (co-vector, flat of contra-vector)
 \newcommand{\pflh}{\mathbf{p}^{\flat}_{h}}
+\newcommand{\pflhOld}{\widehat{\mathbf{p}}^{\flat}_{h}}
+\newcommand{\qflh}{\mathbf{q}^{\flat}_{h}}
 %discrete director field (contra-vector)
 \newcommand{\ph}{\mathbf{p}_{h}}
 %discrete PD director field (co-vector, flat of contra-vector)
 \newcommand{\PDpflh}{\underline{\mathbf{p}}^{\flat}_{h}}
+\newcommand{\PDqflh}{\underline{\mathbf{q}}^{\flat}_{h}}
 %discrete director field (contra-vector)
 \newcommand{\PDph}{\underline{\mathbf{p}}_{h}}
+%discrete PD director field OLD SOLUTION (co-vector, flat of contra-vector)
+\newcommand{\PDpflhOld}{\underline{\widehat{\mathbf{p}}}^{\flat}_{h}}
 %Frank Oseen Energy (without Lagrange term for normalizing)
 \newcommand{\EOS}{E_{\text{OS}}}
 %Normalizing energy
@@ -192,17 +201,19 @@ Note that the norm defined by the metric \( g \) on the manifold \( \M \) is inv
   To minimize the energy \( E := \EOS + \EN \) we choose a time evolving approach. 
   Hence, with the fundamental lemma of calculus of variations, we will use the time depended differential equation in terms of exterior
   calculus
-  \begin{align}
+  \begin{align} \label{eqPOC}
     \partial_{t}\pfl = -\frac{\delta E}{\delta\pfl}
                      = -K_{0}\LDR\pfl - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl
   \end{align}
   or in general, if we don't want to use the One-Constant-Approximation,
-  \begin{align}
+  \begin{align} \label{eqP}
     \partial_{t}\pfl = \left( K_{1}\LCB + K_{3}\LB\right)\pfl - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl
   \end{align}
   Note that if we apply the Hodge operator on the whole equations, we get the Hodge dual equations
   \begin{align}
+    \label{eqDOC}
     \partial_{t}(*\pfl) &= -K_{0}\LDR (*\pfl) - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)(*\pfl) \\
+    \label{eqD}
                         &=  \left( K_{1}\LB + K_{3}\LCB\right) (*\pfl) - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)(*\pfl)
   \end{align}
   which are very useful for the DEC discretization later in context.
@@ -212,7 +223,7 @@ Note that the norm defined by the metric \( g \) on the manifold \( \M \) is inv
 
 
 
-\section{A DEC approach}
+\section{Needed DEC stuff}
   
 For further information see for example \cite{whitney,hirani}. 
 
@@ -221,8 +232,8 @@ For further information see for example \cite{whitney,hirani}.
 
   \subsection{Discrete 1-forms}
 
-  The main concept to represent a discrete 1-form \( \pflh\in\Lambda_{h}(K) \) is to approximate the contraction of the continuous 1-Form 
-  \( \pfl\in\Lambda(M) \) on all edges \( e\in\E \)
+  The main concept to represent a discrete 1-form \( \pflh\in\Lambda_{h}^{1}(K) \) is to approximate the contraction of the continuous 1-Form 
+  \( \pfl\in\Lambda^{1}(M) \) on all edges \( e\in\E \)
   \begin{align}
     \pflh(e) := \int_{\pi(e)}\pfl \approx \int_{0}^{1} \pfl_{X_{e}(\tau)}\left( \dot{X}_{e}(t) \right) dt = \pfl_{X_{e}(\tau)}(\e)
   \end{align}
@@ -273,13 +284,15 @@ For further information see for example \cite{whitney,hirani}.
     Approximating the norm \( \left\| \pfl \right\| \) on a edge \( e\in\E \) is not so easy like the development of discrete linear
     operators. 
     We only know how \( \pflh \) "act" on a single edge, so \( \pflh \) gives us only one dimensional informations.
-    In other words, we only know the proportion \( \ph \cdot \e = \pflh (e)\) of the discrete contra vector field \( \ph = \left( \pflh \right)^{\sharp} \) in the
+    In other words, we only know the proportion \( \ph \cdot \e = \pflh (e)\) of the discrete contravariant vector field 
+    \( \ph = \left( \pflh \right)^{\sharp} \) in the
     \( \e \) direction, but we don't know the length of \( \ph \) defined on this edge.
 
-    ...some averaging techniques and why these sucks...
+    ...maybe some averaging techniques, which I tried and why these sucks...
    
     One way out is to rise the dimension of the discrete 1-forms, therefor we introduce some bases at the intersection 
-    \( c(e) = e\cap (\star e) \) of a edge and its dual edge to describe discrete contra- and covariant vector fields in a local (flat)
+    \( c(e) = e\cap (\star e) \) of a edge and its dual edge to describe discrete contra- and covariant vector fields in a local 
+    (piecewise flat)
     coordinate system.
 
     The basis for contravariant vectors at \( c(e) \) is composed of
@@ -303,13 +316,17 @@ For further information see for example \cite{whitney,hirani}.
                                                    + \partial_{t_{\star e}}X_{\star e}|_{\left[\frac{1}{2}, 1 \right]}\right) \).
     Therefore we get the local metric tensor
     \begin{align}
-      g_h(e) &= \left| e \right|^{2} \left( dx^{e} \right)^{2} + \left| \star e \right|^{2} \left( dx^{\star e} \right)^{2}
+      \mathbf{g}_h(e) &= \left| e \right|^{2} \left( dx^{e} \right)^{2} + \left| \star e \right|^{2} \left( dx^{\star e} \right)^{2}
     \end{align}
     where \( \left\{  dx^{e}, dx^{\star e} \right\} \) are the dual base of \( \left\{ \partial_{e}X, \partial_{\star e}X \right\} \),
     i.e. \( dx^{i}\left(\partial_{j}X\right) = \delta^{i}_{j} \) for \( i,j\in\left\{ e, \star e \right\} \).
     This gives us the great possibility to define
     \begin{align}
-      \PDpflh(e) &:= \pflh(e)dx^{e} + \pflh(\star e)  dx^{\star e} \\
+      \PDpflh(e) &:= 
+                   \begin{bmatrix}
+                     \pflh \\ *\pflh 
+                   \end{bmatrix}_{\text{PD}} (e)
+                   := \pflh(e)dx^{e} + \pflh(\star e)  dx^{\star e} \\
                    &= \pflh(e)dx^{e} - \frac{\left| \star e \right|}{\left| e \right|} \left(*\pflh\right)(e)  dx^{\star e} \\
       \PDph(e) &:= \left(\PDpflh(e)\right)^{\sharp} 
                  = \frac{1}{\left| e \right|^{2}} \pflh(e)\partial_{e}X + \frac{1}{\left|\star e \right|^{2}} \pflh(\star e)\partial_{\star e}X \\
@@ -320,10 +337,164 @@ For further information see for example \cite{whitney,hirani}.
     (short PD-vector field).
     Hence, we get for the square of the norm on \( c(e) \) by contract the PD-1-Form with its corresponding PD-Vector
     \begin{align}
-      \left\| \PDpflh \right\|^{2}(e) := \left( \PDpflh\left( \PDph \right) \right)(e)
+      \left\| \PDpflh \right\|_{h}^{2}(e) := \left( \PDpflh\left( \PDph \right) \right)(e)
                                        = \frac{1}{\left| e \right|^{2}}\left( \left[ \pflh(e) \right]^{2} 
                                                                              +\left[ \left(*\pflh\right)(e) \right]^{2}\right)
     \end{align}
+    In general, we also get a local discrete inner product between \( \PDpflh \) and another PD-1-form \( \PDqflh \) by
+    \begin{align}
+      \left\langle \PDqflh , \PDpflh \right\rangle_{h}(e)
+          &:= \left( \PDqflh\left( \PDph \right) \right)(e)
+                                       = \frac{1}{\left| e \right|^{2}}\left( \left[\pflh\qflh\right](e) 
+                                                                             +\left[\left(*\pflh\right)\left(*\qflh\right)\right](e) \right)
+    \end{align}
+
+
+\section{Discrete PD-Problem, a DEC approach}
+  To use a PD-1-form solution, we must also determine the dual part \( *\pflh \), 
+  therefore we discretize the Hodge dual equation \eqref{eqDOC} (resp. \eqref{eqD}) simultaneous to the primal equation
+  \eqref{eqPOC} (resp. \eqref{eqP}).
+  This leads to the DEC-discretized Primal-Dual-problem (DEC-PD-problem) 
+  \begin{align}
+    \left[ \partial_{t} + K_{0}\LDRh + K_{n}\left( \left\| \PDpflh \right\|_{h}^{2} - 1 \right) \right]\PDpflh &= 0
+  \end{align}
+  respective, without the One-Constant-Approximation,  
+  \begin{align}
+    \left[ \partial_{t} -   
+            \begin{bmatrix}
+               K_{1} \\ K_{3}
+            \end{bmatrix} \LCBh
+            -\begin{bmatrix}
+               K_{3} \\ K_{1}
+            \end{bmatrix} \LBh
+    + K_{n}\left( \left\| \PDpflh \right\|_{h}^{2} - 1 \right) \right]\PDpflh &= 0
+  \end{align}
+
+  \subsection{Time discretization}
+    The simplest way to discretize the DEC-PD-problem in time is to use a implicit Euler scheme, 
+    where we handle the norm \( \left\| \PDpflh \right\|_{h}^{2} \) explicit.
+    For one Euler step, we have to solve
+    \begin{align}
+      \left[ \frac{1}{\tau} + K_{0}\LDRh + K_{n}\left( \left\| \PDpflhOld \right\|_{h}^{2}(e) - 1 \right) \right]\PDpflh(e) 
+          &= \frac{1}{\tau} \PDpflhOld(e)
+    \end{align}
+    resp.
+    \begin{align}
+       \left[  \frac{1}{\tau}-   
+            \begin{bmatrix}
+               K_{1} \\ K_{3}
+            \end{bmatrix} \LCBh
+            -\begin{bmatrix}
+               K_{3} \\ K_{1}
+            \end{bmatrix} \LBh
+    + K_{n}\left( \left\| \PDpflhOld \right\|_{h}^{2}(e) - 1 \right) \right]\PDpflh(e) 
+          &= \frac{1}{\tau} \PDpflhOld(e)
+    \end{align}
+    for all \( e\in\E \).
+    \( \PDpflhOld  \) is the solution of the last time step or the initial condition, if this is the first Euler step.
+    \( \tau = t - \hat{t}  \) is the time step wide.
+    
+    The drawback of this semi-implicit Euler scheme is, that we need very small \( \tau \).
+    Therefore, it is better to use a Taylor-linearisation for  \( \left\| \PDpflh \right\|_{h}^{2}\PDpflh \).
+    First we calculate the partially component derivative on a edge \( e\in\E \) of
+    \begin{align}
+        \Phi\left( \PDpflh \right) &= \Phi \left( \pflh, *\pflh \right)
+              :=\left\| \PDpflh \right\|_{h}^{2}\PDpflh 
+              = \frac{1}{\left| e \right|^{2}} \left( \left( \pflh \right)^{2} 
+                                                  +\left( *\pflh \right)^{2} \right)
+                                     \begin{bmatrix}
+                                       \pflh \\ *\pflh
+                                     \end{bmatrix}
+    \end{align}
+    (Henceforward, for a better readability, the arguments \( e \) are omitted).
+    Hence, we obtain
+    \begin{align}
+      \partial_{\pflh}\Phi
+          &= \frac{1}{\left| e \right|^{2}}
+                \begin{bmatrix}
+                  3\left( \pflh \right)^{2} + \left( *\pflh \right)^{2} \\
+                  2\pflh\left( *\pflh \right)
+                \end{bmatrix} \\
+      \partial_{*\pflh}\Phi
+          &= \frac{1}{\left| e \right|^{2}}
+                \begin{bmatrix}
+                  2\pflh\left( *\pflh \right) \\
+                  \left( \pflh \right)^{2} + 3 \left( *\pflh \right)^{2} \\
+                \end{bmatrix}
+    \end{align}
+    For one step Taylor at \( \PDpflhOld \), we get
+    \begin{align}
+      \Phi(\PDpflh) &\approx  \Phi(\PDpflhOld) + \left( \pflh - \pflhOld \right)\partial_{\pflh}\Phi\left( \PDpflhOld \right)
+                          + \left( *\pflh - *\pflhOld \right)\partial_{*\pflh}\Phi\left( \PDpflhOld \right) \\
+                    &= \left\| \PDpflhOld \right\|_{h}^{2}\PDpflhOld
+                    +\frac{1}{\left| e \right|^{2}}
+                      \begin{bmatrix}
+                        \left( \pflh - \pflhOld \right)\left( 3\left( \pflh \right)^{2} + \left( *\pflh \right)^{2} \right)
+                        + 2\left(*\pflh - *\pflhOld\right)\pflh\left( *\pflh \right) \\
+                        2\left( \pflh - \pflhOld \right)\pflh\left( *\pflh \right)
+                        +\left(*\pflh - *\pflhOld\right)\left( 3\left( \pflh \right)^{2} + \left( *\pflh \right)^{2} \right)
+                      \end{bmatrix} \\
+       &= \left\| \PDpflhOld \right\|_{h}^{2}\PDpflhOld
+          \begin{aligned}[t]
+            &-\frac{3}{\left| e \right|^{2}}\left( \left( \pflhOld \right)^{2} + \left( *\pflhOld \right)^{2} \right)\PDpflhOld
+            +\frac{2}{\left| e \right|^{2}}
+                    \begin{bmatrix}
+                      \left( *\pflhOld \right)^{2} \\  \left( \pflhOld \right)^{2}
+                    \end{bmatrix}
+                    \PDpflhOld \\
+            &+\frac{1}{\left| e \right|^{2}}\left( \left( \pflhOld \right)^{2} + \left( *\pflhOld \right)^{2} \right)\PDpflh
+            +\frac{2}{\left| e \right|^{2}}
+                    \begin{bmatrix}
+                      \pflh\pflhOld \\ \left( *\pflh \right)\left( *\pflhOld \right)
+                    \end{bmatrix}
+                    \PDpflhOld \\
+            &+\frac{2}{\left| e \right|^{2}}
+                \begin{bmatrix}
+                  \left(*\pflh - *\pflhOld\right)\left( *\pflh \right)\\
+                  \left( \pflh - \pflhOld \right)\pflh
+                \end{bmatrix}
+                \PDpflhOld
+          \end{aligned}\\
+       &= -2\left\| \PDpflhOld \right\|_{h}^{2}\PDpflhOld 
+            + \left\| \PDpflhOld \right\|_{h}^{2}\PDpflh
+            + 2\left\langle \PDpflh, \PDpflhOld \right\rangle_{h}\PDpflhOld
+    \end{align}
+    The inner product term can be also expressed as matrix-vector multiplication:
+    \begin{align}
+      \left\langle \PDpflh, \PDpflhOld \right\rangle_{h}\PDpflhOld
+        = \frac{1}{\left| e \right|^{2}}
+            \begin{bmatrix}
+              \left( *\pflhOld \right)^{2} & \pflhOld\left( *\pflhOld  \right) \\
+              \pflhOld\left( *\pflhOld  \right) & \left( \pflhOld \right)^{2}
+            \end{bmatrix} \cdot \PDpflh
+        =: \left( \PDpflhOld \otimes_{h} \PDpflhOld \right)^{\sharp,\cdot} \cdot \PDpflh
+    \end{align}
+    with a formally defined local outer product \( \otimes_{h} \) for PD-1-forms,
+    which respect the discrete local metric.
+
+    With the Taylor linearization and the implicit Euler scheme, we have to solve in every time steps and all \( e\in\E \)
+    \begin{align}
+      \left[ \frac{1}{\tau} + K_{0}\LDRh + K_{n}\left( \left\| \PDpflhOld \right\|_{h}^{2} - 1 \right) \right]\PDpflh
+          + 2K_{n} \left( \PDpflhOld \otimes_{h} \PDpflhOld \right) \cdot \PDpflh
+          &= \left[\frac{1}{\tau} + 2K_{n}\left\| \PDpflhOld \right\|_{h}^{2}\right]\PDpflhOld
+    \end{align}
+    resp.
+    %\resizebox{0.9\textwidth}{!}{\begin{minipage}{\linewidth}
+    \begin{align} 
+      \left[ \frac{1}{\tau}
+          - \begin{bmatrix}
+               K_{1} \\ K_{3}
+            \end{bmatrix} \LCBh
+            -\begin{bmatrix}
+               K_{3} \\ K_{1}
+            \end{bmatrix} \LBh
+          + K_{n}\left( \left\| \PDpflhOld \right\|_{h}^{2} - 1 \right) \right]\PDpflh
+          + 2K_{n} \left( \PDpflhOld \otimes_{h} \PDpflhOld \right) \cdot \PDpflh
+          &= \left[\frac{1}{\tau} + 2K_{n}\left\| \PDpflhOld \right\|_{h}^{2}\right]\PDpflhOld
+    \end{align}
+    %\end{minipage}}
+
+    
 
 
 
