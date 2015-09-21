@@ -1,0 +1,33 @@
+\begin{tikzpicture}[>=latex, line width=1pt]
+
+% vertex coords
+\coordinate (V1) at (-2,0);
+\coordinate (V2) at (2,0);
+\coordinate (V3) at (0,3);
+\coordinate (V4) at (0,-3);
+
+%points
+\fill(V1) circle(2pt);
+\fill(V2) circle(2pt);
+\fill(V3) circle(2pt);
+\fill(V4) circle(2pt);
+
+%arrows
+\draw[->] (V1) -- (V2);
+\draw[->] (V2) -- (V3);
+\draw[->] (V3) -- (V1);
+\draw[->] (V4) -- (V2);
+\draw[->] (V4) -- (V1);
+
+%face nodes
+\node at (0,1) {{\boldmath $+$}};
+\node at (0,-1) {{\boldmath $-$}};
+%edge nodes
+\node[above left] at (-1,1.5) {$+$};
+\node[above right] at (1,1.5) {$+$};
+\node[below left] at (-1,-1.5) {$-$};
+\node[below right] at (1,-1.5) {$+$};
+\node[above] at (0,0) {$+$};
+\node[below] at (0,0) {$-$};
+
+\end{tikzpicture}

@@ -45,18 +45,21 @@
 \newcommand{\PDqflh}{\underline{\mathbf{q}}^{\flat}_{h}}
 %discrete director field (contra-vector)
 \newcommand{\PDph}{\underline{\mathbf{p}}_{h}}
+\newcommand{\PDqh}{\underline{\mathbf{q}}_{h}}
 %discrete PD director field OLD SOLUTION (co-vector, flat of contra-vector)
 \newcommand{\PDpflhOld}{\underline{\widehat{\mathbf{p}}}^{\flat}_{h}}
+%discrete director field OLD SOLUTION (contra-vector)
+\newcommand{\PDphOld}{\underline{\widehat{\mathbf{p}}}_{h}}
 %Frank Oseen Energy (without Lagrange term for normalizing)
-\newcommand{\EOS}{E_{\text{OS}}}
+\newcommand{\EOS}{E_{\text{FO}}}
 %Normalizing energy
 \newcommand{\EN}{E_{n}}
 %Laplace-Beltrami or Rot-Rot-Laplace
-\newcommand{\LB}{\Delta^{\text{\tiny RR}}}
+\newcommand{\LB}{\boldsymbol{\Delta}^{\text{\tiny RR}}}
 %Laplace-CoBeltrami or Grad-Div-Laplace
-\newcommand{\LCB}{\Delta^{\text{\tiny GD}}}
+\newcommand{\LCB}{\boldsymbol{\Delta}^{\text{\tiny GD}}}
 %Laplace-deRham
-\newcommand{\LDR}{\Delta^{\text{\tiny dR}}}
+\newcommand{\LDR}{\boldsymbol{\Delta}^{\text{\tiny dR}}}
 %discrete Laplace-Beltrami or Rot-Rot-Laplace
 \newcommand{\LBh}{\LB_{h}}
 %Laplace-CoBeltrami or Grad-Div-Laplace
@@ -75,6 +78,8 @@
 \newcommand{\e}{\mathbf{e}}
 %vertex vector
 \renewcommand{\v}{\mathbf{v}}
+%PD-Basis
+\newcommand{\PDxi}{\boldsymbol{\xi}}
 
 
 
@@ -111,7 +116,9 @@ where the exterior coderivative \( \excod := -* \exd * \) is the \( L^{2} \)-ort
 
   \subsection{Functional derivative}
   
-  With the  \( L^{2} \)-orthogonality of the exterior derivative and coderivative and a arbitrary \( \alpha\in\Lambda^{1}(M) \) we get
+  With the  \( L^{2} \)-orthogonality of the exterior derivative and coderivative 
+  (\( \left\langle \exd\bullet, \bullet  \right\rangle_{L^{2}} = \left\langle \bullet,\excod\bullet \right\rangle_{L^{2}} \))
+  and a arbitrary \( \alpha\in\Lambda^{1}(M) \) we get
   \begin{align}
     \int_{\M} \left\langle\frac{\delta\EOS}{\delta\pfl} , \alpha \right\rangle \dA
       &= \lim_{\epsilon\rightarrow 0} \frac{1}{\epsilon}\left( \EOS\left[ \pfl + \epsilon\alpha \right] - \EOS\left[ \pfl\right]\right) \\
@@ -274,10 +281,29 @@ For further information see for example \cite{whitney,hirani}.
                                 s_{v,\tilde{e}} \frac{\left| \star\tilde{e} \right|}{\left| \tilde{e} \right|}\pflh(\tilde{e})
     \end{align}
     where the sign \( s_{f,e} \) is +1 if the face \( f\succ e \) is in the left of the edge \( e \) (-1 otherwise)
-    and \( s_{v,e} \) is +1 if the edge \( e\succ v \) points to the vertex \( v \) and -1 if \( e \) points away from \( v \).
+    and \( s_{v,e} \) is +1 if the edge \( e\succ v \) points to the vertex \( v \) and -1 if \( e \) points away from \( v \)
+    (see figure \ref{figSigns}).
     We see \( \LBh \), \( \LCBh \) and also \( \LDRh := -\LBh -\LCBh \) are linear operators in \( \pflh(\tilde{e}) \)
     and therefor results in sparse matrices if the \( \pflh(\tilde{e}) \) are our degree of freedoms.
-    ...explainable figures...
+    \begin{figure}
+      \begin{minipage}[htp]{.25\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{bilder/tikz/LBDEC.pdf}
+      \end{minipage}\hfill
+      \begin{minipage}[htp]{.7\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{bilder/tikz/LCBDEC.pdf}
+      \end{minipage}
+      \caption{Signs \( s \) on example mesh extracts, which affected the discretization of the discrete Laplace operators.
+               Left (\( \LBh \)): The edge of interest \( e \) is the middle edge.
+                                  The bold signs in the middle of the faces indicate \( s_{f,e} \).
+                                  The other signs at the local edges \( \tilde{e} \) (regarding the two faces \( f \)) indicate \( s_{f,\tilde{e}} \).
+               Right (\( \LCBh \)): The edge of interest \( e \) is also the middle edge.
+                                    The bold signs above the two inner vertices \( v \) indicate \( s_{v,e} \).
+                                    The other signs at the local edges \( \tilde{e} \) (regarding the two vertices \( v \))
+                                    indicate \( s_{v,\tilde{e}} \).}
+       \label{figSigns}
+    \end{figure}
 
   \subsection{Discrete norm}
     
@@ -322,20 +348,33 @@ For further information see for example \cite{whitney,hirani}.
     i.e. \( dx^{i}\left(\partial_{j}X\right) = \delta^{i}_{j} \) for \( i,j\in\left\{ e, \star e \right\} \).
     This gives us the great possibility to define
     \begin{align}
-      \PDpflh(e) &:= 
+      \PDpflh(e) &:= \pflh(e)dx^{e} + \pflh(\star e)  dx^{\star e} 
+                   = \pflh(e)dx^{e} - \frac{\left| \star e \right|}{\left| e \right|} \left(*\pflh\right)(e)  dx^{\star e} \\
+                 &=  \pflh(e)\PDxi^{e} + \left(*\pflh\right)(e)\PDxi^{\star e}
+                 =:
                    \begin{bmatrix}
                      \pflh \\ *\pflh 
                    \end{bmatrix}_{\text{PD}} (e)
-                   := \pflh(e)dx^{e} + \pflh(\star e)  dx^{\star e} \\
-                   &= \pflh(e)dx^{e} - \frac{\left| \star e \right|}{\left| e \right|} \left(*\pflh\right)(e)  dx^{\star e} \\
+    \end{align}
+    where \( \PDxi^{e}:=dx^{e} \) and \( \PDxi^{\star e}:= - \frac{\left| \star e \right|}{\left| e \right|}dx^{\star e}\) are the
+    contravariant Primal-Dual-basis (PD-basis), which we want to use.
+    \( \PDpflh(e) \) is called the discrete Primal-Dual-1-form (PD-1-form).
+    With this scaling and the condition \( \PDxi_{i}(\PDxi^{j}) = \delta^{j}_{i} \), 
+    it is also possible to define the covariant PD-basis as 
+    \( \PDxi_{e}:=\partial_{e}X \) and \( \PDxi_{\star e}:= -\frac{\left| e \right|}{\left| \star e \right|}\partial_{\star e}X \).
+    Hence, we obtain for the discrete Primal-Dual-vector field (PD-vector field) \( \PDph \)
+    \begin{align}
       \PDph(e) &:= \left(\PDpflh(e)\right)^{\sharp} 
                  = \frac{1}{\left| e \right|^{2}} \pflh(e)\partial_{e}X + \frac{1}{\left|\star e \right|^{2}} \pflh(\star e)\partial_{\star e}X \\
-               & =  \frac{1}{\left| e \right|} \left( \frac{1}{\left| e \right|} \pflh(e)\partial_{e}X 
-                                                     -\frac{1}{\left|\star e \right|} \left(*\pflh\right)(e) \partial_{\star e}X\right)
+               &= \frac{1}{\left| e \right|^{2}} \pflh(e)\partial_{e}X 
+                   -\frac{1}{\left| e \right|\left|\star e \right|} \left(*\pflh\right)(e) \partial_{\star e}X \\
+               &= \frac{1}{\left| e \right|^{2}}\left[ \pflh(e)\PDxi_{e} + \left(*\pflh\right)(e)\PDxi_{\star e} \right]
+               =: \begin{bmatrix}
+                     \pflh \\ *\pflh 
+                   \end{bmatrix}^{\text{PD}} (e)
     \end{align}
-    We call \( \PDpflh(e) \) the discrete Primal-Dual-1-form (short PD-1-form) and \( \PDph \) the discrete Primal-Dual-vector field
-    (short PD-vector field).
-    Hence, we get for the square of the norm on \( c(e) \) by contract the PD-1-Form with its corresponding PD-Vector
+    Hence, we get for the square of the norm on \( c(e) \) 
+    (and also with a constant interpolation on the whole edge) by contract the PD-1-Form with its corresponding PD-Vector
     \begin{align}
       \left\| \PDpflh \right\|_{h}^{2}(e) := \left( \PDpflh\left( \PDph \right) \right)(e)
                                        = \frac{1}{\left| e \right|^{2}}\left( \left[ \pflh(e) \right]^{2} 
@@ -348,6 +387,20 @@ For further information see for example \cite{whitney,hirani}.
                                        = \frac{1}{\left| e \right|^{2}}\left( \left[\pflh\qflh\right](e) 
                                                                              +\left[\left(*\pflh\right)\left(*\qflh\right)\right](e) \right)
     \end{align}
+    or a outer product between the PD-1-form \( \PDpflh \) and the PD-vector  \( \PDqh \) to produce the PD-(1,1)-Tensor
+    \begin{align}
+      \left(\PDpflh \otimes \PDqh\right) 
+          &:= \frac{1}{\left| e \right|^{2}} \left( \pflh\qflh \PDxi^{e}\otimes\PDxi_{e} 
+                                                   +\pflh(*\qflh) \PDxi^{e}\otimes\PDxi_{\star e}
+                                                   +(*\pflh)\qflh \PDxi^{\star e}\otimes\PDxi_{e}
+                                                   +(*\pflh)(*\qflh)\PDxi^{\star e}\otimes\PDxi_{\star e}\right)\\
+          &=: \frac{1}{\left| e \right|^{2}} 
+            \begin{bmatrix}
+              \pflh\qflh & \pflh(*\qflh) \\
+              (*\pflh)\qflh & (*\pflh)(*\qflh)
+            \end{bmatrix}^{D}_{P} 
+    \end{align}
+    (Arguments \( (e) \) are omitted)
 
 
 \section{Discrete PD-Problem, a DEC approach}
@@ -464,18 +517,16 @@ For further information see for example \cite{whitney,hirani}.
       \left\langle \PDpflh, \PDpflhOld \right\rangle_{h}\PDpflhOld
         = \frac{1}{\left| e \right|^{2}}
             \begin{bmatrix}
-              \left( *\pflhOld \right)^{2} & \pflhOld\left( *\pflhOld  \right) \\
-              \pflhOld\left( *\pflhOld  \right) & \left( \pflhOld \right)^{2}
-            \end{bmatrix} \cdot \PDpflh
-        =: \left( \PDpflhOld \otimes_{h} \PDpflhOld \right)^{\sharp,\cdot} \cdot \PDpflh
+              \left( \pflhOld \right)^{2} & \pflhOld\left( *\pflhOld  \right) \\
+              \pflhOld\left( *\pflhOld  \right) & \left( * \pflhOld \right)^{2}
+            \end{bmatrix}_{P}^{D} \cdot \PDpflh
+        = \left( \PDpflhOld \otimes \PDphOld \right) \cdot \PDpflh
     \end{align}
-    with a formally defined local outer product \( \otimes_{h} \) for PD-1-forms,
-    which respect the discrete local metric.
 
-    With the Taylor linearization and the implicit Euler scheme, we have to solve in every time steps and all \( e\in\E \)
+    With the Taylor linearization and the implicit Euler scheme, we have to solve the following PD-DEC-Problem in every time steps and all \( e\in\E \)
     \begin{align}
       \left[ \frac{1}{\tau} + K_{0}\LDRh + K_{n}\left( \left\| \PDpflhOld \right\|_{h}^{2} - 1 \right) \right]\PDpflh
-          + 2K_{n} \left( \PDpflhOld \otimes_{h} \PDpflhOld \right) \cdot \PDpflh
+          + 2K_{n} \left( \PDpflhOld \otimes \PDphOld \right) \cdot \PDpflh
           &= \left[\frac{1}{\tau} + 2K_{n}\left\| \PDpflhOld \right\|_{h}^{2}\right]\PDpflhOld
     \end{align}
     resp.
@@ -489,12 +540,21 @@ For further information see for example \cite{whitney,hirani}.
                K_{3} \\ K_{1}
             \end{bmatrix} \LBh
           + K_{n}\left( \left\| \PDpflhOld \right\|_{h}^{2} - 1 \right) \right]\PDpflh
-          + 2K_{n} \left( \PDpflhOld \otimes_{h} \PDpflhOld \right) \cdot \PDpflh
+          + 2K_{n} \left( \PDpflhOld \otimes \PDphOld \right) \cdot \PDpflh
           &= \left[\frac{1}{\tau} + 2K_{n}\left\| \PDpflhOld \right\|_{h}^{2}\right]\PDpflhOld
     \end{align}
     %\end{minipage}}
 
     
+\section{Notes on Implementation}
+
+  \subsection{Edge mesh}
+
+    \subsubsection{Iterators}
+
+  \subsection{Matrix assembling}
+
+  \subsection{Sharp and flat interpolations}
 
 
 

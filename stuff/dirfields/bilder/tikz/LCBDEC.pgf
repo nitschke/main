@@ -1,0 +1,73 @@
+\begin{tikzpicture}[>=latex, line width=1pt]
+
+% vertex coords
+\coordinate (V1) at (-2,0);
+\coordinate (V2) at (2,0);
+\coordinate (V3) at (0,3);
+\coordinate (V4) at (0,-3);
+
+\coordinate (V5) at (4,3);
+\coordinate (V6) at (6,0);
+\coordinate (V7) at (4,-3);
+
+\coordinate (V8) at (-4,3);
+\coordinate (V9) at (-6,0);
+\coordinate (V10) at (-4,-3);
+
+%points
+\fill(V1) circle(2pt);
+\fill(V2) circle(2pt);
+\fill(V3) circle(2pt);
+\fill(V4) circle(2pt);
+
+\fill(V5) circle(2pt);
+\fill(V6) circle(2pt);
+\fill(V7) circle(2pt);
+
+\fill(V8) circle(2pt);
+\fill(V9) circle(2pt);
+\fill(V10) circle(2pt);
+
+%arrows
+\draw[->] (V1) -- (V2);
+\draw[->] (V2) -- (V3);
+\draw[->] (V3) -- (V1);
+\draw[->] (V4) -- (V2);
+\draw[->] (V4) -- (V1);
+
+\draw[dotted] (V3) -- (V5);
+\draw[dotted] (V6) -- (V5);
+\draw[dotted] (V6) -- (V7);
+\draw[dotted] (V4) -- (V7);
+\draw[->] (V5) -- (V2);
+\draw[->] (V2) -- (V6);
+\draw[->] (V7) -- (V2);
+
+\draw[dotted] (V3) -- (V8);
+\draw[dotted] (V8) -- (V9);
+\draw[dotted] (V10) -- (V9);
+\draw[dotted] (V10) -- (V4);
+\draw[->] (V1) -- (V8);
+\draw[->] (V9) -- (V1);
+\draw[->] (V1) -- (V10);
+
+\node[above] at (V1) {{\boldmath $-$}};
+\node[above] at (V2) {{\boldmath $+$}};
+
+%edge nodes
+\node[below left] at (1,1.5) {$-$};
+\node[above left] at (3,1.5) {$+$};
+\node[above] at (4,0) {$-$};
+\node[above right] at (3,-1.5) {$+$};
+\node[below right] at (1,-1.5) {$+$};
+
+\node[above left] at (-1,1.5) {$+$};
+\node[below left] at (-3,1.5) {$-$};
+\node[below] at (-4,0) {$+$};
+\node[above left] at (-3,-1.5) {$-$};
+\node[below left] at (-1,-1.5) {$+$};
+
+\node[below right] at (0,0) {$+$};
+\node[above left] at (0,0) {$-$};
+
+\end{tikzpicture}
