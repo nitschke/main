@@ -69,37 +69,54 @@ using namespace AMDiS;
 //  }
 //};
 
-//// Chmutov
-//class Phi : public AbstractFunction<double, WorldVector<double> >
-//{
-//public:
-//  Phi() : AbstractFunction<double, WorldVector<double> >(1) {}
-//
-//  double operator()(const WorldVector<double>& x) const 
-//  {
-//    double x2 = x[0] * x[0];
-//    double y2 = x[1] * x[1];
-//    double z2 = x[2] * x[2];
-//    double x4 = x2 * x2;
-//    double y4 = y2 * y2;
-//    double z4 = z2 * z2;
-//    return x4 + y4 + z4 - x2 - y2 - z2 - 0.375;
-//  }
-//};
-//
-//class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
-//{
-//public:
-//  GradPhi() : AbstractFunction<WorldVector<double>, WorldVector<double> >(1) {}
-//
-//  WorldVector<double> operator()(const WorldVector<double>& x) const 
-//  {
-//    WorldVector<double> rval(x);
-//    rval *= -2.0;
-//    for (int i = 0; i < 3; i++) rval[i] = rval[i] + 4.0 * x[i] * x[i] * x[i];
-//    return rval;
-//  }
-//};
+// Octic Surface (double well (in z) strain of the unit sphere in x-direction)
+class Phi : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  Phi(double c_) : AbstractFunction<double, WorldVector<double> >(1), c(c_) {}
+
+  double operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    double z2 = z*z;
+    double xcor = x - c * z2 * (2.0 - z2);
+    return xcor*xcor + y*y + z2 - 1.0; 
+  }
+
+private:
+
+  double c;
+};
+
+class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradPhi(double c_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), c(c_) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    WorldVector<double> rval;
+    double z2 = z*z;
+    double xcor = x - c * z2 * (2.0 - z2);
+
+    rval[0] = 2.0*xcor;
+    rval[1] = 2.0*y;
+    rval[2] = 2.0*(z + 4.0*c*z*(z2 - 1.0)*xcor);
+
+    return rval;
+  }
+
+private:
+
+  double c;
+};
 
 
 
@@ -113,12 +130,15 @@ int main(int argc, char* argv[])
 
   AMDiS::init(argc, argv);
 
+  double stretch = -1.0;
+  Parameters::get("octic->c", stretch);
+  TEST_EXIT(stretch >= 0)("stretch factor must be positive!\n");
   // ===== create projection =====
-  //new PhiProject(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-6);
+  new PhiProject(1, VOLUME_PROJECTION, new Phi(stretch), new GradPhi(stretch), 1.0e-6);
   //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
-  WorldVector<double> ballCenter;
-  ballCenter.set(0.0);
-  new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
+  //WorldVector<double> ballCenter;
+  //ballCenter.set(0.0);
+  //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
   
 
   // ===== create and init the scalar problem ===== 

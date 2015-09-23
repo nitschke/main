@@ -45,7 +45,7 @@ void DecProblemInstat::closeTimestep() {
     //statProb->writeSolution("." + boost::lexical_cast<std::string>(step));
     statProb->writeSolution(t);
   }
-  t += tau;
+  t += tau; // move to init timestep?
   step++;
 }
 

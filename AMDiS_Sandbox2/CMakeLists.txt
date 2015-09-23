@@ -61,6 +61,9 @@ target_link_libraries(directorFieldEllipsoid ${BASIS_LIBS} dec)
 add_executable(directorFieldQuartic src/directorFieldQuartic.cc)
 target_link_libraries(directorFieldQuartic ${BASIS_LIBS} dec)
 
+add_executable(directorFieldOctic src/directorFieldOctic.cc)
+target_link_libraries(directorFieldOctic ${BASIS_LIBS} dec)
+
 add_executable(dirCosPhi src/dirCosPhi.cc)
 target_link_libraries(dirCosPhi ${BASIS_LIBS} dec)
 
