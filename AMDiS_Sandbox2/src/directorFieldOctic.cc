@@ -35,51 +35,17 @@ private:
 };
 
 
-// <(*d)(z),[p,q]> 
-class RotZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+// <dX,[p,q]>
+class DX_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
-  RotZ_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+  DX_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
   {
-    double p1 = p[0];
-    double p2 = p[1];
-    double p3 = p[2];
-    double q1 = q[0];
-    double q2 = q[1];
-    double q3 = q[2];
-    return 2.*(p2*q1 - 1.*p1*q2)*atan((-1. + p1*q1 + p2*q2 + p3*q3)*pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + 
-       pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5))*
-   pow(-2.*p1*p3*q1*q3 - 2.*p2*q2*(p1*q1 + p3*q3) + pow(p3,2.)*(pow(q1,2.) + pow(q2,2.)) + pow(p2,2.)*(pow(q1,2.) + pow(q3,2.)) + 
-     pow(p1,2.)*(pow(q2,2.) + pow(q3,2.)),-0.5);
-  }
-};
-
-// <d(z^2),[p,q]>
-class DZ2_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
-{
-public:
-  DZ2_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
-
-  /// Implementation of AbstractFunction::operator().
-  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
-  {
-    return  q[2]*q[2]*q[0]*q[1] - p[2]*p[2]*p[0]*p[1];
-  }
-};
-
-// <d(xyz),[p,q]>
-class DXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
-{
-public:
-  DXYZ_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
-
-  /// Implementation of AbstractFunction::operator().
-  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
-  {
-    return  q[0]*q[1]*q[2] - p[0]*p[1]*p[2];
+    return  q[0] - p[0];
+    //return  q[0]*(q[2]+1.0)*(q[2]+1.0) - p[0]*(p[2]+1.0)*(p[2]+1.0);
   }
 };
 
@@ -193,6 +159,8 @@ public:
     Kn = -1.0;
     Parameters::get("userParameter->Kn", Kn);
     TEST_EXIT(Kn >= 0.0)("Kn must be positive");
+
+    oldEnergy = 1.e+100;
  }
 
 
@@ -206,7 +174,8 @@ public:
 
     DofEdgeVector scaledNorm(normAlpha);
     scaledNorm.evalFunction(&delta);
-    tracker.trackdownMaxima(scaledNorm, time, 0.1);
+    int nmaximas = tracker.trackdownMaxima(scaledNorm, time, 0.1);
+    cout << "*** " << nmaximas << " maximas ***" << endl;
 
     DofEdgeVector normDeviat = normAlpha * normAlpha;
     normDeviat += -1.0;
@@ -217,21 +186,21 @@ public:
     double energy = dive + rote + ne;
     csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
     
-    if (step%10 == 1) { 
+    if (step == 1)  oldEnergy = energy;
+    if (step%5 == 1 && step > 1) { 
       cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
-      double eps = 1.E-2;
-      double tauMax = 1.0;
-      if (t > 0.005) {
-        double eder = (oldEnergy - energy) / energy;
-        cout << "###     rel Diff: " << eder << " ###" << endl;
-        if (eder < eps && eder > 0.0 && tau < tauMax ) {
-          t -= tau; // undo in closeTimestep
-          tau *= 2.0;
-          if (tau > tauMax) tau = tauMax;
-          inv_tau = 1. / tau;
-          t += tau;
-          cout << "### tau -> " << tau << " ###" << endl;
-        }
+      double eder = (oldEnergy - energy) / energy;
+      cout << "###     rel Diff: " << eder << " ###" << endl;
+
+      double eps = 1.E-3;
+      double tauMax = 0.5;
+      if (eder < eps && tau < tauMax && eder > -1.e-8) {
+        t -= tau; // undo in closeTimestep
+        tau *= 2.0;
+        if (tau > tauMax) tau = tauMax;
+        inv_tau = 1. / tau;
+        t += tau;
+        cout << "### tau -> " << tau << " ###" << endl;
       }
       oldEnergy = energy;
     }
@@ -307,22 +276,11 @@ int main(int argc, char* argv[])
 
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
-  //DofEdgeVector rotz(edgeMesh, "rotz");
-  //rotz.set(new RotZ_d());
-  //rotz.writeSharpFile("output/rotzSharp.vtu", &sphere);
-
-  //DofEdgeVector dxyz(edgeMesh, "dxyz");
-  //dxyz.set(new DXYZ_d());
-  //dxyz.writeSharpFile("output/dxyzSharp.vtu", &sphere);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
   Noise_d noiseFun(42);
-  //initSol.set(&noiseFun, new Noise_d(43,-1./3.));
-  initSol.set(&noiseFun);
-  //initSol.set(new DZ2_d());
-  //initSol.bakeDual();
-  //initSol.interpol(new Michael(0.01));
-  //initSol.interpol(new Twist());
+  //initSol.set(&noiseFun);
+  initSol.set(new DX_d());
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

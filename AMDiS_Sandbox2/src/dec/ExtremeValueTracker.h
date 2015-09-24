@@ -19,8 +19,8 @@ public:
     csvout << "t,x,y,z" << endl;
   }
 
-  // for scalar values stored at edge centers
-  void trackdownMaxima(const DofEdgeVector &dofe, double time, double minVal); 
+  // for scalar values stored at edge centers-> return number of maximas
+  int trackdownMaxima(const DofEdgeVector &dofe, double time, double minVal); 
 
   ~ExtremeValueTracker() {
     csvout.close();

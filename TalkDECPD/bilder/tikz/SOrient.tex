@@ -1,0 +1,40 @@
+\begin{tikzpicture}[>=latex, scale=2, line width=1pt]
+          % Coords
+          \coordinate (V0) at (0,0);
+          \coordinate (V1) at (2,0);
+          \coordinate (V2) at (1,2);
+          \coordinate (C01) at (1,0);
+          \coordinate (C02) at (0.5,1);
+          \coordinate (C12) at (1.5,1);
+          \coordinate (C) at (1,0.75);
+          % Arrows
+          \draw[opacity=1]
+            (V0) -- (V1);
+          \draw[opacity=1]
+            (V1) -- (V2);
+          \draw[opacity=1]
+            (V2) -- (V0);
+
+		%\fill[red] (V0) -- (V1) -- (V2) -- (V0);
+         
+          % Points
+          \fill[opacity=1](V0) node[below left] {\( v \)} circle (1.5pt);
+		  \fill[opacity=0](V0) node[above left] {\( c(v) \)} circle (1.5pt);
+		  \fill[opacity=1] (V0)  circle (1.5pt);
+          \fill[opacity=1] (V1)  circle (1.5pt);
+          \fill[opacity=1](V2)   circle (1.5pt);
+          \fill[opacity=0] (C02)  circle (1.5pt);
+          \fill[opacity=1] (C01) node[below] {\( e \)};
+		  \fill[opacity=0] (C01) node[above] {\( c(e) \)} circle (1.5pt);
+          \fill[opacity=0](C12)  circle (1.5pt);
+          \fill[opacity=1](C) node[below] {\( f\)};
+		  \fill[opacity=0](C) node[above] {\( c(f)\)} circle (1.5pt);	
+
+		 \coordinate (CC2) at (1,0.58);
+          \draw[opacity=1, color=red, ->] (CC2) + (135:0.2) arc (135:405:0.2) --++ (-3pt,3pt);
+		
+		\draw[opacity=1, color=red, ->] (V0) -- (V1);
+
+		\coordinate (CC0) at (1,1.25);
+          \draw[opacity=1, color=red, ->] (V0) + (135:0.1) arc (135:405:0.1) --++ (-2pt,2pt);
+\end{tikzpicture}

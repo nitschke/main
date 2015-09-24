@@ -15,7 +15,7 @@ n2 = len(name2)
 last = 100000
 #with open('../meshStatsbunny.csv', 'rb') as f:
 #with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
-fn = '../meshStatssphere0.6.csv'
+fn = '../meshStatssphere0.4.csv'
 with open(fn, 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]

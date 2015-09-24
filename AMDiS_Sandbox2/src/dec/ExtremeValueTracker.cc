@@ -5,14 +5,17 @@ using namespace std;
 using namespace AMDiS;
 using namespace dec;
 
-void ExtremeValueTracker::trackdownMaxima(const DofEdgeVector &dofe, double time, double minVal) {
+int ExtremeValueTracker::trackdownMaxima(const DofEdgeVector &dofe, double time, double minVal) {
+  int counter = 0;
   vector<EdgeElement>::const_iterator edgeIter = dofe.getEdgeMesh()->getEdges()->begin();
   for (; edgeIter != dofe.getEdgeMesh()->getEdges()->end(); ++edgeIter) {
     if (dofe[*edgeIter] > minVal && isMaximum(dofe, *edgeIter)) {
       WorldVector<double> ec = edgeIter->infoLeft->getEdgeCenter(edgeIter->dofEdge);
-      csvout << time << "," << ec[0] << "," << ec[1] << "," << ec[2] << endl; 
+      csvout << time << "," << ec[0] << "," << ec[1] << "," << ec[2] << endl;
+      counter++;
     } 
   }
+  return counter;
 }
 
 bool ExtremeValueTracker::isMaximum(const DofEdgeVector &dofe, const EdgeElement &eel) const {

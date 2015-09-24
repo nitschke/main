@@ -1,0 +1,168 @@
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[matrix,arrow]{xy}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{hyperref}
+
+%\usepackage[T1]{fontenc}
+%\usepackage[english]{babel}
+%\usepackage[fixlanguage]{babelbib}
+%\usepackage{multimedia}
+
+
+
+\usetheme{Warsaw}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\setbeamercovered{transparent}
+
+\title[DEC-PD]{Orientation Fields on Closed Surfaces\\
+                A Discrete Exterior Calculus Primal Dual (DEC-PD) Aproach}
+\author{Ingo Nitschke}
+\institute{IWR - TU Dresden}
+%\date{25. September 2014}
+\date{\today}
+
+\beamertemplatenavigationsymbolsempty
+
+\newcommand{\R}{\mathds{R}}
+\newcommand{\Z}{\mathds{Z}}
+\newcommand{\csd}{\text{csd}}
+\renewcommand{\div}{\text{Div}}
+\renewcommand{\hom}{\text{Hom}}
+\newcommand{\err}{\text{Err}}
+\newcommand{\id}{\text{Id}}
+\newcommand{\D}{\text{D}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\sgn}{\mathop{\mathrm{sgn}}\nolimits}
+\newcommand{\formpunkt}{\,\text{.}}
+\newcommand{\formkomma}{\,\text{,}}
+\newcommand{\formtext}[1]{\quad\text{#1}\quad}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+\newcommand{\vecover}[2]{\vec{#1}^{\,#2}}
+\newcommand{\diag}[1]{\text{diag}\left( #1 \right)}
+\newcommand{\II}{I \! I}
+\newcommand{\av}{\text{Av}}
+\newcommand{\conn}{\text{Conn}}
+\newcommand{\tred}[1]{\textcolor{red}{#1}}
+
+% IDENTIFIERS for math mode:
+
+%surface (manifold) -> M, S, \Omega 
+\newcommand{\M}{M}
+%volume element (volume measure) -> \mu, dA, d\Omega
+\newcommand{\dA}{dA}
+%director field (contra-vector)
+\newcommand{\p}{\mathbf{p}}
+\newcommand{\q}{\mathbf{q}}
+%director field (co-vector, flat of contra-vector)
+\newcommand{\pfl}{\mathbf{p}^{\flat}}
+\newcommand{\qfl}{\mathbf{q}^{\flat}}
+%discrete director field (co-vector, flat of contra-vector)
+\newcommand{\pflh}{\mathbf{p}^{\flat}_{h}}
+\newcommand{\pflhOld}{\widehat{\mathbf{p}}^{\flat}_{h}}
+\newcommand{\qflh}{\mathbf{q}^{\flat}_{h}}
+%discrete director field (contra-vector)
+\newcommand{\ph}{\mathbf{p}_{h}}
+%discrete PD director field (co-vector, flat of contra-vector)
+\newcommand{\PDpflh}{\underline{\mathbf{p}}^{\flat}_{h}}
+\newcommand{\PDqflh}{\underline{\mathbf{q}}^{\flat}_{h}}
+%discrete director field (contra-vector)
+\newcommand{\PDph}{\underline{\mathbf{p}}_{h}}
+\newcommand{\PDqh}{\underline{\mathbf{q}}_{h}}
+%discrete PD director field OLD SOLUTION (co-vector, flat of contra-vector)
+\newcommand{\PDpflhOld}{\underline{\widehat{\mathbf{p}}}^{\flat}_{h}}
+%discrete director field OLD SOLUTION (contra-vector)
+\newcommand{\PDphOld}{\underline{\widehat{\mathbf{p}}}_{h}}
+%Frank Oseen Energy (without Lagrange term for normalizing)
+\newcommand{\EOS}{E_{\text{FO}}}
+%Normalizing energy
+\newcommand{\EN}{E_{n}}
+%Laplace-Beltrami or Rot-Rot-Laplace
+\newcommand{\LB}{\boldsymbol{\Delta}^{\text{\tiny RR}}}
+%Laplace-CoBeltrami or Grad-Div-Laplace
+\newcommand{\LCB}{\boldsymbol{\Delta}^{\text{\tiny GD}}}
+%Laplace-deRham
+\newcommand{\LDR}{\boldsymbol{\Delta}^{\text{\tiny dR}}}
+%discrete Laplace-Beltrami or Rot-Rot-Laplace
+\newcommand{\LBh}{\LB_{h}}
+%Laplace-CoBeltrami or Grad-Div-Laplace
+\newcommand{\LCBh}{\LCB_{h}}
+%Laplace-deRham
+\newcommand{\LDRh}{\LDR_{h}}
+%Landau symbol
+\renewcommand{\O}{\mathcal{O}}
+%Vertices
+\newcommand{\V}{\mathcal{V}}
+%Edges
+\newcommand{\E}{\mathcal{E}}
+%Faces
+\newcommand{\F}{\mathcal{F}}
+%Simplicial complex
+\newcommand{\K}{\mathcal{K}}
+%edge vector
+\newcommand{\e}{\mathbf{e}}
+%vertex vector
+\renewcommand{\v}{\mathbf{v}}
+%PD-Basis
+\newcommand{\PDxi}{\boldsymbol{\xi}}
+
+
+
+\begin{document}
+ \frame{ \titlepage }
+ \frame {
+    \frametitle{Content}
+    \tableofcontents
+  }
+
+\section{Surface Discretization (Simplicial Complex)} 
+
+  \begin{frame}
+    \begin{block}{The surface mesh is made of simplices \( \sigma=v,e,f \):}
+      \begin{itemize}
+        \item<1-> \alt<1>{\tred{vertices}}{vertices}\alt<2>{, \tred{edges}}{, edges}\alt<3>{, \tred{(triangle) faces}}{,(triangle) faces}
+        \item<4->  equipped with an orientation
+        \item<5->  have circumcenters \( c(\sigma) \in Int(\sigma) \Rightarrow :  \) well-centered)
+        \item<6->  are refinable (circumcentric subdivision) 
+      \end{itemize}
+    \end{block}
+    \begin{overprint}
+      \onslide<1> \centering\input{bilder/tikz/S0.tex}
+      \onslide<2> \centering\input{bilder/tikz/S1.tex}
+      \onslide<3> \centering\input{bilder/tikz/S2.tex}
+      \onslide<4> \centering\input{bilder/tikz/SOrient.tex}
+      \onslide<5> \centering\input{bilder/tikz/SCircum.tex}
+      \onslide<6> \centering\input{bilder/tikz/SSub.tex}
+    \end{overprint}
+  \end{frame}
+
+  \begin{frame}
+    \begin{block}{The surface mesh is a well-centered oriented manifold-like simplicial complex \( \K \):}
+      \begin{itemize}
+        \item<1-> \textbf{simplicial complex} \( \K=\V\cup\E\cup\F \): "like a triangulation"    
+        \item<2-> \textbf{well-centered}: faces are well-centered (maximum angle less than \( 90^{\circ} \))
+        \item<3-> \textbf{oriented}: neighboured faces have the same orientation
+        \item<4-> \textbf{manifold-like}: polyhedron \( \bigcup_{f\in\F}f \) is a \( C^{0} \)-manifold
+      \end{itemize}
+    \end{block}
+    \begin{overprint}
+      \onslide<1> \centering\input{bilder/tikz/ExampleSC.tex}
+      \onslide<2> \centering\input{bilder/tikz/ExampleSCCircums.tex}
+      \onslide<3> \centering\input{bilder/tikz/ExampleSCOrient.tex}
+      \onslide<4> 
+          \centering\includegraphics[width=0.3\textwidth]{bilder/Icosahedron.pdf}\footnotetext{https://commons.wikimedia.org/wiki/File:Icosahedron.svg}
+    \end{overprint}
+  \end{frame}
+  
+
+\end{document}
