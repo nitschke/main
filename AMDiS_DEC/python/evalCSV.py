@@ -9,13 +9,13 @@ lw = 3;
 #name = ["MaxDiameter", "AvDiameter"]
 name = ["MaxMaxAngle", "AvMaxAngle"]
 #name = ["AvArea", "MinArea","MaxArea"]
-name2 = ["AvArea", "MinArea","MaxArea"]
+name2 = ["MinArea","MaxArea"]
 n = len(name)
 n2 = len(name2)
 last = 100000
 #with open('../meshStatsbunny.csv', 'rb') as f:
 #with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
-fn = '../meshStatssphere0.4.csv'
+fn = '../meshStatssphere99p.0.97.csv'
 with open(fn, 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]
@@ -35,10 +35,14 @@ for i in arange(n):
   #ax1.semilogx(x[i], label=name[i], linewidth=lw)
   ax1.semilogx(x[i], 'k'+lineStyles[i], label=name[i], linewidth=lw)
   #plot(x[i], label=name[i])
+ndata = len(x[0])
+a80 = ndata * [80.0]
+a90 = ndata * [90.0]
+ax1.semilogx(a80, 'k'+lineStyles[n], linewidth=lw)
+ax1.semilogx(a90, 'k'+lineStyles[n+1], linewidth=lw)
 
 ax2 = ax1.twinx()
-for i in arange(n2):
-  ax2.semilogx(x2[i], label=name2[i], linewidth=lw)
+ax2.semilogx(x2[1]/x2[0], label='area factor', linewidth=lw)
 
 #semilogx([1,last],[90,90],'k'+lineStyles[i+1],label="wellcentered", linewidth=lw)
 #plot([0,last],[90,90],"--",label="wellcentered")

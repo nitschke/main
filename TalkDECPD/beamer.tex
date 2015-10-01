@@ -1,6 +1,8 @@
 \documentclass{beamer}
 %\documentclass[handout]{beamer}
-\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[fixlanguage]{babelbib}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -130,7 +132,7 @@
   \begin{frame}
     \begin{block}{The surface mesh is made of simplices \( \sigma=v,e,f \):}
       \begin{itemize}
-        \item<1-> \alt<1>{\tred{vertices}}{vertices}\alt<2>{, \tred{edges}}{, edges}\alt<3>{, \tred{(triangle) faces}}{,(triangle) faces}
+        \item<1-> \alt<1>{\tred{vertices}}{vertices}\alt<2>{, \tred{edges}}{, edges}\alt<3>{, \tred{(triangle) faces}}{, (triangle) faces}
         \item<4->  equipped with an orientation
         \item<5->  have circumcenters \( c(\sigma) \in Int(\sigma) \Rightarrow :  \) well-centered)
         \item<6->  are refinable (circumcentric subdivision) 
@@ -163,6 +165,38 @@
           \centering\includegraphics[width=0.3\textwidth]{bilder/Icosahedron.pdf}\footnotetext{https://commons.wikimedia.org/wiki/File:Icosahedron.svg}
     \end{overprint}
   \end{frame}
+
+
+\section{Introduction in required DEC topics}
+
+  \subsection{Shopping List}
+    
+    \begin{frame}
+      \begin{block}{PDE for orientation fields}
+        \begin{overprint}
+          \onslide<1>
+            \begin{align*}
+              \partial_{t}\pfl = \left( K_{1}\LCB + K_{3}\LB\right)\pfl - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl
+            \end{align*}
+          \onslide<2>
+            \begin{align*}
+              \partial_{t}\tred{\pfl} = \left( K_{1}\LCB + K_{3}\LB\right)\tred{\pfl} 
+                        - K_{n} \left( \left\| \tred{\pfl} \right\|^{2} - 1 \right)\tred{\pfl}
+            \end{align*}
+          \onslide<3>
+            \begin{align*}
+              \partial_{t}\pfl = \left( K_{1}\tred{\LCB} + K_{3}\tred{\LB}\right)\pfl - K_{n} \left( \left\| \pfl \right\|^{2} - 1 \right)\pfl
+            \end{align*}
+        \end{overprint}
+        We need to discretize
+        \begin{itemize}
+          \item<2-> the \alt<2>{\tred{1-form \( \pfl \)}}{1-form \( \pfl \)}\( \in\Lambda^{1}(\M) \)
+          \item<3-> the \alt<3>{Laplace-Operators \tred{\( \LCB \)} and \tred{\( \LB \)}}{Laplace-Operators \( \LCB \) and \( \LB \)}
+        \end{itemize}
+      \end{block}
+      \footnotetext{\( \LCB \)...Vector-Laplace-CoBeltrami-Operator or Grad-Div-Laplace}
+      \footnotetext{\( \LB \)...Vector-Laplace-Beltrami-Operator or Rot-Rot-Laplace}
+    \end{frame}
   
 
 \end{document}

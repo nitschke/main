@@ -70,10 +70,10 @@ using namespace AMDiS;
 //};
 
 // Octic Surface (double well (in z) strain of the unit sphere in x-direction)
-class Phi : public AbstractFunction<double, WorldVector<double> >
+class PhiO : public AbstractFunction<double, WorldVector<double> >
 {
 public:
-  Phi(double c_) : AbstractFunction<double, WorldVector<double> >(1), c(c_) {}
+  PhiO(double c_) : AbstractFunction<double, WorldVector<double> >(1), c(c_) {}
 
   double operator()(const WorldVector<double>& coords) const 
   {
@@ -91,10 +91,10 @@ private:
   double c;
 };
 
-class GradPhi : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+class GradPhiO : public AbstractFunction<WorldVector<double>, WorldVector<double> >
 {
 public:
-  GradPhi(double c_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), c(c_) {}
+  GradPhiO(double c_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), c(c_) {}
 
   WorldVector<double> operator()(const WorldVector<double>& coords) const 
   {
@@ -118,6 +118,58 @@ private:
   double c;
 };
 
+// Nonic Surface (double well (in z) strain of the unit sphere in x-direction (factor c on north pole and r*c on south pole)
+class PhiN : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  PhiN(double c_,double r_) : AbstractFunction<double, WorldVector<double> >(1), c(c_), r(r_) {}
+
+  double operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    double dwell = (c*pow(z,2)*(r*(4 + 3*z)*pow(-1 + z,2) - (-4 + 3*z)*pow(1 + z,2)))/4.;
+    double xcor = x - dwell;
+    return xcor*xcor + y*y + z*z - 1.0; 
+  }
+
+private:
+
+  double c;
+  double r;
+};
+
+class GradPhiN : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradPhiN(double c_,double r_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), c(c_), r(r_) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    WorldVector<double> rval;
+    double dwell = (c*pow(z,2)*(r*(4 + 3*z)*pow(-1 + z,2) - (-4 + 3*z)*pow(1 + z,2)))/4.;
+    double xcor = x - dwell;
+    double Ddwell = (c*z*(-8 - 15*z + r*(-8 + 15*z))*(-1 + pow(z,2)))/4.;
+
+    rval[0] = 2.0*xcor;
+    rval[1] = 2.0*y;
+    rval[2] = 2.0*(z - xcor*Ddwell);
+
+    return rval;
+  }
+
+private:
+
+  double c;
+  double r;
+};
+
 
 
 // ===========================================================================
@@ -133,8 +185,12 @@ int main(int argc, char* argv[])
   double stretch = -1.0;
   Parameters::get("octic->c", stretch);
   TEST_EXIT(stretch >= 0)("stretch factor must be positive!\n");
+
+  double southRatio = -1.0;
+  Parameters::get("nonic->south ratio", southRatio);
+  TEST_EXIT(southRatio >= 0)("stretch factor must be positive!\n");
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new Phi(stretch), new GradPhi(stretch), 1.0e-6);
+  new PhiProject(1, VOLUME_PROJECTION, new PhiN(stretch, southRatio), new GradPhiN(stretch, southRatio), 1.0e-6);
   //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);

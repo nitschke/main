@@ -76,3 +76,5 @@ target_link_libraries(movingSurfaceScalar ${BASIS_LIBS} dec)
 add_executable(spherePDTest src/spherePDTest.cc)
 target_link_libraries(spherePDTest ${BASIS_LIBS} dec)
 
+add_executable(geoPot src/geoPot.cc)
+target_link_libraries(geoPot ${BASIS_LIBS} dec)

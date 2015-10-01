@@ -49,7 +49,6 @@ public:
   }
 };
 
-
 class ValSquaredMinusOne : public AbstractFunction<double,double> {
 public:
   ValSquaredMinusOne() : AbstractFunction<double,double>() {}
@@ -78,26 +77,6 @@ public:
   }
 };
 
-
-class AlphaGrad1 : public TertiaryAbstractFunction<double,double,double, EdgeElement> {
-public:
-  AlphaGrad1() : TertiaryAbstractFunction<double,double,double, EdgeElement>() {}
-
-  double operator()(const double &a1, const double &a2, const EdgeElement &eel) const {
-    double lenP = eel.infoLeft->getEdgeLen(eel.dofEdge);
-    return (3.0 * a1 * a1 + a2 * a2) / (lenP * lenP) - 1.0;
-  }
-};
-
-class AlphaGrad2 : public TertiaryAbstractFunction<double,double,double, EdgeElement> {
-public:
-  AlphaGrad2() : TertiaryAbstractFunction<double,double,double, EdgeElement>() {}
-
-  double operator()(const double &a1, const double &a2, const EdgeElement &eel) const {
-    double lenP = eel.infoLeft->getEdgeLen(eel.dofEdge);
-    return 2.0 * a1 * a2 / (lenP * lenP);
-  }
-};
 
 //projection
 class Proj : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
@@ -186,21 +165,32 @@ public:
     double energy = dive + rote + ne;
     csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
     
-    if (step == 1)  oldEnergy = energy;
-    if (step%5 == 1 && step > 1) { 
+    if (step == 6)  oldEnergy = energy;
+    if (step%2 == 1 && step > 6) { 
       cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
       double eder = (oldEnergy - energy) / energy;
       cout << "###     rel Diff: " << eder << " ###" << endl;
 
-      double eps = 1.E-3;
-      double tauMax = 0.5;
+      double eps = 4.E-4;
+      double tauMax = 0.64; // = 0.01*2^6
       if (eder < eps && tau < tauMax && eder > -1.e-8) {
         t -= tau; // undo in closeTimestep
         tau *= 2.0;
         if (tau > tauMax) tau = tauMax;
         inv_tau = 1. / tau;
         t += tau;
-        cout << "### tau -> " << tau << " ###" << endl;
+        cout << "### tau -> " << tau << " (coarsening) ###" << endl;
+      }
+
+      double eps2 = 4.E-3;
+      double tauMin = 1.5625e-4; //=0.01*2^(-6)
+      if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
+        t -= tau; // undo in closeTimestep
+        tau /= 8.0;
+        if (tau < tauMin) tau = tauMin;
+        inv_tau = 1. / tau;
+        t += tau;
+        cout << "### tau -> " << tau << " (refining) ###" << endl;
       }
       oldEnergy = energy;
     }
@@ -277,6 +267,8 @@ int main(int argc, char* argv[])
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
 
+  DecProblemStat decSphere(&sphere, edgeMesh);
+
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
   Noise_d noiseFun(42);
   //initSol.set(&noiseFun);
@@ -284,7 +276,6 @@ int main(int argc, char* argv[])
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 
-  DecProblemStat decSphere(&sphere, edgeMesh);
   MyInstat sphereInstat(&decSphere, initSol);
 
   EdgeOperator LaplaceB;

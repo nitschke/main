@@ -2,7 +2,8 @@ dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/sphereDivBy4.3d
 %sphereMesh->macro file name:        ./macro/sphereIko100k.3d
-sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/octics/octic_C0.500_100k.3d
+sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/nonics/nonic99p_C0.950_100k.3d
+%sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/octics/octic_C1.000_100k.3d
 %%%sphereMesh->macro file name:        ./output/meshOut400.3d %(eff. 4000)
 %sphereMesh->macro file name:        ./macro/torus1k.3d
 
@@ -24,11 +25,12 @@ sphere->solver: cg
 meshCorrector->h: 0.002 %0.001 %0.003 %0.0007 %0.0005
 
 meshCorrector->nMax: 30010
-meshCorrector->outName: sphere0.4
+meshCorrector->outName: sphere99p.0.96
 
 edgeForces->k: 1.0   % in [0,1] % hold k times average edge length in length preserving
 edgeForces->c: 0.8   % (0.7) in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
 
-octic->c: 0.4 % stretch factor sphere -> octic
+octic->c: 0.96 % stretch factor sphere -> octic
+nonic->south ratio: 0.99 % south ratio related to the stretch factor on north pole
 
 

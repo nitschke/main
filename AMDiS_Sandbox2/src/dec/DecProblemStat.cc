@@ -309,7 +309,7 @@ void DecProblemStat::solve() {
   using namespace itl;
   FUNCNAME("DecProblemStat::solve()");
 
-  TEST_EXIT(n > 0)("System is not assembled");
+  TEST_EXIT(n > 0)("System is not assembled\n");
 
   if (!fullSolution) fullSolution = new DenseVector(n, 0.0);
 
