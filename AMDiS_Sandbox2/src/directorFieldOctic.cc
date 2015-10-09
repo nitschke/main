@@ -144,6 +144,8 @@ public:
 
 
   void closeTimestep() {
+    cout << setprecision(10);
+    csvout << setprecision(10);
     double time = t;
     DecProblemInstat::closeTimestep();
     solPrimal = statProb->getSolution(0);
@@ -171,7 +173,7 @@ public:
       double eder = (oldEnergy - energy) / energy;
       cout << "###     rel Diff: " << eder << " ###" << endl;
 
-      double eps = 4.E-4;
+      double eps = 2.E-4;
       double tauMax = 0.64; // = 0.01*2^6
       if (eder < eps && tau < tauMax && eder > -1.e-8) {
         t -= tau; // undo in closeTimestep
@@ -182,7 +184,7 @@ public:
         cout << "### tau -> " << tau << " (coarsening) ###" << endl;
       }
 
-      double eps2 = 4.E-3;
+      double eps2 = 1.E-3;
       double tauMin = 1.5625e-4; //=0.01*2^(-6)
       if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
         t -= tau; // undo in closeTimestep
@@ -193,6 +195,8 @@ public:
         cout << "### tau -> " << tau << " (refining) ###" << endl;
       }
       oldEnergy = energy;
+
+      TEST_EXIT(abs(eder) > 1.0e-15)("STAGNATION EXIT\n");
     }
   }
 

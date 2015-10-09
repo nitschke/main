@@ -353,10 +353,11 @@ void DecProblemStat::writeSolution(double time, string nameAddition) {
   string basename = "output/" + ps->getName();
   Parameters::get(ps->getName() + "->output->filename", basename);
   
-  //TODO: from parameterfile
   int prec = 3;
+  Parameters::get("sphere->output->index precision", prec);
+  TEST_EXIT(prec > 0)("Precision must be greater than 0");
   ostringstream timeoss;
-  timeoss << setprecision(prec) << time;
+  timeoss << setprecision(prec) << fixed << time;
   nameAddition += "." + timeoss.str();
 
   for (int i = 0; i < nComponents; ++i) {

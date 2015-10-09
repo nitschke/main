@@ -13,9 +13,7 @@ name2 = ["MinArea","MaxArea"]
 n = len(name)
 n2 = len(name2)
 last = 100000
-#with open('../meshStatsbunny.csv', 'rb') as f:
-#with open('../meshStatsSphereDivBy4.csv', 'rb') as f:
-fn = '../meshStatssphere99p.0.97.csv'
+fn = '../meshStatssphere99p.0.981.csv'
 with open(fn, 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]

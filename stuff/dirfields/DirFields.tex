@@ -42,6 +42,7 @@
 \newcommand{\ph}{\mathbf{p}_{h}}
 %discrete PD director field (co-vector, flat of contra-vector)
 \newcommand{\PDpflh}{\underline{\mathbf{p}}^{\flat}_{h}}
+\newcommand{\PDpflhInit}{\underline{\mathbf{p}}^{\flat}_{h,0}}
 \newcommand{\PDqflh}{\underline{\mathbf{q}}^{\flat}_{h}}
 %discrete director field (contra-vector)
 \newcommand{\PDph}{\underline{\mathbf{p}}_{h}}
@@ -80,6 +81,8 @@
 \renewcommand{\v}{\mathbf{v}}
 %PD-Basis
 \newcommand{\PDxi}{\boldsymbol{\xi}}
+%gen. basis
+\newcommand{\base}{\boldsymbol{\xi}}
 
 
 
@@ -375,7 +378,7 @@ For further information see for example \cite{whitney,hirani}.
     \end{align}
     Hence, we get for the square of the norm on \( c(e) \) 
     (and also with a constant interpolation on the whole edge) by contract the PD-1-Form with its corresponding PD-Vector
-    \begin{align}
+    \begin{align} \label{eqPDNorm}
       \left\| \PDpflh \right\|_{h}^{2}(e) := \left( \PDpflh\left( \PDph \right) \right)(e)
                                        = \frac{1}{\left| e \right|^{2}}\left( \left[ \pflh(e) \right]^{2} 
                                                                              +\left[ \left(*\pflh\right)(e) \right]^{2}\right)
@@ -557,7 +560,88 @@ For further information see for example \cite{whitney,hirani}.
   \subsection{Sharp and flat interpolations}
 
 
+\section{Experiments}
 
+  \subsection{Nonic Surface}
+
+    We are starting with the standard parametrization (\(  \theta\in\left[ 0,\pi \right],\, \phi\in\left[ 0,2\pi\right) \))
+    \begin{align}
+      X_{\mathds{S}}(\theta,\phi) &= 
+                      \sin\theta\cos\phi\base^{x} +  \sin\theta\sin\phi \base^{y} + \cos\theta\base^{z}
+    \end{align}
+    of the unit sphere and make a displacement in the \( \base^{x} \)-direction depending on the \( z \)-position:
+    \begin{align}
+      X(\theta,\phi) :=  X_{\mathds{S}}(\theta,\phi) + f(\cos\theta)\base^{x}
+    \end{align}
+    This results also in an implicit description of this surface in standard Euclidean \( (x,y,z) \)-coordinates:
+    \begin{align}\label{eqImplicitNonic}
+      \varphi(x,y,z) &:= \left( x - f(z) \right)^{2} + y^{2} + z^{2} - 1 = 0
+    \end{align}
+    We choose for the displacement function \( f:[-1,1]\rightarrow\R \) a double well function, 
+    so that the north pole (\( z=1 \)) of the initial sphere is shifting right in  \( \base^{x} \)-direction by \( C>0 \)
+    and the south pole (\( z=-1 \)) by \( r\cdot C  \) with the proportion factor \( 0 < r < 1 \).
+    This implies
+    \begin{align}
+      f_{C,r}(z) = \frac{1}{4} C z^2 \left[(z+1)^2 (4-3 z)+r (z-1)^2 (4+3 z)\right]
+    \end{align}
+    and the double well conditions \( f(1) = C \), \( f(-1)=rC \) and \( f'(1)=f'(0)=f'(-1)=0 \) are fulfilled.
+    We call this subsequent manifold a nonic surface, because the left-hand side of the resulting implicit description
+    \eqref{eqImplicitNonic} is a polynomial of degree 10.
+    The reason why we don't choose \( r = 1 \) to get a less complex surface is to break the symmetry in the 
+    \( x \)-\( y \)-plane, this is necessary for preventing meta stable states in the dynamic of the orientation fields.
+
+    An simple choice for an initial condition is
+    \begin{align}
+      \pfl_{0} &= \frac{\exd x}{\left\|\exd x  \right\|}
+    \end{align}
+    because we can discretize \( \exd x \) on an edge \( e=\left[ v_{1} , v_{2} \right] \) by (stokes theorem)
+    \begin{align}
+      \left( \exd x \right)_{h}(e) = \left( v_{2} - v_{1} \right)\cdot\base^{x} = v_{2}^{x} - v_{1}^{x} 
+    \end{align}
+    independent in the parametrization of the surface.
+    Hence, after normalizing, there are three defects with a positive charge on the three bulges and one defect with a negative charge on the saddle point.
+    (That are the 4 positions, where the tangential space is orthogonal to \( \base^{x} \).)
+    If needed, by rising the indices we get the surface gradient of the \( x \)-component
+    \begin{align}
+      \left( \exd x \right)^{\sharp} &= \nabla_{\M}x
+                  = \left[g^{ij}_{C,r}\partial_{j}x(\theta,\phi)\right]^{i=\theta,\phi}
+                  = \left( I - \frac{\nabla \varphi_{C,r}}{\left\| \nabla \varphi_{C,r} \right\|}
+                        \otimes\frac{\nabla \varphi_{C,r}}{\left\| \nabla \varphi_{C,r} \right\|} \right)\base^{x}
+    \end{align}
+    For the normalizing procedure, it is also the Hodge dual initial solution to discretized (the rotation of the \( x \)-component).
+    If the face \( f_{1}\succ e \) is right of the edge \( e \) and \( f_{2}\succ e \) located left, 
+    so that \( \star e = [c(f_{1}),c(f_{2})] \) is the dual edge, than we can approximate
+    \begin{align}
+      \left( *\exd x \right)_{h}(e) &= -\frac{\left| e \right|}{\left| \star e \right|} \left( \exd x \right)(\star e)
+                                     = -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(f_{2})  \right]^{x} - \left[c(f_{1})  \right]^{x} \right)
+    \end{align}
+    With the discrete norm \eqref{eqPDNorm} of the PD-1-form, we obtain the initial PD-1-form on \( e \in \E \) by
+    \begin{align}
+      \PDpflhInit(e) = \frac{
+                       \begin{bmatrix}
+                          v_{2}^{x} - v_{1}^{x}\\
+            -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(f_{2})  \right]^{x} - \left[c(f_{1})  \right]^{x} \right)
+                       \end{bmatrix}_{PD}
+                    }{\sqrt{\frac{1}{\left| e \right|^{2}}\left(v_{2}^{x} - v_{1}^{x}  \right)^{2}
+                                     +\frac{1}{\left| \star e \right|^{2}}\left( \left[c(f_{2})  \right]^{x} - \left[c(f_{1})  \right]^{x}\right)^{2} }}
+    \end{align}
+    See figure \ref{figNonic}.
+    \begin{figure}
+      \centering
+      \includegraphics[width=.9\textwidth]{bilder/Nonic50p_1.png}
+      \caption{Nonic Surface with shift factor \( C = 1 \) and proportion factor \( r = 0.5 \).
+               The mesh is well-centered.
+               Plotted is the Gauss curvature.
+               The arrows show the covariant initial solution \( \p_{0} \) on some vertices.}
+      \label{figNonic}
+    \end{figure}
+
+
+
+\section{Appendix}
+
+  \subsection{Nonic Surface}
+    
   
 
 \bibliography{bibl}

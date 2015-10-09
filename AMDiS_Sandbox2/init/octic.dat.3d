@@ -1,7 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/octics/octic_C0.600_100k.3d
-sphereMesh->macro file name:       ./macro/nonics/nonic99p_C0.960_100k.3d
+sphereMesh->macro file name:       ./macro/nonics/nonic99p_C0.9805_100k.3d
 sphereMesh->global refinements:    0
 
 sphere->mesh:                    sphereMesh
@@ -17,16 +17,17 @@ sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   diag
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        100.0
+sphere->adapt->end time:        1000.0
 sphere->adapt->timestep:        1.e-2
 
-sphere->output->filename:         output/sphere
+sphere->output->filename:         output/sphere09805
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
 sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
 sphere->output->edgeForms flat:        1 
 
 sphere->output->write every i-th timestep:   1
+sphere->output->index precision:   8
 
 userParameter->K0: 1.0
 userParameter->K1: 1.0  % minimize div
