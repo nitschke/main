@@ -196,7 +196,11 @@ public:
       }
       oldEnergy = energy;
 
-      TEST_EXIT(abs(eder) > 1.0e-15)("STAGNATION EXIT\n");
+      //TEST_EXIT(abs(eder) > 1.0e-15)("STAGNATION EXIT\n");
+      if (abs(eder) < 1.0e-15) {
+        statProb->writeSolution(t-tau);
+        ERROR_EXIT("STAGNATION EXIT\n");
+      }
     }
   }
 

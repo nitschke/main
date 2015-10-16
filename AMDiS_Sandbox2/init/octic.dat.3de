@@ -20,7 +20,7 @@ sphere->adapt->start time:      0.0
 sphere->adapt->end time:        10000.0
 sphere->adapt->timestep:        1.e-2
 
-sphere->output->filename:         output/sphere1.000.
+sphere->output->filename:         output/sphere0.960.
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
 sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)

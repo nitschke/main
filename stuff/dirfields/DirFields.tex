@@ -625,17 +625,54 @@ For further information see for example \cite{whitney,hirani}.
                     }{\sqrt{\frac{1}{\left| e \right|^{2}}\left(v_{2}^{x} - v_{1}^{x}  \right)^{2}
                                      +\frac{1}{\left| \star e \right|^{2}}\left( \left[c(f_{2})  \right]^{x} - \left[c(f_{1})  \right]^{x}\right)^{2} }}
     \end{align}
-    See figure \ref{figNonic}.
+    See figure \ref{figNonic} for the covariant vector field \( \p_{0} \), well centered triangulation and Gauss curvature.
     \begin{figure}
       \centering
       \includegraphics[width=.9\textwidth]{bilder/Nonic50p_1.png}
       \caption{Nonic Surface with shift factor \( C = 1 \) and proportion factor \( r = 0.5 \).
                The mesh is well-centered.
-               Plotted is the Gauss curvature.
-               The arrows show the covariant initial solution \( \p_{0} \) on some vertices.}
+               The Gauss curvature is plotted too.
+               The arrows show the contravariant initial solution \( \p_{0} \) on some vertices.}
       \label{figNonic}
     \end{figure}
 
+    The surface parameters \( r \) and \( C \) affect the geometric properties and hence the dynamic of the solution behavior and the final
+    equilibrium state.
+    To test the influence of these parameters, we choose a fixed proportion factor \( r=0.99 \).
+    This is nearly the symmetric case \( r=1 \), but to choose \( r \) slightly less than one is to be enough to prevent metastable
+    solutions.
+    By variating of the shift factor \( C\in\left[ 0.96 , 1.00 \right] \) the system rises two fundamental different equilibrium solutions.
+    If \( C < 0.98 \) then we always get a \( \left\{ + , + \right\} \) charge defect configuration
+    (see figure \ref{figNonicCompare} (bottom)).
+    If \( C \ge 0.98 \) then the final solution stay a \( \left\{ + , +, + , - \right\} \) configuration
+    (see figure \ref{figNonicCompare} (top)).
+    \begin{figure}
+      \centering
+      \includegraphics[width=.9\textwidth]{bilder/NonicCompareFinal.png}
+      \caption{Nonic Surface (\( r=0.99 \)) with shift factor \( C = 1 \) (top row) and \( C = 0.96 \) (bottom row)
+               with view in \( x \)-direction (right) and \( (-x) \)-direction (left).
+               The final contravariant solutions \( \p_{\infty} \) and their norm are plotted for visualising the charge defects.
+               In the top row arises two sinks, one source and one saddle point defects.
+               In the bottom row we get finally only one sink and one source defects, which is slightly below the bulge (right). 
+               }
+      \label{figNonicCompare}
+    \end{figure}
+    We choose \( K_{n} = 800 \) in the discretized PDE to resolve sufficiently the defect radii.
+    The Frank-Oseen-Energy and the time, when two of the four defects are fusing for \( C < 0.98 \), are plotted in figure
+    \ref{figNonicExperiment}. 
+    \begin{figure}
+      \centering
+      \includegraphics[width=.99\textwidth]{bilder/nonicExperiment.pdf}
+      \caption{Parameter study for the shift factor \( C\in[0.96,1] \).
+               Plotted are the final Frank-Oseen-Energy and the fusion time, when the shrink defect from the slightly minor bulge and the saddle
+               point defect are fully self-neutralized.
+               This only happens for \( C < 0.98 \). 
+               In the left limes the fusion time becomes singularly.
+               The energy increase only very weakly linear in \( C \) up to \( C \nearrow 0.98 \). 
+               After the energy jump (transition from the 2-defects to the 4-defects configuration) the energy decrease also very weakly linear.
+               }
+      \label{figNonicExperiment}
+    \end{figure}
 
 
 \section{Appendix}
