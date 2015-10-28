@@ -1,6 +1,8 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/nonics/nonic99p_C0.980_100k.3d
+%sphereMesh->macro file name:       ./macro/nonics/nonic99p_C0.980_100k.3d
+%sphereMesh->macro file name:       ./macro/nonics/nonic99p_C0.980_100k.3d
+sphereMesh->macro file name:       ./macro/sphereIko5k.3d
 sphereMesh->global refinements:    0
 
 sphere->mesh:                    sphereMesh

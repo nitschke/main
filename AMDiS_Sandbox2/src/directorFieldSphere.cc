@@ -155,6 +155,19 @@ public:
   }
 };
 
+// <d(z+eps*x),[p,q]>
+class DZPX_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  DZPX_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  q[2] - p[2] + 0.1*(q[0] - p[0]);
+  }
+};
+
 // <d(xyz),[p,q]>
 class DXYZ_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
@@ -305,18 +318,41 @@ public:
     double energy = dive + rote + ne;
     csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
 
-    //if (t > 0.005) {
-    //  double eder = (oldEnergy - energy) / oldEnergy;
-    //  if (eder < 1.E-4 && eder > 0.0 && tau < 0.1 ) tau *= 2.0;
-    //}
-    oldEnergy = energy;
+    if (step == 6)  oldEnergy = energy;
+    if (step%2 == 1 && step > 6) { 
+      cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
+      double eder = (oldEnergy - energy) / energy;
+      cout << "###     rel Diff: " << eder << " ###" << endl;
 
-    //int prec = 3;
-    //ostringstream timeoss;
-    //timeoss << setprecision(prec) << time;
-    //string fn = "output/sphereSharpOnEdges." + timeoss.str() + ".vtu";
-    //evecPD.writeSharpOnEdgesFile(fn);
-    //animWriter->updateAnimationFile(time,fn);
+      double eps = 2.E-3;
+      double tauMax = 10.0;
+      if (eder < eps && tau < tauMax && eder > -1.e-8) {
+        t -= tau; // undo in closeTimestep
+        tau *= 2.0;
+        if (tau > tauMax) tau = tauMax;
+        inv_tau = 1. / tau;
+        t += tau;
+        cout << "### tau -> " << tau << " (coarsening) ###" << endl;
+      }
+
+      double eps2 = 1.E-2;
+      double tauMin = 5.e-3; //=0.01*2^(-6)
+      if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
+        t -= tau; // undo in closeTimestep
+        tau /= 8.0;
+        if (tau < tauMin) tau = tauMin;
+        inv_tau = 1. / tau;
+        t += tau;
+        cout << "### tau -> " << tau << " (refining) ###" << endl;
+      }
+      oldEnergy = energy;
+
+      //TEST_EXIT(abs(eder) > 1.0e-15)("STAGNATION EXIT\n");
+      if (abs(eder) < 1.0e-15) {
+        statProb->writeSolution(t-tau);
+        ERROR_EXIT("STAGNATION EXIT\n");
+      }
+    }
   }
 
   DofEdgeVector* getNormPtr() {
@@ -397,10 +433,9 @@ int main(int argc, char* argv[])
   //dxyz.writeSharpFile("output/dxyzSharp.vtu", &sphere);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(430);
-  //initSol.set(&noiseFun, new Noise_d(43,-1./3.));
+  Noise_d noiseFun(42);
   initSol.set(&noiseFun);
-  //initSol.set(new DZ2_d());
+  //initSol.set(new DZPX_d());
   //initSol.bakeDual();
   //initSol.interpol(new Michael(0.01));
   //initSol.interpol(new TwistQP());

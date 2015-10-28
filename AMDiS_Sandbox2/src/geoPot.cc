@@ -38,6 +38,17 @@ class GaussCurvNonic :  public AbstractFunction<double, WorldVector<double> > {
     double r;
 };
 
+class GaussCurvSphere :  public AbstractFunction<double, WorldVector<double> > {
+  public:
+
+    GaussCurvSphere() : AbstractFunction<double, WorldVector<double> >() {}
+
+  double operator()(const WorldVector<double>& coords) const {
+    return 1.0;
+  }
+
+ };
+
 
 int main(int argc, char* argv[])
 {
@@ -60,7 +71,8 @@ int main(int argc, char* argv[])
   Parameters::get("sphere->output->filename", bn);
 
   DOFVector<double> K(sphere.getFeSpace(), "GaussCurv");
-  K.interpol(new GaussCurvNonic(c, r));
+  //K.interpol(new GaussCurvNonic(c, r));
+  K.interpol(new GaussCurvSphere());
   io::VtkVectorWriter::writeFile(K, bn + "GausCurv.vtu");
 
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());

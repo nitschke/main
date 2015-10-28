@@ -1,8 +1,8 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
-%sphereMesh->macro file name:       ./macro/sphereIko5k.3d
-sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
+sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+%sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
 sphereMesh->global refinements:    0
 
@@ -13,13 +13,13 @@ sphere->components:              2 %3
 
 sphere->solver:                tfqmr %bicgstab_ell
 sphere->solver->ell:           2
-sphere->solver->max iteration: 5000
+sphere->solver->max iteration: 2000
 sphere->solver->info:          8
 sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   diag
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        10.0
+sphere->adapt->end time:        1000.0
 sphere->adapt->timestep:        5.e-3
 
 sphere->output->filename:         output/sphere
@@ -30,6 +30,6 @@ sphere->output->edgeForms flat:        1
 
 sphere->output->write every i-th timestep:   1
 
-userParameter->K1: 0.5  % minimize div
+userParameter->K1: 1.0  % minimize div
 userParameter->K3: 1.0 % minimize rot
 userParameter->Kn: 200.0 % minimize norm^2 - 1
