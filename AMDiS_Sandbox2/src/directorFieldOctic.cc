@@ -49,6 +49,19 @@ public:
   }
 };
 
+// <0,[p,q]>
+class Null_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Null_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  0.0;
+  }
+};
+
 class ValSquaredMinusOne : public AbstractFunction<double,double> {
 public:
   ValSquaredMinusOne() : AbstractFunction<double,double>() {}
@@ -115,9 +128,14 @@ public:
         delta(0.01) {
     string csvfn;
     Parameters::get(probStat->getName() + "->output->filename", csvfn);
+    string csvNumDefFn = csvfn + "NumberOfDefects.csv";
     csvfn += "Energies.csv";
+
     csvout.open(csvfn.c_str(), ios::out);
     csvout << "Time,Div,Rot,Norm,Full" << endl;
+
+    csvNumDefout.open(csvNumDefFn.c_str(), ios::out);
+    csvNumDefout << "Time,NumberOfDefects" << endl;
 
     
     double K0 = -1.0;
@@ -158,6 +176,8 @@ public:
     int nmaximas = tracker.trackdownMaxima(scaledNorm, time, 0.1);
     cout << "*** " << nmaximas << " maximas ***" << endl;
 
+    csvNumDefout << time << "," << nmaximas << endl;
+
     DofEdgeVector normDeviat = normAlpha * normAlpha;
     normDeviat += -1.0;
 
@@ -172,9 +192,10 @@ public:
       cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
       double eder = (oldEnergy - energy) / energy;
       cout << "###     rel Diff: " << eder << " ###" << endl;
+      cout << "### tau: " << tau << " ###" << endl;
 
-      double eps = 2.E-4;
-      double tauMax = 0.64; // = 0.01*2^6
+      double eps = 5.E-5; //4.e-5
+      double tauMax = 0.5;
       if (eder < eps && tau < tauMax && eder > -1.e-8) {
         t -= tau; // undo in closeTimestep
         tau *= 2.0;
@@ -184,8 +205,8 @@ public:
         cout << "### tau -> " << tau << " (coarsening) ###" << endl;
       }
 
-      double eps2 = 1.E-3;
-      double tauMin = 1.5625e-4; //=0.01*2^(-6)
+      double eps2 = 5.E-4;
+      double tauMin = 5.e-4;
       if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
         t -= tau; // undo in closeTimestep
         tau /= 8.0;
@@ -196,8 +217,7 @@ public:
       }
       oldEnergy = energy;
 
-      //TEST_EXIT(abs(eder) > 1.0e-15)("STAGNATION EXIT\n");
-      if (abs(eder) < 1.0e-15) {
+      if (abs(eder) < 1.0e-14) {
         statProb->writeSolution(t-tau);
         ERROR_EXIT("STAGNATION EXIT\n");
       }
@@ -252,6 +272,7 @@ private:
   double oldEnergy;
 
   ofstream csvout;
+  ofstream csvNumDefout;
 
   Delta delta;
   ExtremeValueTracker tracker;
@@ -272,15 +293,20 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
 
+  int seed = -1;
+  Parameters::get("userParameter->seed", seed);
+  TEST_EXIT(seed >= 0)("seed must be positive");
+
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
 
   DecProblemStat decSphere(&sphere, edgeMesh);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(42);
+  Noise_d noiseFun(seed);
   //initSol.set(&noiseFun);
   initSol.set(new DX_d());
+  //initSol.set(new Null_d());
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

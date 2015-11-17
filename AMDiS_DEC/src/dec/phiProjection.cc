@@ -13,14 +13,12 @@ namespace AMDiS {
     while(abs(evalPhi) > eps && n < nMax) {
       WorldVector<double> evalGradPhi = (*gradPhi)(x);
       xWedge = x - c * (evalPhi / dot(evalGradPhi, evalGradPhi)) * evalGradPhi;
-      //evalPhiOld = evalPhi;
 
       x = xWedge;
       evalPhi = (*phi)(x);
 
       n++;
       if (n == nMax) cout << evalPhi << endl;
-      //cout << evalPhi << endl;
     }
   }
 

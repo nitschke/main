@@ -1,0 +1,15 @@
+r: 0.95
+
+K: 1.0
+Kn: 200
+
+tau0: 1.e-3
+tauMin: 5.e-4
+tauMax: 0.5
+
+epsCoarse: 5.e-5
+epsRefine: 5.e-4
+epsStagnation: 1.e-14
+
+facCoarse: 2.0
+facRefine: 1./8.
