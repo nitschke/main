@@ -1,10 +1,11 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphereIko5k.3d
+sphereMesh->macro file name:       ./macro/sphereIko800k.3d
 %sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
-%sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250  
+%sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250,800,3200 
 sphereMesh->global refinements:    0
+sphereMesh->check: 0
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2

@@ -9,6 +9,16 @@ using namespace std;
 using namespace AMDiS;
 using namespace dec;
 
+//rotate around y by angle alpha
+WorldVector<double> Ry(double alpha, WorldVector<double> X) {
+  WorldVector<double> rval;
+  double c = cos(alpha);
+  double s = sin(alpha);
+  rval[0] = c*X[0] + s*X[2];
+  rval[1] = X[1];
+  rval[2] = -s*X[0] + c*X[2];
+  return rval;
+}
 
 
 //length of resulting vec depends on the local edge metric
@@ -22,8 +32,8 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
   {
-    //return f;
     return myrand();
+    //return (abs((0.5*(p+q))[1] ) < 0.2 ) ? myrand() : 0.0;
   }
 
 private:
@@ -32,6 +42,44 @@ private:
   }
 
   double f;
+};
+
+class Michael : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
+
+public:
+  Michael(double lambda) : AbstractFunction<WorldVector<double>, WorldVector<double> >(), l(lambda) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& coords) const {
+    WorldVector<double> coordsS(coords);
+    coordsS *= 1./sqrt(coords*coords);
+    double x = coordsS[0];
+    double y = coordsS[1];
+    double z = coordsS[2];
+    double cp4 = cos(M_PI / 4.0);
+    WorldVector<double> e;
+    if (abs(y) >= cp4) {
+      e[0] = -x;
+      e[1] = 0.0;
+      e[2] = -z;
+    } else if (x >= cp4) {
+      e[0] = 0.0;
+      e[1] = y;
+      e[2] = z;
+    } else if (x <= -cp4) {
+      e[0] = 0.0;
+      e[1] = sin(M_PI * (y - l));
+      e[2] = -sin(M_PI *z);
+    } else {
+      double c = y / cp4;
+      e[0] = abs(c) - 1.0;
+      e[1] = c;
+      e[2] = 0.0; 
+    }
+    return e;
+  }
+
+private:
+  double l;
 };
 
 
@@ -46,6 +94,40 @@ public:
   {
     return  q[0] - p[0];
     //return  q[0]*(q[2]+1.0)*(q[2]+1.0) - p[0]*(p[2]+1.0)*(p[2]+1.0);
+  }
+};
+
+class Df_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  Df_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    double a = 0.1*M_PI;
+    //return (abs((0.5*(p+q))[1]) < 0.1)?(f(q) - f(p)):0.0;
+    //return  (Ry(a,q))[0]*(Ry(a,q))[2] - (Ry(a,p))[0]*(Ry(a,p))[2];
+    return f(Ry(a,q)) - f(Ry(a,p));
+  }
+
+private:
+  double f(const WorldVector<double> &X) const {
+    return X[0] * X[2];
+    //return (X[0]*X[0] + X[2]*X[2]);
+  }
+};
+
+// <d||X||^2,[p,q]>
+class DNorm_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  DNorm_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    return  q*q - p*p;
   }
 };
 
@@ -194,30 +276,31 @@ public:
       cout << "###     rel Diff: " << eder << " ###" << endl;
       cout << "### tau: " << tau << " ###" << endl;
 
-      double eps = 5.E-5; //4.e-5
-      double tauMax = 0.5;
-      if (eder < eps && tau < tauMax && eder > -1.e-8) {
-        t -= tau; // undo in closeTimestep
-        tau *= 2.0;
-        if (tau > tauMax) tau = tauMax;
-        inv_tau = 1. / tau;
-        t += tau;
-        cout << "### tau -> " << tau << " (coarsening) ###" << endl;
-      }
+      //double eps = 5.E-5; //4.e-5
+      //double tauMax = 0.5;
+      //if (eder < eps && tau < tauMax && eder > -1.e-8) {
+      //  t -= tau; // undo in closeTimestep
+      //  tau *= 2.0;
+      //  if (tau > tauMax) tau = tauMax;
+      //  inv_tau = 1. / tau;
+      //  t += tau;
+      //  cout << "### tau -> " << tau << " (coarsening) ###" << endl;
+      //}
 
-      double eps2 = 5.E-4;
-      double tauMin = 5.e-4;
-      if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
-        t -= tau; // undo in closeTimestep
-        tau /= 8.0;
-        if (tau < tauMin) tau = tauMin;
-        inv_tau = 1. / tau;
-        t += tau;
-        cout << "### tau -> " << tau << " (refining) ###" << endl;
-      }
+      //double eps2 = 5.E-4;
+      //double tauMin = 5.e-3;
+      ////double tauMin = 5.e-4;
+      //if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
+      //  t -= tau; // undo in closeTimestep
+      //  tau /= 8.0;
+      //  if (tau < tauMin) tau = tauMin;
+      //  inv_tau = 1. / tau;
+      //  t += tau;
+      //  cout << "### tau -> " << tau << " (refining) ###" << endl;
+      //}
       oldEnergy = energy;
 
-      if (abs(eder) < 1.0e-14) {
+      if (abs(eder) < 1.0e-13) {
         statProb->writeSolution(t-tau);
         ERROR_EXIT("STAGNATION EXIT\n");
       }
@@ -305,8 +388,11 @@ int main(int argc, char* argv[])
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
   Noise_d noiseFun(seed);
   //initSol.set(&noiseFun);
-  initSol.set(new DX_d());
+  //initSol.set(new DX_d());
+  //initSol.set(new Df_d());
+  //initSol.set(new DNorm_d());
   //initSol.set(new Null_d());
+  initSol.interpol(new Michael(0.01));
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

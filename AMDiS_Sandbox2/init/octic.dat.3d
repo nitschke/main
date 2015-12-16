@@ -1,7 +1,8 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/octics/octic_C0.600_100k.3d
-sphereMesh->macro file name:       ./macro/nonics/nonic95p_C1.099_100k.3d
+%sphereMesh->macro file name:       ./macro/nonics/nonic95p_C1.099_100k.3d
+sphereMesh->macro file name:       ./macro/virus/virus30kS164k.3d
 sphereMesh->global refinements:    0
 
 sphere->mesh:                    sphereMesh
@@ -17,10 +18,11 @@ sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   diag
 
 sphere->adapt->start time:      0.0
-sphere->adapt->end time:        2000.0
-sphere->adapt->timestep:        1.e-3
+sphere->adapt->end time:        200.0
+sphere->adapt->timestep:        2.5e-3
 
-sphere->output->filename:         output/sphere1.099.
+sphere->output->filename:         output/virus30.
+%sphere->output->filename:         output/sphere1.099.
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
 sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
@@ -32,6 +34,6 @@ sphere->output->index precision:   8
 userParameter->K0: 1.0
 userParameter->K1: 1.0  % minimize div
 userParameter->K3: 1.0  % minimize rot
-userParameter->Kn: 200.0 % minimize norm^2 - 1
+userParameter->Kn: 500.0 %200 % minimize norm^2 - 1
 
-userParameter->seed: 6
+userParameter->seed: 42

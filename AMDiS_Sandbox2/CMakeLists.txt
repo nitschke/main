@@ -64,6 +64,9 @@ target_link_libraries(directorFieldQuartic ${BASIS_LIBS} dec)
 add_executable(directorFieldOctic src/directorFieldOctic.cc)
 target_link_libraries(directorFieldOctic ${BASIS_LIBS} dec)
 
+add_executable(directorFieldOcticCurvTest src/directorFieldOcticCurvTest.cc)
+target_link_libraries(directorFieldOcticCurvTest ${BASIS_LIBS} dec)
+
 add_executable(dirCosPhi src/dirCosPhi.cc)
 target_link_libraries(dirCosPhi ${BASIS_LIBS} dec)
 
@@ -78,3 +81,6 @@ target_link_libraries(spherePDTest ${BASIS_LIBS} dec)
 
 add_executable(geoPot src/geoPot.cc)
 target_link_libraries(geoPot ${BASIS_LIBS} dec)
+
+add_executable(interpolTestSphere src/InterpolTestSphere.cc)
+target_link_libraries(interpolTestSphere ${BASIS_LIBS} dec)

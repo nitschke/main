@@ -190,7 +190,8 @@ int main(int argc, char* argv[])
   Parameters::get("nonic->south ratio", southRatio);
   TEST_EXIT(southRatio >= 0)("stretch factor must be positive!\n");
   // ===== create projection =====
-  new PhiProject(1, VOLUME_PROJECTION, new PhiN(stretch, southRatio), new GradPhiN(stretch, southRatio), 1.0e-6);
+  //new PhiProject(1, VOLUME_PROJECTION, new PhiN(stretch, southRatio), new GradPhiN(stretch, southRatio), 1.0e-6);
+  new PhiProject(1, VOLUME_PROJECTION, new PhiO(stretch), new GradPhiO(stretch), 1.0e-6);
   //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);

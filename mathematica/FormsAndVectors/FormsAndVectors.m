@@ -10,6 +10,8 @@ LocalVecFromPara::usage = "Local (u,v)-Vector (tangential part) of a given (x,y,
 GlobalTensorFromPara::usage = "give the global (euclidian) representation of a local tensor";
 LocalTensorFromPara::usage = "give the local representation of a global tensor";
 
+GaussCurvFromMetric::usage = "computes the Gauss curvature from metric tensor";
+
 Wedge11::usage = "Wedge product of two 1-forms";
 
 ExD0::usage = "Exterior derivativ of a 0-form";
@@ -60,6 +62,12 @@ CoDVecVec11::usage = "Covariant Directional Derivative \!\(\*SubscriptBox[\(\[De
 CoDVec1::usage = "Covariant Derivative of a vector";
 CoDForm1::usage = "Covariant Derivative of a 1-form";
 
+CoDSFTensor::usage = "Covariant Derivative of a sharp-flat-tensor -> Typ (1,1)";
+
+DivSFTensor::usage = "Divergence of a sharp-flat-tensor (Typ(1,1)), results in a vector";
+
+TransposeSFTensor::usage = "Transpose of mixed sharp-flat-Tensor, [Flat[t]^T]Sharp";
+
 L2Prod0::usage = "L2 Product of 0-forms";
 L2Prod1::usage = "L2 Product of 1-forms";
 L2Prod2::usage = "L2 Product of 2-forms";
@@ -83,6 +91,9 @@ LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap
 															gInv=Inverse[MetricFromPara[paraMap,x,y]]},
 					gInv.Table[DX[[i]].globT.DX[[j]],{i,2},{j,2}].gInv]
 
+
+GaussCurvFromMetric[x_,y_,g_] := Module[{SEG=Sqrt[g[[1,1]]*g[[2,2]]]},
+					-(1/(2*SEG))*(D[D[g[[1,1]],y]/SEG,y]+D[D[g[[2,2]],x]/SEG,x])]
 
 Wedge11[alpha_,beta_] := {{alpha[[1]]*beta[[2]] - alpha[[2]]*beta[[1]]}}
 
@@ -156,6 +167,24 @@ CoDForm1[alpha_,x_,y_,g_] :=
 					  {k,2},{i,2}
 				]
 		]
+
+CoDSFTensor[t_,x_,y_,g_] := 
+	Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
+				Table[D[t[[i,j]],var[[k]]]
+						+Sum[ch2[[k,l,i]]t[[l,j]],{l,2}]
+						-Sum[ch2[[k,j,l]]t[[i,l]],{l,2}],
+				{i,2},{j,2},{k,2}
+				]
+		]
+
+DivSFTensor[t_,x_,y_,g_] :=
+	Module[{codt=CoDSFTensor[t,x,y,g],gInv=Inverse[g]},
+				Table[Sum[gInv[[j,k]]codt[[i,j,k]],{j,2},{k,2}],
+				{i,2}
+				]
+	]
+
+TransposeSFTensor[t_,g_]:= Transpose[g.t].Inverse[g]
 
 L2Prod0[f1_,f2_,ivalx_,ivaly_,g_] := Integrate[f1*Hodge0[f2,g][[1,1]],ivalx,ivaly]
 L2Prod1[alpha_,beta_,ivalx_,ivaly_,g_] := Integrate[Wedge11[alpha,Hodge1[beta,g]][[1,1]],ivalx,ivaly]

@@ -3,16 +3,37 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 
 \newcommand{\exd}{\mathbf{d}}
 \newcommand{\Div}{\text{Div}}
 \newcommand{\Rot}{\text{Rot}}
+\newcommand{\Tr}{\text{Tr}}
 \newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
 \renewcommand{\i}{\mathbf{i}}
 \renewcommand{\L}{\mathbf{\mathcal{L}}}
 
+\newlength{\wlen}
+\newcommand{\upperleftright}[3]{\,\settowidth{\wlen}{$#2$}\hspace{-\wlen}\mbox{$\phantom{#2}$}^{#1}{#2}^{#3}}
+\newcommand{\upperleft}[2]{\,\settowidth{\wlen}{$#2$}\hspace{-\wlen}\mbox{$\phantom{#2}$}^{#1}{#2}}
+
+\newcommand{\lflat}[1]{\upperleft{\flat}{#1}}
+\newcommand{\lsharp}[1]{\upperleft{\sharp}{#1}}
+\newcommand{\flatsharp}[1]{\upperleftright{\flat}{#1}{\sharp}}
+
+\newcommand{\sftensor}[3]{{{#1}^{#2}}_{#3}}
+\newcommand{\fstensor}[3]{{{#1}_{#2}}^{#3}}
+
+\newcommand{\christoffel}[3]{\fstensor{\Gamma}{#1#2}{#3}}
+
+\newcommand{\ssbasis}[2]{\partial_{#1}\otimes \partial_{#2}}
+\newcommand{\sfbasis}[2]{\partial_{#1}\otimes dx^{#2}}
+\newcommand{\fsbasis}[2]{dx^{#1} \otimes \partial_{#2}}
+\newcommand{\ffbasis}[2]{dx^{#1} \otimes dx^{#2}}
+
+\newcommand{\mytest}[1]{\mbox{\beta}}
 
 \begin{document}
 \hoffset = -50pt
@@ -384,4 +405,89 @@
     \end{itemize}
         
   
+  \section{Tensors}
+
+    \subsection{Flat / Sharp}
+      \begin{itemize}
+        \item \( t:= \sftensor{t}{i}{j} \sfbasis{i}{j}\)
+        \item \( \lflat{t} = gt = g_{ik} \sftensor{t}{k}{j} \ffbasis{i}{j}= t_{ij} \ffbasis{i}{j}\)
+        \item \( t^{\sharp} = tg^{-1} = \sftensor{t}{i}{k} g^{kj} \ssbasis{i}{j} = t^{ij} \ssbasis{i}{j}\)
+        \item \(\flatsharp{t} = gtg^{-1} = g_{ik}\sftensor{t}{k}{l}g^{lj} \fsbasis{i}{j} = \fstensor{t}{i}{j} \fsbasis{i}{j} \)
+      \end{itemize}
+
+      \subsubsection{Conclusions}
+        \( \alpha = \vec{v}^{\,\flat} = \lflat{\vec{v}} \), \( \vec{w} = \beta^{\sharp} = \lsharp{\beta} \), \( s=\vec{v}\otimes\beta \):
+        \begin{itemize}
+          \item \( t \) symmetric (\( t_{12}=t_{21}  \) resp. \( t^{12}=t^{21} \)): \( \flatsharp{t} = t^{T} \)
+          \item \( \alpha t \vec{w} = \vec{v} \lflat{t} \vec{w}
+                                    = \alpha t^{\sharp} \beta
+                                    = \vec{v} \flatsharp{t} \beta \)
+                (Associativity referring to arguments)
+          \item[\( \Rightarrow \)] \( t(\alpha,\vec{w}) = \lflat{t}(\vec{v},\vec{w}) 
+                                      = t^{\sharp}(\alpha,\beta) =  \flatsharp{t} (\vec{v},\beta) \)
+          \item \( s=\vec{v}\otimes\beta \): \( \lflat{s}= \alpha\otimes\beta \),
+                                             \( s^{\sharp} = \vec{v}\otimes\vec{w} \),
+                                             \( \flatsharp{s} = \alpha\otimes\vec{w} \)
+              (Associativity referring to factors, tensor product is metric compatible)
+          \item \( t^{T} := ((\lflat{t})^{T})^{\sharp} = \lflat{((t^{\sharp})^{T})} = \fstensor{t}{j}{i} \fsbasis{j}{i} \)
+        \end{itemize}
+    
+    \subsection{Covariant Derivative \( \nabla_{\bullet} = g_{\bullet i}\nabla^{\bullet} \)}
+      \begin{itemize}
+        \item \( \nabla_{k}f = \partial_{k}f \)
+        \item \( \nabla_{k}v^{i} = \partial_{k}v^{i} + \christoffel{k}{l}{i}v^{l} \)
+        \item \( \nabla_{k}v_{i} = \partial_{k}v_{i} - \christoffel{k}{i}{l}v_{l} \)
+        \item \( \nabla_{k}\sftensor{t}{i}{j} = \partial_{k}\sftensor{t}{i}{j}
+                                                +\christoffel{k}{l}{i}\sftensor{t}{l}{j}
+                                                -\christoffel{k}{j}{l}\sftensor{t}{i}{l}\)
+        \item \( \nabla_{k}\fstensor{t}{i}{j} = \partial_{k}\fstensor{t}{i}{j}
+                                                -\christoffel{k}{i}{l}\fstensor{t}{l}{j}
+                                                +\christoffel{k}{l}{j}\fstensor{t}{i}{l}\)
+        \item \( \nabla_{k}t^{ij} = \partial_{k}t^{ij}
+                                    +\christoffel{k}{l}{i}t^{lj}
+                                    +\christoffel{k}{l}{j}t^{il} \)
+        \item \( \nabla_{k}t_{ij} = \partial_{k}t_{ij}
+                                    -\christoffel{k}{i}{l}t_{lj}
+                                    -\christoffel{k}{j}{l}t_{il}\)
+        \item \( \Div(v) = \nabla_{i}v^{i} = \nabla^{i}v_{i} = \Tr(\nabla\vec{v}) = \Tr(\flatsharp{\nabla}\alpha)  \)
+        \item \( \Rot(v) = (\sqrt{|g|})^{-1}\epsilon^{ki}\nabla_{k}v_{i}
+                            = (\sqrt{|g|})^{-1}\Tr((\nabla\alpha)\epsilon^{\sharp})\)
+        \item \( \Div(t) = \nabla^{j}\sftensor{t}{i}{j}\partial_{i} 
+                        = \nabla_{j}\fstensor{t}{i}{j}dx^{i} 
+                        = \nabla_{j}t^{ij}\partial_{i} = \nabla^{j}t_{ij}dx^{i}\)
+      \end{itemize}
+
+    \subsection{Rotation \( R = R^{-T}:\, T_{p}M \rightarrow (T_{p}M)' \)}
+      \begin{itemize}
+        \item \( R = R_{\varphi} = 
+                    \begin{bmatrix}
+                      \cos\varphi & -\sin\varphi \\
+                      \sin\varphi & \cos\varphi
+                    \end{bmatrix} 
+                 = \sftensor{R}{i}{j} \sfbasis{i}{j}\)
+      \end{itemize}
+
+      \subsubsection{Pull-back \( R^{*} = R^{T}_{*} \)}
+       Hint: Use rotated metric \( g' = R_{*}g = RgR^{T} \) in rotated coords. system! 
+        \begin{itemize}
+          \item \( R^{*}v' = R^{-1}v' = R^{T}v' = v \in T_{p}M 
+                \quad\leadsto [R^{*}v']^{i}= \sftensor{[R^{T}]}{i}{j}v'^{j} \)
+          \item \( R^{*}\alpha' = \alpha'(R\bullet) = \alpha' R = \alpha \in T^{*}_{p}M 
+                \quad\leadsto [R^{*}\alpha']_{i} = \sftensor{R}{j}{i}v'_{j} \)
+          \item \( R^{*}\upperleftright{\bullet}{t'}{\bullet} = R^{T}\upperleftright{\bullet}{t'}{\bullet}R 
+                          = \upperleftright{\bullet}{t}{\bullet}\)
+                (Rotation is metric compatible)
+          \item \( R^{*}(\bullet\otimes\bullet) = (R^{*}\bullet)\otimes(R^{*}\bullet) \)
+        \end{itemize}
+
+      \subsubsection{Push-forward \( R_{*} = R^{*T} \)}
+        \begin{itemize}
+          \item \( R_{*}v = Rv = v' \)
+          \item \( R_{*}\alpha = \alpha R^{T} = \alpha' \)
+          \item \( R^{*}\upperleftright{\bullet}{t}{\bullet} = R\upperleftright{\bullet}{t}{\bullet}R^{T} 
+                          = \upperleftright{\bullet}{t'}{\bullet} \)
+          \item \( R_{*}(\bullet\otimes\bullet) = (R_{*}\bullet)\otimes(R_{*}\bullet) \)
+        \end{itemize}
+      
+
 \end{document}

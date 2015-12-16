@@ -627,7 +627,9 @@ void DofEdgeVectorPD::interpol(BinaryAbstractFunction<double, WorldVector<double
     p = edgeIter->infoRight->getCircumcenter();
     q = edgeIter->infoLeft->getCircumcenter();
     e = q - p; // dual edge
-    double lenD = sqrt(e*e); // length of dual edge
+    // double lenD = sqrt(e*e); // length of dual edge // see below
+    double lenD =  edgeIter->infoRight->getDualEdgeLen(edgeIter->dofEdge)
+                  +edgeIter->infoLeft->getDualEdgeLen(edgeIter->dofEdge); // length of dual edge
     // use the identity <*alpha, primal edge> = - (lenP / lenD) <alpha, dual edge>
     (*valIterD) = - lenP * (*alpha)(ce, e) / lenD;
   }
@@ -654,9 +656,12 @@ void DofEdgeVectorPD::interpol(AbstractFunction<WorldVector<double>, WorldVector
     p = edgeIter->infoRight->getCircumcenter();
     q = edgeIter->infoLeft->getCircumcenter();
     e = q - p; // dual edge
-    double lenD = sqrt(e*e); // length of dual edge
+    //double lenD = sqrt(e*e); // length of dual edge //WRONG! (Underestimated for Curvature not 0, but -> 0 for h->0)
+    double lenD =  edgeIter->infoRight->getDualEdgeLen(edgeIter->dofEdge)
+                  +edgeIter->infoLeft->getDualEdgeLen(edgeIter->dofEdge); // length of dual edge
     // use the identity <*alpha, primal edge> = - (lenP / lenD) <alpha, dual edge>
     (*valIterD) = - lenP * (vecval * e) / lenD;
+    //(*valIterD) = - lenP * ( ((*vec)(p))*(ce - p) + ((*vec)(q))*(q - ce) ) / lenD;
   }
 }
 
