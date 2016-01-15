@@ -1,6 +1,6 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/octics/octic_C2.000_400k.3d
+sphereMesh->macro file name:       /home/ingo/git/main/AMDiS_Sandbox2/macro/horse/horseWellcentered90k.3d
 %sphereMesh->macro file name:       ./macro/nonics/nonic95p_C1.099_100k.3d
 %sphereMesh->macro file name:       ./macro/virus/virus41k.3d
 sphereMesh->global refinements:    0
@@ -20,9 +20,9 @@ sphere->solver->left precon:   diag
 
 sphere->adapt->start time:      0.0
 sphere->adapt->end time:        2000.0
-sphere->adapt->timestep:        5.e-2
+sphere->adapt->timestep:        1.e-5
 
-sphere->output->filename:         output/CurvTestRot_C2.0.
+sphere->output->filename:         output2/horse30000.
 %sphere->output->filename:         output/sphere1.099.
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
@@ -35,6 +35,6 @@ sphere->output->index precision:   8
 userParameter->K0: 1.0
 userParameter->K1: 1.0  % minimize div
 userParameter->K3: 1.0  % minimize rot
-userParameter->Kn: 1000.0 %200 % minimize norm^2 - 1
+userParameter->Kn: 30000.0 %200 % minimize norm^2 - 1
 
 userParameter->seed: 42

@@ -31,6 +31,9 @@ target_link_libraries(sphereLaplace ${BASIS_LIBS} dec)
 add_executable(sphereLaplaceTest src/sphereLaplaceTest.cc)
 target_link_libraries(sphereLaplaceTest ${BASIS_LIBS} dec)
 
+add_executable(ellipsoidLaplaceTest src/ellipsoidLaplaceTest.cc)
+target_link_libraries(ellipsoidLaplaceTest ${BASIS_LIBS} dec)
+
 add_executable(sphereSimple src/sphereSimple.cc)
 target_link_libraries(sphereSimple ${BASIS_LIBS} dec)
 
@@ -63,6 +66,9 @@ target_link_libraries(directorFieldQuartic ${BASIS_LIBS} dec)
 
 add_executable(directorFieldOctic src/directorFieldOctic.cc)
 target_link_libraries(directorFieldOctic ${BASIS_LIBS} dec)
+
+add_executable(directorField src/directorField.cc)
+target_link_libraries(directorField ${BASIS_LIBS} dec)
 
 add_executable(directorFieldOcticCurvTest src/directorFieldOcticCurvTest.cc)
 target_link_libraries(directorFieldOcticCurvTest ${BASIS_LIBS} dec)

@@ -62,6 +62,8 @@ public:
                   int n,
                         AbstractFunction<WorldVector<double>, WorldVector<double> > *proj=NULL);
 
+  void interpol(AbstractFunction<WorldVector<double>, WorldVector<double> > *vec);
+
   DOFVector< WorldVector<double> > getSharpEdgeRingLinMod();
 
   DOFVector< WorldVector<double> > getSharpHirani();

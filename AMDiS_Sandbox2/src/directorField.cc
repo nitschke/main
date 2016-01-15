@@ -44,6 +44,38 @@ private:
   double f;
 };
 
+class intValTwoDefectsNonics: public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  intValTwoDefectsNonics() : AbstractFunction<WorldVector<double>, WorldVector<double> >(), mainDir(), extensionDir()
+  {
+    FUNCNAME("intValTwoDefectsNonics::intValTwoDefectsNonics()");
+    mainDir.set(0.0);
+    mainDir[0] = 2.0; mainDir[1] = 0.0; mainDir[2] = 1.0;
+    
+    extensionDir.set(0.0);
+    extensionDir[2] = 1.0;
+    
+    MSG("created director Field with 2 defects located on xy aequator of nonic/octic surface \n");
+  }
+  WorldVector<double> operator()(const WorldVector<double>& x) const 
+  {
+    if (x[0] > 1.0 + 1.0e-8)
+      return extensionDir;
+    
+    if (x[0] <= 1.0 + 1.0e-8)
+    {
+      return mainDir; 
+    }
+    
+    WorldVector<double> nuescht;
+    nuescht.set(0.0);
+    return nuescht;
+  }
+private:
+  WorldVector<double> mainDir, extensionDir;
+};
+
 class Michael : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
 
 public:
@@ -266,7 +298,7 @@ public:
       cout << "###     rel Diff: " << eder << " ###" << endl;
       cout << "### tau: " << tau << " ###" << endl;
 
-      double eps = 5.E-5; //4.e-5
+      double eps = 5.E-4; //4.e-5
       double tauMax = 0.5;
       if (eder < eps && tau < tauMax && eder > -1.e-8) {
         t -= tau; // undo in closeTimestep
@@ -277,9 +309,9 @@ public:
         cout << "### tau -> " << tau << " (coarsening) ###" << endl;
       }
 
-      double eps2 = 5.E-4;
+      double eps2 = 5.E-3;
       //double tauMin = 5.e-2;
-      double tauMin = 1.e-5;
+      double tauMin = 1.e-4;
       if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
         t -= tau; // undo in closeTimestep
         tau /= 8.0;
@@ -377,12 +409,13 @@ int main(int argc, char* argv[])
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
   Noise_d noiseFun(seed);
-  initSol.set(&noiseFun);
+  //initSol.set(&noiseFun);
   //initSol.set(new DX_d());
   //initSol.set(new Df_d());
   //initSol.set(new DNorm_d());
   //initSol.set(new Null_d());
   //initSol.interpol(new Michael(0.01));
+  initSol.interpol(new intValTwoDefectsNonics);
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

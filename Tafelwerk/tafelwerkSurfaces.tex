@@ -7,6 +7,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\usepackage{color}
+
 \newcommand{\exd}{\mathbf{d}}
 \newcommand{\Div}{\text{Div}}
 \newcommand{\Rot}{\text{Rot}}
@@ -429,9 +431,22 @@
                                              \( s^{\sharp} = \vec{v}\otimes\vec{w} \),
                                              \( \flatsharp{s} = \alpha\otimes\vec{w} \)
               (Associativity referring to factors, tensor product is metric compatible)
-          \item \( t^{T} := ((\lflat{t})^{T})^{\sharp} = \lflat{((t^{\sharp})^{T})} = \fstensor{t}{j}{i} \fsbasis{j}{i} \)
+          \item \( t^{T} := \lsharp{(\lflat{t})}^{T} = ((t^{\sharp})^{T})^{\flat} = g^{-1}(gt)^{T} = (tg^{-1})^{T}g 
+                          =  \sftensor{\{\fstensor{t}{j}{i}\}}{i}{j} \sfbasis{i}{j}\) 
+          \item \( (t^{T})^{T} = t^{T} \)
+          \item \( tt^{T} = (tt^{T})^{T} = t^{T}t \)
+          \item \( |t| = |t^{T}| = |\flatsharp{t}| = |g||t^{\sharp}| = \frac{|\lflat{t}|}{|g|} \)
         \end{itemize}
     
+    \subsection{Levi-Civita-Tensor}
+      \begin{itemize}
+        \item \( \epsilon^{\sharp} =
+                          \begin{bmatrix}
+                            0 & 1 \\ -1 & 0
+                          \end{bmatrix}_{\ffbasis{i}{j}}\)
+        \item \( \lflat{\epsilon} = |g|\epsilon^{\sharp}\)
+      \end{itemize}
+
     \subsection{Covariant Derivative \( \nabla_{\bullet} = g_{\bullet i}\nabla^{\bullet} \)}
       \begin{itemize}
         \item \( \nabla_{k}f = \partial_{k}f \)
@@ -449,42 +464,53 @@
         \item \( \nabla_{k}t_{ij} = \partial_{k}t_{ij}
                                     -\christoffel{k}{i}{l}t_{lj}
                                     -\christoffel{k}{j}{l}t_{il}\)
+        \item \( \Rot(f) = -\frac{1}{\sqrt{|g|}}g_{ik}\epsilon^{kl}\partial_{l}fdx^{i}
+                         =  -\frac{1}{\sqrt{|g|}}g\epsilon^{\sharp}\exd f
+                         = -\sqrt{|g|}\epsilon^{\sharp}\nabla f\)
         \item \( \Div(v) = \nabla_{i}v^{i} = \nabla^{i}v_{i} = \Tr(\nabla\vec{v}) = \Tr(\flatsharp{\nabla}\alpha)  \)
         \item \( \Rot(v) = (\sqrt{|g|})^{-1}\epsilon^{ki}\nabla_{k}v_{i}
                             = (\sqrt{|g|})^{-1}\Tr((\nabla\alpha)\epsilon^{\sharp})\)
+        \item \( \Rot(v)^{2} = \nabla_{j}v^{i}(\nabla^{j}v_{i}-\nabla_{j}v^{i})
+                             = |\nabla v| + \Tr(\nabla v (\nabla v)^{T}) - \Div(v)^{2}\)
         \item \( \Div(t) = \nabla^{j}\sftensor{t}{i}{j}\partial_{i} 
                         = \nabla_{j}\fstensor{t}{i}{j}dx^{i} 
                         = \nabla_{j}t^{ij}\partial_{i} = \nabla^{j}t_{ij}dx^{i}\)
       \end{itemize}
 
-    \subsection{Rotation \( R = R^{-T}:\, T_{p}M \rightarrow (T_{p}M)' \)}
+    \subsection{Rotation \( R:\, T_{p}M \rightarrow (T_{p}M)' \)}
       \begin{itemize}
-        \item \( R = R_{\varphi} = 
+        \item \( Rv := v' := \cos(\varphi) v + \sin(\varphi)(*v) 
+                           = \cos(\varphi) v + \sin(\varphi)(*v^{\flat})^{\sharp}\)
+        \item \( R = \cos(\varphi)I + \frac{\sin(\varphi)}{\sqrt{|g|}}
                     \begin{bmatrix}
-                      \cos\varphi & -\sin\varphi \\
-                      \sin\varphi & \cos\varphi
+                      -g^{12} & -g^{22} \\
+                      g^{11} & g^{12}
                     \end{bmatrix} 
-                 = \sftensor{R}{i}{j} \sfbasis{i}{j}\)
+                 = \sftensor{R}{i}{j} \sfbasis{i}{j}\){\color{red}indices unten? nutze levi-cevita tensor!}
+        \item \( R^{-1} = R^{T} \)
+        \item \( \left\langle v',w' \right\rangle = \left\langle v,w \right\rangle 
+                  \quad \Rightarrow R\in O(T_{p}M) \)
+        \item \( \nabla v' = R\nabla v \)
       \end{itemize}
 
-      \subsubsection{Pull-back \( R^{*} = R^{T}_{*} \)}
-       Hint: Use rotated metric \( g' = R_{*}g = RgR^{T} \) in rotated coords. system! 
-        \begin{itemize}
-          \item \( R^{*}v' = R^{-1}v' = R^{T}v' = v \in T_{p}M 
-                \quad\leadsto [R^{*}v']^{i}= \sftensor{[R^{T}]}{i}{j}v'^{j} \)
-          \item \( R^{*}\alpha' = \alpha'(R\bullet) = \alpha' R = \alpha \in T^{*}_{p}M 
-                \quad\leadsto [R^{*}\alpha']_{i} = \sftensor{R}{j}{i}v'_{j} \)
-          \item \( R^{*}\upperleftright{\bullet}{t'}{\bullet} = R^{T}\upperleftright{\bullet}{t'}{\bullet}R 
-                          = \upperleftright{\bullet}{t}{\bullet}\)
-                (Rotation is metric compatible)
-          \item \( R^{*}(\bullet\otimes\bullet) = (R^{*}\bullet)\otimes(R^{*}\bullet) \)
-        \end{itemize}
+      %\subsubsection{Pull-back \( R^{*} = R^{T}_{*} \)}
+      % Hint: Use rotated metric \( g' = R_{*}g = RgR^{T} \) in rotated coords. system! 
+      %  \begin{itemize}
+      %    \item \( R^{*}v' = R^{-1}v' = R^{T}v' = v \in T_{p}M 
+      %          \quad\leadsto [R^{*}v']^{i}= \sftensor{[R^{T}]}{i}{j}v'^{j} \)
+      %    \item \( R^{*}\alpha' = \alpha'(R\bullet) = \alpha' R = \alpha \in T^{*}_{p}M 
+      %          \quad\leadsto [R^{*}\alpha']_{i} = \sftensor{R}{j}{i}v'_{j} \)
+      %    \item \( R^{*}\upperleftright{\bullet}{t'}{\bullet} = R^{T}\upperleftright{\bullet}{t'}{\bullet}R 
+      %                    = \upperleftright{\bullet}{t}{\bullet}\)
+      %          (Rotation is metric compatible)
+      %    \item \( R^{*}(\bullet\otimes\bullet) = (R^{*}\bullet)\otimes(R^{*}\bullet) \)
+      %  \end{itemize}
 
       \subsubsection{Push-forward \( R_{*} = R^{*T} \)}
         \begin{itemize}
           \item \( R_{*}v = Rv = v' \)
           \item \( R_{*}\alpha = \alpha R^{T} = \alpha' \)
-          \item \( R^{*}\upperleftright{\bullet}{t}{\bullet} = R\upperleftright{\bullet}{t}{\bullet}R^{T} 
+          \item \( R_{*}\upperleftright{\bullet}{t}{\bullet} = R\upperleftright{\bullet}{t}{\bullet}R^{T} 
                           = \upperleftright{\bullet}{t'}{\bullet} \)
           \item \( R_{*}(\bullet\otimes\bullet) = (R_{*}\bullet)\otimes(R_{*}\bullet) \)
         \end{itemize}

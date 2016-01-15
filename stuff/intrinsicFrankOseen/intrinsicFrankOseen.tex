@@ -1,0 +1,284 @@
+\documentclass{scrartcl}
+
+\usepackage[ngerman,english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{dsfont}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{color}
+
+\usepackage{hyperref}
+
+\newcommand{\germanred}[1]{{\color{red}\selectlanguage{ngerman}#1\selectlanguage{english}}}
+
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\Div}{\text{Div}}
+\newcommand{\Rot}{\text{Rot}}
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\vecflat}[1]{\vec{#1}^{\,\flat}}
+\renewcommand{\i}{\mathbf{i}}
+\renewcommand{\L}{\mathbf{\mathcal{L}}}
+
+\newcommand{\ie}{i.\,e.}%
+\newcommand{\eg}{e.\,g.}%
+
+\newcommand{\formComma}{\,\text{,}}
+\newcommand{\formPeriod}{\,\text{.}}
+
+\newcommand{\dif}{\textup{d}}
+\newcommand{\pb}{\mathbf{p}}%
+\newcommand{\vb}{\mathbf{v}}%
+\newcommand{\Pb}{\mathbf{P}}%
+\newcommand{\Lb}{\mathbf{L}}%
+\newcommand{\dS}{\,\dif{\surf}}
+\newcommand{\surf}{\mathcal{S}}
+
+\newcommand{\Rb}{\mathbf{R}}
+\newcommand{\Sb}{\mathbf{S}}
+
+\newlength{\wlen}
+\newcommand{\upperleftright}[3]{\,\settowidth{\wlen}{$#2$}\hspace{-\wlen}\mbox{$\phantom{#2}$}^{#1}{#2}^{#3}}
+\newcommand{\upperleft}[2]{\,\settowidth{\wlen}{$#2$}\hspace{-\wlen}\mbox{$\phantom{#2}$}^{#1}{#2}}
+
+\newcommand{\lflat}[1]{\upperleft{\flat}{#1}}
+\newcommand{\lsharp}[1]{\upperleft{\sharp}{#1}}
+\newcommand{\flatsharp}[1]{\upperleftright{\flat}{#1}{\sharp}}
+
+\newcommand{\sftensor}[3]{{{#1}^{#2}}_{#3}}
+\newcommand{\fstensor}[3]{{{#1}_{#2}}^{#3}}
+
+\newcommand{\christoffel}[3]{\fstensor{\Gamma}{#1#2}{#3}}
+
+\newcommand{\ssbasis}[2]{\partial_{#1}\otimes \partial_{#2}}
+\newcommand{\sfbasis}[2]{\partial_{#1}\otimes dx^{#2}}
+\newcommand{\fsbasis}[2]{dx^{#1} \otimes \partial_{#2}}
+\newcommand{\ffbasis}[2]{dx^{#1} \otimes dx^{#2}}
+
+\newcommand{\mytest}[1]{\mbox{\beta}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{conclusion}{Conclusion}
+\newcommand{\conclusionautorefname}{Conclusion}
+
+\begin{document}
+
+  \section{Free Bulk Energy Densities on Surfaces}
+
+    \subsection{General Requirements}
+      The bulk (or elastic) free energy is the functional
+      \begin{align}
+        F[\pb] = \int_{\surf} f(\pb,\nabla\pb) \dS \formComma
+      \end{align}
+      where  \( \nabla \) is a metric compatible connection, like the covariant derivation, and 
+      \( \pb \) the director field, with \( \text{Im}(\pb)=\mathds{S}^{2} \).
+      To represent the physical features of the material, 
+      the density \( f \) must be
+      \begin{description}
+        \item[frame-indifferent:] The energy per unit volume must be same in any (rigid) frames,
+          this means, that the push-forwards of \( \pb \) and \( \Pb:=\nabla\pb \) along the (automorphic) transformation
+          \( \Rb:T\surf \rightarrow T\surf \) fulfill the identity 
+          \begin{align}\label{eq:frameindifferent}
+            f(\pb,\Pb) = f(\Rb_{*}\pb, \Rb_{*}\Pb) = f(\Rb\pb, \Rb\Pb\Rb^{-1})\formPeriod
+          \end{align}
+          \(\Rb\) is an element of \( \text{SO}(T\surf) \), because \( \pb \) has to stay a unit vector,
+          \ie, with a canonical defined metric invariant tensor transpose it holds \( \Rb^{-1} = \Rb^{T} \).
+        \item[material-symmetric:] Nematic liquid crystals do not change his behavior under reflection,
+          therefor we must extend \eqref{eq:frameindifferent} with \( \Rb\in\text{O}(T\surf) \).
+        \item[even:] By the nematic interpretation of the director, 
+           we cannot distinguish the head from the tail of \( p \).
+           Hence, we also must require 
+           \begin{align}
+             f(\pb,\nabla\pb) &= f(-\pb,-\nabla\pb)\formPeriod
+           \end{align}
+        \item[positiv definit] \( f \) must be zero in the undistorted state except on a finite set of defect locations to hold geometrical
+        conditions for the director field, see \eg, Hairy-Ball-Theorem.
+        All other states must produce a positive energy on all subsets of \( \surf \), \ie,
+        \begin{align}
+          f(\pb,\Pb) \ge 0 \formPeriod
+        \end{align}
+      \end{description}
+
+    \section{The two dimensional case}
+      Let be \( \surf \) a two dimensional (smooth) manifold without boundaries and a metric tensor
+      \( g=g_{ij}\ffbasis{i}{j} \), referring to the two local covariant basis vectors \( \partial_{i} \).
+      \( g^{ij} \) denote the components of \( g^{-1} \) and \( |g| \) the determinant of \( g \).
+      For the connection, we use the covariant derivative defined on contravariant coordinates, \ie,
+      \begin{align}
+        \sftensor{p}{i}{|j} = \nabla_{j}p^{i} = \partial_{j}p^{i} + \christoffel{j}{k}{i}p^{k} \formComma
+      \end{align}
+      with the Christoffel tensor
+      \begin{align}
+        \christoffel{j}{k}{i} &= g^{il}\Gamma_{jkl} = \frac{1}{2}g^{il}
+              \left( \partial_{j}g_{kl} + \partial_{k}g_{jk} - \partial_{l}g_{jk} \right)\formPeriod
+      \end{align}
+      \( \nabla \) is metric compatible, therefore we can rise and lower the indices for 
+      \( \sftensor{p}{i}{|j} =  \sftensor{P}{i}{j}\) in the common way.
+
+      The rotation map \( \Rb\in\text{SO}(T\surf) \) can be construct by variating the tangential vector \( pb \) 
+      and its hodge dual \( *\pb = (*\pb^{\flat})^{\sharp} \) around an counterclockwise angle \( \phi\in[0,2\pi) \) and combine the results linear
+      with respect to the length preserving,
+      \ie,
+      \begin{align}
+        \Rb_{\phi}\pb &:= \cos\phi\pb + \sin\phi(*\pb)\formPeriod
+      \end{align}
+      In this interpretation \( \Rb:=\Rb_{\phi}\in(\sftensor{\mathcal{T}}{1}{1}\cap\text{SO})(T\surf) \) is a (1,1)-tensor with
+      coordinates (by testing and contraction of the basis contra- and covectors)
+      \begin{align}
+        \sftensor{R}{i}{j} = (R\partial_{i})(dx^{j}) = \left\langle R\partial_{i}, \partial_{j} \right\rangle \formPeriod
+      \end{align}
+      For \( \Rb \) holds the identity
+      \begin{align}
+        \Rb^{-1} = \Rb^{T} := \lsharp{(\lflat{\Rb})}^{T} = ((\Rb^{\sharp})^{T})^{\flat}
+      \end{align}
+      and in coordinates \( \sftensor{(\Rb^{T})}{i}{j} = \sftensor{\{\fstensor{R}{j}{i}\}}{i}{j} \).
+      For a better readability and to preclude confusions in the summation convention 
+      we roughly write \( \fstensor{R}{j}{i} \) without the brackets 
+      and keep in mind, that \( \fstensor{R}{j}{i} \) are components of a tensor in \( \sftensor{\mathcal{T}}{1}{1} \)
+      and not in \( \fstensor{\mathcal{T}}{1}{1} \) and therefor we can write
+      \begin{align}
+        \sftensor{(\Rb\Rb^{T})}{i}{j} = \sftensor{R}{i}{k}\fstensor{R}{j}{k} = \sftensor{\delta}{i}{j} \formPeriod
+      \end{align}
+      Let be \( \vb \) an arbitrary tangential vector and \( \phi_{\vb} \) denote the counterclockwise angle from \( \pb \) to \( \vb \).
+      We can describe the reflection at the line along \( \vb \) as 
+      \( \Sb_{\vb} = \Rb_{2\phi_{\vb}} \),
+      therefor \( \Sb_{\vb} \) is odd, \ie,
+      \begin{align}\label{eq:oddness}
+        \Sb_{\vb}(-\pb) &=  \Rb_{2\phi_{\vb}}(-\pb) = - \Rb_{2\phi_{\vb}}\pb =  -\Sb_{\vb}\pb \formPeriod
+      \end{align}
+      Furthermore, it is valid, that \( \Sb_{\vb}^{-1} = \Sb_{\vb} \), because
+      \begin{align}
+        \Sb_{\vb}^{2}\pb &=   \Rb_{2(\pi-\phi_{\vb})} \Rb_{2\phi_{\vb}} \pb\\
+                  &= \Sb_{\vb}\left[ \cos(2\phi_{\vb})\pb + \sin(2\phi_{\vb})(*\pb) \right] \\
+                  &= \cos(2\phi_{\vb})\left[ \cos(2\phi_{\vb})\pb + \sin(2\phi_{\vb})(*\pb) \right]
+                    -\sin(2\phi_{\vb})\left[ \cos(2\phi_{\vb})(*\pb) - \sin(2\phi_{\vb})\pb \right]\\
+                  &= \pb \formPeriod
+      \end{align}
+      \begin{lemma}
+        For the bulk free energy density \( f \) holds \( f(\pb,\Pb) = f(-\pb,\Pb) \).
+      \end{lemma}
+      \begin{proof}
+        With the material-symmetry, the oddness \eqref{eq:oddness} and \( \Sb_{\vb}^{-1} = \Sb_{\vb} \), we
+        obtain
+        \begin{align}
+          f(\pb,\Pb) &= f( \Sb_{\vb}\pb, \Sb_{\vb}\Pb \Sb_{\vb})
+                      = f( (-\Sb_{\vb})(-\pb), (-\Sb_{\vb})\Pb (-\Sb_{\vb}))
+                      = f(-\pb,\Pb)
+        \end{align}
+      \end{proof}
+      \begin{theorem}
+        With the symmetry lemma above and the evenness of \( f \), it is valid, that
+        \begin{align}
+          f(\pb,\Pb) &= f(-\pb,\Pb) = f(\pb,-\Pb) = f(-\pb,-\Pb) \formPeriod
+        \end{align}
+      \end{theorem}
+      With this property of the energy density, a expansion of \( f \) contains only terms of \( \pb \)
+      and \( \Pb \) of even order.
+      Therefor we obtain a necessary condition for the bulk free energy density,
+      which is sufficiently for the evenness, material-symmetry and positive definiteness Proberties. 
+      A development of \( f \) up to second order must be of the form
+      \begin{align}\label{eq:prototype}
+        f(\pb,\Pb) &= L^{(2)}_{i_{1}i_{2}}p^{i_{1}}p^{i_{2}}
+                        + L^{(4)}_{i_{1}\ldots i_{4}}P^{i_{1}i_{2}}P^{i_{3}i_{4}}
+                        + L^{(6)}_{i_{1}\ldots i_{6}} p^{i_{1}}p^{i_{2}}P^{i_{3}i_{4}}P^{i_{5}i_{6}} \formComma
+      \end{align}
+      with symmetric and positive definite tensors \( \Lb^{(m)}\in\sftensor{\mathcal{T}}{0}{m}(T\surf) \).
+      \germanred{Die Eigenschaft s.p.d. zu sein muss noch quantisiert werden.
+      Die gerade anzahligen Tensorstufen legen aber nahe, dass sich das kanonisch über das freie Produkt abwälzen lässt,
+      wobei hierbei eine Art "`Vorzeichenregel bzgl des Produktes"' zu beobachten ist, 
+      zb. ist das freie Produkt zweier negativ definiter Tensoren positiv
+      definit. Analoges hat sich auch bei der Symmetrieeigenschaft gezeigt.}
+      The main problem is to determine all \( \Lb^{(m)} \) with a maximum of freeness, 
+      so that \( f \) fulfill the requirements of the free bulk energy density.
+      \germanred{Die oben genannte Quantisierung der s.p.d. Tensoren sollte auf ein \( \R \)-Vektorraum führen.
+      Die Frank-Oseen Dichte legt das nahe.
+      Das wäre der Schlüssel, da nur noch über die endliche Basis geprüft werden müsste.
+      Heiße Kandidaten für den \( \Lb^{(4)} \) finden sich in der unteren Folgerung zur Frank-Oseen-Dichte.}
+      We know by restricting the three dimensional Frank-Oseen-Energy-Density \( f_{FO} \) to the two dimensional surface, that
+      \begin{align}
+        f_{FO}(\pb, \nabla\pb)
+            &= K_{1}(\Div\pb)^{2} + K_{3}(\Rot\pb)^{2} \\
+            &= K_{1}\sftensor{p}{i}{|i}\sftensor{p}{j}{|j}
+              +K_{3}\sftensor{p}{i}{|j}\left(  \fstensor{p}{i}{|j} -  \sftensor{p}{j}{|i}\right) \\
+            &= K_{1}\sftensor{\delta}{i_{2}}{i_{1}}\sftensor{\delta}{i_{4}}{i_{3}}\sftensor{P}{i_{1}}{i_{2}}\sftensor{P}{i_{3}}{i_{4}}
+              +K_{3}\left(
+                  \sftensor{\delta}{i_{3}}{i_{1}}\sftensor{\delta}{i_{2}}{i_{4}}\sftensor{P}{i_{1}}{i_{2}}\fstensor{P}{i_{3}}{i_{4}}  
+                - \sftensor{\delta}{i_{4}}{i_{1}}\sftensor{\delta}{i_{2}}{i_{3}}\sftensor{P}{i_{1}}{i_{2}}\sftensor{P}{i_{3}}{i_{4}}
+                         \right) \\
+            &= \left(K_{1}g_{i_{1}i_{2}}g_{i_{3}i_{4}}
+               +K_{3}\left( 
+                g_{i_{1}i_{3}}g_{i_{2}i_{4}} - g_{i_{1}i_{4}}g_{i_{2}i_{3}} 
+                      \right) \right)P^{i_{1}i_{2}}P^{i_{3}i_{4}} \label{eq:uncreative1}\formComma
+      \end{align}
+      with free parameters \( K_{1},K_{3}\ge 0 \).
+      \begin{conclusion}\label{concl:frankoseentensors}
+        The prototype density \eqref{eq:prototype} is equal to \( f_{FO} \), if 
+        for the (metric independent) Levi-Civita symbols \( \varepsilon_{ij}=\varepsilon^{ij} \) apply to 
+        \( L^{(2)}_{i_{1}i_{2}} = 0 \), 
+        \( L^{(4)}_{i_{1}\ldots i_{4}} = K_{1}g_{i_{1}i_{2}}g_{i_{3}i_{4}} + K_{3}|g|\varepsilon_{i_{1}i_{2}}\varepsilon_{i_{3}i_{4}} \)
+        and \( L^{(6)}_{i_{1}\ldots i_{6}} = 0 \),
+        \ie, 
+        \begin{align}
+          \Lb_{FO}&:= \Lb^{(4)} = K_{1} g \otimes g + K_{3}|g| \varepsilon \otimes \varepsilon \in \sftensor{\mathcal{T}}{0}{4}(T\surf)
+        \end{align}
+        is the only coefficients tensor, which have an interest in the prototype density.
+        We call \( \Lb_{FO} \) the \textbf{Frank-Oseen tensor}.
+      \end{conclusion}
+      \begin{proof}
+        The main work is done by \eqref{eq:uncreative1}.
+        (For a better readability, we use \( (i,j,k,l) \) as indices, instead of \( (i_{1},i_{2},i_{3},i_{4})\).)
+        Hence, we only have to show that
+        \( g_{ik}g_{jl} - g_{il}g_{jk} = |g|\varepsilon_{ij}\varepsilon_{kl} \).        
+        By rising some indices, we obtain
+        \begin{align}
+          g_{ik}g_{jl} - g_{il}g_{jk}
+              &= g_{mk}g_{nl}\left( \fstensor{\delta}{i}{m}\fstensor{\delta}{j}{n}
+                                   -\fstensor{\delta}{i}{n}\fstensor{\delta}{j}{m}\right) 
+              =  g_{mk}g_{nl}\varepsilon_{ij}\varepsilon^{mn}\formPeriod
+        \end{align}
+        The Levi-Civita symbols are related to the volume form \( \mu=\sqrt{|g|}dx^{1}\wedge dx^{2} \)
+        by the (metric dependent) Levi-Civita tensor
+        \begin{align}
+          E_{ij} &:= \sqrt{|g|} \varepsilon_{ij} = \mu(\partial_{i},\partial_{j})\formPeriod
+        \end{align}
+        In addition by rising the indices it holds \(  E^{ij} = \frac{1}{\sqrt{|g|}} \varepsilon^{ij} \).
+        Therefor, we finally get
+        \begin{align}
+          g_{ik}g_{jl} - g_{il}g_{jk}
+            = g_{mk}g_{nl}E_{ij}E^{mn}
+            = E_{ij}E_{kl} = |g| \varepsilon_{ij}\varepsilon_{kl} \formPeriod
+        \end{align}
+      \end{proof}
+      This leads us to write the Frank-Oseen energy density in the (\germanred{bilinear?}) form
+      \begin{align}
+        f_{FO}(\pb,\Pb) = f_{FO}(\Pb) &= \Pb:\Lb_{F0}:\Pb \\
+            &= \left(K_{1}g_{i_{1}i_{2}}g_{i_{3}i_{4}} + K_{3}|g|\varepsilon_{i_{1}i_{2}}\varepsilon_{i_{3}i_{4}}\right)
+               P^{i_{1}i_{2}}P^{i_{3}i_{4}} \formPeriod
+      \end{align}
+      \begin{theorem}
+        The two dimensional Frank-Oseen energy density is a bulk free energy density.
+      \end{theorem}
+      \begin{proof}
+        By \autoref{concl:frankoseentensors} we only have to proof the frame-indifferent,
+        \ie, \( f_{FO}(\Rb\Pb\Rb^{T}) = f_{FO}(\Pb) \).
+        The 2-tensor contraction, \ie, the trace, is frame-indifferent, because
+        \begin{align}
+          \sftensor{(\Rb\Pb\Rb^{T})}{i}{i}
+            &= \sftensor{R}{i}{k}\sftensor{P}{k}{l}\fstensor{R}{i}{l}
+            = \sftensor{\delta}{l}{k}\sftensor{P}{k}{l}
+            = \sftensor{P}{l}{l} \formPeriod
+        \end{align}
+        Hence, \(
+          \Pb:( g \otimes g ): \Pb 
+              = \sftensor{P}{i}{i}\sftensor{P}{j}{j}
+        \)
+        is also frame-indifferent.
+      \end{proof}
+
+\end{document}

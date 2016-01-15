@@ -157,6 +157,25 @@ void DofEdgeVector::interpolNC(BinaryAbstractFunction<double, WorldVector<double
 }
 
 
+void DofEdgeVector::interpol(AbstractFunction<WorldVector<double>, WorldVector<double> > *vec) {
+  DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
+  edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIterP = edgeVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end() || valIterP != edgeVals.end()  ; 
+                ++edgeIter, ++valIterP) {
+    WorldVector<double> p = coords[edgeIter->dofEdge.first];
+    WorldVector<double> q = coords[edgeIter->dofEdge.second];
+    WorldVector<double> ce = 0.5 * (p + q); // circumcenter of the primal edge
+    WorldVector<double> vecval = (*vec)(ce);
+    WorldVector<double> e = q - p; // primal edge = q - p
+    // set primal val
+    (*valIterP) = vecval * e;
+  }
+}
+
+
 void DofEdgeVector::set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d) {
   DOFVector< WorldVector< double > > coords(edgeMesh->getFeSpace(), "coords");
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
