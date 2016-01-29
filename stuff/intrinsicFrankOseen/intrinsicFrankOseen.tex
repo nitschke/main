@@ -143,7 +143,9 @@
       and keep in mind, that \( \fstensor{R}{j}{i} \) are components of a tensor in \( \sftensor{\mathcal{T}}{1}{1} \)
       and not in \( \fstensor{\mathcal{T}}{1}{1} \) and therefor we can write
       \begin{align}
-        \sftensor{(\Rb\Rb^{T})}{i}{j} = \sftensor{R}{i}{k}\fstensor{R}{j}{k} = \sftensor{\delta}{i}{j} \formPeriod
+        \sftensor{(\Rb\Rb^{T})}{i}{j} &= \sftensor{R}{i}{k}\fstensor{R}{j}{k} = R^{ik}R_{jk} = \sftensor{\delta}{i}{j} 
+        \text{ , resp.,}\\
+        \sftensor{(\Rb^{T}\Rb)}{i}{j} &= \fstensor{R}{k}{i}\sftensor{R}{k}{j} = R^{ki}R_{kj} = \sftensor{\delta}{i}{j} \formPeriod
       \end{align}
       Let be \( \vb \) an arbitrary tangential vector and \( \phi_{\vb} \) denote the counterclockwise angle from \( \pb \) to \( \vb \).
       We can describe the reflection at the line along \( \vb \) as 
@@ -193,10 +195,10 @@
       Die gerade anzahligen Tensorstufen legen aber nahe, dass sich das kanonisch über das freie Produkt abwälzen lässt,
       wobei hierbei eine Art "`Vorzeichenregel bzgl des Produktes"' zu beobachten ist, 
       zb. ist das freie Produkt zweier negativ definiter Tensoren positiv
-      definit. Analoges hat sich auch bei der Symmetrieeigenschaft gezeigt.}
+      definit.}
       The main problem is to determine all \( \Lb^{(m)} \) with a maximum of freeness, 
       so that \( f \) fulfill the requirements of the free bulk energy density.
-      \germanred{Die oben genannte Quantisierung der s.p.d. Tensoren sollte auf ein \( \R \)-Vektorraum führen.
+      \germanred{Die oben genannte Quantisierung der s.p.d. Tensoren sollte auf ein \( \R_{+} \)-Vektorraum führen.
       Die Frank-Oseen Dichte legt das nahe.
       Das wäre der Schlüssel, da nur noch über die endliche Basis geprüft werden müsste.
       Heiße Kandidaten für den \( \Lb^{(4)} \) finden sich in der unteren Folgerung zur Frank-Oseen-Dichte.}
@@ -257,7 +259,7 @@
       \end{proof}
       This leads us to write the Frank-Oseen energy density in the (\germanred{bilinear?}) form
       \begin{align}
-        f_{FO}(\pb,\Pb) = f_{FO}(\Pb) &= \Pb:\Lb_{F0}:\Pb \\
+        f_{FO}(\pb,\Pb) = f_{FO}(\Pb) &= \Pb:\Lb_{FO}:\Pb \\
             &= \left(K_{1}g_{i_{1}i_{2}}g_{i_{3}i_{4}} + K_{3}|g|\varepsilon_{i_{1}i_{2}}\varepsilon_{i_{3}i_{4}}\right)
                P^{i_{1}i_{2}}P^{i_{3}i_{4}} \formPeriod
       \end{align}
@@ -279,6 +281,33 @@
               = \sftensor{P}{i}{i}\sftensor{P}{j}{j}
         \)
         is also frame-indifferent.
+        For 
+        \begin{align}
+          |g|\left(\Pb:( \varepsilon \otimes \varepsilon ): \Pb\right)=  P_{ij}P^{ij}-P_{ij}P^{ji}
+        \end{align}
+        we use the full contravariant and covariant push-forward
+        \( 
+          \left( \Rb\Pb\Rb^{T} \right)^{ij} = R^{ik}P_{kl}R^{jl}
+        \) and \( 
+          \left( \Rb\Pb\Rb^{T} \right)_{ij} = R_{ik}P^{kl}R_{jl}
+        \)
+        of \( \Pb \) along \( \Rb \) to show that
+        \begin{align}
+          \left( \Rb\Pb\Rb^{T} \right)_{ij}\left( \Rb\Pb\Rb^{T} \right)^{ij}&-\left( \Rb\Pb\Rb^{T} \right)_{ij}\left( \Rb\Pb\Rb^{T}
+          \right)^{ji}\\
+            &= R_{ik}P^{kl}R_{jl}R^{im}P_{mn}R^{jn} -  R_{ik}P^{kl}R_{jl}R^{jm}P_{mn}R^{in} \\
+            &= \sftensor{\delta}{m}{k}\sftensor{\delta}{n}{l}P^{kl}P_{mn}
+              -\sftensor{\delta}{n}{k}\sftensor{\delta}{m}{l}P^{kl}P_{mn}\\
+            &= P_{mn}P^{mn}-P_{mn}P^{nm}
+        \end{align}
       \end{proof}
+
+      A additional valid choice in the prototype density is  \( \Lb^{(2)}\in\R g \)
+      \footnote{This is the only choice, because 
+              \( \Rb^{T}\Lb^{(2)}\Rb=\Lb^{(2)} \Rightarrow \Lb^{(2)}\in \R SO(TM)\cap Sym(TM) = \R g \).}, 
+      but it holds for the contraction \( \pb\cdot g \cdot\pb = \left\| \pb \right\|^{2} = 1 \) a.e.,
+      hence, this is a zero order term and should be omitted in the density. 
+      Analogous, we get for \( \Lb^{(6)}\in \R g\otimes\Lb_{FO} \) no additional proportion in the density,
+      because \( \Lb^{(6)}(\pb,\pb)(\Pb,\Pb)\in \R  (\Pb:\Lb_{FO}:\Pb) \) a.e..
 
 \end{document}

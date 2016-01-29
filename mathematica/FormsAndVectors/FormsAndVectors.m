@@ -63,6 +63,7 @@ CoDVec1::usage = "Covariant Derivative of a vector";
 CoDForm1::usage = "Covariant Derivative of a 1-form";
 
 CoDSFTensor::usage = "Covariant Derivative of a sharp-flat-tensor -> Typ (1,1)";
+CoDFFTensor::usage = "Covariant Derivative of a flat-flat-tensor -> Typ (0,2)";
 
 DivSFTensor::usage = "Divergence of a sharp-flat-tensor (Typ(1,1)), results in a vector";
 
@@ -177,6 +178,16 @@ CoDSFTensor[t_,x_,y_,g_] :=
 				]
 		]
 
+CoDFFTensor[t_,x_,y_,g_] := 
+	Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
+				Table[D[t[[i,j]],var[[k]]]
+						-Sum[ch2[[k,i,l]]t[[l,j]],{l,2}]
+						-Sum[ch2[[k,j,l]]t[[i,l]],{l,2}],
+				{i,2},{j,2},{k,2}
+				]
+		]
+
+
 DivSFTensor[t_,x_,y_,g_] :=
 	Module[{codt=CoDSFTensor[t,x,y,g],gInv=Inverse[g]},
 				Table[Sum[gInv[[j,k]]codt[[i,j,k]],{j,2},{k,2}],
@@ -184,7 +195,7 @@ DivSFTensor[t_,x_,y_,g_] :=
 				]
 	]
 
-TransposeSFTensor[t_,g_]:= Transpose[g.t].Inverse[g]
+TransposeSFTensor[t_,g_]:= Transpose[g.t].Inverse[g] (*falsch?*)
 
 L2Prod0[f1_,f2_,ivalx_,ivaly_,g_] := Integrate[f1*Hodge0[f2,g][[1,1]],ivalx,ivaly]
 L2Prod1[alpha_,beta_,ivalx_,ivaly_,g_] := Integrate[Wedge11[alpha,Hodge1[beta,g]][[1,1]],ivalx,ivaly]

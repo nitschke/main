@@ -1,0 +1,9 @@
+Example:
+1. load sym.pvd, containing 188 timesteps of the simulation, where only every 10th timestep was written and the last
+2. load dat.csv, containing all 1863 timesteps with the value of interest "Full"
+3. use "TableToPoints" filter on dat.csv. For the (X|Y|Z) columns use anything but "Full"
+4. use "AppendAttributes" on sym.pvd and TableToPoints
+5. use "PythonAnnonation" on PointData with something like ""Energy: %011.7f"%Full[min([t_index*10,1862])]" as expression
+
+Hints:
+- use leading zeros to prevent flickering annonations in animations

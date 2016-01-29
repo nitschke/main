@@ -76,6 +76,29 @@ private:
   WorldVector<double> mainDir, extensionDir;
 };
 
+class EYRotated: public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  EYRotated(double angle) : AbstractFunction<WorldVector<double>, WorldVector<double> >(), rotEY()
+  {
+    FUNCNAME("EYRotated::EYRotated(double angle)");
+    rotEY.set(0.0);
+    double c = cos(angle);
+    double s = sin(angle);
+    double sqrt2 = sqrt(2.);
+    rotEY[0] = -s/sqrt2;
+    rotEY[1] = c;
+    rotEY[2] = -s/sqrt2;
+  }
+
+  WorldVector<double> operator()(const WorldVector<double>& x) const 
+  {
+    return rotEY;
+  }
+private:
+  WorldVector<double> rotEY;
+};
+
 class Michael : public AbstractFunction<WorldVector<double>, WorldVector<double> > {
 
 public:
@@ -135,8 +158,9 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
   {
-    double a = 0.5*M_PI;
-    return  (Ry(a,q))[0] - (Ry(a,p))[0];
+    //double a = 0.5*M_PI;
+    //return  (Ry(a,q))[0] - (Ry(a,p))[0];
+    return q[1] - p[1];
   }
 };
 
@@ -414,8 +438,9 @@ int main(int argc, char* argv[])
   //initSol.set(new Df_d());
   //initSol.set(new DNorm_d());
   //initSol.set(new Null_d());
+  initSol.interpol(new EYRotated(0.05));
   //initSol.interpol(new Michael(0.01));
-  initSol.interpol(new intValTwoDefectsNonics);
+  //initSol.interpol(new intValTwoDefectsNonics);
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

@@ -1,9 +1,10 @@
 dimension of world:      3
 
-sphereMesh->macro file name:       ./macro/octics/octic_C1.000_100k.3d
-%sphereMesh->macro file name:       ./macro/nonics/nonic95p_C1.099_100k.3d
+%sphereMesh->macro file name:       ./macro/octics/octic_C1.000_100k.3d
+sphereMesh->macro file name:       /home/ingo/git/main/AMDiS_Sandbox2/macro/nonicsPressed/nonic95p_C2.000_0.7P_64k.3d
 %sphereMesh->macro file name:       ./macro/virus/virus30kS164k.3d
 sphereMesh->global refinements:    0
+sphereMesh->check: 0
 
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
@@ -21,8 +22,8 @@ sphere->adapt->start time:      0.0
 sphere->adapt->end time:        200.0
 sphere->adapt->timestep:        1.e-3
 
-sphere->output->filename:         output3/octicD2Kn50
-%sphere->output->filename:         output/sphere1.099.
+sphere->output->filename:         output3/nonicPressed2C7PEY005R100Kn.
+
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
 sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
@@ -34,6 +35,6 @@ sphere->output->index precision:   8
 userParameter->K0: 1.0
 userParameter->K1: 1.0  % minimize div
 userParameter->K3: 1.0  % minimize rot
-userParameter->Kn: 50.0 %200 % minimize norm^2 - 1
+userParameter->Kn: 100.0 %200 % minimize norm^2 - 1
 
 userParameter->seed: 42

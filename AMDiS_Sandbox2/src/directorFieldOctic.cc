@@ -92,7 +92,7 @@ public:
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
   {
-    return  q[0] - p[0];
+    return  q[0] - p[0] + 0.1*(q[2] - p[2]) + 0.1*(q[1] - p[1]);
     //return  q[0]*(q[2]+1.0)*(q[2]+1.0) - p[0]*(p[2]+1.0)*(p[2]+1.0);
   }
 };
@@ -388,11 +388,11 @@ int main(int argc, char* argv[])
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
   Noise_d noiseFun(seed);
   //initSol.set(&noiseFun);
-  //initSol.set(new DX_d());
+  initSol.set(new DX_d());
   //initSol.set(new Df_d());
   //initSol.set(new DNorm_d());
   //initSol.set(new Null_d());
-  initSol.interpol(new Michael(0.01));
+  //initSol.interpol(new Michael(0.01));
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 

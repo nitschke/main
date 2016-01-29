@@ -1,0 +1,34 @@
+dimension of world:      3
+
+sphereMesh->macro file name:       /home/ingo/git/main/AMDiS_Sandbox2/macro/sphere/sphereIko10k.3d
+sphereMesh->global refinements:    0
+sphereMesh->check:    0
+
+sphere->mesh:                    sphereMesh
+sphere->dim:                     2
+sphere->polynomial degree[0]:    1
+sphere->components:              2
+
+sphere->solver:                tfqmr %bicgstab_ell
+sphere->solver->ell:           2
+sphere->solver->max iteration: 1500
+sphere->solver->info:          8
+sphere->solver->tolerance:     1.e-8
+sphere->solver->left precon:   diag
+
+sphere->adapt->start time:      0.0
+sphere->adapt->timestep:        1.e-0
+
+sphere->output->filename:         output4/sphere_longTime.
+sphere->output->ParaView animation:   1
+sphere->output->edgeForms sharp:        1 
+sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
+sphere->output->edgeForms flat:        1 
+
+sphere->output->write every i-th timestep:   1
+sphere->output->index precision:   8
+
+userParameter->K0: 1.0
+userParameter->K1: 1.0  % minimize div
+userParameter->K3: 1.0  % minimize rot
+userParameter->Kn: 100.0 

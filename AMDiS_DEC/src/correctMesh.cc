@@ -171,6 +171,61 @@ private:
 };
 
 
+// Nonic Surface Pressed (double well (in z) strain of the unit sphere in x-direction (factor c on north pole and r*c on south pole)
+// pressed to x-z-plane with factor 0<=b<1 (1:total flat pressed, 0:no pressing))
+class PhiNP : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  PhiNP(double c_,double r_,double b_) : AbstractFunction<double, WorldVector<double> >(1), c(c_), r(r_), b(b_) {}
+
+  double operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    double dwell = (c*pow(z,2)*(r*(4 + 3*z)*pow(-1 + z,2) - (-4 + 3*z)*pow(1 + z,2)))/4.;
+    double xcor = x - dwell;
+    return xcor*xcor + y*y/((1.-b)*(1.-b)) + z*z - 1.0; 
+  }
+
+private:
+
+  double c;
+  double r;
+  double b;
+};
+
+class GradPhiNP : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradPhiNP(double c_,double r_,double b_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), c(c_), r(r_), b(b_) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    WorldVector<double> rval;
+    double dwell = (c*pow(z,2)*(r*(4 + 3*z)*pow(-1 + z,2) - (-4 + 3*z)*pow(1 + z,2)))/4.;
+    double xcor = x - dwell;
+    double Ddwell = (c*z*(-8 - 15*z + r*(-8 + 15*z))*(-1 + pow(z,2)))/4.;
+
+    rval[0] = 2.0*xcor;
+    rval[1] = 2.0*y/((1.-b)*(1.-b));
+    rval[2] = 2.0*(z - xcor*Ddwell);
+
+    return rval;
+  }
+
+private:
+
+  double c;
+  double r;
+  double b;
+};
+
 
 // ===========================================================================
 // ===== main program ========================================================
@@ -188,10 +243,16 @@ int main(int argc, char* argv[])
 
   double southRatio = -1.0;
   Parameters::get("nonic->south ratio", southRatio);
-  TEST_EXIT(southRatio >= 0)("stretch factor must be positive!\n");
+  TEST_EXIT(southRatio >= 0)("south radio factor must be positive!\n");
+
+  double press = -1.0;
+  Parameters::get("nonic->press", press);
+  TEST_EXIT(press >= 0 && press < 1)("press factor must be positive and lower than 1!\n");
+
   // ===== create projection =====
   //new PhiProject(1, VOLUME_PROJECTION, new PhiN(stretch, southRatio), new GradPhiN(stretch, southRatio), 1.0e-6);
-  new PhiProject(1, VOLUME_PROJECTION, new PhiO(stretch), new GradPhiO(stretch), 1.0e-6);
+  //new PhiProject(1, VOLUME_PROJECTION, new PhiO(stretch), new GradPhiO(stretch), 1.0e-6);
+  new PhiProject(1, VOLUME_PROJECTION, new PhiNP(stretch, southRatio, press), new GradPhiNP(stretch, southRatio, press), 1.0e-6);
   //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);

@@ -1,11 +1,12 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/sphereDivBy4.3d
-%sphereMesh->macro file name:        ./macro/sphereIko250k.3d
+%sphereMesh->macro file name:        ./macro/sphereIko50k.3d
 %sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/nonics/nonic95p_C1.400_50k.3d
 %sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/octics/octic_C1.200_100k.3d
-sphereMesh->macro file name:        ./octic_C2.000_400k.3d
-%sphereMesh->macro file name:        ./output/meshOutsphere95p.0.500_3000.3d
+%sphereMesh->macro file name:       /home/ingo/git/main/AMDiS_Sandbox2/macro/nonicsPressed/nonic95p_C1.000_0.5P_100k.3d 
+%sphereMesh->macro file name:       /home/ingo/git/main/AMDiS_Sandbox2/macro/nonicsPressed/nonic95p_C1.000_0.6P_64k_RAW.3d 
+sphereMesh->macro file name:        /home/ingo/git/main/AMDiS_Sandbox2/macro/nonicsPressed/nonic95p_C2.000_0.7P_64k_beforeCorrection.3d
 %sphereMesh->macro file name:        ./macro/torus1k.3d
 
 %sphereMesh->macro file name:       ./macro/sphere_macro.3d
@@ -23,15 +24,16 @@ sphere->solver: cg
 %heine50k 0.005
 %meshCorrector->h: 0.005
 %meshCorrector->h: 0.008
-meshCorrector->h: 0.002 %0.001 %0.003 %0.0007 %0.0005
+meshCorrector->h: 0.002 %0.002 for nonic-stuff %0.003 %0.0007 %0.0005
 
 meshCorrector->nMax: 100001
-meshCorrector->outName: sphere100p.2.000
+meshCorrector->outName: nonic95p_C2.000_0.7P_64k
 
 edgeForces->k: 1.0   % in [0,1] % hold k times average edge length in length preserving
-edgeForces->c: 0.8   % (0.7) in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
+edgeForces->c: 0.8 %0.8 for nonic-stuff  % (0.7) in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
 
 octic->c: 2.0 % stretch factor sphere -> octic
 nonic->south ratio: 0.95 % south ratio related to the stretch factor on north pole
+nonic->press: 0.7 % press to x-z-plain in [0,1)
 
 
