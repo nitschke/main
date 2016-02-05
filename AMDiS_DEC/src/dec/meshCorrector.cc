@@ -8,8 +8,10 @@
 namespace AMDiS {
 
 
-  MeshCorrector::MeshCorrector(const FiniteElemSpace *finiteElemSpace) :
-    feSpace(const_cast<FiniteElemSpace *>(finiteElemSpace)) {
+  MeshCorrector::MeshCorrector(const FiniteElemSpace *finiteElemSpace, std::string name) :
+    feSpace(const_cast<FiniteElemSpace *>(finiteElemSpace)),
+    infowriter(string("meshStats" + name + ".csv"))
+    {
 
     for (int i = 0; i < 3; i++) {
       coords[i] = new DOFVector<double>(feSpace, "paraCoordComponent");
@@ -38,6 +40,8 @@ namespace AMDiS {
 
 
     feSpace->getMesh()->setParametric(NULL);
+
+    ii = 1;
   }
 
   void MeshCorrector::oneIteration(double h) {
@@ -103,14 +107,21 @@ namespace AMDiS {
     feSpace->getMesh()->setParametric(parametric);
   }
 
-  void MeshCorrector::iterate(int n, double h, std::string name = "") {
-    //MeshInfoCSVWriter infowriter("meshStatsSphereDivBy4.csv");
-    MeshInfoCSVWriter infowriter(string("meshStats" + name + ".csv"));
+  bool MeshCorrector::iterate(int n, double h, std::string name) {
     infowriter.appendData(feSpace);
     double tol1 = 1.0e-1;
     double tol2 = 1.0e-6;
     F = getConnectionForces(feSpace, true);
-    io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(0) + ".vtu"));
+    if (ii == 1) {
+      io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(0) + ".vtu"));
+    }
+
+    double fMin = 1./0.;
+    Parameters::get("corrector->fMin", fMin);
+
+    int writeEveryIthStep = 10;
+    Parameters::get("corrector->write every ith step", writeEveryIthStep);
+
     double fNew;
     double fOld = getMaxMagnitude(F);
     double hh = h;
@@ -122,7 +133,8 @@ namespace AMDiS {
     double h0 = 1.e-9;
     double n1 = 1000;
     int minusCounter = 0;
-    for (int i = 1; i < n; i++) {
+    int iMax = ii + n - 1;
+    for (; ii < iMax || fOld > fMin; ii++) {
       //hh = (i > n1)? h : ((n1 - (double)i) * h0 + (double)i * h) / n1;
       //if (i%100 == 0 && i != 0) {
       //  fac = fac * fac * fac * fac * fac;
@@ -135,10 +147,11 @@ namespace AMDiS {
       //if (fNew < 1.0e-7) break;
       //hh *= 4.0 * fOld / (fNew + 3.0*fOld);
       double tmp = (fOld - fNew) / fOld;
-      minusCounter = (tmp < 0) ? (minusCounter+1) : 0;
-      if (minusCounter > 500) {
-        io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_EndAt_" + boost::lexical_cast<std::string>(i) + ".vtu"));
-        return;
+      minusCounter = (tmp < 0) ? (minusCounter+1) : minusCounter;
+      if (minusCounter > 100) {
+        io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_EndAt_" + boost::lexical_cast<std::string>(ii) + ".vtu"));
+        ERROR_EXIT("Mesh destroyed!");
+        return false;
         hh *= 0.8;
         minusCounter = 0;
       }
@@ -154,13 +167,15 @@ namespace AMDiS {
       //hh *= (tmp < 0.01 && tmp >= 0) ? fac : fac2; 
 
       infowriter.appendData(feSpace);
-      if (i%nVerbose == 0) cout << i << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
-      if (i%10 == 0) io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(i) + ".vtu"));
-      if (i%10 == 0) {
+      if (ii%nVerbose == 0) cout << ii << " : " << hh << " : " << fNew << " : " << tmp << " : " << fac << " : " << fac2 << endl;
+      if (ii%writeEveryIthStep == 0) io::VtkVectorWriter::writeFile(F, string("output/ConForces" + name + "_" + boost::lexical_cast<std::string>(ii) + ".vtu"));
+      if (ii%writeEveryIthStep == 0) {
         DataCollector<double> dc(feSpace);
-        io::MacroWriter::writeMacro(&dc, string("output/meshOut" + name + "_" + boost::lexical_cast<std::string>(i) + ".3d").c_str());
+        io::MacroWriter::writeMacro(&dc, string("output/meshOut" + name + "_" + boost::lexical_cast<std::string>(ii) + ".3d").c_str());
       }
     }
+
+    return true;
   }
 
 

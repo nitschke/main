@@ -89,6 +89,7 @@ public:
     rotEY[0] = -s/sqrt2;
     rotEY[1] = c;
     rotEY[2] = -s/sqrt2;
+    MSG("created director Field with 2 defects on nonic surface with slightly rotated y unity vector \n");
   }
 
   WorldVector<double> operator()(const WorldVector<double>& x) const 
@@ -140,7 +141,10 @@ private:
 class DX_d : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
-  DX_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+  DX_d() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {
+    FUNCNAME("DX_d:: DX_d()");
+    MSG("created x-unity vector, result in director Field with 4 defects on nonic surface \n");
+  }
 
   /// Implementation of AbstractFunction::operator().
   double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
@@ -315,30 +319,49 @@ public:
     double energy = dive + rote + ne;
     csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
     
-    if (step == 6)  oldEnergy = energy;
-    if (step%2 == 1 && step > 6) { 
+
+    double epsCoarse = -1./0.; // no coarsing
+    double tauMax = -1.; // no coarsing
+    double facCoarse = 2.0;
+    Parameters::get("userParameter->adapt->epsCoarse", epsCoarse);
+    Parameters::get("userParameter->adapt->tauMax", tauMax);
+    Parameters::get("userParameter->adapt->facCoarse", facCoarse);
+    
+    
+    double epsRefine = 1./0.; // no refining
+    double tauMin = 1./0.; // no refining
+    double facRefine = 1./8.;
+    Parameters::get("userParameter->adapt->epsRefine", epsRefine);
+    Parameters::get("userParameter->adapt->tauMin", tauMin);
+    Parameters::get("userParameter->adapt->facRefine", facRefine);
+
+    double epsStagnation = 1.e-14;
+    Parameters::get("userParameter->trunc->epsStagnation", epsStagnation);
+
+    int firstStep = 6;
+    int stepModulo =2;
+    Parameters::get("userParameter->adapt->first test at timestep", firstStep);
+    Parameters::get("userParameter->adapt->test every i-th timestep", stepModulo);
+
+    if (step == firstStep)  oldEnergy = energy;
+    if (step%stepModulo == 1 && step > firstStep) { 
       cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
       double eder = (oldEnergy - energy) / energy;
       cout << "###     rel Diff: " << eder << " ###" << endl;
       cout << "### tau: " << tau << " ###" << endl;
 
-      double eps = 5.E-4; //4.e-5
-      double tauMax = 0.5;
-      if (eder < eps && tau < tauMax && eder > -1.e-8) {
+      if (eder < epsCoarse && tau < tauMax && eder > -1.e-8) {
         t -= tau; // undo in closeTimestep
-        tau *= 2.0;
+        tau *= facCoarse;
         if (tau > tauMax) tau = tauMax;
         inv_tau = 1. / tau;
         t += tau;
         cout << "### tau -> " << tau << " (coarsening) ###" << endl;
       }
 
-      double eps2 = 5.E-3;
-      //double tauMin = 5.e-2;
-      double tauMin = 1.e-4;
-      if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
+      if ((eder > epsRefine || eder < -1.e-8) && tau > tauMin) {
         t -= tau; // undo in closeTimestep
-        tau /= 8.0;
+        tau *= facRefine;
         if (tau < tauMin) tau = tauMin;
         inv_tau = 1. / tau;
         t += tau;
@@ -346,7 +369,7 @@ public:
       }
       oldEnergy = energy;
 
-      if (abs(eder) < 1.0e-14) {
+      if (abs(eder) < epsStagnation) {
         statProb->writeSolution(t-tau);
         ERROR_EXIT("STAGNATION EXIT\n");
       }
@@ -426,23 +449,31 @@ int main(int argc, char* argv[])
   Parameters::get("userParameter->seed", seed);
   TEST_EXIT(seed >= 0)("seed must be positive");
 
+  std::string initFun = "noise";
+  Parameters::get("userParameter->initField", initFun);
+
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
 
   DecProblemStat decSphere(&sphere, edgeMesh);
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
-  Noise_d noiseFun(seed);
-  //initSol.set(&noiseFun);
-  //initSol.set(new DX_d());
+
+  if (initFun == "noise") {
+    Noise_d noiseFun(seed);
+    initSol.set(&noiseFun);
+  } 
+  else if (initFun == "ex") initSol.set(new DX_d());
+  else if (initFun == "rotated_ey") initSol.interpol(new EYRotated(0.05));
+  else ERROR_EXIT("Don't know this userParameter->initField");
   //initSol.set(new Df_d());
   //initSol.set(new DNorm_d());
   //initSol.set(new Null_d());
-  initSol.interpol(new EYRotated(0.05));
   //initSol.interpol(new Michael(0.01));
   //initSol.interpol(new intValTwoDefectsNonics);
+
   initSol.normalize(1.E-10);
-  initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
+  //initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
 
   MyInstat sphereInstat(&decSphere, initSol);
 
@@ -456,13 +487,6 @@ int main(int argc, char* argv[])
   decSphere.addMatrixOperator(LaplaceCB, 0, 0, sphereInstat.getMinusK1Ptr());
   decSphere.addMatrixOperator(LaplaceCB, 1, 1, sphereInstat.getMinusK3Ptr());
 
-  // explicite -> need little timesteps
-  //EdgeOperator Scale;
-  //ValSquaredMinusOne vmo;
-  //Scale.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo));
-  //decSphere.addMatrixOperator(Scale, 0, 0, sphereInstat.getKnPtr());
-  //decSphere.addMatrixOperator(Scale, 1, 1, sphereInstat.getKnPtr());
-
   DofEdgeVector initPrimal = (DofEdgeVector)(initSol);
   DofEdgeVector initDual =  initSol.getDual();
 
@@ -470,49 +494,6 @@ int main(int argc, char* argv[])
   //Taylor linisarisation
   //(||alpha||^2-1)*alpha
   ValSquaredMinusOne vmo;
-
-  //EdgeOperator ScalePrimal;
-  //ScalePrimal.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo, -1.0));
-  //ScalePrimal.setUhOld(initPrimal, 0);
-  //decSphere.addVectorOperator(ScalePrimal, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator ScaleDual;
-  //ScaleDual.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo, -1.0));
-  //ScaleDual.setUhOld(initDual, 1);
-  //decSphere.addVectorOperator(ScaleDual, 1, sphereInstat.getKnPtr());
-
-  //EdgeOperator Scale;
-  //Scale.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), &vmo));
-  //decSphere.addMatrixOperator(Scale, 0, 0,  sphereInstat.getKnPtr());
-  //decSphere.addMatrixOperator(Scale, 1, 1, sphereInstat.getKnPtr());
-
-  ////Grad_alpha((||alpha_Old||^2-1)*alpha_Old)*alpha_{|Old}
-  //AlphaGrad1 ag1;
-  //AlphaGrad2 ag2;
-
-  //EdgeOperator AlphaGradient1Primal;
-  //AlphaGradient1Primal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), &ag1));
-  //AlphaGradient1Primal.setUhOld(initPrimal, 0);
-  //decSphere.addMatrixOperator(AlphaGradient1Primal, 0, 0, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient1Primal, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator AlphaGradient2Primal;
-  //AlphaGradient2Primal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), &ag2));
-  //AlphaGradient2Primal.setUhOld(initDual, 1);
-  //decSphere.addMatrixOperator(AlphaGradient2Primal, 0, 1, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient2Primal, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator AlphaGradient1Dual;
-  //AlphaGradient1Dual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolDual(), sphereInstat.getSolPrimal(), &ag1));
-  //AlphaGradient1Dual.setUhOld(initDual, 1);
-  //decSphere.addMatrixOperator(AlphaGradient1Dual, 1, 1, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient1Dual, 1, sphereInstat.getKnPtr());
-
-  //EdgeOperator AlphaGradient2Dual;
-  //AlphaGradient2Dual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolDual(), sphereInstat.getSolPrimal(), &ag2));
-  //AlphaGradient2Dual.setUhOld(initPrimal, 0);
-  //decSphere.addMatrixOperator(AlphaGradient2Dual, 1, 0, sphereInstat.getKnPtr());
-  //decSphere.addVectorOperator(AlphaGradient2Dual, 1, sphereInstat.getKnPtr());
 
   EdgeOperator Norm2Primal;
   Norm2Primal.addTerm(new EdgeVecAtEdges(sphereInstat.getNormPtr(), new ValSquared()));
@@ -536,7 +517,6 @@ int main(int argc, char* argv[])
   EdgeOperator PrimalPrimal;
   PrimalPrimal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolPrimal(), new Prod2()));
   decSphere.addMatrixOperator(PrimalPrimal, 0, 0, sphereInstat.getKnPtr());
-  //decSphere.addMatrixOperator(PrimalPrimal, 1, 1, sphereInstat.getKnPtr());
   
   EdgeOperator DualDual;
   DualDual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolDual(), sphereInstat.getSolDual(), new Prod2()));
@@ -546,10 +526,6 @@ int main(int argc, char* argv[])
   PrimalDual.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), new Prod2()));
   decSphere.addMatrixOperator(PrimalDual, 0, 1, sphereInstat.getKnPtr());
   decSphere.addMatrixOperator(PrimalDual, 1, 0, sphereInstat.getKnPtr());
-
-  //EdgeOperator PrimalDual2;
-  //PrimalDual2.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolDual(), new Prod2()));
-  //decSphere.addMatrixOperator(PrimalDual2, 1, 0, sphereInstat.getMinusKnPtr());
 
   // time derivation
   EdgeOperator DtPrimal;
@@ -564,21 +540,6 @@ int main(int argc, char* argv[])
   decSphere.addMatrixOperator(DtDual, 1, 1, sphereInstat.getInvTauPtr());
   decSphere.addVectorOperator(DtDual, 1, sphereInstat.getInvTauPtr());
 
-  //EdgeOperator K;
-  //K.addTerm(new IdentityAtEdges(-1.0));
-  //decSphere.addMatrixOperator(K, 0, 0);
-  //decSphere.addMatrixOperator(K, 1, 1);
-
-  //decSphere.assembleSystem();
-  //using namespace mtl;
-  //dense2D<double> mat(60,60);
-  //mat = decSphere.getSysMat();
-  //edgeMesh->printVolInfos(true,true);
-  //cout << sub_matrix(mat,0,30,0,30) << endl << endl;
-  //cout << sub_matrix(mat,0,30,30,60) << endl << endl;
-  //cout << sub_matrix(mat,30,60,0,30) << endl << endl;
-  //cout << sub_matrix(mat,30,60,30,60) << endl << endl;
-  //cout << decSphere.getRhs() << endl;
 
   Timer t;
   sphereInstat.solve();

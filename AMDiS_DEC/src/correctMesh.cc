@@ -249,6 +249,57 @@ int main(int argc, char* argv[])
   Parameters::get("nonic->press", press);
   TEST_EXIT(press >= 0 && press < 1)("press factor must be positive and lower than 1!\n");
 
+  double h;
+  Parameters::get("meshCorrector->h", h);
+  int nMax;
+  Parameters::get("meshCorrector->nMax", nMax);
+
+  // ===== create and init the scalar problem ===== 
+  ProblemStat sphere("sphere");
+  sphere.initialize(INIT_ALL);
+
+  string meshOut;
+  Parameters::get("meshCorrector->outName", meshOut);
+  MeshCorrector mc(sphere.getFeSpace(), meshOut);
+
+// *********************************************
+// all for nonicPressed
+  double c;
+  Parameters::get("edgeForces->c", c);
+  double cNow = 0.8;
+  Parameters::set("edgeForces->c", cNow);
+
+  double hNow = h;
+
+  double stretchOld = stretch;
+  double pressOld = press;
+  Parameters::get("nonic->old->c", stretchOld);
+  Parameters::get("nonic->old->press", pressOld);
+
+  int steps = 100;
+  int iterationsPerStep = 101;
+  Parameters::get("nonic->parameterSteps", steps);
+  Parameters::get("nonic->iterationsPerStep", iterationsPerStep);
+
+
+  double stretchStepSize = (stretchOld - stretch) / steps;
+  double pressStepSize = (pressOld - press) / steps;
+
+  double stretchNow = stretchOld - stretchStepSize;
+  double pressNow = pressOld - pressStepSize;
+
+  double signStretch = (stretchStepSize > 0 ) ? 1 : -1; 
+  double signPress = (pressStepSize > 0 ) ? 1 : -1; 
+  for (; signStretch*stretchNow > signStretch*stretch && signPress*pressNow > signPress*press; 
+          stretchNow -= stretchStepSize, pressNow -= pressStepSize) {
+    MSG("*** Precalculation at STRETCH = %f and PRESS = %f ***\n", stretchNow, pressNow);
+    PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretchNow, southRatio, pressNow), new GradPhiNP(stretchNow, southRatio, pressNow), 1.0e-6);
+    mc.iterate(iterationsPerStep, hNow, meshOut);
+    MSG("****************** DONE ***************************\n");
+  }
+  Parameters::set("edgeForces->c", c);
+// *********************************************
+
   // ===== create projection =====
   //new PhiProject(1, VOLUME_PROJECTION, new PhiN(stretch, southRatio), new GradPhiN(stretch, southRatio), 1.0e-6);
   //new PhiProject(1, VOLUME_PROJECTION, new PhiO(stretch), new GradPhiO(stretch), 1.0e-6);
@@ -258,39 +309,8 @@ int main(int argc, char* argv[])
   //ballCenter.set(0.0);
   //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
   
-
-  // ===== create and init the scalar problem ===== 
-  ProblemStat sphere("sphere");
-  sphere.initialize(INIT_ALL);
-
-
-  // === create adapt info ===
-  AdaptInfo *adaptInfo = new AdaptInfo("sphere->adapt", sphere.getNumComponents());
-
-  // === create adapt ===
-  AdaptStationary *adapt = new AdaptStationary("sphere->adapt",
-					       &sphere,
-					       adaptInfo);
-  
-  double h;
-  Parameters::get("meshCorrector->h", h);
-  int nMax;
-  Parameters::get("meshCorrector->nMax", nMax);
-
-  string meshOut;
-  Parameters::get("meshCorrector->outName", meshOut);
-  MeshCorrector mc(sphere.getFeSpace());
   mc.iterate(nMax, h, meshOut);
 
-
-  // ===== start adaption loop =====
-  adapt->adapt();
-
-
-  //MacroWriter::writeMacro(new DataCollector<double>(sphere.getFeSpace()), meshOut.c_str());
-  //DOFVector<double> *phi = new DOFVector<double>(sphere.getFeSpace(),"phi");
-  //phi->interpol(new Phi());
-  //VtkVectorWriter::writeFile(phi, meshOut + string("_phi.vtu"));
 
   AMDiS::finalize();
 }

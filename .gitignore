@@ -18,6 +18,7 @@
 *.cmake
 *.csv
 *.vtu
+*.pvd
 
 # latex stuff
 *.aux

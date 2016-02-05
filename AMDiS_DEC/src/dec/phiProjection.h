@@ -19,6 +19,11 @@ public:
 
   WorldVector<double> getNormal(const WorldVector<double> &x);
 
+  ~PhiProject() {
+    FUNCNAME("PhiProject::~PhiProject()")
+    //MSG("Destroying Projection\n");
+    projectionMap[projectionID] = NULL;
+  }
 
 private:
 

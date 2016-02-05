@@ -1,4 +1,5 @@
 import csv
+import sys
 from pylab import *
 import matplotlib.pyplot as plt
 
@@ -13,7 +14,8 @@ name2 = ["MinArea","MaxArea"]
 n = len(name)
 n2 = len(name2)
 last = 100000
-fn = '../meshStatsnonic95p_C2.000_0.7P_64k.csv'
+#fn = '../meshStats.csv'
+fn = sys.argv[1]
 with open(fn, 'rb') as f:
     reader = csv.DictReader(f)
     x = n*[ndarray((0,1),dtype=double)]

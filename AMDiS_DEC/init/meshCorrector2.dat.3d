@@ -1,0 +1,40 @@
+dimension of world:      3
+
+%sphereMesh->macro file name:        ./macro/sphereIko250k.3d
+%sphereMesh->macro file name:        /home/ingo/Schreibtisch/sandbox/ACVD/ACVD/nonicPressed/nonic095r15c0525b_iko100k.3d
+%sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/octics/octic_C1.200_100k.3d
+sphereMesh->macro file name:        /home/ingo/git/main/AMDiS_Sandbox2/macro/nonicsPressed/nonic095r0775c027125b_64k.3d
+%sphereMesh->macro file name:        ./macro/torus1k.3d
+
+sphereMesh->global refinements:    0
+sphereMesh->check:                  0
+
+sphere->mesh:                    sphereMesh
+sphere->dim:                     2
+sphere->polynomial degree[0]:    1
+sphere->components:              1
+
+sphere->solver: cg
+
+%heine50k 0.005
+%meshCorrector->h: 0.005
+%meshCorrector->h: 0.008
+meshCorrector->h: 0.002 %0.002 for nonic-stuff %0.003 %0.0007 %0.0005
+
+meshCorrector->nMax: 10001
+meshCorrector->outName: nonic095r08c028b
+
+edgeForces->k: 1.0   % in [0,1] % hold k times average edge length in length preserving
+edgeForces->c: 0.8 %0.8 for nonic-stuff  % (0.7) in [0,1] % relation to edge length and angle preserving (0: only angle, 1:only length)
+
+octic->c: 0.8 % stretch factor sphere -> octic
+nonic->south ratio: 0.95 % south ratio related to the stretch factor on north pole
+nonic->press: 0.28 % press to x-z-plain in [0,1)
+
+nonic->old->c: 0.775  % start with this parameter
+nonic->old->press:0.27125  % start with this parameter
+nonic->parameterSteps: 10 %1000
+nonic->iterationsPerStep: 11
+
+corrector->fMin: 0.05
+corrector->write every ith step: 10
