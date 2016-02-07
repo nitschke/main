@@ -5,6 +5,8 @@ import argparse
 parser = argparse.ArgumentParser(description='Map the NonicPressed ID to name, e.g., 6 -> nonic095r125c04375b')
 
 parser.add_argument('--id', type=int, required=True, help='the NonicPressed ID')
+parser.add_argument('--getPress','-gb', help='get PRESS parameter as float', action="store_true")
+parser.add_argument('--getStretch','-gc', help='get STRETCH parameter as float', action="store_true")
 
 args = parser.parse_args()
 
@@ -28,5 +30,9 @@ if cstr == '':
 if bstr == '':
     bstr = '0'
     
-
-print 'nonic095r' + cstr + 'c' + bstr + 'b'
+if args.getStretch:
+    print c
+elif args.getPress:
+    print b
+else:
+    print 'nonic095r' + cstr + 'c' + bstr + 'b'
