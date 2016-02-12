@@ -1,0 +1,194 @@
+\documentclass[a4paper,11pt]{scrartcl}
+\usepackage{hyperref}
+\input{declarations}
+
+% standard R3 basis
+\newcommand{\EuBase}[1]{\eb^{#1}}
+% surface parameter
+\newcommand{\pstretch}{C}
+\newcommand{\pprop}{r}
+\newcommand{\ppress}{B}
+
+\title{Notes On Nonic Surfaces Experiment} 
+
+\begin{document}
+\maketitle
+
+\section{Surface Descriptions}
+We are starting with the standard parametrization of the unit sphere \( \Sp \)
+with local coordinates \(  \theta\in\left[ 0,\pi \right]\) and \( \phi\in\left[ 0,2\pi\right) \), i.e.,
+\begin{align}
+      \Xb_{\Sp}(\theta,\phi) &= 
+                      \sin\theta\cos\phi\EuBase{x} +  \sin\theta\sin\phi \EuBase{y} + \cos\theta\EuBase{z} \formPeriod
+\end{align}
+For stretching the unit sphere by a displacement function \( f:[-1,1] \rightarrow \R \) in the \( x \)-direction depending on the \( z
+\)-positions 
+and pressing to the \( x \)-\( z \)-plane by a press factor \( \ppress\in [0,1) \),
+we obtain the surface
+\begin{align}
+  \Xb_{f,\ppress}(\theta,\phi) &:= \Xb_{\Sp}(\theta,\phi) + f(\cos\theta)\EuBase{x} - B\sin\theta\sin\phi\EuBase{y}
+\end{align}
+and with \( \ppress\nearrow 1 \) the surface becomes flat.
+We choose for the displacement function \( f \) a double well function,
+which should break the symmetry referring to the \( x \)-\( y \)-plane,
+so that the north pole (\( z=1 \)) of the initial sphere is shifting right in  \( x \)-direction by \( \pstretch>0 \)
+and the south pole (\( z=-1 \)) by \( \pprop\cdot\pstretch  \) with the proportion factor \( 0 \le \pprop < 1 \).
+This implies
+\begin{align}
+  f(z) &:= f_{\pstretch,\pprop}(z) = \frac{1}{4} \pstretch z^2 \left[(z+1)^2 (4-3 z)+\pprop (z-1)^2 (4+3 z)\right]
+\end{align}
+where the double well conditions \( f(1) = \pstretch \), \( f(-1)=\pprop\cdot\pstretch \) and \( f'(1)=f'(0)=f'(-1)=0 \) are fulfilled,
+see for example \autoref{fig:SphereToNonicPressed}.
+\begin{figure}
+  \centering
+  \includegraphics[width=.9\textwidth]{stuff/paraview/Sphere2Nonic2NonicPressed.png}
+  \caption{Nonic Surface with parameters \( \pprop = 0.5 \), \( \pstretch = 2 \) and \( \ppress = 0.5 \).
+           The left figure shows the stretching of the unit sphere in the \( x \)-direction.
+           Hence, by the choice of the parameter, the north pole (\( z=1 \)) is shifting by \( \pstretch = 2 \) 
+           and the south pole (\( z=-1 \)) by \( \pprop\cdot\pstretch = 1 \) units of length to the left. 
+           The right figure shows the pressing of the resulting surface to the \( x \)-\( z \)-plane by the press factor \( \ppress=0.5 \).
+           }
+  \label{fig:SphereToNonicPressed}
+\end{figure}
+For the immersion \( \Xb_{\ppress,\pstretch,\pprop} := \Xb_{f,\ppress}:[0,\pi]\times[0,2\pi)\rightarrow\R^{3}  \)
+the surface family \( \surf_{\ppress,\pstretch,\pprop} := \text{Im}(\Xb_{\ppress,\pstretch,\pprop})\)
+can also expressed implicitly by the 0-Levelset of the function
+\begin{align}
+  \varphi_{\ppress,\pstretch,\pprop}(x,y,z) &:= \left( x - f_{\pstretch,\pprop}(z) \right)^{2} + \frac{1}{(1-\ppress)^{2}}y^{2} + z^{2} - 1
+\end{align}
+defined in a smooth neighbourhood of the surface.
+We call \( \surf_{\ppress,\pstretch,\pprop} \) a \textbf{Nonic Surface}, because \( \varphi_{\ppress,\pstretch,\pprop} \) is a polynomial of
+degree 10.
+The gradient
+\begin{align}
+  \nabla\varphi_{\ppress,\pstretch,\pprop}(x,y,z) &= 2
+      \begin{bmatrix}
+        x - f_{\pstretch,\pprop}(z) \\
+        \frac{y}{(1-\ppress)^{2}} \\
+        z-(x-f_{\pstretch,\pprop}(z))f'_{\pstretch,\pprop}(z)
+      \end{bmatrix}\formComma
+\end{align}
+restricted to the surface, points in the direction of the outer surface normals.
+
+\section{Initial Solutions Construction for the Frank-Oseen-Equations}
+To solve the director field evololutions in paper \textbf{NUMERICAL METHODS FOR ORIENTATIONAL ORDER ON SURFACES},
+we have to assign initial fields \( \pb \), \( \alphab = \pb^{\flat} \) respectively,
+with \( \|\pb\| = \|\alphab\| = 1 \) a.e..
+\subsection{4 Defect Init}
+The 4 defect configuration, 3 with positive charge at the bulges and 1 with negative charge at the saddle point, 
+is potentially stable depending on the choice of the surface
+parameter.
+The proportion factor \( \pprop\in[0,1) \) prevent a metastable solution, because the resulting symmetry break induce different dynamics
+for  2 defect locations on the bulges.
+This implies, that the defect on the smaller bulge and the saddle point defect will mutually annihilate, if the 4 defect configuration is
+not pure stable, see \eg, \autoref{fig:NonicFinal4Defects}. 
+\begin{figure}
+  \centering
+  \includegraphics[width=.95\textwidth]{stuff/paraview/NonicFinal4Defects.png}
+  \caption{Nonic Surfaces with \( \pprop = 0.95 \). 
+            In the left figure (\( \ppress = 0.56 \), \( \pstretch = 1.6 \)) we see a directional field with stable 4 defect configuration.
+            In the right figure (\( \ppress = 0.2625 \), \( \pstretch = 0.75 \)) the 4 defect initial configuration was not stable,
+            therefor the system was finally gasp to a 2 defect solution.
+           }
+  \label{fig:NonicFinal4Defects}
+\end{figure}
+For the initial solution \( \alphab^{0} \) we can use the \( x \)-coordinate potential, \ie,
+\begin{align}
+  \alphab^{0} = \frac{\exd x}{\left\| \exd x \right\|_{\varepsilon}} \formComma
+\end{align}
+where
+\begin{align}
+  \left\| \qb \right\|_{\varepsilon} &=
+      \begin{cases}
+        \infty & \text{ if } \left\| \qb \right\| < \varepsilon \\
+        \left\| \qb \right\| & \text{ else}
+      \end{cases}
+\end{align}
+to prevent ill well-defined in the defect locations. 
+In our experiments \( \varepsilon \) is mostly chosen by \( 10^{-10} \).
+Hence, the corresponding contravariant vector field is
+\begin{align}
+  \pb^{0} &= \frac{\Grad x}{\left\| \Grad x \right\|_{\varepsilon}}\formPeriod
+\end{align}
+With the projection map
+\begin{align}
+  \ProjectSurf = I - \frac{\nabla\varphi}{\left\| \nabla\varphi \right\|} \otimes \frac{\nabla\varphi}{\left\| \nabla\varphi \right\|}
+\end{align}
+we can use in euclidean coordinates the identity
+\begin{align}
+  \Grad x &= \ProjectSurf\nabla x = \ProjectSurf\EuBase{x} \formPeriod
+\end{align}
+
+\subsubsection{PD-1-Form Discretization}
+We can discretize the exact 1-form \( \exd x \) on an edge \( e=\left[ v_{1} , v_{2} \right]\in\Es \) by (Stokes theorem)
+\begin{align}
+  \left( \exd x \right)_{h}(e) = v_{2}^{x} - v_{1}^{x} \formPeriod 
+\end{align}
+If the face \( \face_{1}\succ e \) is right of the edge \( e \) and \( \face_{2}\succ e \) located left, 
+so that \( \star e = [c(\face_{1}),c(\face_{2})] \) is the dual edge, than we can approximate
+\begin{align}
+  \left( *\exd x \right)_{h}(e) &= -\frac{\left| e \right|}{\left| \star e \right|} \left( \exd x \right)_{h}(\star e)
+                                 = -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})  \right]^{x} \right)
+\end{align}
+With the discrete norm \eqref{eqPDNorm} of PD-1-forms, we obtain the discrete initial PD-1-form on \( e \in \Es \) by
+\begin{align}
+  \alphav^{0}(e) = \frac{
+                   \begin{bmatrix}
+                      v_{2}^{x} - v_{1}^{x}\\
+        -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})  \right]^{x} \right)
+                   \end{bmatrix}
+                }{\sqrt{\frac{1}{\left| e \right|^{2}}\left(v_{2}^{x} - v_{1}^{x}  \right)^{2}
+                                 +\frac{1}{\left| \star e \right|^{2}}\left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})
+                                 \right]^{x}\right)^{2} }} \formComma
+\end{align}
+if \( \sqrt{\frac{1}{\left| e \right|^{2}}\left(v_{2}^{x} - v_{1}^{x}  \right)^{2}
+                                 +\frac{1}{\left| \star e \right|^{2}}\left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})
+                                 \right]^{x}\right)^{2} } \ge \varepsilon \),
+else we set \( \alphav^{0}(e) = [0,0]^{T} \).
+
+
+\subsection{2 Defect Init}
+To provoke a 2 defect solution in the equilibrium, like in \autoref{fig:NonicFinal4Defects} (right), 
+we use a normalized projected slightly rotated \( \EuBase{y} \) Field, see \eg, \autoref{fig:Init2Defects}.
+\begin{figure}
+  \centering
+  \includegraphics[width=.95\textwidth]{stuff/paraview/Init2Defects.png}
+  \caption{Nonic Surface with \( \pprop = 0.95 \), \( \ppress = 0.35 \) and \( \pstretch = 1 \). 
+           The green line is the \( y \)-axis and the red line is the rotated \( y \)-axis throw the origin.
+           This is a rotation by a radian of \( \gamma = 1.5 \) in the normal plane of the vector 
+           \( [-1,0,1]^{T} \).
+           The defect locations are at the points, where the rotated \( y \)-axis is orthogonal to the surface (see blue lines).
+           The colouring is the logarithm of the norm of the resulting unnormalized vector field \(\check{\pb}^{0}\).
+           The arrows show the normalized vector field \(\pb^{0}\).
+           }
+  \label{fig:Init2Defects}
+\end{figure}
+With the symmetry of the surface, \( \ProjectSurf\EuBase{y} \) would be result in a metastable state.
+To disturb this, we define a rotation \( R_{\gamma}  \) by an angle \( \gamma \) in the normal plane of the vector \( [-1,0,1]^{T} \),
+\ie,
+\begin{align}
+    R_{\gamma} &:=
+      \begin{bmatrix}
+        \frac{1+\cos\gamma}{2}      & -\frac{\sin\gamma}{\sqrt{2}}  & \frac{-1+\cos\gamma}{2} \\
+        \frac{\sin\gamma}{\sqrt{2}} & \cos\gamma                    & \frac{\sin\gamma}{\sqrt{2}} \\
+        \frac{-1+\cos\gamma}{2}     & -\frac{\sin\gamma}{\sqrt{2}}  & \frac{1+\cos\gamma}{2}
+      \end{bmatrix} \formPeriod
+\end{align}
+Hence, we get the unnormalized vector field \( \check{\pb}^{0} := \ProjectSurf R_{\gamma} \EuBase{y} \).
+The advantage of \( \check{\pb}^{0} \) is that one of the two defects is closer on the larger bulge.
+so that the defect move to them in the evolution and not to the smaller bulge.
+
+\section{Appendix}
+\subsection{Some Reverse Transformations}
+\begin{align}
+  \cos\theta &= z\\
+  \sin\theta &= \sqrt{1-z^{2}}\\
+  \cot\theta &= \frac{z}{ \sqrt{1-z^{2}}}\\
+  \csc\theta &= \frac{1}{ \sqrt{1-z^{2}}}\\
+  \cos\phi  &= \frac{x-f(z)}{\sqrt{1-z^{2}}}\\
+  \sin\phi &= \frac{y}{(1-B)\sqrt{1-z^{2}}}\\
+\end{align}
+
+
+
+\end{document}

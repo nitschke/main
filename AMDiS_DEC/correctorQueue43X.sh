@@ -1,9 +1,9 @@
-IDS=({46..49})
+IDS=({431..439})
 
 for ID in ${IDS[*]}
 do
   sleep 2
-  echo $ID
+  echo Start nonic mesh $ID: `date`
   typeset -i IDOLD
   IDOLD=$ID-1
   initSet.py -f init/meshCorrector2.dat.3d -k 'macro file name' -v ../AMDiS_Sandbox2/macro/nonicsPressed/`nonicName.py --id $IDOLD`_64k.3d

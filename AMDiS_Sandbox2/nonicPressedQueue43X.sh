@@ -1,4 +1,4 @@
-IDS=({71..79})
+IDS=({431..439})
 
 IF=init/nonicPressed.dat.3d
 

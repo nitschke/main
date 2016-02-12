@@ -14,5 +14,5 @@ do
   initSet.py -f init/meshCorrector2.dat.3d -k 'nonic->old->press' -v `nonicName.py --id $IDOLD -gb`
   nohup ./meshCorrector init/meshCorrector2.dat.3d &> nohups/nohup_${ID}.out
   sleep 1
-  cp output/meshOut`nonicName.py --id $ID`_20000.3d ../AMDiS_Sandbox2/macro/nonicsPressed/`nonicName.py --id $ID`_64k.3d
+  cp output/meshOut`nonicName.py --id $ID`_2000.3d ../AMDiS_Sandbox2/macro/nonicsPressed/`nonicName.py --id $ID`_64k.3d
 done
