@@ -1,5 +1,6 @@
 \documentclass[a4paper,11pt]{scrartcl}
 \usepackage{hyperref}
+\usepackage{stmaryrd} %only for parameter evaluation for the nonic names in appendix
 \input{declarations}
 
 % standard R3 basis
@@ -8,6 +9,7 @@
 \newcommand{\pstretch}{C}
 \newcommand{\pprop}{r}
 \newcommand{\ppress}{B}
+
 
 \title{Notes On Nonic Surfaces Experiment} 
 
@@ -26,12 +28,12 @@ For stretching the unit sphere by a displacement function \( f:[-1,1] \rightarro
 and pressing to the \( x \)-\( z \)-plane by a press factor \( \ppress\in [0,1) \),
 we obtain the surface
 \begin{align}
-  \Xb_{f,\ppress}(\theta,\phi) &:= \Xb_{\Sp}(\theta,\phi) + f(\cos\theta)\EuBase{x} - B\sin\theta\sin\phi\EuBase{y}
+  \Xb_{f,\ppress}(\theta,\phi) &:= \Xb_{\Sp}(\theta,\phi) + f(\cos\theta)\EuBase{x} - B\sin\theta\sin\phi\EuBase{y} \formComma
 \end{align}
-and with \( \ppress\nearrow 1 \) the surface becomes flat.
+\ie, specially for \( \ppress\nearrow 1 \) the surface becomes flat.
 We choose for the displacement function \( f \) a double well function,
 which should break the symmetry referring to the \( x \)-\( y \)-plane,
-so that the north pole (\( z=1 \)) of the initial sphere is shifting right in  \( x \)-direction by \( \pstretch>0 \)
+so that the north pole (\( z=1 \)) of the initial sphere is shifting in  \( x \)-direction by \( \pstretch>0 \)
 and the south pole (\( z=-1 \)) by \( \pprop\cdot\pstretch  \) with the proportion factor \( 0 \le \pprop < 1 \).
 This implies
 \begin{align}
@@ -125,7 +127,7 @@ We can discretize the exact 1-form \( \exd x \) on an edge \( e=\left[ v_{1} , v
   \left( \exd x \right)_{h}(e) = v_{2}^{x} - v_{1}^{x} \formPeriod 
 \end{align}
 If the face \( \face_{1}\succ e \) is right of the edge \( e \) and \( \face_{2}\succ e \) located left, 
-so that \( \star e = [c(\face_{1}),c(\face_{2})] \) is the dual edge, than we can approximate
+so that \( \star e = [c(\face_{1}),c(e)] + [c(e),c(\face_{2})] \) is the dual edge, than we can approximate
 \begin{align}
   \left( *\exd x \right)_{h}(e) &= -\frac{\left| e \right|}{\left| \star e \right|} \left( \exd x \right)_{h}(\star e)
                                  = -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})  \right]^{x} \right)
@@ -133,10 +135,8 @@ so that \( \star e = [c(\face_{1}),c(\face_{2})] \) is the dual edge, than we ca
 With the discrete norm \eqref{eqPDNorm} of PD-1-forms, we obtain the discrete initial PD-1-form on \( e \in \Es \) by
 \begin{align}
   \alphav^{0}(e) = \frac{
-                   \begin{bmatrix}
-                      v_{2}^{x} - v_{1}^{x}\\
-        -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})  \right]^{x} \right)
-                   \end{bmatrix}
+                   \left( v_{2}^{x} - v_{1}^{x}, 
+                        -\frac{\left| e \right|}{\left| \star e \right|} \left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})  \right]^{x} \right)  \right)
                 }{\sqrt{\frac{1}{\left| e \right|^{2}}\left(v_{2}^{x} - v_{1}^{x}  \right)^{2}
                                  +\frac{1}{\left| \star e \right|^{2}}\left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})
                                  \right]^{x}\right)^{2} }} \formComma
@@ -144,7 +144,7 @@ With the discrete norm \eqref{eqPDNorm} of PD-1-forms, we obtain the discrete in
 if \( \sqrt{\frac{1}{\left| e \right|^{2}}\left(v_{2}^{x} - v_{1}^{x}  \right)^{2}
                                  +\frac{1}{\left| \star e \right|^{2}}\left( \left[c(\face_{2})  \right]^{x} - \left[c(\face_{1})
                                  \right]^{x}\right)^{2} } \ge \varepsilon \),
-else we set \( \alphav^{0}(e) = [0,0]^{T} \).
+else we set \( \alphav^{0}(e) = (0,0) \).
 
 
 \subsection{2 Defect Init}
@@ -175,10 +175,151 @@ To disturb this, we define a rotation \( R_{\gamma}  \) by an angle \( \gamma \)
       \end{bmatrix} \formPeriod
 \end{align}
 Hence, we get the unnormalized vector field \( \check{\pb}^{0} := \ProjectSurf R_{\gamma} \EuBase{y} \).
-The advantage of \( \check{\pb}^{0} \) is that one of the two defects is closer on the larger bulge.
+The advantage of \( \check{\pb}^{0} \) is that one of the two defects is closer on the larger bulge,
 so that the defect move to them in the evolution and not to the smaller bulge.
+By normalizing we get the initial director field \( \pb^{0} = \frac{\check{\pb}^{0}}{\|\check{\pb}^{0}\|_{\varepsilon}} \).
+We use \( \gamma = 0.05 \) in our experiment, because a small radian is enough to influence the dynamic in the way we want
+and a larger \( \gamma \) would be result in long "defect lines" at the beginning, 
+which can particular split up to 2 defects, for large stretch factors \( \pstretch \).
+
+\subsubsection{PD-1-Form Discretization}
+By definition of the dual basis, we can usually flat a vector field \( \pb \) to 1-form in the continuum, 
+with testing the vector field with its basis.
+The evaluation of a vector field with the dual edge vector \( \eb_{\star} \) on a edge \( e \), 
+\ie, at the intersection \( e\cap\star e = c(e) \), is ambiguous, 
+hence we define canonical to the definition of the dual 1-chain \( \star e = \star e|_{\face_{1}} + \star e|_{\face_{2}}\)
+\begin{align}
+  \pb(c(e))\cdot\eb_{\star} :=  \pb(c(e)) \cdot \left( \eb_{\star}|_{\face_{1}} +  \eb_{\star}|_{\face_{2}}\right)
+            = \pb(c(e)) \cdot \left( c(\face_{2}) - c(\face_{1}) \right) \formComma
+\end{align}
+where the face \( \face_{1}\succ e \) is right of the edge \( e \) and \( \face_{2}\succ e \) is located left.
+Hence, we get for the initial discrete PD-1-form
+\begin{align}
+  \alphav^{0}(e) = \frac{\left( \check{\pb}^{0}(c(e)) \cdot \eb ,
+                                -\frac{\left| e \right|}{\left| \star e \right|}\check{\pb}^{0}(c(e)) \cdot \eb_{\star} \right)}
+                        {\sqrt{\frac{1}{\left| e \right|^{2}}\left( \check{\pb}^{0}(c(e)) \cdot \eb \right)^{2}
+                                 +\frac{1}{\left| \star e \right|^{2}}
+                                    \left(\check{\pb}^{0}(c(e)) \cdot \eb_{\star}  \right)^{2} }} \formComma
+\end{align}
+if \( \sqrt{\frac{1}{\left| e \right|^{2}}\left( \check{\pb}^{0}(c(e)) \cdot \eb \right)^{2}
+                                 +\frac{1}{\left| \star e \right|^{2}}
+                                    \left(\check{\pb}^{0}(c(e)) \cdot \eb_{\star}  \right)^{2} }  \ge  \varepsilon\),
+else we set \( \alphav^{0}(e) = (0,0) \).
+
+
+
+\section{Experiments}
+To study the energy and the stability of the defects behavior, 
+we use a sequence of nonic surfaces, starting with the unit sphere,
+\ie, \( \ppress=\pstretch=0 \), up to \( \ppress = 0.7 \) and \( \pstretch = 2.0 \), see \autoref{fig:SurfaceSequence}.
+\begin{figure}
+  \centering
+  \includegraphics[width=.95\textwidth]{stuff/paraview/SurfaceSequence.png}
+  \caption{Nonic Surface with \( \pprop = 0.95 \). 
+            Form left to right:\( \ppress = \pstretch = 0 \), 
+                               \( \ppress = 0.35 \) and \( \pstretch = 1 \),
+                               \( \ppress = 0.7 \) and \( \pstretch = 2 \).
+            The colouring represent the Gaussian curvature (on unit Sphere \( K=1  \)).
+           }
+  \label{fig:SurfaceSequence}
+\end{figure}
+We always chose the press factor \( \ppress \) and the stretch factor \( \pstretch \) in the same ratio,
+\ie, \( C:B = 20:7 \).
+The proportion factor is set to \( \pprop = 0.95 \) and the radian for the 2 defect initial solution is
+\( \gamma = 0.05 \), see \autoref{fig:SurfaceSequencePlots} results.
+\begin{figure}
+  \centering
+  \includegraphics[width=.95\textwidth]{stuff/StretchEnergyPlot.pdf}
+  \includegraphics[width=.95\textwidth]{stuff/StretchTimePlot.pdf}
+  \caption{Experiment on Nonic Surface with \( \pprop = 0.95 \). 
+           }
+  \label{fig:SurfaceSequencePlots}
+\end{figure}
+For the parameter discretization see Appendix. 
+
+
+
+
 
 \section{Appendix}
+\subsection{Parameter Discretization}
+We use a ID of the form \( XXXX\ldots \) with \( X\in\{1,\ldots,9\} \) to identify the nonic surfaces.
+The longer the ID the finer is the choice of the parameter \( \ppress \) and \( \pstretch \).
+Furthermore, every surface get a name, which contains the parameter \( \pprop \), \( \ppress \)
+and \( \pstretch \), of the form 
+\texttt{nonic\( \llbracket\pprop\rrbracket \)r\( \llbracket\pstretch\rrbracket \)c\( \llbracket\ppress\rrbracket \)b},
+where \( \llbracket x\rrbracket \) is a point-free representation of a floating number \( x\in[0,10) \),
+\eg, \( \llbracket 0.51 \rrbracket = \texttt{051} \) or \( \llbracket 4.2 \rrbracket = \texttt{42} \).
+The 9 base surfaces, which discretized the parameter space are
+\begin{align}
+  \begin{array}{|c|c|c|c|}
+    \hline
+    \text{ID} & \ppress & \pstretch & \text{Name}\\\hline
+1 & 0.0 & 0.0 & \texttt{nonic095r0c0b} \\\hline
+2 & 0.0875 & 0.25 & \texttt{nonic095r025c00875b} \\\hline
+3 & 0.175 & 0.5 & \texttt{nonic095r05c0175b} \\\hline
+4 & 0.2625 & 0.75 & \texttt{nonic095r075c02625b} \\\hline
+5 & 0.35 & 1.0 & \texttt{nonic095r1c035b} \\\hline
+6 & 0.4375 & 1.25 & \texttt{nonic095r125c04375b} \\\hline
+7 & 0.525 & 1.5 & \texttt{nonic095r15c0525b} \\\hline
+8 & 0.6125 & 1.75 & \texttt{nonic095r175c06125b} \\\hline
+9 & 0.7 & 2.0 & \texttt{nonic095r2c07b} \\\hline    
+  \end{array}
+\end{align}
+For a better resolution of the parameter space, where the 4 defect solution becomes stable, we refine between the ID 4 and 5,
+\ie,
+\begin{align}
+  \begin{array}{|c|c|c|c|}
+    \hline
+    \text{ID} & \ppress & \pstretch & \text{Name}\\\hline
+41 & 0.27125 & 0.775 & \texttt{nonic095r0775c027125b} \\\hline
+42 & 0.28 & 0.8 & \texttt{nonic095r08c028b} \\\hline
+43 & 0.28875 & 0.825 & \texttt{nonic095r0825c028875b} \\\hline
+44 & 0.2975 & 0.85 & \texttt{nonic095r085c02975b} \\\hline
+45 & 0.30625 & 0.875 & \texttt{nonic095r0875c030625b} \\\hline
+46 & 0.315 & 0.9 & \texttt{nonic095r09c0315b} \\\hline
+47 & 0.32375 & 0.925 & \texttt{nonic095r0925c032375b} \\\hline
+48 & 0.3325 & 0.95 & \texttt{nonic095r095c03325b} \\\hline
+49 & 0.34125 & 0.975 & \texttt{nonic095r0975c034125b} \\\hline
+  \end{array}
+\end{align}
+and again between 43 and 44, \ie,
+\begin{align}
+  \begin{array}{|c|c|c|c|}
+    \hline
+    \text{ID} & \ppress & \pstretch & \text{Name}\\\hline
+431 & 0.289625 & 0.8275 & \texttt{nonic095r08275c0289625b} \\\hline
+432 & 0.2905 & 0.83 & \texttt{nonic095r083c02905b} \\\hline
+433 & 0.291375 & 0.8325 & \texttt{nonic095r08325c0291375b} \\\hline
+434 & 0.29225 & 0.835 & \texttt{nonic095r0835c029225b} \\\hline
+435 & 0.293125 & 0.8375 & \texttt{nonic095r08375c0293125b} \\\hline
+436 & 0.294 & 0.84 & \texttt{nonic095r084c0294b} \\\hline
+437 & 0.294875 & 0.8425 & \texttt{nonic095r08425c0294875b} \\\hline
+438 & 0.29575 & 0.845 & \texttt{nonic095r0845c029575b} \\\hline
+439 & 0.296625 & 0.8475 & \texttt{nonic095r08475c0296625b} \\\hline
+  \end{array} \formPeriod
+\end{align}
+For the parameter region, where the 4 defect solution becomes cheaper than the 2 defect solution, we refine between ID 7 and 8,
+\ie,
+\begin{align}
+  \begin{array}{|c|c|c|c|}
+    \hline
+    \text{ID} & \ppress & \pstretch & \text{Name}\\\hline
+71 & 0.53375 & 1.525 & \texttt{nonic095r1525c053375b} \\\hline
+72 & 0.5425 & 1.55 & \texttt{nonic095r155c05425b} \\\hline
+73 & 0.55125 & 1.575 & \texttt{nonic095r1575c055125b} \\\hline
+74 & 0.56 & 1.6 & \texttt{nonic095r16c056b} \\\hline
+75 & 0.56875 & 1.625 & \texttt{nonic095r1625c056875b} \\\hline
+76 & 0.5775 & 1.65 & \texttt{nonic095r165c05775b} \\\hline
+77 & 0.58625 & 1.675 & \texttt{nonic095r1675c058625b} \\\hline
+78 & 0.595 & 1.7 & \texttt{nonic095r17c0595b} \\\hline
+79 & 0.60375 & 1.725 & \texttt{nonic095r1725c060375b} \\\hline
+  \end{array} \formPeriod
+\end{align}
+
+
+
+
 \subsection{Some Reverse Transformations}
 \begin{align}
   \cos\theta &= z\\
@@ -186,7 +327,7 @@ so that the defect move to them in the evolution and not to the smaller bulge.
   \cot\theta &= \frac{z}{ \sqrt{1-z^{2}}}\\
   \csc\theta &= \frac{1}{ \sqrt{1-z^{2}}}\\
   \cos\phi  &= \frac{x-f(z)}{\sqrt{1-z^{2}}}\\
-  \sin\phi &= \frac{y}{(1-B)\sqrt{1-z^{2}}}\\
+  \sin\phi &= \frac{y}{(1-\ppress)\sqrt{1-z^{2}}}\\
 \end{align}
 
 

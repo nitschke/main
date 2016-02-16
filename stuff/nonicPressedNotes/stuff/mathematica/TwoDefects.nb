@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    327700,       6438]
-NotebookOptionsPosition[    326142,       6386]
-NotebookOutlinePosition[    326480,       6401]
-CellTagsIndexPosition[    326437,       6398]
+NotebookDataLength[    329126,       6484]
+NotebookOptionsPosition[    327566,       6432]
+NotebookOutlinePosition[    327904,       6447]
+CellTagsIndexPosition[    327861,       6444]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -6363,25 +6363,71 @@ Cell[BoxData[
    RowBox[{"phi", ",", 
     RowBox[{"{", 
      RowBox[{
-      RowBox[{"-", "1"}], ",", "0", ",", "1"}], "}"}]}], "]"}], ".", 
-  RowBox[{"{", 
-   RowBox[{"0", ",", "1", ",", "0"}], "}"}]}]], "Input",
- CellChangeTimes->{{3.662889407631584*^9, 3.6628894135478477`*^9}}],
+      RowBox[{"-", "1"}], ",", "0", ",", "1"}], "}"}]}], "]"}], "//", 
+  "MatrixForm"}]], "Input",
+ CellChangeTimes->{{3.662889407631584*^9, 3.6628894135478477`*^9}, {
+  3.664278432122985*^9, 3.664278443563157*^9}}],
 
 Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"-", 
-    FractionBox[
-     RowBox[{"Sin", "[", "phi", "]"}], 
-     SqrtBox["2"]]}], ",", 
-   RowBox[{"Cos", "[", "phi", "]"}], ",", 
-   RowBox[{"-", 
-    FractionBox[
-     RowBox[{"Sin", "[", "phi", "]"}], 
-     SqrtBox["2"]]}]}], "}"}]], "Output",
- CellChangeTimes->{3.66288941520619*^9, 3.664272370852057*^9, 
-  3.664272935762602*^9, 3.664273112877205*^9, 3.664273751560174*^9}]
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {
+      RowBox[{
+       FractionBox["1", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         RowBox[{"Cos", "[", "phi", "]"}]}], ")"}]}], 
+      RowBox[{"-", 
+       FractionBox[
+        RowBox[{"Sin", "[", "phi", "]"}], 
+        SqrtBox["2"]]}], 
+      RowBox[{
+       FractionBox["1", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "1"}], "+", 
+         RowBox[{"Cos", "[", "phi", "]"}]}], ")"}]}]},
+     {
+      FractionBox[
+       RowBox[{"Sin", "[", "phi", "]"}], 
+       SqrtBox["2"]], 
+      RowBox[{"Cos", "[", "phi", "]"}], 
+      FractionBox[
+       RowBox[{"Sin", "[", "phi", "]"}], 
+       SqrtBox["2"]]},
+     {
+      RowBox[{
+       FractionBox["1", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "1"}], "+", 
+         RowBox[{"Cos", "[", "phi", "]"}]}], ")"}]}], 
+      RowBox[{"-", 
+       FractionBox[
+        RowBox[{"Sin", "[", "phi", "]"}], 
+        SqrtBox["2"]]}], 
+      RowBox[{
+       FractionBox["1", "2"], " ", 
+       RowBox[{"(", 
+        RowBox[{"1", "+", 
+         RowBox[{"Cos", "[", "phi", "]"}]}], ")"}]}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.66288941520619*^9, 3.664272370852057*^9, 3.664272935762602*^9, 
+   3.664273112877205*^9, 3.664273751560174*^9, {3.664278434504521*^9, 
+   3.664278445151688*^9}}]
 }, Open  ]]
 },
 WindowSize->{1280, 975},
@@ -6437,8 +6483,8 @@ Cell[315701, 6201, 802, 18, 50, "Input"],
 Cell[316506, 6221, 8824, 133, 1260, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[325367, 6359, 324, 9, 30, "Input"],
-Cell[325694, 6370, 432, 13, 53, "Output"]
+Cell[325367, 6359, 329, 9, 30, "Input"],
+Cell[325699, 6370, 1851, 59, 109, "Output"]
 }, Open  ]]
 }
 ]
