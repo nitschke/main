@@ -141,6 +141,13 @@
                           = \left( -1 \right)^{\mu} \sqrt{|g|} a^{\bar{\mu}}\)
                           (\textbf{Ricci})
         \item \( *\omega = \frac{w_{12}}{\sqrt{|g|}} \)
+        \item \( 1-\frac{\left\langle \alpha,\beta \right\rangle^{2}}{\left\| \alpha \right\|^{2}\left\| \beta \right\|^{2}} 
+                  = \frac{\left\| \alpha\wedge\beta \right\|^{2}}{\left\| \alpha \right\|^{2}\left\| \beta \right\|^{2}}
+                  = \frac{\left\langle \alpha, *\beta \right\rangle^{2}}{\left\| \alpha \right\|^{2}\left\| \beta \right\|^{2}}\)
+              (\( \sim 1-\cos^{2}\phi = \sin^{2}\phi\))
+        \item \( \left\langle \alpha , \beta \right\rangle^{2} + \left\langle \alpha, *\beta \right\rangle^{2}
+                    = \left\| \alpha \right\|^{2}\left\| \beta \right\|^{2}\)
+        \item \( \left\langle *\alpha , \beta \right\rangle = -\left\langle \alpha , *\beta \right\rangle  \)
       \end{itemize}
 
     \subsection{Rising and lowering indices \( \sharp \) / \( \flat \)}
@@ -227,7 +234,8 @@
       \item
         \( \delta\left( f\alpha \right) = f\delta\alpha - \left\langle \exd f , \alpha \right\rangle \)
       \item
-        \( \text{Div} (f\vec{v}) = f\text{Div}\vec{v} + \nabla_{\vec{v}}f = f\nabla_{i}v^{i} + v^{i}\nabla_{i}f  \)
+        \( \text{Div} (f\vec{v}) = f\text{Div}\vec{v} + \left\langle v, \nabla f \right\rangle = f\text{Div}\vec{v} + \nabla_{\vec{v}}f = f\nabla_{i}v^{i} + v^{i}\nabla_{i}f  \)
+      \item \(  \text{Rot} (f\vec{v}) = f\text{Rot}\vec{v} + \left\langle v, \text{Rot} f \right\rangle \)
       \item \textbf{Laplace-Beltrami operator}:\\
         \( \Delta_{B}f = -\delta\exd f = *\exd *\exd f = \text{Div}\text{Grad}f = \nabla_{i}\nabla^{i} f
                       = \frac{1}{\sqrt{|g|}}\partial_{j}\left( g^{ij}\sqrt{|g|}\partial_{i}f \right) \)
@@ -417,7 +425,14 @@
         \item \(\flatsharp{t} = gtg^{-1} = g_{ik}\sftensor{t}{k}{l}g^{lj} \fsbasis{i}{j} = \fstensor{t}{i}{j} \fsbasis{i}{j} \)
       \end{itemize}
 
-      \subsubsection{Conclusions}
+
+    \subsection{Product / Contraction}
+      \begin{itemize}
+        \item \( \fstensor{(s\cdot t)}{i}{j} := s_{ik}t^{kj}  \)
+        \item \( s:t := s_{ij}t^{ij} = \Tr(s \cdot t^{T}) = \Tr(s^{T} \cdot t) = \ldots \)
+      \end{itemize}
+
+      \subsection{Conclusions}
         \( \alpha = \vec{v}^{\,\flat} = \lflat{\vec{v}} \), \( \vec{w} = \beta^{\sharp} = \lsharp{\beta} \), \( s=\vec{v}\otimes\beta \):
         \begin{itemize}
           \item \( t \) symmetric (\( t_{12}=t_{21}  \) resp. \( t^{12}=t^{21} \)): \( \flatsharp{t} = t^{T} \)
@@ -436,20 +451,46 @@
           \item \( (t^{T})^{T} = t^{T} \)
           \item \( tt^{T} = (tt^{T})^{T} = t^{T}t \)
           \item \( |t| = |t^{T}| = |\flatsharp{t}| = |g||t^{\sharp}| = \frac{|\lflat{t}|}{|g|} \)
+          \item \( (\alpha\otimes\beta)^{T} = \beta\otimes\alpha \)
+          \item \( \text{Tr}[\alpha\otimes\beta] = \left\langle \alpha, \beta \right\rangle \)
+          \item \( (\alpha\otimes\beta)\gamma^{\sharp} = \left\langle \beta,\gamma \right\rangle\alpha \)
+          \item \( (*\alpha)\otimes(*\beta) + \beta\otimes\alpha = \left\langle \alpha, \beta \right\rangle g \)
+          \item \( (*\alpha)\otimes(*\alpha) + \alpha\otimes\alpha = \left\| \alpha \right\|^{2} g \)
+          \item \( \alpha\otimes(*\beta) + (*\beta)\otimes\alpha = \left\langle \alpha, \beta \right\rangle E \)
+          \item \( \alpha\otimes(*\alpha) - (*\alpha)\otimes\alpha =  \left\| \alpha \right\|^{2} E\)
         \end{itemize}
     
+
     \subsection{Levi-Civita-Tensor}
       \begin{itemize}
-        \item \( \epsilon^{\sharp} =
-                          \begin{bmatrix}
-                            0 & 1 \\ -1 & 0
-                          \end{bmatrix}_{\ffbasis{i}{j}}\)
-        \item \( \lflat{\epsilon} = |g|\epsilon^{\sharp}\)
+        %\item \( \epsilon^{\sharp} =
+        %                  \begin{bmatrix}
+        %                    0 & 1 \\ -1 & 0
+        %                  \end{bmatrix}_{\ffbasis{i}{j}}\)
+        %\item \( \lflat{\epsilon} = |g|\epsilon^{\sharp}\)
+        \item Levi-Civita-Symbols: 
+             \( \epsilon_{ij} = \epsilon^{ij} =  
+                  \begin{cases}
+                    1 & \text{ if } (i,j)=(1,2) \\
+                    -1 & \text{ if } (i,j)=(2,1) \\
+                    0 & \text{ else}
+                  \end{cases}\) 
+        \item Levi-Civita-Tensor:
+              \( E_{ij} = \sqrt{|g|}\epsilon_{ij} \)
+        \item \( E_{ij} = -E_{ji} \)
+        \item \( \nabla E = \nabla g = \mathcal{O} \)
+        \item \( E\otimes E = |g| \epsilon \otimes \epsilon\)
+        \item \( E_{ij}E_{kl} = g_{ik}g_{jl} - g_{il}g_{jk} \)
+        \item \( E_{ij}\fstensor{E}{k}{j} = g_{ik} \)
+        \item \( (*\alpha)_{i} = -E_{ij}\alpha^{j} = \alpha^{j}E_{ji}  \)
       \end{itemize}
+
+    
 
     \subsection{Covariant Derivative \( \nabla_{\bullet} = g_{\bullet i}\nabla^{\bullet} \)}
       \begin{itemize}
         \item \( \nabla_{k}f = \partial_{k}f \)
+        \item \( \nabla_{k}\sqrt{|g|} =\sqrt{|g|}\christoffel{k}{l}{l}  \)
         \item \( \nabla_{k}v^{i} = \partial_{k}v^{i} + \christoffel{k}{l}{i}v^{l} \)
         \item \( \nabla_{k}v_{i} = \partial_{k}v_{i} - \christoffel{k}{i}{l}v_{l} \)
         \item \( \nabla_{k}\sftensor{t}{i}{j} = \partial_{k}\sftensor{t}{i}{j}
@@ -464,18 +505,46 @@
         \item \( \nabla_{k}t_{ij} = \partial_{k}t_{ij}
                                     -\christoffel{k}{i}{l}t_{lj}
                                     -\christoffel{k}{j}{l}t_{il}\)
+        \item \( \nabla*\alpha = -E\nabla\alpha^{\sharp} \)
+              \( \leadsto \) \( (*\alpha)_{i|k} = -E_{ij}\sftensor{\alpha}{j}{|k} \)
+        \item \( *\nabla_{\beta}\alpha = \nabla_{\beta}*\alpha \)
+        \item \( \nabla (\alpha\otimes\beta) = \alpha\otimes\nabla\beta + \left(\beta\otimes\nabla\alpha\right)^{T} \)
+              , (\( t^{T}_{ijk} = t_{jik} \))
+              ,\( \leadsto \) \( (\alpha_{i}\beta_{j})_{|k} = \alpha_{i}\beta_{j|k} + \beta_{j}\alpha_{i|k} \)
         \item \( \Rot(f) = -\frac{1}{\sqrt{|g|}}g_{ik}\epsilon^{kl}\partial_{l}fdx^{i}
-                         =  -\frac{1}{\sqrt{|g|}}g\epsilon^{\sharp}\exd f
-                         = -\sqrt{|g|}\epsilon^{\sharp}\nabla f\)
-        \item \( \Div(v) = \nabla_{i}v^{i} = \nabla^{i}v_{i} = \Tr(\nabla\vec{v}) = \Tr(\flatsharp{\nabla}\alpha)  \)
+                         =  -\frac{1}{\sqrt{|g|}}g\epsilon\exd f
+                         = -\sqrt{|g|}\epsilon\nabla f\)
+        \item \( \Div(v) = \nabla_{i}v^{i} = \nabla^{i}v_{i} = \Tr(\nabla\vec{v}) = \Tr(\flatsharp{\nabla}\alpha)  
+                         = \sqrt{\nabla\vec{v}:g\otimes g:\nabla\vec{v}}\)
         \item \( \Rot(v) = (\sqrt{|g|})^{-1}\epsilon^{ki}\nabla_{k}v_{i}
-                            = (\sqrt{|g|})^{-1}\Tr((\nabla\alpha)\epsilon^{\sharp})\)
+                            = (\sqrt{|g|})^{-1}\Tr((\nabla\alpha)\epsilon)
+                            = \sqrt{\nabla\vec{v}:E\otimes E:\nabla\vec{v}}\)
+        \item \( \Rot(v) = -\Tr(\nabla*\alpha) = \Tr(E\nabla v) 
+                          = E_{ki}\nabla^{k}v^{i}\)
         \item \( \Rot(v)^{2} = \nabla_{j}v^{i}(\nabla^{j}v_{i}-\nabla_{j}v^{i})
                              = |\nabla v| + \Tr(\nabla v (\nabla v)^{T}) - \Div(v)^{2}\)
         \item \( \Div(t) = \nabla^{j}\sftensor{t}{i}{j}\partial_{i} 
                         = \nabla_{j}\fstensor{t}{i}{j}dx^{i} 
                         = \nabla_{j}t^{ij}\partial_{i} = \nabla^{j}t_{ij}dx^{i}\)
       \end{itemize}
+
+    \subsection{Conclusion Stuff}
+    \begin{itemize}
+      \item \( \nabla \left\| \alpha \right\|^{2}= \exd \left\| \alpha \right\|^{2} 
+                    =2 \alpha \cdot \nabla\alpha\)
+             \( \leadsto \partial_{k}(\alpha_{i}\alpha^{i}) = 2 \alpha^{i}\alpha_{i|k} \)
+      \item \( \nabla\left\langle \alpha,\beta \right\rangle = \exd\left\langle \alpha,\beta \right\rangle 
+                    = \alpha\cdot\nabla\beta + \beta\cdot\nabla\alpha\)
+            \( \leadsto \partial_{k}(\alpha_{i}\beta^{i}) = \alpha^{i}\beta_{i|k} + \beta^{i}\alpha_{i|k} \)
+      \item \( *(\beta\cdot\nabla\alpha) = (\Div\alpha)(*\beta) - \nabla_{*\beta}\alpha 
+                                         = \beta\cdot\nabla *\alpha + (\Rot\alpha)\beta + (\Div\alpha)(*\beta) \)\\
+            \( \leadsto -\fstensor{E}{i}{k}\beta^{j}\alpha_{j|k} = (*\beta)_{i}\fstensor{\alpha}{k}{|k} - (*\beta)^{k}\alpha_{i|k} 
+                                      =\beta^{l}(*\alpha)_{l|i} + E^{kj}\alpha_{j|k}\beta_{i} + \fstensor{\alpha}{k}{|k}(*\beta)_{i}\)
+      \item \( \beta\cdot\nabla\alpha = \nabla_{*\beta}*\alpha + (\Div\alpha)\beta 
+                                      = \nabla_{\beta}\alpha - (\Rot\alpha)(*\beta) \)\\
+            \( \leadsto \beta^{i}\alpha_{i|k} = (*\beta)^{k}(*\alpha)_{i|k} + \beta_{i}\fstensor{\alpha}{k}{|k} 
+                                              = \beta^{i}\alpha_{k|i} - E_{ik}E_{lj}\beta^{i}\alpha^{j|l}\)
+    \end{itemize}
 
     \subsection{Rotation \( R:\, T_{p}M \rightarrow (T_{p}M)' \)}
       \begin{itemize}
@@ -487,6 +556,7 @@
                       g^{11} & g^{12}
                     \end{bmatrix} 
                  = \sftensor{R}{i}{j} \sfbasis{i}{j}\){\color{red}indices unten? nutze levi-cevita tensor!}
+        \item \( R = \cos(\varphi)g - \sin(\varphi)E \in \sftensor{\mathcal{T}}{0}{2}\)
         \item \( R^{-1} = R^{T} \)
         \item \( \left\langle v',w' \right\rangle = \left\langle v,w \right\rangle 
                   \quad \Rightarrow R\in O(T_{p}M) \)

@@ -29,7 +29,7 @@ ax1 = fig.add_subplot(111)
 
 plot(stretch, e2D, label='2 Defects', linewidth=lw)
 
-cFusion = 0.83375 # lin. interpol.
+cFusion = (0.83325+0.8335)/2. # lin. interpol.
 dataFilter = stretch > cFusion
 plot(stretch[dataFilter], e4D[dataFilter], label='4 Defects', linewidth=lw)
 

@@ -465,6 +465,7 @@ int main(int argc, char* argv[])
   } 
   else if (initFun == "ex") initSol.set(new DX_d());
   else if (initFun == "rotated_ey") initSol.interpol(new EYRotated(0.05));
+  //else if (initFun == "rotated_ey") initSol.interpol(new EYRotated(0.0));
   else ERROR_EXIT("Don't know this userParameter->initField");
   //initSol.set(new Df_d());
   //initSol.set(new DNorm_d());

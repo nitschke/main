@@ -57,6 +57,8 @@ Inner1::usage = "Contraction of a 1-form";
 Inner2::usage = "Contraction of a 2-form";
 
 DotForm1::usage = "Dot product of 1-forms";
+NormForm1::usage = "Norm of 1-form";
+Norm2Form1::usage = "Norm square of 1-form";
 
 CoDVecVec11::usage = "Covariant Directional Derivative \!\(\*SubscriptBox[\(\[Del]\), \(U\)]\)V";
 CoDVec1::usage = "Covariant Derivative of a vector";
@@ -144,6 +146,8 @@ Inner1[vec_,alpha_] := vec.alpha
 Inner2[vec_,omega_] := omega[[1,1]]{-vec[[2]],vec[[1]]}
 
 DotForm1[alpha_,beta_,g_] := alpha.Sharp1[beta,g]
+Norm2Form1[alpha_,g_] := DotForm1[alpha,alpha,g]
+NormForm1[alpha_,g_] := Sqrt[Norm2Form1[alpha,g]]
 
 CoDVecVec11[vec1_,vec2_,x_,y_,g_] := 
 		Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
