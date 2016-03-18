@@ -60,12 +60,17 @@ DotForm1::usage = "Dot product of 1-forms";
 NormForm1::usage = "Norm of 1-form";
 Norm2Form1::usage = "Norm square of 1-form";
 
+Frob2FFFTensor::usage = "Frobenius norm of a Tensor (Typ(0,3))"
+Frob2FFTensor::usage = "Frobenius norm of a Tensor (Typ(0,2))"
+
 CoDVecVec11::usage = "Covariant Directional Derivative \!\(\*SubscriptBox[\(\[Del]\), \(U\)]\)V";
 CoDVec1::usage = "Covariant Derivative of a vector";
 CoDForm1::usage = "Covariant Derivative of a 1-form";
 
 CoDSFTensor::usage = "Covariant Derivative of a sharp-flat-tensor -> Typ (1,1)";
 CoDFFTensor::usage = "Covariant Derivative of a flat-flat-tensor -> Typ (0,2)";
+
+CoDFFFTensor::usage = "Covariant Derivative of a flat-flat-flat-tensor -> Typ (0,3)";
 
 DivSFTensor::usage = "Divergence of a sharp-flat-tensor (Typ(1,1)), results in a vector";
 
@@ -95,8 +100,14 @@ LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap
 					gInv.Table[DX[[i]].globT.DX[[j]],{i,2},{j,2}].gInv]
 
 
-GaussCurvFromMetric[x_,y_,g_] := Module[{SEG=Sqrt[g[[1,1]]*g[[2,2]]]},
-					-(1/(2*SEG))*(D[D[g[[1,1]],y]/SEG,y]+D[D[g[[2,2]],x]/SEG,x])]
+GaussCurvFromMetric[u_,v_,g_] := Module[
+{T1={{-D[g[[1,1]],v,v]/2+D[g[[1,2]],u,v]-D[g[[2,2]],u,u]/2, D[g[[1,1]],u]/2, D[g[[1,2]],u]-D[g[[1,1]],v]/2},
+	  {D[g[[1,2]],v]-D[g[[2,2]],u]/2, g[[1,1]], g[[1,2]]},
+	  {D[g[[2,2]],v]/2, g[[1,2]], g[[2,2]]}},
+ T2={{0, D[g[[1,1]],v]/2, D[g[[2,2]],u]/2},
+	{D[g[[1,1]],v]/2, g[[1,1]], g[[1,2]]},
+	{D[g[[2,2]],u]/2,g[[1,2]], g[[2,2]]}}},
+			(Det[T1]-Det[T2])/(Det[g]^2)]
 
 Wedge11[alpha_,beta_] := {{alpha[[1]]*beta[[2]] - alpha[[2]]*beta[[1]]}}
 
@@ -149,6 +160,14 @@ DotForm1[alpha_,beta_,g_] := alpha.Sharp1[beta,g]
 Norm2Form1[alpha_,g_] := DotForm1[alpha,alpha,g]
 NormForm1[alpha_,g_] := Sqrt[Norm2Form1[alpha,g]]
 
+Frob2FFFTensor[t_,g_]:=Module[{g1=Inverse[g]//Simplify},
+			Sum[t[[i,j,k]]t[[l,m,n]]g1[[i,l]]g1[[j,m]]g1[[k,n]],
+					{i,2},{j,2},{k,2},{l,2},{m,2},{n,2}]]
+
+Frob2FFTensor[t_,g_]:=Module[{g1=Inverse[g]//Simplify},
+			Sum[t[[i,j]]t[[l,m]]g1[[i,l]]g1[[j,m]],
+					{i,2},{j,2},{l,2},{m,2}]]
+
 CoDVecVec11[vec1_,vec2_,x_,y_,g_] := 
 		Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
 				Table[Sum[vec1[[i]]*vec2[[j]]*ch2[[i,j,k]],{i,2},{j,2}]
@@ -188,6 +207,16 @@ CoDFFTensor[t_,x_,y_,g_] :=
 						-Sum[ch2[[k,i,l]]t[[l,j]],{l,2}]
 						-Sum[ch2[[k,j,l]]t[[i,l]],{l,2}],
 				{i,2},{j,2},{k,2}
+				]
+		]
+
+CoDFFFTensor[t_,x_,y_,g_] := 
+	Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
+				Table[D[t[[i,j,m]],var[[k]]]
+						-Sum[ch2[[k,i,l]]t[[l,j,m]],{l,2}]
+						-Sum[ch2[[k,j,l]]t[[i,l,m]],{l,2}]
+						-Sum[ch2[[k,m,l]]t[[i,j,l]],{l,2}],
+				{i,2},{j,2},{m,2},{k,2}
 				]
 		]
 

@@ -89,7 +89,7 @@ public:
     rotEY[0] = -s/sqrt2;
     rotEY[1] = c;
     rotEY[2] = -s/sqrt2;
-    MSG("created director Field with 2 defects on nonic surface with slightly rotated y unity vector \n");
+    MSG("created director Field with 2 defects on nonic surface with slightly rotated y unity vector by an angle %f\n", angle);
   }
 
   WorldVector<double> operator()(const WorldVector<double>& x) const 
@@ -260,6 +260,12 @@ public:
         delta(0.01) {
     string csvfn;
     Parameters::get(probStat->getName() + "->output->filename", csvfn);
+    //forstandalone
+    string divAnim = csvfn + "Divergence.pvd";
+    string rotAnim = csvfn + "Rotation.pvd";
+    divWriter = new AnimationWriter(divAnim);
+    rotWriter = new AnimationWriter(rotAnim);
+    ////////////
     string csvNumDefFn = csvfn + "NumberOfDefects.csv";
     csvfn += "Energies.csv";
 
@@ -300,6 +306,29 @@ public:
     DecProblemInstat::closeTimestep();
     solPrimal = statProb->getSolution(0);
     solDual =  statProb->getSolution(1);
+
+    //standalone beginning
+    if (writeSolutions && step%writeEveryithTimestep == 1) {
+      DOFVector<double> div = solPrimal.divergence();
+      DOFVector<double> rot = solDual.divergence();
+      rot *= -1.0;
+      string fndiv;
+      string fnrot;
+      string bn;
+      Parameters::get(statProb->getName() + "->output->filename", bn);
+      int prec = 3;
+      Parameters::get("sphere->output->index precision", prec);
+      ostringstream timeoss;
+      timeoss << setprecision(prec) << fixed << time;
+      fndiv = bn + "Divergence." + timeoss.str() + ".vtu";
+      fnrot = bn + "Rotation." + timeoss.str() + ".vtu";
+      io::VtkVectorWriter::writeFile(div,fndiv);
+      io::VtkVectorWriter::writeFile(rot,fnrot);
+      divWriter->updateAnimationFile(time,fndiv);
+      rotWriter->updateAnimationFile(time,fnrot);
+    }
+    //standalone end
+    
     DofEdgeVectorPD evecPD(solPrimal, solDual);
     normAlpha = evecPD.getNormOnEdges();
 
@@ -428,6 +457,10 @@ private:
 
   Delta delta;
   ExtremeValueTracker tracker;
+
+  //for standalone part
+  AnimationWriter *divWriter;
+  AnimationWriter *rotWriter;
 };
 
 
@@ -452,6 +485,10 @@ int main(int argc, char* argv[])
   std::string initFun = "noise";
   Parameters::get("userParameter->initField", initFun);
 
+  double EYRotatedAngle = 0.05;
+  Parameters::get("userParameter->rotated_ey->angle", EYRotatedAngle);
+
+
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
 
@@ -464,7 +501,7 @@ int main(int argc, char* argv[])
     initSol.set(&noiseFun);
   } 
   else if (initFun == "ex") initSol.set(new DX_d());
-  else if (initFun == "rotated_ey") initSol.interpol(new EYRotated(0.05));
+  else if (initFun == "rotated_ey") initSol.interpol(new EYRotated(EYRotatedAngle));
   //else if (initFun == "rotated_ey") initSol.interpol(new EYRotated(0.0));
   else ERROR_EXIT("Don't know this userParameter->initField");
   //initSol.set(new Df_d());
