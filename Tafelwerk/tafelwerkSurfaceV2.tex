@@ -1,0 +1,146 @@
+\documentclass[9pt,a4paper]{scrartcl}
+\usepackage[top=2.5cm, bottom=2.5cm, left=.5cm, right=.5cm]{geometry}
+
+\input{declarations}
+
+\title{Calculus on Surfaces}
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+\tableofcontents
+%\pagebreak
+
+\section{Tensor Calculus}
+  \subsection{n-Tensors}
+  \begin{align*}
+    \begin{array}{|l|l|l|l|}
+    \hline
+      &\textbf{Full} & \textbf{Components} & \textbf{Mathemathica} \\\hline
+      n\text{-Tensor}\footnotemark
+        & t = t^{(s_{1},\ldots,s_{n})}
+            & t\begin{smallmatrix} 
+                \shortuparrow & \shortuparrow &       & \shortuparrow \\
+                i_{1}         & i_{2}         & \cdots& i_{n}     \\
+                \shortdownarrow & \shortdownarrow &      & \shortdownarrow
+              \end{smallmatrix}\footnotemark
+                &\left\{ \{t\begin{smallmatrix} 
+                \shortuparrow & \shortuparrow &       & \shortuparrow \\
+                i_{1}         & i_{2}         & \cdots& i_{n}     \\
+                \shortdownarrow & \shortdownarrow &      & \shortdownarrow
+              \end{smallmatrix} \}_{i_{1},\ldots,i_{n}=1,2}, \{s_{1},\ldots,s_{n}\} \right\}
+     \\\hline
+      \text{\eg} 
+          & t=t^{(1,0,1,1,0)} 
+              & \tensor{t}{^{i}_{j}^{kl}_{m}} 
+                & \left\{ \{\tensor{t}{^{i}_{j}^{kl}_{m}}\}_{i,j,k,l,m=1,2}, \{1,0,1,1,0\} \right\}
+    \\\hline
+    \text{Swap-Transpose }  T_{k,l} 
+        & t^{T_{k,l}} = T_{k,l}(t)
+            & \begin{smallmatrix}
+                t\cdots_{i_{k}}\cdots_{i_{l}}\cdots \mapsto t\cdots_{i_{l}}\cdots_{i_{k}}\cdots \\
+                t\cdots^{i_{k}}\cdots^{i_{l}}\cdots \mapsto t\cdots^{i_{l}}\cdots^{i_{k}}\cdots
+              \end{smallmatrix}
+                  &
+    \\\hline
+    \text{Push-Transpose } T_{l\rightarrow k}
+        & t^{T_{l\rightarrow k}} = T_{l\rightarrow k}(t)
+            &  t  \begin{smallmatrix} 
+                               & \shortuparrow &       & \shortuparrow &\\
+                \cdots         & i_{k}         & \cdots& i_{l} &\cdots    \\
+                               & \shortdownarrow &     &  \shortdownarrow &
+              \end{smallmatrix}  
+              \mapsto t\begin{smallmatrix} 
+                               & \shortuparrow & \shortuparrow &\\
+                \cdots         & i_{l}         &  i_{k}&\cdots    \\
+                               & \shortdownarrow & \shortdownarrow &
+              \end{smallmatrix}
+                & \texttt{TransFromToTM[TensorMatrix,l,k]}
+    \\\hline
+    \text{\eg}
+        & t^{T_{4\rightarrow 2}} = T_{4\rightarrow 2}(t)
+          & \tensor{t}{^{i}_{j}^{kl}_{m}} \mapsto \tensor{t}{^{il}_{j}^{k}_{m}}
+              &    
+    \\\hline 
+    \text{Contraction } C_{k,l}
+        & C_{k,l}(t)
+            &t  \begin{smallmatrix} 
+                               & \shortuparrow &       & \shortuparrow &\\
+                \cdots         & i_{k}         & \cdots& i_{l} &\cdots    \\
+                               & \shortdownarrow &     &  \shortdownarrow &
+              \end{smallmatrix}
+              \mapsto t\cdots_{j}\cdots^{j}\cdots = t\cdots^{j}\cdots_{j}\cdots
+                  & \texttt{ContractT[Tensor,k,l]}
+    \\\hline
+    \text{Outer Product } \otimes
+        & t\otimes s
+            & t\begin{smallmatrix} 
+                \shortuparrow &        & \shortuparrow \\
+                i_{1}         &  \cdots& i_{n}     \\
+                \shortdownarrow &     & \shortdownarrow
+              \end{smallmatrix}
+              ,
+              s\begin{smallmatrix} 
+                \shortuparrow &        & \shortuparrow \\
+                j_{1}         &  \cdots& j_{m}     \\
+                \shortdownarrow &     & \shortdownarrow
+              \end{smallmatrix}
+             \mapsto
+              t\begin{smallmatrix} 
+                \shortuparrow &        & \shortuparrow \\
+                i_{1}         &  \cdots& i_{n}     \\
+                \shortdownarrow &     & \shortdownarrow
+              \end{smallmatrix}
+              s\begin{smallmatrix} 
+                \shortuparrow &        & \shortuparrow \\
+                j_{1}         &  \cdots& j_{m}     \\
+                \shortdownarrow &     & \shortdownarrow
+              \end{smallmatrix}
+                & \texttt{OuterT[Tensor,Tensor]}
+    \\\hline
+    \end{array}
+  \end{align*}
+  \addtocounter{footnote}{-1}
+  \footnotetext{of type \((s_{1},\ldots,s_{n})\), with \( s_{i}=0,1 \). 
+                Hence, if \( m=\sum_{i=1}^{n}s_{i} \), then \( t \in \mathcal{T}^{m}_{n-m}(\mathcal{S}) \)}
+  \stepcounter{footnote}
+  \footnotetext{\( \shortuparrow \) if \( s_{k}=1 \) (\( i_{k} \) is contravariant index);
+                \( \shortdownarrow \) if \( s_{k}=0 \) (\( i_{k} \) is covariant index)}
+
+  
+  \begin{align*}
+    \begin{array}{|l|l|l|l|}\hline  
+      &\textbf{Full} & \textbf{Components} & \textbf{Mathemathica}
+    \\\hline
+      \text{Partial Derivative } \partial
+          & \left( \partial t \right)^{T_{1\rightarrow n}}
+              & t\cdots_{,i} = \partial_{i}t\cdots
+                & \texttt{D[TensorMatrix,var[[i]]]}
+    \\\hline
+      \text{Covariant Derivative } \nabla
+          & \nabla t^{(s_{1},\ldots,s_{n})}
+              = \left( \partial t \right)^{T_{1\rightarrow n}} 
+                  - \sum_{i=1}^{n} (-1)^{s_{i}} \left[ C_{i,n-s_{i}+3}(t\otimes\Gamma) \right]^{T_{n+s_{i}\rightarrow i}}
+              & t\cdots_{|i} = \nabla_{i}t\cdots
+                  & \texttt{CoDT[Tensor]}
+    \\\hline
+    \end{array}
+  \end{align*}
+
+  \subsection{1-Tensors (vectors / 1-forms)}
+  \begin{align*}
+    \begin{array}{|l|l|l|l|}\hline  
+      &\textbf{Full} & \textbf{Components} 
+    \\\hline
+      \nabla 
+       & \nabla t^{(0)}
+        & t_{i|k} = t_{i,k} - \tensor{\Gamma}{_{ik}^{l}}t_{l}
+    \\\hline
+       & \nabla t^{(1)}
+        & \tensor{t}{^{i}_{|k}} = \tensor{t}{^{i}_{,k}} + \tensor{\Gamma}{_{lk}^{i}}t^{l}
+    \\\hline
+    \end{array}
+  \end{align*}
+
+    
+\end{document}

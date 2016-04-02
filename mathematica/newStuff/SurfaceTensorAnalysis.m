@@ -44,6 +44,7 @@ Begin[ "Private`"]
 
 Init[metric_,variables_]:=Module[{},Unprotect[g,gInv,vars,GammaT];
 						g = metric;
+						$Assumptions = $Assumptions && Det[g]>0;
 						(*Todo: check that vars is not quantifier and protect them*)
 						vars = variables;
 						gInv = Inverse[metric]//Simplify;

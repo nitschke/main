@@ -1,0 +1,50 @@
+\documentclass[a4paper,11pt]{scrartcl}
+\usepackage{hyperref}
+\usepackage{color}
+\input{declarations}
+
+\newcommand{\qspace}{\mathcal{Q}(\surf)}
+\newcommand{\tspace}{\mathcal{T}^{(2)}}
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\qproject}{\pi_{\qspace}}
+\newcommand{\Mb}{\mathbf{M}}
+
+\title{Notes On q-Projection and Helmholtz-deRham-Equation on ellipsoid} 
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+
+\section{q-Projection}
+
+We call \(\qspace\) the space of trace-free symmetric surface 2-tensors, shortly surface q-tensors, \ie
+\begin{align}
+  \qspace &= \left\{ \qb\in\tspace(\surf)\subset \tspace(\R^{3}) \cong \R^{3\times 3}  \middle| \Tr(\qb)=0, \qb^{T}=\qb\right\} \\
+          &= \left\{ \qb\in\tspace(\R^{3}) \middle| \Tr(\qb)=0, \qb^{T}=\qb, \qb\cdot\surfNormal=0 (,\surfNormal\cdot \qb=0) \right\}
+          \formPeriod
+\end{align}
+With the surface projection
+\begin{align}
+  \ProjectSurf = \mathbf{I}-\surfNormal\otimes\surfNormal: \Tangent\R^{3}\cong\R^{3} \rightarrow \Tangent\surf
+\end{align}
+we introduce the q-projection \( \qproject: \tspace(\R^{3}) \cong \R^{3\times 3} \rightarrow \qspace \) with
+\begin{align}
+  \qproject(\Mb) := \ProjectSurf\cdot\left( \Mb + \Mb^{T} \right)\cdot\ProjectSurf 
+                                - \left( \ProjectSurf : \Mb \right)\ProjectSurf\formPeriod
+\end{align}
+It is clear, that \( \qproject(\Mb) \) is a surface tensor and symmetric, because \( \ProjectSurf \) is a symmetric surface tensor.
+With \( \Tr(\ProjectSurf\cdot\Mb\cdot\ProjectSurf) = \ProjectSurf : \Mb = \Tr(\ProjectSurf\cdot\Mb^{T}\cdot\ProjectSurf) \)
+and \( \Tr(\ProjectSurf)=2 \) we obtain the trace-freeness of \( \qproject(\Mb)\).
+\ingo{Es waere zu ueberlegen ob man beim q-tensor Modell für \( \R^{3} \)-Tensoren nur die schwaechere(?) Bedingung fordert,
+dass der surface-trace \( \ProjectSurf:\qb \) null sei statt der volle \( \R^{3} \)-Trace \( \Tr(\qb) \) 
+(vgl. Analogie zu Richtungsfelder: \( \|\ProjectSurf\pb\|_{\R^{3}}=\|\pb\|_{\Tangent\surf} =1 \) vs. \( \|\pb\|_{\R^{3}}=1 \)).} 
+
+
+\section{Notes on Laplace-deRham and other derivative stuff}
+
+
+\section{Ellipsoid}
+
+  Let be \( \surf \) a ellipsoid with semi-principal axes \( (1,0.5,1.5) \).
+
+\end{document}
