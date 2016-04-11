@@ -1,0 +1,301 @@
+\documentclass[a4paper,11pt]{scrartcl}
+
+\usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+
+\usepackage{hyperref}
+\usepackage{color}
+\input{declarations}
+
+\usepackage{tensor}
+
+\newcommand{\qspace}{\mathcal{Q}(\surf)}
+\newcommand{\qs}{\mathcal{Q}}
+\newcommand{\tspace}{\mathcal{T}^{(2)}(\surf)}
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\qproject}{\pi_{\qspace}}
+\newcommand{\Mb}{\mathbf{M}}
+\newcommand{\RSpan}[1]{\text{Span}_{\R}\left\{ #1 \right\}}
+
+\newcommand{\lGd}{\Delta^{\text{Gd}}}
+\newcommand{\ldG}{\Delta^{\text{dG}}}
+\newcommand{\lRr}{\Delta^{\text{Rr}}}
+
+\newcommand{\fid}{f_{\text{id}}}
+\newcommand{\fexc}{f_{\text{exc}}}
+
+\newcommand{\Fid}{F_{\text{id}}}
+\newcommand{\Fexc}{F_{\text{exc}}}
+
+\title{Notizen zum Q-Tensor-Modell} 
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+
+(Beachte Notations- und Operatordefinitionen im Appendix)
+
+\section{Q-Tensor Fakten}
+
+Q-Tensoren auf Oberflächen \( \surf \) (ohne Rand) sind Tensoren 2. Stufe, 
+d.h. \( \qspace \subset \tspace \simeq \Tangent\surf\otimes\Tangent\surf \).  
+Es gilt
+\begin{align}
+  \qspace :&= \left\{ \qb\in \tspace \middle| \Tr\qb=0, \qb^{T}=\qb \right\}\\
+          &= \left\{ \qb\in \tspace \middle| \qb:\gb= \qb:\Eb = 0 \right\} \formPeriod
+\end{align}
+Der Raum \( \tspace \) lässt sich orthogonal zerlegen in
+\begin{align}
+  &\tspace = \qspace \cup \mathcal{Q}^{\bot}(\surf) \text{ mit } \\
+&\qspace \cap \mathcal{Q}^{\bot}(\surf) = \left\{ \mathcal{O} \right\} \text{ und }\\
+   &\qspace : \mathcal{Q}^{\bot}(\surf) = 0\formComma
+\end{align}
+wobei
+\begin{align}
+  \mathcal{Q}^{\bot}(\surf) = \RSpan{\gb,\Eb} = \R\text{SO}(\Tangent\surf)
+\end{align}
+ist der zweidimensionale \( \R \)-Vektorraum über alle (Oberflächen-)Drehungen und
+\begin{align}
+  \qspace = \RSpan{\Mbb, *\Mbb} = \R(\text{O}(\Tangent\surf)\setminus\text{SO}(\Tangent\surf))
+\end{align}
+ist der zweidimensionale \( \R \)-Vektorraum über alle (Oberflächen-)Drehspiegelungen \( \Mbb \) und \( *\Mbb \).
+Für die Basistensoren gilt \( \left\| \gb \right\| = \left\| \Eb \right\| = \left\| \Mbb \right\| = \left\| *\Mbb \right\| = \sqrt{2}\)
+und alle vier Basistensoren sind orthogonal bzgl. dem Doppelpunktprodukt ''\( : \)''.
+(Im Gegensatz zu \( \mathcal{Q}^{\bot}(\surf) \) bildet \( \qspace \) mit der Tensormultiplikation ''\( \cdot \)'' keine multiplikative Gruppe, 
+da das neutrale Element fehlt.)
+
+Eine orthogonale Projektion \( \pi_{\qs}:\tspace\rightarrow\qspace \) ergibt sich dementsprechend durch
+\begin{align}
+  \pi_{\qs}(\tb) &= \tb - \frac{\tb:\gb}{2}\gb - \frac{\tb:\Eb}{2}\Eb
+                  = \frac{1}{2}\left( \tb + *\tb* \right)
+                  = \frac{1}{2}\left( \tb + \tb^{T} - (\Tr\tb)\gb \right) \formPeriod
+\end{align}
+Es lässt sich zeigen, dass für alle \( \qb\in\qspace \)
+\begin{align}
+  \Delta\qb = \lGd\qb + \lRr\qb = 2\pi_{\qs}(\lGd\qb) = 2\pi_{\qs}(\lRr\qb)
+\end{align}
+gilt.
+Für Q-Tensoren \( \qb\in\qspace \) ist die Rotation und Divergenz zu einander Hodgedual (orthogonal und gleichlang), d.h.
+\( *\rot\qb = \div\qb \) und somit \( \left\| \rot\qb \right\| = \left\| \div\qb \right\| \).
+
+\section{Q-Tensor-Modell}
+Ausgehend von einem freien Energiefunktional auf \( \qspace \)
+\begin{align}
+  F[\qb] = \int_{\surf}f[\qb,\Grad\qb]\mu
+\end{align}
+stellen wir folgende Mindestanforderungen an die Energiedichte \( f \):
+\begin{itemize}
+  \item \( f \) soll Koordinatenunabhängig sein (Kovarianzprinzip/Forminvarianz), 
+      d.h. jeder Koordinatenwechsel ändert nichts an das ''Wirken'' von \( f \).
+      Somit ist \( f \) eine ''physikalisch sinnvolle'' Abbildung.
+  \item \( f \) soll gerade sein, d.h. \( f[\qb,\Grad\qb] = f[-\qb,-\Grad\qb] \)
+  \item \( f \) soll positiv definit sein, d.h. \( f\ge 0 \)
+\end{itemize}
+Wir zerlegen die Energiedichte zu
+\begin{align}
+  f[\qb,\Grad\qb] = \fid[\qb] + \fexc[\Grad\qb]\formComma
+\end{align}
+so dass \( \fid\) (alle linear unabhängigen) Kontraktionen in \( \qb \) bis zur 4. Ordnung enthält und
+\( \fexc \) (alle linear unabhängigen) Kontraktionen in \( \Grad\qb \) bis zur 2. Ordnung enthält.
+Außerdem sollen an \( \fid \) und \( \fexc \) die selben Mindestanforderungen wie an \( f \) gestellt sein.
+Wir legen fest
+\begin{align}
+  \fexc[\Grad\qb] :&=  \frac{C}{2}\left( \left\| \div\qb \right\|^{2} + \left\| \rot\qb \right\|^{2} \right) \\
+                  &=C\left\| \div\qb \right\|^{2} = C\left\| \rot\qb \right\|^{2} \\
+                  &= \frac{C}{2}\left( \left\| \Grad\qb \right\|^{2} - 2\mathcal{K}\left\| \qb \right\|^{2} \right) \formComma
+\end{align}
+wobei die 2. Zeile aus \( *\rot\qb = \div\qb \) (s.o.) folgt
+und die 3. Zeile eine (schwache) Folgerung aus der Weizenböck-Identität
+\begin{align}
+  \Delta\qb = \ldG\qb - 2\mathcal{K}\qb
+\end{align}
+für Q-Tensoren \( \qb\in\qspace \) ist. 
+Ableiten bzgl. dem \( L^{2} \) Skalarprodukt über \( \qspace \)
+\begin{align}
+  \left\langle \sb , \tb \right\rangle_{L^{2}(\qspace)} := \int_{\surf} \sb : \tb \mu 
+    \qquad (\sb,\tb\in\qspace)
+\end{align}
+ergibt für alle \( \tb\in\qspace \)
+\begin{align}
+  \left\langle \frac{\delta\Fexc}{\delta\qb}, \tb \right\rangle_{L^{2}(\qspace)}
+      = \left\langle -C\Delta\qb , \tb\right\rangle_{L^{2}(\qspace)} \formPeriod
+\end{align}
+Weiterhin sei
+\begin{align}
+  \fid[\qb] :&= \frac{k_{1}}{2}\Tr\qb^{2} + \frac{k_{2}}{2}\Tr\qb^{4}
+              = \frac{k_{1}}{2}\Tr\qb^{2} + \frac{k_{2}}{4}(\Tr\qb^{2})^{2} \\
+             &= \frac{\left\| \qb \right\|^{2}}{2}\left( k_{1} + \frac{k_{2}}{2}\left\| \qb \right\|^{2} \right) \formPeriod
+\end{align}
+Die Zweite Zeile begründet sich aus der Symmetrie von \( \qb \).
+Zu beachten sei hierbei, dass für alle \( \qb\in\qspace \) und \( n\in\mathbb{N} \) gilt  \( \Tr\qb^{2n+1} = 0\).
+Ableiten ergibt
+\begin{align}
+  \left\langle \frac{\delta\Fid}{\delta\qb}, \tb \right\rangle_{L^{2}(\qspace)}
+      = \left\langle \left( k_{1} + k_{2}\left\| \qb \right\|^{2} \right)\qb , \tb\right\rangle_{L^{2}(\qspace)}
+\end{align}
+für alle \( \tb\in\qspace \).
+Setzen wir
+\begin{align}
+  \left\langle \frac{\delta F}{\delta\qb}, \tb \right\rangle_{L^{2}(\qspace)} 
+      = \left\langle -\partial_{t}\qb, \tb \right\rangle_{L^{2}(\qspace)}
+\end{align}
+erhalten wir covarianten Differentialgleichungen für \( \qb\in\qspace \):
+\begin{align}
+  \partial_{t}\qb - C\Delta\qb + \left( k_{1} + k_{2}\left\| \qb \right\|^{2} \right)\qb = \mathcal{O} \in \qspace \formPeriod
+\end{align}
+
+\section{Diskussion}
+\begin{itemize}
+  \item \( \fexc = \frac{C}{2}\left( \left\| \div\qb \right\|^{2} + \left\| \rot\qb \right\|^{2} \right) 
+        =  \frac{C}{2}\left( \left\| \Grad\qb \right\|^{2} - 2\mathcal{K}\left\| \qb \right\|^{2} \right)\)
+        versus \( \fexc = \frac{C}{2}\left\| \Grad\qb \right\|^{2} \);
+        Ein Kompromiss könnte \( \fexc = \frac{C}{2}\left\| \Grad\qb \right\|^{2} - \frac{C_{24}}{2}\mathcal{K}\left\| \qb \right\|^{2} \)
+        sein. Wäre das sinnvoll? Wie beeinflusst der 0te-Ordnungsterm die Lösung im Verhältnis zu \( \fid \)?
+  \item Parameterwahl \( C>0,k_{1}<0,k_{2}>0(,C_{24}\ge 0) \). 
+  \item Gleichungsreduktion:
+        \begin{itemize}
+          \item Nutze Spurfreiheit und Symmetrie der Differentialgleichung oben. 
+                (Nachteil: Komponentenweisebetrachtung ist i.A. nicht Koordinatenunabhängig)
+          \item \( [\partial_{t}\qb - C\Delta\qb + \left( k_{1} + k_{2}\left\| \qb \right\|^{2} \right)\qb]\cdot\pb 
+                = \mathcal{O}\in\mathcal{T}^{(1)}(\surf) \) mit Tangentialvektor \( \pb\in\mathcal{T}^{(1)}(\surf) \).
+                (Vorteil: Koordinatenunabhängig; Im diskreten könnte man für \( \pb \) Kantenvektoren nutzen.)
+        \end{itemize}
+  \item Q-Tensor-Ansatz:
+      \begin{itemize}
+        \item  Nutze Spurfreiheit und Symmetrie zur Reduktion der Q-Tensorkoordinaten.
+              (Nachteil: Koordinatenabhängig)
+        \item Nutze Vektorraumstruktur von \( \qspace \),
+              d.h. \( \qb = q_{1}\Mbb + q_{2}(*\Mbb) \).
+              (führt evtl. ''nur'' zu zwei skalarwertigen Problemen; 
+                im diskreten könnte man für \( \Mbb \) die Spiegelungen am Kantenvetor nehmen,
+                somit wäre \( *\Mbb \) die Spiegelung an der Dualkante)
+        \item Nutze freies Tensorprodukt: \( \qb=2\pi_{\qs}(\rho\otimes\pb)= \rho\otimes\pb -  (*\rho)\otimes(*\pb)\)
+              mit beliebig aber fest gewählten \( \rho\in\mathcal{T}^{(1)}(\surf) \) und vektorwertigen Freiheitsgrad \(
+              \pb\in\mathcal{T}^{(1)}(\surf) \).
+              (Nachteil: u.U. komplexe Gleichungen je nach Wahl von \( \rho \);
+                Es könnte wieder für \( \rho \) der Kantenvektor im diskreten gewählt werden.)
+      \end{itemize}
+\end{itemize}
+
+\section{Appendix}
+\subsection{Notation}
+\begin{itemize}
+  \item \( \simeq \) bedeutet Gleichheit bis auf die Höhe der Indizes. (semantisch gleich)
+  \item \( \gb = \left\{ g_{ij} \right\} \) metrischer Tensor.
+  \item \( \left| \gb \right| \) Determinante des metrischen Tensors
+  \item \( \mu = \sqrt{\left| \gb \right|} dx^{i}\wedge dx^{j} \) Volumenform (2-Form)
+  \item \( \Eb = \left\{ E_{ij} \right\} = \sqrt{\left| \gb \right|}\varepsilon_{ij} = \mu(\partial_{i},\partial_{j})\)
+          Levi-Civita-Tensor (\( \varepsilon_{ij} \) Levi-Civita-Symbole).
+  \item \( \left\{ \tensor{\Gamma}{_{ij}^{k}} \right\} 
+            = \left\{ \frac{1}{2} g^{kl}\left(\partial_{i}g_{jl} + \partial_{j}g_{il} - \partial_{l}g_{ij}  \right) \right\}\)
+           Christoffel-Tensor
+  \item \( \mathcal{K} \) Gaußsche Krümmung
+\end{itemize}
+
+\subsection{Operationen}
+\begin{itemize}
+  \item Tensorprodukt (1-Punktkontraktion) von \( \tb,\sb\in\mathcal{T}^{(2)}(\surf) \):
+        \begin{align}
+          \left[\tb \cdot \sb\right]_{ij} = t_{ik}\tensor{s}{^{k}_{j}}\in\tspace
+        \end{align}
+  \item Doppelpunktprodukt (2-Punktkontraktion) von \( \tb,\sb\in\mathcal{T}^{(2)}(\surf) \):
+        \begin{align}
+          \tb : \sb = t_{ij}s^{ij}\in\R
+        \end{align}
+  \item Hodgedualer 2-Tensor (in der ersten Komponente) von \( \tb\in\tspace \):
+        \begin{align}
+          *\tb = -\Eb\cdot\tb \in \tspace \qquad \Rightarrow *\tb:\tb = 0
+        \end{align}
+  \item Transponierter Tensor \( \tb^{T}\in\mathcal{T}^{(2)}(\surf) \): 
+       \begin{align}
+         \left[ \tb^{T} \right]_{ij} = t_{ji} \simeq t^{ji}
+       \end{align}
+       (Vorsicht: Niemals Indizes unterschiedlicher Höhe tauschen!)
+  \item Spur (Trace) von \( \tb\in\mathcal{T}^{(2)}(\surf) \):
+    \begin{align}
+      \Tr t = \tensor{t}{_{i}^{i}} = \tb:\gb \in \R
+    \end{align}
+  \item (Frobenius) Norm von  \( \tb\in\mathcal{T}^{(n)}(\surf) \):
+    \begin{align}
+      \left\| \tb \right\|^{2} = \tb \overset{(n)}{\vdots} \tb
+                              = t_{i_{1}\ldots i_{n}} t^{i_{1}\ldots i_{n}}
+    \end{align}
+  \item Gradient von \( \pb \in \mathcal{T}^{(1)}(\surf) \simeq \Tangent\surf \):
+      \begin{align}
+        \left[ \Grad\pb \right]_{ij} &= \left[ \partial\pb - \Gamma\cdot\pb \right]_{ij}
+                  = p_{i|j}
+                  = \partial_{j}p_{i} - \tensor{\Gamma}{_{ji}^{k}}p_{k}
+      \end{align}
+  \item Gradient von \( \tb\in\tspace \):
+    \begin{align}
+        \left[ \Grad\tb \right]_{ijk} &= t_{ij|k}
+              = \partial_{k}t_{ij} - \tensor{\Gamma}{_{ki}^{l}}t_{lj} - \tensor{\Gamma}{_{kj}^{l}}t_{il}
+    \end{align}
+  \item Gradient von \( \tb\in\mathcal{T}^{(3)}(\surf) \):
+    \begin{align}
+        \left[ \Grad\tb \right]_{ijkl} &= t_{ijk|l}
+              = \partial_{l}t_{ijk} - \tensor{\Gamma}{_{li}^{m}}t_{mjk} - \tensor{\Gamma}{_{lj}^{m}}t_{imk} -
+              \tensor{\Gamma}{_{lk}^{m}}t_{ijm}
+    \end{align}
+  \item Divergenz von \( \pb \in \mathcal{T}^{(1)}(\surf) \simeq \Tangent\surf \):
+    \begin{align}
+      \div\pb = \Tr(\Grad\pb) = (\Grad\pb):\gb = \tensor{p}{_{i}^{|i}}
+    \end{align}
+  \item Divergenz (in der zweiten/letzten Komponente) von \( \tb\in\tspace \):
+      \begin{align}
+        \left[ \div\tb \right]_{i} &= \left[ (\Grad\tb) : \gb \right]_{i} = \tensor{t}{_{ij}^{|j}}
+      \end{align}
+  \item Divergenz (in der dritten/letzten Komponente) von \( \tb\in\mathcal{T}^{(3)}(\surf) \):
+      \begin{align}
+        \left[ \div\tb \right]_{ij} &= \left[ (\Grad\tb) : \gb \right]_{ij} = \tensor{t}{_{ijk}^{|k}}
+      \end{align}
+  \item Divergenz (in der letzten Komponente) von \( \tb\in\mathcal{T}^{(n)}(\surf) \):
+      \begin{align}
+        \left[ \div\tb \right]_{i_{1}\ldots i_{n-1}} &= \left[ (\Grad\tb) : \gb \right]_{i_{1}\ldots i_{n-1}} 
+                      = \tensor{t}{_{i_{1}\ldots i_{n}}^{|i_{n}}}
+      \end{align}
+  \item (Stufen) reduzierende Rotation (in der letzten Komponente) von \( \tb\in\tspace \):
+      \begin{align}
+        \left[ \rot\tb \right]_{i} &= -\left[(\Grad\tb):\Eb\right]_{i} = \left[((*\Grad)\tb):\gb  \right]_{ij}
+                          = E_{kj}\tensor{t}{_{i}^{j|k}}
+      \end{align}
+  \item (Stufen) reduzierende Rotation (in der letzten Komponente) von \( \tb\in\mathcal{T}^{(n)}(\surf)\):
+      \begin{align}
+        \left[ \rot\tb \right]_{i_{1}\ldots i_{n-1}} &= -\left[(\Grad\tb):\Eb\right]_{i_{1}\ldots i_{n-1}} 
+              = \left[((*\Grad)\tb):\gb  \right]_{i_{1}\ldots i_{n-1}} \\
+                          &= E_{ki_{n}}\tensor{t}{_{i_{1}\ldots i_{n-1}}^{i_{n}|k}}
+      \end{align}
+  \item (Stufen) erweiternde Rotation von \( \pb \in \mathcal{T}^{(1)}(\surf) \simeq \Tangent\surf \):
+      \begin{align}
+        \left[ \Rot\pb \right]_{ij} = \left[ (\Grad\pb)\cdot \Eb \right]_{ij} = \left[ (*\Grad)\pb \right]_{ij}
+                  = E_{kj}\tensor{p}{_{i}^{|k}}
+      \end{align}
+  \item (Stufen) erweiternde Rotation von \( \tb\in\mathcal{T}^{(n)}(\surf)\):
+      \begin{align}
+        \left[ \Rot\tb \right]_{i_{1}\ldots i_{n+1}} &= \left[ (\Grad\tb)\cdot \Eb \right]_{i_{1}\ldots i_{n+1}} 
+                = \left[ (*\Grad)\pb \right]_{i_{1}\ldots i_{n+1}}\\
+                  &= E_{ki_{n+1}}\tensor{t}{_{i_{1}\ldots i_{n}}^{|k}}
+      \end{align}
+  \item Grad-div-Laplace von \( \tb\in\tspace \):
+      \begin{align}
+        \left[ \lGd\tb \right]_{ij} = \left[ \Grad\div\tb \right]_{ij}
+                      = \tensor{t}{_{i}^{k}_{|k|j}}
+      \end{align}
+  \item Rot-rot-Laplace von \( \tb\in\tspace \):
+      \begin{align}
+        \left[ \lRr\tb \right]_{ij} = \left[ \Rot\rot\tb \right]_{ij}
+                      = \tensor{t}{_{ij|k}^{|k}} - \tensor{t}{_{ik|j}^{|k}}
+      \end{align}
+  \item div-Grad-Laplace von \( \tb\in\tspace \):
+      \begin{align}
+        \left[ \ldG\tb \right]_{ij} = \left[ \div\Grad\tb \right]_{ij}
+                      = \tensor{t}{_{ij|k}^{|k}}
+      \end{align}
+  \item Laplace-Operator von \( \tb\in\tspace \):
+      \begin{align}
+        \Delta \tb &= \lGd\tb + \lRr\tb \overset{i.A.}{\ne} \ldG\tb
+      \end{align}
+\end{itemize}
+
+\end{document}
