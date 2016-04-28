@@ -38,6 +38,20 @@ private:
   AbstractFunction<double,double> *func;
 };
 
+// < f(edge) * alpha, edge >
+class  EdgeFunAtEdges: public EdgeOperatorTerm {
+public:
+  EdgeFunAtEdges(AbstractFunction<double, EdgeElement> *function, 
+                 double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), fac(f), func(function) {name = "EdgeFunAtEdges";};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+  AbstractFunction<double,EdgeElement> *func;
+};
+
 // < f(<beta1,edge>, <beta2,edge>, edge) * alpha, edge >
 class  EdgeVec2AndEdgeAtEdges: public EdgeOperatorTerm {
 public:

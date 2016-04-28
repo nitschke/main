@@ -72,6 +72,15 @@ public:
 
   DofEdgeVector getEdgeSolution(int i) {return getSolution(i);}
 
+  Vector<DofEdgeVector> getSolutions()
+  {
+    Vector<DofEdgeVector> sols(nComponents);
+    for (int i = 0; i < nComponents; ++i) {
+      sols[i] = getSolution(i);
+    }
+    return sols;
+  }
+
   DOFVector<double> getVertexSolution(int i) {
     TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
     TEST_EXIT(fullSolution)("there is no solution ");

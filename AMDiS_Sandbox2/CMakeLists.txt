@@ -90,3 +90,7 @@ target_link_libraries(geoPot ${BASIS_LIBS} dec)
 
 add_executable(interpolTestSphere src/InterpolTestSphere.cc)
 target_link_libraries(interpolTestSphere ${BASIS_LIBS} dec)
+
+add_executable(linMapping src/linMapping.cc)
+target_link_libraries(linMapping ${BASIS_LIBS} dec)
+

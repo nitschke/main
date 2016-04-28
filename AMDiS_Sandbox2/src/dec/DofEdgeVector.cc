@@ -187,6 +187,14 @@ void DofEdgeVector::set(BinaryAbstractFunction<double, WorldVector<double>, Worl
   }
 }
 
+void DofEdgeVector::set(AbstractFunction<double, EdgeElement > *alpha_d) {
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::iterator valIter = edgeVals.begin();
+  for (; edgeIter != edgeMesh->getEdges()->end() || valIter != edgeVals.end(); ++edgeIter, ++valIter) {
+    (*valIter) = (*alpha_d)(*edgeIter);
+  }
+}
+
 void DofEdgeVector::setDual(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d) {
   vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
   vector<double>::iterator valIter = edgeVals.begin();

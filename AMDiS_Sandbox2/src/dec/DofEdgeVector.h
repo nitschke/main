@@ -15,6 +15,8 @@ class DofEdgeVector {
 
 public:
 
+  DofEdgeVector() {}
+
   DofEdgeVector(const EdgeMesh *edgeMesh_, std::string name_) : 
       edgeMesh(edgeMesh_), name(name_), edgeVals(edgeMesh->getNumberOfEdges()) {}
 
@@ -33,6 +35,9 @@ public:
 
   // set alpha_d([p,q]) = <alpha, [p,q]>
   void set(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha_d);
+
+  // set alpha_d(e) = <alpha, e>
+  void set(AbstractFunction<double, EdgeElement > *alpha_d);
 
   // set -|e|/|*e| <alpha, *[p,q]> = <*alpha, [p,q]>
   //TODO: rename is more interpolating (with approx |pi(e)| and |pi(*e)|)
@@ -119,6 +124,18 @@ public:
     return errVec.absMax();
   }
 
+  // rise indices resp. to local metric gPD = |e|^2 * delta_ij, 
+  // i.e. <alpha,e> -> < alpha/|e|^2 , e > = <alpha^#PD,e>
+  DofEdgeVector getLocalPDSharp() {
+    DofEdgeVector sharpVec(edgeMesh, name + "PDSharp");
+    vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+    for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter){
+      WorldVector<double> eP = edgeIter->infoLeft->getEdge(edgeIter->dofEdge);
+      double lenP2 = eP*eP;
+      sharpVec[edgeIter->edgeDof] = edgeVals[edgeIter->edgeDof] / lenP2;
+    }
+    return sharpVec;
+  }
   
   // be careful with the meaning of the result.
   // we approx. the integral of the vals with a e *e decomposition of the surface
@@ -134,6 +151,24 @@ public:
       norm2 += 0.5 * edgeIter->infoLeft->getEdgeLen(dofe)  
                    * (edgeIter->infoLeft->getDualEdgeLen(dofe) + edgeIter->infoRight->getDualEdgeLen(dofe))
                    * (*valIter) * (*valIter);
+    }
+    return norm2;
+  }
+
+  // be careful with the meaning of the result.
+  // we approx. the integral of the vals with a e *e decomposition of the surface
+  // this makes sence for e.q. scalar values, like norms, on the Edges
+  // i.e. Int_M(f) approx Sum_edges( 0.5 * |e| * |*e| * (f_e)^2 )
+  double surfaceIntegration() {
+    double norm2 = 0.0;
+    vector<double>::iterator valIter = edgeVals.begin();
+    vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+    for (; valIter != edgeVals.end(); ++valIter, ++edgeIter){
+      DofEdge dofe = edgeIter->dofEdge;
+      // 
+      norm2 += 0.5 * edgeIter->infoLeft->getEdgeLen(dofe)  
+                   * (edgeIter->infoLeft->getDualEdgeLen(dofe) + edgeIter->infoRight->getDualEdgeLen(dofe))
+                   * (*valIter);
     }
     return norm2;
   }

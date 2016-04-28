@@ -1,0 +1,6 @@
+nohup: ignoriere Eingabe
+Start 2 With 2 Defects: Do 28. Apr 13:40:23 CEST 2016
+Start 2 With 4 Defects: Do 28. Apr 13:40:28 CEST 2016
+Start 3 With 2 Defects: Do 28. Apr 13:40:33 CEST 2016
+Start 3 With 4 Defects: Do 28. Apr 13:40:38 CEST 2016
+Start 4 With 2 Defects: Do 28. Apr 13:40:44 CEST 2016
