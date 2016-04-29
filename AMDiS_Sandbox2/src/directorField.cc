@@ -437,7 +437,7 @@ public:
     double B = 0.0;
     double C = 0.0;
     Parameters::get("userParameter->B", B);
-    Parameters::get("userParameter->B", C);
+    Parameters::get("userParameter->C", C);
     TertiaryAbstractFunction<double, WorldVector<double>, WorldVector<double>, WorldVector<double> > *evalMat = new S2Nonic(B,C);
     B2EVs[0][0] = new DofEdgeVector(probStat->getMesh(),"B2EV PP-Component");
     B2EVs[1][1] = new DofEdgeVector(probStat->getMesh(),"B2EV DD-Component");
@@ -545,7 +545,7 @@ public:
       cout << "###     rel Diff: " << eder << " ###" << endl;
       cout << "### tau: " << tau << " ###" << endl;
 
-      if (eder < epsCoarse && tau < tauMax && eder > -1.e-8) {
+      if (eder < epsCoarse && tau < tauMax && eder > -1.e-6) {
         t -= tau; // undo in closeTimestep
         tau *= facCoarse;
         if (tau > tauMax) tau = tauMax;
@@ -554,7 +554,7 @@ public:
         cout << "### tau -> " << tau << " (coarsening) ###" << endl;
       }
 
-      if ((eder > epsRefine || eder < -1.e-8) && tau > tauMin) {
+      if ((eder > epsRefine || eder < -1.e-6) && tau > tauMin) {
         t -= tau; // undo in closeTimestep
         tau *= facRefine;
         if (tau < tauMin) tau = tauMin;

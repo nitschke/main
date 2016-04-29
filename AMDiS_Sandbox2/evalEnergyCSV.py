@@ -9,7 +9,7 @@ fn = sys.argv[1]
 lineStyles = ['-','--', '-.', ':']
 lw = 3;
 
-name = ["Time", "Div", "Rot", "Norm", "Full"]
+name = ["Time", "Div", "Rot", "B2", "Norm", "Full"]
 n = len(name)
 last = 1000000000
 with open(fn, 'rb') as f:

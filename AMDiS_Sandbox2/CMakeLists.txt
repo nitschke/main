@@ -67,6 +67,9 @@ target_link_libraries(directorFieldQuartic ${BASIS_LIBS} dec)
 add_executable(directorFieldOctic src/directorFieldOctic.cc)
 target_link_libraries(directorFieldOctic ${BASIS_LIBS} dec)
 
+add_executable(directorFieldTorus src/directorFieldTorus.cc)
+target_link_libraries(directorFieldTorus ${BASIS_LIBS} dec)
+
 add_executable(directorField src/directorField.cc)
 target_link_libraries(directorField ${BASIS_LIBS} dec)
 

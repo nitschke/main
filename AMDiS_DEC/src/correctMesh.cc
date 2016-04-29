@@ -290,11 +290,14 @@ int main(int argc, char* argv[])
 
   double signStretch = (stretchStepSize > 0 ) ? 1 : -1; 
   double signPress = (pressStepSize > 0 ) ? 1 : -1; 
+
+  int stepsDone = 0;
   for (; signStretch*stretchNow > signStretch*stretch && signPress*pressNow > signPress*press; 
           stretchNow -= stretchStepSize, pressNow -= pressStepSize) {
     MSG("*** Precalculation at STRETCH = %f and PRESS = %f ***\n", stretchNow, pressNow);
     PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretchNow, southRatio, pressNow), new GradPhiNP(stretchNow, southRatio, pressNow), 1.0e-6);
     mc.iterate(iterationsPerStep, hNow, meshOut);
+    stepsDone += iterationsPerStep - 1;
     MSG("****************** DONE ***************************\n");
   }
   Parameters::set("edgeForces->c", c);
@@ -309,7 +312,7 @@ int main(int argc, char* argv[])
   //ballCenter.set(0.0);
   //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
   
-  mc.iterate(nMax, h, meshOut);
+  mc.iterate(nMax-stepsDone, h, meshOut);
 
 
   AMDiS::finalize();
