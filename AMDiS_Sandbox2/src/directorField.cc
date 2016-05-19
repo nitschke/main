@@ -78,8 +78,14 @@ class MatPP : public AbstractFunction<double, EdgeElement>
   {
     WorldVector<double> eP = eel.infoLeft->getEdge(eel.dofEdge);
     double lenP2 = eP*eP;
+    
     WorldVector<double> ce = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(ce);
     return (*evalMat)(eP,eP,ce)/lenP2;
+    
+    //WorldVector<double> v1 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.first);
+    //WorldVector<double> v2 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.second);
+    //return 0.5*((*evalMat)(eP,eP,v1) + (*evalMat)(eP,eP,v2))/lenP2;
   }
 
   private:
@@ -98,8 +104,14 @@ class MatDD : public AbstractFunction<double, EdgeElement>
   {
     WorldVector<double> eD = eel.infoLeft->getCircumcenter() -  eel.infoRight->getCircumcenter();
     double lenD2 = eD*eD;
+
     WorldVector<double> ce = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(ce);
     return (*evalMat)(eD,eD,ce)/lenD2;
+
+    //WorldVector<double> v1 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.first);
+    //WorldVector<double> v2 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.second);
+    //return 0.5*((*evalMat)(eD,eD,v1) + (*evalMat)(eD,eD,v2))/lenD2;
   }
 
   private:
@@ -120,9 +132,14 @@ class MatPD : public AbstractFunction<double, EdgeElement>
     WorldVector<double> eP = eel.infoLeft->getEdge(eel.dofEdge);
     double lenD = sqrt(eD*eD);
     double lenP = sqrt(eP*eP);
-    WorldVector<double> ce = eel.infoLeft->getEdgeCenter(eel.dofEdge);
 
+    WorldVector<double> ce = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(ce);
     return -(*evalMat)(eP,eD,ce)/(lenP*lenD);
+
+    //WorldVector<double> v1 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.first);
+    //WorldVector<double> v2 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.second);
+    //return -0.5*((*evalMat)(eP,eD,v1) + (*evalMat)(eP,eD,v2))/(lenP*lenD);
   }
 
   private:
@@ -143,9 +160,14 @@ class MatDP : public AbstractFunction<double, EdgeElement>
     WorldVector<double> eP = eel.infoLeft->getEdge(eel.dofEdge);
     double lenD = sqrt(eD*eD);
     double lenP = sqrt(eP*eP);
-    WorldVector<double> ce = eel.infoLeft->getEdgeCenter(eel.dofEdge);
 
+    WorldVector<double> ce = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(ce);
     return -(*evalMat)(eD,eP,ce)/(lenP*lenD);
+
+    //WorldVector<double> v1 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.first);
+    //WorldVector<double> v2 = eel.infoLeft->getCoordFromGlobalIndex(eel.dofEdge.second);
+    //return -0.5*((*evalMat)(eD,eP,v1) + (*evalMat)(eD,eP,v2))/(lenP*lenD);
   }
 
   private:
@@ -380,6 +402,60 @@ private:
   double eps;
 };
 
+// Nonic Surface Pressed (double well (in z) strain of the unit sphere in x-direction (factor c on north pole and r*c on south pole)
+// pressed to x-z-plane with factor 0<=b<1 (1:total flat pressed, 0:no pressing))
+class PhiNP : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  PhiNP(double c_,double r_,double b_) : AbstractFunction<double, WorldVector<double> >(1), c(c_), r(r_), b(b_) {}
+
+  double operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    double dwell = (c*pow(z,2)*(r*(4 + 3*z)*pow(-1 + z,2) - (-4 + 3*z)*pow(1 + z,2)))/4.;
+    double xcor = x - dwell;
+    return xcor*xcor + y*y/((1.-b)*(1.-b)) + z*z - 1.0; 
+  }
+
+private:
+
+  double c;
+  double r;
+  double b;
+};
+
+class GradPhiNP : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradPhiNP(double c_,double r_,double b_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), c(c_), r(r_), b(b_) {}
+
+  WorldVector<double> operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    WorldVector<double> rval;
+    double dwell = (c*pow(z,2)*(r*(4 + 3*z)*pow(-1 + z,2) - (-4 + 3*z)*pow(1 + z,2)))/4.;
+    double xcor = x - dwell;
+    double Ddwell = (c*z*(-8 - 15*z + r*(-8 + 15*z))*(-1 + pow(z,2)))/4.;
+
+    rval[0] = 2.0*xcor;
+    rval[1] = 2.0*y/((1.-b)*(1.-b));
+    rval[2] = 2.0*(z - xcor*Ddwell);
+
+    return rval;
+  }
+
+private:
+
+  double c;
+  double r;
+  double b;
+};
 
 
 class MyInstat : public DecProblemInstat {
@@ -438,6 +514,7 @@ public:
     double C = 0.0;
     Parameters::get("userParameter->B", B);
     Parameters::get("userParameter->C", C);
+    PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(C, 0.95, B), new GradPhiNP(C, 0.95, B), 1.0e-6);
     TertiaryAbstractFunction<double, WorldVector<double>, WorldVector<double>, WorldVector<double> > *evalMat = new S2Nonic(B,C);
     B2EVs[0][0] = new DofEdgeVector(probStat->getMesh(),"B2EV PP-Component");
     B2EVs[1][1] = new DofEdgeVector(probStat->getMesh(),"B2EV DD-Component");
@@ -508,7 +585,8 @@ public:
         solB2sol += (*sols[i]).getLocalPDSharp() * (*sols[j]) * (*B2EVs[i][j]);
       }
     }
-    double B2e = K0 * solB2sol.surfaceIntegration();
+    double B2e = 0.5 * K0 * solB2sol.surfaceIntegration();
+    //double B2e = K0 * solB2sol.surfaceIntegration();
 
 
     double energy = dive + rote + B2e + ne ;

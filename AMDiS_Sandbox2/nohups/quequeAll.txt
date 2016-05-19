@@ -1,58 +1,91 @@
 nohup: ignoriere Eingabe
-Start 2 With 2 Defects: Do 28. Apr 16:10:17 CEST 2016
-Start 2 With 4 Defects: Do 28. Apr 16:10:22 CEST 2016
-Start 3 With 2 Defects: Do 28. Apr 16:10:27 CEST 2016
-Start 3 With 4 Defects: Do 28. Apr 16:10:32 CEST 2016
-Start 4 With 2 Defects: Do 28. Apr 16:10:37 CEST 2016
-Start 4 With 4 Defects: Do 28. Apr 16:14:03 CEST 2016
-Start 5 With 2 Defects: Do 28. Apr 16:30:49 CEST 2016
-Start 5 With 4 Defects: Do 28. Apr 16:57:35 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  1944 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 6 With 2 Defects: Do 28. Apr 17:44:22 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  2445 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 6 With 4 Defects: Do 28. Apr 18:21:09 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  2749 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 7 With 2 Defects: Do 28. Apr 19:34:37 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  1748 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 7 With 4 Defects: Fr 29. Apr 01:43:16 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  1781 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 8 With 2 Defects: Fr 29. Apr 02:18:23 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  1763 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-nonicPressedQueueAll.sh: Zeile 10:  4135 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 8 With 4 Defects: Fr 29. Apr 02:31:49 CEST 2016
-Start 9 With 2 Defects: Fr 29. Apr 02:31:54 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  4313 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 9 With 4 Defects: Fr 29. Apr 03:28:41 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  4523 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 41 With 2 Defects: Fr 29. Apr 04:12:09 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  1798 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 41 With 4 Defects: Fr 29. Apr 05:38:57 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  4956 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-nonicPressedQueueAll.sh: Zeile 10:  4328 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 42 With 2 Defects: Fr 29. Apr 06:57:26 CEST 2016
-Start 42 With 4 Defects: Fr 29. Apr 06:57:31 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  5223 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 43 With 2 Defects: Fr 29. Apr 08:41:00 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  2614 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 43 With 4 Defects: Fr 29. Apr 09:51:08 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  5975 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-nonicPressedQueueAll.sh: Zeile 10:  2990 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 44 With 2 Defects: Fr 29. Apr 11:34:38 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  1826 Beendet                 nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 44 With 4 Defects: Fr 29. Apr 12:06:24 CEST 2016
-Start 45 With 2 Defects: Fr 29. Apr 12:06:30 CEST 2016
-nonicPressedQueueAll.sh: Zeile 10:  2204 Beendet                 nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-nonicPressedQueueAll.sh: Zeile 10:  4260 Beendet                 nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
-Start 45 With 4 Defects: Fr 29. Apr 12:51:36 CEST 2016
-Start 46 With 2 Defects: Fr 29. Apr 13:08:22 CEST 2016
-hallo test
-nohup: ignoriere Eingabe
-Start 46 With 2 Defects: Fr 29. Apr 13:24:00 CEST 2016
-Start 46 With 4 Defects: Fr 29. Apr 14:39:06 CEST 2016
-Start 47 With 2 Defects: Fr 29. Apr 14:47:32 CEST 2016
-nonicPressedQueueAll.sh: Zeile 7:  8263 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
-Start 47 With 4 Defects: Fr 29. Apr 16:16:00 CEST 2016
-Start 48 With 2 Defects: Fr 29. Apr 16:19:26 CEST 2016
-Start 48 With 4 Defects: Fr 29. Apr 16:19:31 CEST 2016
-nohup: ignoriere Eingabe
-Start 42 With 2 Defects: Fr 29. Apr 16:47:59 CEST 2016
+Start 2 With 2 Defects: Di 17. Mai 16:15:47 CEST 2016
+Start 2 With 4 Defects: Di 17. Mai 16:15:52 CEST 2016
+Start 3 With 2 Defects: Di 17. Mai 16:15:57 CEST 2016
+Start 3 With 4 Defects: Di 17. Mai 16:16:02 CEST 2016
+Start 4 With 2 Defects: Di 17. Mai 16:31:08 CEST 2016
+Start 4 With 4 Defects: Di 17. Mai 16:31:13 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10:  5996 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  5794 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 5 With 2 Defects: Di 17. Mai 20:24:45 CEST 2016
+Start 5 With 4 Defects: Di 17. Mai 20:28:10 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10:  6940 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  5827 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 6 With 2 Defects: Di 17. Mai 23:10:00 CEST 2016
+Start 6 With 4 Defects: Mi 18. Mai 00:01:46 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10:  7698 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  5784 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 7 With 2 Defects: Mi 18. Mai 01:31:54 CEST 2016
+Start 7 With 4 Defects: Mi 18. Mai 01:31:59 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10:  8038 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  5811 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 8 With 2 Defects: Mi 18. Mai 03:10:28 CEST 2016
+Start 8 With 4 Defects: Mi 18. Mai 03:13:53 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10:  8425 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 9 With 2 Defects: Mi 18. Mai 04:54:00 CEST 2016
+Start 9 With 4 Defects: Mi 18. Mai 05:10:46 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10:  8875 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  8808 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 41 With 2 Defects: Mi 18. Mai 08:45:55 CEST 2016
+Start 41 With 4 Defects: Mi 18. Mai 08:46:00 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 10070 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  8029 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+nonicPressedQueueAll.sh: Zeile 10:  7500 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 42 With 2 Defects: Mi 18. Mai 10:49:27 CEST 2016
+Start 42 With 4 Defects: Mi 18. Mai 10:49:32 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 11254 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  6919 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 43 With 2 Defects: Mi 18. Mai 12:52:58 CEST 2016
+Start 43 With 4 Defects: Mi 18. Mai 12:53:03 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 11944 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 44 With 2 Defects: Mi 18. Mai 15:46:30 CEST 2016
+Start 44 With 4 Defects: Mi 18. Mai 15:46:36 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 13110 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  5987 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 45 With 2 Defects: Mi 18. Mai 16:55:02 CEST 2016
+Start 45 With 4 Defects: Mi 18. Mai 16:55:07 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 13464 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 46 With 2 Defects: Mi 18. Mai 19:20:15 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 11245 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 46 With 4 Defects: Mi 18. Mai 19:32:00 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 14060 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10: 11935 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 47 With 2 Defects: Mi 18. Mai 21:47:07 CEST 2016
+Start 47 With 4 Defects: Mi 18. Mai 21:47:12 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 14573 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10:  8405 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 48 With 2 Defects: Do 19. Mai 00:50:40 CEST 2016
+Start 48 With 4 Defects: Do 19. Mai 00:50:45 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 13101 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+nonicPressedQueueAll.sh: Zeile 10: 15314 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 49 With 2 Defects: Do 19. Mai 01:34:11 CEST 2016
+Start 49 With 4 Defects: Do 19. Mai 01:34:16 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 13455 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+nonicPressedQueueAll.sh: Zeile 10: 15496 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 51 With 2 Defects: Do 19. Mai 02:24:22 CEST 2016
+Start 51 With 4 Defects: Do 19. Mai 02:24:27 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 15706 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10: 14012 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 52 With 2 Defects: Do 19. Mai 04:21:14 CEST 2016
+Start 52 With 4 Defects: Do 19. Mai 04:21:19 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 10060 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+nonicPressedQueueAll.sh: Zeile 10: 16153 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 53 With 2 Defects: Do 19. Mai 05:08:06 CEST 2016
+Start 53 With 4 Defects: Do 19. Mai 05:08:11 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 16351 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10: 14564 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 54 With 2 Defects: Do 19. Mai 07:18:18 CEST 2016
+Start 54 With 4 Defects: Do 19. Mai 07:18:23 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 16872 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10: 15305 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+Start 55 With 2 Defects: Do 19. Mai 10:36:52 CEST 2016
+Start 55 With 4 Defects: Do 19. Mai 10:40:17 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 15487 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out
+nonicPressedQueueAll.sh: Zeile 10: 18219 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 56 With 2 Defects: Do 19. Mai 11:27:04 CEST 2016
+Start 56 With 4 Defects: Do 19. Mai 11:27:09 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 18405 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+Start 57 With 2 Defects: Do 19. Mai 13:22:16 CEST 2016
+Start 57 With 4 Defects: Do 19. Mai 13:35:41 CEST 2016
+nonicPressedQueueAll.sh: Zeile 10: 19062 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out
+nonicPressedQueueAll.sh: Zeile 10: 15697 Abgebrochen             (Speicherabzug geschrieben) nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_2D.out

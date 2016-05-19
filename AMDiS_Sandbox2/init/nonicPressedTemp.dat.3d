@@ -1,6 +1,6 @@
 dimension of world                            : 3
 
-sphereMesh->macro file name                   : ./macro/nonicsPressed/nonic095r1175c041125b_64k.3d
+sphereMesh->macro file name                   : ./macro/nonicsPressed/nonic095r0c0b_64k.3d
 sphereMesh->global refinements                : 0
 sphereMesh->check                             : 0
 
@@ -20,7 +20,7 @@ sphere->adapt->start time                     : 0.0
 sphere->adapt->end time                       : 20000.0
 sphere->adapt->timestep                       : 1.e-3 %2.5e-3
 
-sphere->output->filename                      : outNonicPressed/nonic095r1175c041125b_4D.
+sphere->output->filename                      : outNonicPressed/nonic095r0c0b_4D.
 sphere->output->ParaView animation            : 1
 sphere->output->edgeForms sharp               : 1 
 sphere->output->sharpType                     : 1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
@@ -34,8 +34,8 @@ userParameter->K1                             : 1.0  % minimize div
 userParameter->K3                             : 1.0  % minimize rot
 userParameter->Kn                             : 200.0 %200 % minimize norm^2 - 1
 
-userParameter->B                              : 0.41125 %compress factor 
-userParameter->C                              : 1.175 %stretch factor 
+userParameter->B                              : 0.0 %compress factor 
+userParameter->C                              : 0.0 %stretch factor 
 
 userParameter->adapt->first test at timestep  : 6
 userParameter->adapt->test every i-th timestep: 2 

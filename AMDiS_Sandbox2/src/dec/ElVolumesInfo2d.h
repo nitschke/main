@@ -42,6 +42,10 @@ class ElVolumesInfo2d {
       return 0.5 *(elInfo->getCoord(getLocal(dofEdge.second)) + elInfo->getCoord(getLocal(dofEdge.first)));
     }
 
+    WorldVector<double> getCoordFromGlobalIndex(DegreeOfFreedom dof) {
+      return elInfo->getCoord(getLocal(dof));
+    }
+
     int getOppVertexLocal(DofEdge dofEdge) const {
       return 3 - getLocal(dofEdge.first) - getLocal(dofEdge.second);
     }

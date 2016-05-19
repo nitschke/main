@@ -1,8 +1,8 @@
-#IDS=({2..9})
-#IDS+=({41..49})
-IDS=({42,43,49})
-IDS+=({31..39})
+IDS=({2..9})
+IDS+=({41..49})
 IDS+=({51..59})
+IDS+=({31..39})
+IDS+=({351..359})
 
 
 IF=init/nonicPressed.dat.3d
@@ -28,7 +28,7 @@ do
   initSet.py -f $IF -k 'output->filename' -v outNonicPressed/`nonicName.py --id $ID`_4D.
   initSet.py -f $IF -k 'initField' -v ex
   nohup ./directorField init/nonicPressed.dat.3d &> nohups/nohup_${ID}_4D.out &
-  while [ `ps x | grep -c directorField` -gt 7 ]
+  while [ `ps x | grep -c directorField` -gt 6 ]
   do
     sleep 100
   done
