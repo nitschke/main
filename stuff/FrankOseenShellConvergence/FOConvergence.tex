@@ -1,0 +1,549 @@
+\documentclass[a4paper,11pt]{scrartcl}
+
+\usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+
+\usepackage{hyperref}
+\usepackage{color}
+\input{declarations}
+
+\usepackage{tensor}
+
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\RSpan}[1]{\text{Span}_{\R}\left\{ #1 \right\}}
+
+\newcommand{\surfh}{\surf_{h}}
+\newcommand{\landau}{\mathcal{O}}
+\newcommand{\adj}{\text{adj}}
+\newcommand{\tildeCh}[3]{\widetilde{\Gamma}_{#1 #2}^{#3}} %Chrisoffel-Symb. 2. Art in der Dünnschicht
+\newcommand{\Ch}[3]{\Gamma_{#1 #2}^{#3}} %Chrisoffel-Symb. 2. Art auf der Oberfläche
+
+
+\newcommand{\lGd}{\Delta^{\text{Gd}}}
+\newcommand{\ldG}{\Delta^{\text{dG}}}
+\newcommand{\lRr}{\Delta^{\text{Rr}}}
+
+
+\title{Notizen zur Konvergenz der Frank-Oseen-Energie im Dünnschichtmodell gegen die Oberflächenformulierung} 
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+
+\section{Vorüberlegungen / Konvergenzdefinition}
+
+Im Folgendem betrachten wir die Dünnschicht \( \surfh = \surf \times \left[ -h/2 , h/2 \right] \) 
+der Dicke \( h \) um eine Oberfläche \( \surf \).
+Wir behalten hierbei die gewählten lokalen Koordinaten \( \left\{ u,v \right\} \) der Oberfläche bei und ergänzen diese um eine Koordinate
+\( \xi \), welche in Normalenrichtung wirkt.
+Somit lässt sich jeder Ort \( \Xb\in\surfh \) der Dünnschicht durch einem Ort \( \xb\in\surf \) auf der Oberfläche und der orthogonalen Entfernung von
+dieser beschreiben durch
+\begin{align}
+  \Xb = \Xb(u,v,\xi) = \xb(u,v) + \xi\surfNormal(u,v) = \xb + \xi\surfNormal \formComma
+\end{align}
+Dabei sei \( h \) klein genug gewählt, dass obige Gleichung eindeutig ist. \ingo{Lässt sich vermutlich über die Hauptkrümmungen abschätzen
+(vgl. Napoli). Ist aber wegen dem Grenzübergang nur von theoretischer Relevanz.}
+Dadurch ergibt sich eine natürliche Metrik in \( \surfh \) durch
+\begin{align}
+  G_{IJ} = \partial_{I}\Xb \cdot \partial_{J}\Xb \formPeriod
+\end{align}
+Wir wollen hier und im Folgenden festlegen, dass groß geschriebene Laufindizes \( I,J,\ldots,M \) alle drei Komponenten \( u,v \) und \(
+\xi\) erfassen und kleine Laufindizes \( i,j,\ldots,m \) nur die tangentialen Komponenten \( u \) und \( v \).
+Somit erhalten wir die Basisvektoren
+\begin{align}
+  \partial_{i}\Xb &= \partial_{i}\xb + \xi\partial_{i}\surfNormal \formComma \\
+  \partial_{\xi}\Xb &= \surfNormal \formPeriod
+\end{align}
+Mit dem Shape-Operator (bzw. 2. Fundamentalform) der Oberfläche \( B_{ij} = -\partial_{i}\surfNormal\cdot\partial_{j}\xb \),
+dessen Symmetrie und dessen Quadrat \( [B^{2}]_{ij} = \tensor{B}{_{i}^{k}}B_{kj} =  \partial_{i}\surfNormal\cdot\partial_{j}\surfNormal\)
+\ingo{(das muss noch formal bewiesen werden bzw. Quelle finden. Wurde aber schon ganz allg. mit Mathematica gezeigt und gilt somit als fast
+sicher.)}
+ergibt sich nun für den metrischen Tensor
+\begin{align}
+  G_{ij} &= g_{ij} - 2\xi B_{ij} + \xi^{2}[B^{2}]_{ij} 
+    = \left( \tensor{\delta}{_{i}^{k}} - \xi\tensor{B}{_{i}^{k}} \right) \left( g_{ij} - \xi B_{ij} \xi \right)
+    = \left[ \left( g-\xi B \right)^{2} \right]_{ij}\formComma \\
+    %=: [G_{T}]_{ij} \formComma \\
+  G_{\xi\xi} &= 1 \formComma\\
+  G_{i\xi} &= G_{\xi i} = 0 \formPeriod
+\end{align}
+Dabei ist \( g=\left\{ G_{ij} \right\}|_{\surfh} \) der metrische Tensor der Oberfläche \( \surf \).
+Für das integrieren skalarer Quantitäten in der Dünnschicht benötigen wir das Volumenelement
+\begin{align}
+  \mu_{\surfh} = \sqrt{|G|} d\xi \wedge du \wedge dv  = \sqrt{|G|} d\xi  du  dv\formPeriod
+\end{align}
+
+\begin{thm}
+  Die Komponente des Volumenelements in der Dünnschicht \( \surfh \) lässt sich darstellen als
+  \begin{align}
+    \sqrt{|G|} = \left( 1 + \xi\meanCurvature + \xi^{2}\gaussianCurvature \right)\sqrt{|g|}
+  \end{align}
+  mit der Komponente des Volumenelements auf der Oberfläche \( \sqrt{|g|} \), 
+  der mittleren Krümmung \( \meanCurvature \) und der Gaußschen Krümmung \( \gaussianCurvature \) der Oberfläche \( \surf \). 
+\end{thm}
+\begin{proof}
+  Für die Determinante des metrischen Tensors ergibt sich durch
+  \begin{align}
+    |G| = G_{\xi\xi}|\{G_{ij}\}| = |\left( g-\xi B \right)^{2}| \label{eq:Det2Full}
+  \end{align}
+  Für die Determinante eines covarianten 2-Tensor-Quadrats ergibt sich allgemein für \( t=\left\{ t_{ij} \right\} \)
+  \begin{align}
+    |t^{2}| = |t\cdot g^{-1}\cdot t| = |t|^{2}|g^{-1}| = \frac{|t|^{2}}{|g|}\formPeriod
+  \end{align}
+  Somit erhalten wir
+  \begin{align}
+    |G| = \frac{|g-\xi B |^{2}}{|g|}\formPeriod\label{eq:detG2}
+  \end{align}
+  Schreiben wir nun die Wurzel des Zählers explizit aus erhalten wir
+  \begin{align}
+    |g-\xi B | &= \left( g_{uu}-\xi B_{uu} \right)\left( g_{vv} - \xi B_{vv} \right) - \left( g_{uv} - \xi B_{uv} \right)^{2}\\
+     &= \left( g_{uu}g_{vv} - g^{2}_{uv} \right)
+        + \xi \left( -g_{vv}B_{uu} - g_{uu}B_{vv} + 2g_{uv}B_{uv}  \right)
+        + \xi^{2} \left( B_{uu}B_{vv} - B^{2}_{uv} \right) \label{eq:DetExpand} \formPeriod
+  \end{align}
+  Der erste Summand in \eqref{eq:DetExpand} ist die Determinante \( |g| \)
+  und der dritte Summand ist die Determinante \( |B| \) der zweiten Fundamentalform, wobei gilt, dass
+  \begin{align}
+    |B| = |g\cdot \{\tensor{B}{^{i}_{j}}\}| = |g| |^{\sharp}B| = |g| \gaussianCurvature \formPeriod
+  \end{align}
+  Die Diagonaleinträge des Shape-Operators \( ^{\sharp}B = g^{-1} \cdot B \) sind
+  \begin{align}
+    \tensor{B}{^{u}_{u}} &= g^{ui} B_{iu} = \frac{g_{vv}B_{uu}-g_{uv}B_{uv}}{|g|} \formComma \\
+    \tensor{B}{^{v}_{v}} &= g^{vi} B_{iv} = \frac{g_{uu}B_{vv}-g_{uv}B_{uv}}{|g|}
+  \end{align}
+  und somit ergibt sich der zweite Summand in \eqref{eq:DetExpand} durch
+  \begin{align}
+    -|g|\meanCurvature = |g|\Tr(^{\sharp}B) = g_{vv}B_{uu} + g_{uu}B_{vv} - 2g_{uv}B_{uv}\formComma
+  \end{align}
+  also
+  \begin{align}
+    |g-\xi B | = |g|\left(  1 + \xi\meanCurvature + \xi^{2}\gaussianCurvature \right) \formPeriod
+  \end{align}
+  Mit \eqref{eq:Det2Full} und \eqref{eq:detG2} folgt schlußendlich die Behauptung.
+\end{proof}
+
+Das Volumen der Dünnschicht \( \surfh \) berechnet sich nun über
+\begin{align}
+  |\surf_{h}| &= \int_{\surfh}\mu_{\surfh} 
+               = \int_{\surfh}\sqrt{|G|} d\xi du dv
+  = \int_{\surf}\int_{-\frac{h}{2}}^{\frac{h}{2}} \left( 1 + \xi\meanCurvature + \xi^{2}\gaussianCurvature \right) d\xi \sqrt{|g|} du dv\\
+  &= \int_{\surf} h + \frac{h^{3}}{12}\gaussianCurvature \mu
+   = h \left(|S| + \frac{h^{2}\pi}{6}\chi(\surf)\right)\formPeriod
+\end{align}
+Somit folgt für \( h\rightarrow 0 \), dass
+\begin{align}
+  \frac{|\surfh|}{h} \rightarrow |S| \formPeriod
+\end{align}
+Da wir nun einen zu erwartenden Grenzübergang der Eins und somit auch für alle konstanten Dichten gefunden haben,
+scheint es sinnvoll zu sein diesen Konvergenzbegriff auch auf beliebige hinreichend glatte Dichten zu übertragen.
+
+\begin{defn}\label{def:Convergence}
+  Wir sagen die Dichte \( f:\surfh \rightarrow \R \) konvergiert gegen die Dichte 
+  \( f^{\surf}: \surf \rightarrow \R \), genau dann wenn für \( h \rightarrow 0 \)
+  \begin{align}
+    \frac{1}{h}\int_{\surfh} f \mu_{\surfh} \rightarrow \int_{\surf} f^{\surf} \mu
+  \end{align}
+  gilt.
+\end{defn}
+
+Durch die Darstellung des Volumenelement als
+\begin{align}
+ \mu_{\surfh} =  \left(  1 + \xi\meanCurvature + \xi^{2}\gaussianCurvature \right) d\xi \wedge\mu
+              = \left( 1 + \landau(\xi) \right) d\xi \wedge\mu
+\end{align}
+ist folgendes Lemma ersichtlich.
+
+\begin{lem}\label{lem:Convergence}
+  Wenn für die Dünnschichtdichte \( f \), Oberflächendichte \( f^{\surf} \) und \( h \rightarrow 0 \)
+  \begin{align}
+    \frac{1}{h}\int_{-\frac{h}{2}}^{\frac{h}{2}} f d\xi \rightarrow f^{\surf}
+  \end{align}
+  gilt, dann konvergiert \( f \) gegen \( f^{\surf} \) im Sinne von \autoref{def:Convergence}.
+\end{lem}
+
+\begin{con}\label{con:Convergence}
+  Speziell für \( f(\Xb) = f^{\surf}(\xb) + \landau(\xi) \) folgt, dass \( f \) gegen \( f^{\surf} \) konvergiert.
+\end{con}
+\begin{proof}
+  Mit
+  \begin{align}
+    \frac{1}{h}\int_{-\frac{h}{2}}^{\frac{h}{2}} f^{\surf}(\xb) + \landau(\xi) d\xi
+        = f^{\surf} + \landau(h) \rightarrow f^{\surf}
+  \end{align}
+  und \autoref{lem:Convergence} folgt die Behauptung.
+\end{proof}
+
+\section{Approximation metrischer Größen}
+
+Wie wir noch sehen werden, reicht für unsere Zwecke eine Approximation 0-ter Ordnung (in \( \xi \)) des metrischen Tensors aus.
+Einzig für die Berechnung der Christoffel-Symbole benötigen wir wegen der partiellen Ableitungen von \( G \) eine Approximation erster
+Ordnung.
+Das heißt
+\begin{align}
+  G_{\xi\xi} &= 1\formComma & G_{i\xi} &= G_{\xi i} = 0 \text{ und}\\
+  G_{ij} &= g_{ij} + \landau(\xi)_{ij} \text{ bzw.} &   G_{ij} &= g_{ij} - 2\xi B_{ij} + \landau(\xi^{2})_{ij} \formPeriod
+\end{align}
+
+Hieraus lässt sich eine natürliche Norm für Vektorfelder \( \pExt:\surfh \rightarrow \Tangent\surfh \cong \R^{3} \) mit
+\( \pExt(\Xb) = \pb(\xb) + \landau(\xi)   \) und \( \pb:\surf \rightarrow \Tangent\surf\times\Tangent\surf^{\bot} \cong \R^{3} \)
+entwickeln zu
+\begin{align}
+  \left\| \pExt \right\|^{2}_{\surfh} &= G_{IJ}\pIExt^{I}\pIExt^{J}
+                                       = g_{ij}p^{i}p^{j} + \left( p^{\xi} \right)^{2} + \landau(\xi) \\
+                                      &= \left\| \pb \right\|^{2} + \left( p^{\xi} \right)^{2} + \landau(\xi) 
+                                            \label{eq:norm}\formComma
+\end{align}
+wobei \( \left\| \pb \right\| := \left\| \pb \right\|_{\surf} \) die (Tangential-)Norm auf \( \surf  \) ist.
+
+Für die inverse Metrik \( G^{-1} =: \left\{ G^{IJ} \right\} \) ergibt sich über Blockinversion und Schurkomplement gleich 1
+\begin{align}
+  G^{-1} =
+    \begin{bmatrix}
+      \{G^{ij}\} & \{G^{i\xi}\} \\
+      \{G^{\xi i}\} & G^{\xi\xi}
+    \end{bmatrix} 
+    =
+    \begin{bmatrix}
+      G_{T}^{-1} & 0 \\
+      0 & 1
+    \end{bmatrix}
+\end{align}
+mit \( G_{T} = \{G_{ij}\} \). 
+Dabei nutzen wir Taylor an \( \xi = 0 \), so dass
+\begin{align}
+  \{G^{ij}\} =
+  G_{T}^{-1} &= \frac{1}{|G_{T}|}\adj G_{T}
+            = \frac{1}{|g + \landau(\xi)|}\left( \adj g + \adj\landau(\xi) \right) \\
+            &\overset{\text{Taylor}}{=} \frac{1}{|g|}\adj g + \landau(\xi)
+            = g^{-1} + \landau(\xi) =: \{g^{ij} + \landau(\xi)^{ij}\}
+\end{align}
+gilt.
+\ingo{Exakt ließe sich auch zeigen, dass
+\begin{align}
+  G^{ij} = \frac{g^{ij} - 2\xi\gaussianCurvature[B^{-1}]^{ij} + \xi^{2}\gaussianCurvature^{2}[B^{-2}]^{ij}}
+                {(1+\xi\meanCurvature + \xi^{2}\gaussianCurvature)^{2}}
+\end{align}
+gilt.}
+
+Die partiellen Ableitungen des Metriktensors lassen sich darstellen durch
+\begin{align}
+  \partial_{k}G_{ij} &= \partial_{k}g_{ij} + \landau(\xi)_{ijk} \\
+  \partial_{\xi}G_{ij} &= -2B_{ij} + \landau(\xi)_{ij} \\
+  \partial_{K}G_{\xi I} &=  \partial_{K}G_{I \xi} = 0
+\end{align}
+Somit ergeben sich für die Christoffel-Symbole \( \tildeCh{I}{J}{K} \) in der Dünnschicht
+\begin{align}
+  \tildeCh{I}{J}{K} &= \frac{1}{2}G^{KL}\left( \partial_{I}G_{JL} + \partial_{J}G_{IL} - \partial_{L}G_{IJ} \right) \\
+  \tildeCh{i}{j}{k} &= \frac{1}{2}G^{kL}\left( \partial_{i}G_{jL} + \partial_{j}G_{iL} - \partial_{L}G_{ij} \right) \\
+                    &= \frac{1}{2}\left( g^{kl} + \landau(\xi)^{kl} \right)
+                                  \left( \partial_{i}g_{jl} + \partial_{j}g_{il} - \partial_{l}g_{ij} + \landau(\xi)_{ijl} \right) \\
+                    &= \Ch{i}{j}{k} + \landau(\xi)_{ij}^{k} \\
+  \tildeCh{i}{j}{\xi} &= \frac{1}{2}G^{\xi\xi}\left( \partial_{i}G_{j\xi} + \partial_{j}G_{i\xi} - \partial_{\xi}G_{ij} \right) 
+                       = -\frac{1}{2}\partial_{\xi}G_{ij} \\
+                      &= B_{ij} + \landau(\xi)_{ij} \\
+  \tildeCh{i}{\xi}{k} = \tildeCh{\xi}{i}{k} 
+                    &= \frac{1}{2}G^{kL}\left( \partial_{i}G_{\xi L} + \partial_{\xi}G_{iL} - \partial_{L}G_{i\xi} \right) \\
+                    &= \frac{1}{2}G^{kl}\partial_{\xi}G_{il}
+                     = \frac{1}{2}\left( g^{kl} +  \landau(\xi)^{kl}\right)\left( -2B_{il} + \landau(\xi)_{il} \right) \\
+                    &= -\tensor{B}{_{i}^{k}} + \landau(\xi)_{i}^{k}\\
+  \tildeCh{\xi}{\xi}{K} &= 0 \\
+     \tildeCh{I}{\xi}{\xi} = \tildeCh{\xi}{I}{\xi} &= 0
+\end{align}
+
+Der Levi-Civita-Tensor \( \widetilde{E} \) in der Dünnschicht beschreibt das Verhalten des Volumenelements als 3-Form, d.h.
+\begin{align}
+  \tilde{E}_{IJK} = \mu_{\surfh}(\partial_{I}\Xb,\partial_{J}\Xb,\partial_{K}\Xb)
+                  = \sqrt{|G|}\varepsilon_{IJK} 
+                  = \sqrt{|g|}\varepsilon_{IJK} + \landau(\xi)_{IJK}
+\end{align}
+mit den Levi-Civita-Symbolen \( \varepsilon_{IJK}\in\left\{ -1,0,1 \right\} \).
+Da jedes nicht verschwindendes Levi-Civita-Symbol genau einen \( \xi \)-Index und zwei Tangentialindices hat, ergibt sich somit
+\begin{align}
+  \tilde{E}_{\xi i j} 
+  = - \tilde{E}_{i \xi j}
+  = \tilde{E}_{i j \xi}
+  = E_{ij} + \landau(\xi)_{ij}
+\end{align}
+mit dem Oberflächen-Levi-Civita-Tensor \( E_{ij} = \sqrt{|g|}\varepsilon_{ij}=\mu\left( \partial_{i}\xb, \partial_{j}\xb \right) \).
+
+
+\section{Grenzübergang der Frank-Oseen-Energie vom Dünnschichtmodell zum Oberflächenmodell}
+Die 3-dimensionale Formulierung der Frank-Oseen-Energie in der Dünnschicht 
+mit Straftermen für die Normierung zu eins und der Tangentialität zur Oberfläche \( \surf \) 
+ist gegeben durch
+\begin{align}
+    F\left[ \pExt, \surfh \right] 
+        &= \frac{1}{2}\int_{\surfh} \Ki f_{\text{splay}}[\pExt] + \Kii f_{\text{twist}}[\pExt] +  \Kiii f_{\text{bend}}[\pExt]
+                                    +\frac{\Kn}{2}f_{\text{norm}}[\pExt] + \Kt f_{\text{tan}}[\pExt]\mu_{\surfh}
+\end{align}
+wobei die einzelnen Energiedichten gegeben sind mit
+\begin{align}
+  f_{\text{splay}}[\pExt] &= \left( \nabla\cdot\pExt \right)^{2} \\
+  f_{\text{twist}}[\pExt] &= \left( \pExt\cdot\left( \nabla\times\pExt \right) \right)^{2} \\
+  f_{\text{bend}}[\pExt] &= \left\| \pExt\times\left( \nabla\times\pExt \right) \right\|^{2}_{\surfh} \\
+  f_{\text{norm}}[\pExt] &= \left( \left\| \pExt \right\|^{2}_{\surfh} - 1 \right)^{2} \\
+  f_{\text{tan}}[\pExt] &= \left( \pExt \cdot \surfNormal \right)^{2}
+\end{align}
+Für das Vektorfeld \( \pExt:\surfh \rightarrow \Tangent\surfh \cong \R^{3} \) setzen wir voraus, 
+dass es sich parallel und lengentreu in Normalenrichtung fortsetzt,
+d.h. \( \tensor{\pIExt}{^{I}_{;\xi}} = 0 \).
+Um Missverständnisse vorzubeugen legen wir fest, dass die covarianten Ableitungen in der Dünnschicht \( \surfh \) mit einem Semikolon gekennzeichnet
+werden, d.h.
+\begin{align}
+  \tensor{\pIExt}{^{I}_{;J}} = \partial_{J}\pIExt^{I} + \tildeCh{J}{K}{I}\pIExt^{K} 
+\end{align}
+und die covarianten Ableitung auf der Oberfläche \( \surf \) mit einem senkrechten Strich, d.h.
+\begin{align}
+  \tensor{p}{^{i}_{|j}} = \partial_{j}p^{i} + \Ch{j}{k}{l}p^{l} \formPeriod
+\end{align}
+Vorerst lassen wir zu, dass \( \pExt \) auch eine nicht verschwindende Normalenkomponente \( \pIExt^{\xi} \) auf \( \surf \) haben darf.
+Da
+\begin{align}
+  0 &= \tensor{\pIExt}{^{i}_{;\xi}} = \partial_{\xi}\pIExt^{i} + \tildeCh{\xi}{K}{i}\pIExt^{K} 
+                                    = \partial_{\xi}\pIExt^{i} - \tensor{B}{_{l}^{i}}\pIExt^{l} + \landau(\xi)^{i}
+  \text{ und} \\
+  0 &= \tensor{\pIExt}{^{\xi}_{;\xi}} = \partial_{\xi}\pIExt^{\xi} + \tildeCh{\xi}{K}{\xi}\pIExt^{K}
+                                      = \partial_{\xi}\pIExt^{\xi}
+\end{align}
+gilt, erhalten wir durch Taylor-Entwicklung
+\begin{align}
+  \pIExt^{\xi}(\Xb) &= \pIExt^{\xi}(\xb + \xi\surfNormal) = p^{\xi}(\xb)
+  \text{ und} \\
+  \pIExt^{i}(\Xb) &= \pIExt^{i}(\xb + \xi\surfNormal)
+                   = p^{i}(\xb) + \landau(\xi)^{i}
+  \text{ bzw.} \\
+  \pIExt^{i}(\Xb) &=  p^{i}(\xb) + \xi\tensor{B}{_{l}^{i}}(\xb)p^{l}(\xb) + \landau(\xi^{2})^{i} \formPeriod
+\end{align}
+Somit lässt sich \( \pExt \) linear in \( \xi \) durch 
+\( \pb:\surf \rightarrow \Tangent\surf\times\Tangent\surf^{\bot} \cong \R^{3} \) abschätzen.
+
+Wir wollen nun die einzelnen Energiedichten nacheinander so abschätzen, dass wir \autoref{con:Convergence} ausnutzen können.
+
+\subsection{Splay}
+
+Die Divergenz eines Vektorfeldes ergibt sich aus der Kontraktion der covarianten Ableitungen.
+Bzgl. der obigen Dünnschichtmetrik erhalten wir
+\begin{align}
+  \nabla\cdot\pExt &= \tensor{\pIExt}{^{I}_{;I}}
+                    = \partial_{I} \pIExt^{I} + \tildeCh{I}{J}{I} \pIExt^{J}
+                    = \partial_{i} p^{i} + \tildeCh{i}{j}{i} p^{j} + \tildeCh{i}{\xi}{i} p^{\xi} + \landau(\xi)\\
+                   &= \partial_{i} p^{i} + \Ch{i}{j}{i} p^{i} - \tensor{B}{_{i}^{i}} p^{\xi} + \landau(\xi)
+                    = \tensor{p}{^{i}_{|i}} + \meanCurvature p^{\xi} + \landau(\xi)\\
+                   &= \div{\pb} + \meanCurvature p^{\xi} + \landau(\xi) 
+\end{align}
+und somit
+\begin{align}
+  f_{\text{splay}}[\pExt] &= \left( \nabla\cdot\pExt \right)^{2} 
+        = \left( \div{\pb} + \meanCurvature p^{\xi} \right)^{2} + \landau(\xi) \formPeriod
+\end{align}
+
+\subsection{Twist}
+
+Die Rotation eines Vektorfeldes erhält man durch doppelte Kontraktion des covarianten Levi-Civita-Tensors mit den contravarianten
+Ableitungen, d.h.
+\begin{align}
+  \left[ \nabla\times\pExt \right]_{I} = -\widetilde{E}_{IJK}\pIExt^{J;K}
+\end{align}
+Somit ergibt sich für die covariante Normalenkomponente der Rotation
+\begin{align}
+  \left[ \nabla\times\pExt \right]_{\xi} 
+        &= -\widetilde{E}_{\xi jk}\pIExt^{j;k}
+         = -E_{jk}G^{kL}\tensor{\pIExt}{^{j}_{;L}} + \landau(\xi)\\
+        &= -E_{jk}g^{kl}\tensor{p}{^{j}_{;l}} + \landau(\xi)\formPeriod
+\end{align}
+Mit
+\begin{align}
+  \tensor{p}{^{j}_{;l}} &= \partial_{l}p^{j} + \tildeCh{l}{I}{j}p^{I}
+                         = \partial_{l}p^{j} + \Ch{l}{i}{j}p^{i} + \tildeCh{l}{\xi}{j}p^{\xi}\\
+                        &= \tensor{p}{^{j}_{|l}} - \tensor{B}{_{l}^{j}}p^{\xi}
+                        \text{ auf }\surf
+\end{align}
+erhalten wir nun
+\begin{align}
+  \left[ \nabla\times\pExt \right]_{\xi}
+    &= -E_{jk}p^{j|k} + E_{jk}B^{jk}p^{\xi} + \landau(\xi)\\
+    &= \rot\pb + \landau(\xi)
+                                       \label{eq:rotnorm}
+\end{align}
+da wegen der Symmetrie des Shape-Operators \(  E_{jk}B^{jk} \) verschwindet.
+Für die covarianten Tangentialkomponenten der Rotation erhalten wir
+\begin{align}
+  \left[ \nabla\times\pExt \right]_{i}
+    &= -\widetilde{E}_{iJK}\pIExt^{J;K}
+     = -\left( \widetilde{E}_{ij\xi}\pIExt^{j;\xi} +  \widetilde{E}_{i\xi j}\pIExt^{\xi;j}\right) \\
+    &= E_{ij}\left(\pIExt^{\xi;j} - \pIExt^{j;\xi}\right) + \landau(\xi)_{i} \formPeriod
+\end{align}
+Die contravarianten Ableitungen ergeben sich aus
+\begin{align}
+  \pIExt^{\xi;j} &= G^{jK}\tensor{\pIExt}{^{\xi}_{;K}} = g^{jk}\tensor{p}{^{\xi}_{;k}} +  \landau(\xi)^{j}\\
+  \pIExt^{j;\xi} &= G^{\xi \xi}\tensor{\pIExt}{^{j}_{;\xi}} = 0 \text{ (n.V.)}
+\end{align}
+und
+\begin{align}
+  \tensor{p}{^{\xi}_{;k}} &= \partial_{k}p^{\xi} + \tildeCh{k}{L}{\xi}p^{L}
+                           =\partial_{k}p^{\xi} + \tildeCh{k}{l}{\xi}p^{l}\\
+                          &= \left( p^{\xi} \right)_{|k} + B_{kl}p^{l} \text{ auf }\surf \formPeriod
+\end{align}
+Somit ergeben sich die covarianten Tangentialkomponenten der Rotation zu
+\begin{align}
+  \left[ \nabla\times\pExt \right]_{i} &= E_{ij}\left( \left( p^{\xi} \right)^{|j} + \tensor{B}{^{j}_{l}}p^{l}\right)  + \landau(\xi)_{i}
+                                       \label{eq:rottang}\\
+                                       &= -\left[ \Rot p^{\xi} \right]_{i} - \left[ *B\pb \right]_{i} + \landau(\xi)_{i} \formPeriod
+\end{align}
+Für die Twist-Energiedichte erhalten wir nun
+\begin{align}
+  f_{\text{twist}}[\pExt] &= \left( p^{i}\left[ \Rot p^{\xi} \right]_{i} + p^{i}\left[ *B\pb \right]_{i}  
+                                    - p^{\xi}\rot\pb \right)^{2} + \landau(\xi) \\
+                          &= \left( B_{*\pb,\pb} + \left\langle \pb, \Rot p^{\xi} \right\rangle - p^{\xi}\rot\pb \right)^{2}
+                              + \landau(\xi)
+\end{align}
+mit \(  B_{*\pb,\pb} = B(*\pb,\pb) = (*\pb)B\pb = [*\pb]^{i}B_{ij}p^{j} \).
+\ingo{Es gilt \( \left\langle \pb, \Rot p^{\xi} \right\rangle = \left\langle *\pb, \Grad p^{\xi} \right\rangle \)
+und somit \(  B_{*\pb,\pb} + \left\langle \pb, \Rot p^{\xi} \right\rangle = \left\langle *\pb, B\pb + \Grad p^{\xi} \right\rangle \).}
+
+\subsection{Bend}
+
+Die covarianten Komponenten des Kreuzproduktes von \( \pExt \) mit der Rotation von \( \pExt \) berechnen sich allgemein durch
+\begin{align}
+  \left[ \pExt\times\left( \nabla \times \pExt \right) \right]_{I}
+    &= \widetilde{E}_{IJK} \pIExt^{J} \left[ \nabla \times \pExt \right]^{K} \formPeriod
+\end{align}
+Mit \eqref{eq:rottang} und der Identität 
+\( E_{ik}E_{jl}g^{lk} = E_{ik}\tensor{E}{_{j}^{k}} = g_{ij} \)
+ergibt sich für die Normalenkomponente
+\begin{align}
+  \left[ \pExt\times\left( \nabla \times \pExt \right) \right]_{\xi}
+    &= \widetilde{E}_{\xi j k} p^{j} G^{kl} \left[ \nabla \times \pExt \right]_{l} + \landau(\xi) \\
+    &= E_{jk}E_{li}g^{kl}p^{j}\left( \tensor{B}{^{i}_{m}}p^{m} + \left( p^{\xi} \right)^{|i} \right) + \landau(\xi) \\
+    &= -\left( p^{j}B_{jm}p^{m} + p^{j}\left( p^{\xi} \right)_{|j} \right) + \landau(\xi) \\
+    &= -\left( B_{\pb,\pb} + \left\langle \pb, \Grad p^{\xi} \right\rangle\right) + \landau(\xi)
+\end{align}
+und mit \eqref{eq:rottang} und \eqref{eq:rotnorm} die covarianten Tangentialkomponenten
+\begin{align}
+  \left[ \pExt\times\left( \nabla \times \pExt \right) \right]_{i}
+    &= \widetilde{E}_{i j \xi} p^{j} G^{\xi\xi} \left[ \nabla \times \pExt \right]_{\xi}
+        + \widetilde{E}_{i \xi j} p^{\xi} G^{jk} \left[ \nabla \times \pExt \right]_{k} + \landau(\xi)_{i} \\
+    &= E_{ij}p^{j}\rot\pb - p^{\xi}E_{ij}E_{kl}g^{jk}\left( \tensor{B}{^{l}_{m}}p^{m} + \left( p^{\xi} \right)^{|l} \right) + \landau(\xi)_{i} \\
+    &= -\left[ *p \right]_{i} \rot\pb + p^{\xi}\left( B_{im}p^{m} + \left(p^{\xi} \right)_{|i} \right) + \landau(\xi)_{i}
+    \formPeriod
+\end{align}
+Daraus erhalten wir mit \eqref{eq:norm} die Bend-Energiedichte
+\begin{align}
+   f_{\text{bend}}[\pExt] &= \left\| \pExt\times\left( \nabla \times \pExt \right) \right\|^{2}
+                            + \left[ \pExt\times\left( \nabla \times \pExt \right) \right]_{\xi}^{2} + \landau(\xi) \\
+                          &= \left\| -(\rot\pb)(*\pb) + p^{\xi}\left( \Grad p^{\xi} + B\pb \right) \right\|^{2}
+                              + \left( B_{\pb,\pb} + \left\langle \pb, \Grad p^{\xi} \right\rangle\right)^{2} + \landau(\xi)
+                                \formPeriod
+\end{align}
+
+\subsection{Normierung und Tangentialisierung}
+\begin{align}
+  f_{\text{norm}}[\pExt] &= \left( \left\| p \right\|^{2} + \left( p^{\xi} \right)^{2} - 1 +\landau(\xi) \right)^{2} 
+                          = \left( \left\| p \right\|^{2} + \left( p^{\xi} \right)^{2} - 1  \right)^{2}+\landau(\xi)\\
+  f_{\text{tan}}[\pExt] &= \left( \pIExt^{\xi} \right)^{2} = \left( p^{\xi} \right)^{2}
+\end{align}
+
+
+\subsection{Zusammenfassung und Spezialfälle}
+Mit \autoref{con:Convergence} erhalten wir nun
+\begin{align}
+    F^{\surf}\left[ \pb, \surf \right] 
+        &= \frac{1}{2}\int_{\surf} \Ki f^{\surf}_{\text{splay}}[\pb] + \Kii f^{\surf}_{\text{twist}}[\pb] +  \Kiii
+        f^{\surf}_{\text{bend}}[\pb]
+                                    +\frac{\Kn}{2}f^{\surf}_{\text{norm}}[\pb] + \Kt f^{\surf}_{\text{tan}}[\pb]\mu
+\end{align}
+mit
+\begin{align}
+  f^{\surf}_{\text{splay}}[\pb] &= \left( \div{\pb} + \meanCurvature p^{\xi} \right)^{2} \\
+  f^{\surf}_{\text{twist}}[\pb] &= \left( B_{*\pb,\pb} + \left\langle \pb, \Rot p^{\xi} \right\rangle - p^{\xi}\rot\pb \right)^{2}\\
+                          &\ingo{= \left(  \left\langle *\pb, B\pb + \Grad p^{\xi} \right\rangle - p^{\xi}\rot\pb \right)^{2}}\\
+  f^{\surf}_{\text{bend}}[\pb]  &= \left\| -(\rot\pb)(*\pb) + p^{\xi}\left( \Grad p^{\xi} + B\pb \right) \right\|^{2}
+                              + \left( B_{\pb,\pb} + \left\langle \pb, \Grad p^{\xi} \right\rangle\right)^{2}\\
+  f^{\surf}_{\text{norm}}[\pb]  &= \left( \left\| \pb \right\|^{2} + \left( p^{\xi} \right)^{2} - 1  \right)^{2} 
+                          \ingo{=\left( \left\| \pb \right\|^{2}_{\R^{3}}  - 1  \right)^{2} }\\
+  f^{\surf}_{\text{tan}}[\pb]   &= \left( p^{\xi} \right)^{2} \formComma
+\end{align}
+wobei alle in der Dünnschicht definierten \( f_{i} \) gegen die hier angegebenen Dichten \( f^{\surf}_{i} \) konvergieren.
+
+\ingo{Wir verzichten hier auf eine Diskussion der Art \( K_{i} \leadsto hK_{i} \) (vgl. Napoli) zur Anpassung der
+Parameterdimensionierung.}
+
+\ingo{Die Terme, die vom Shape-Operator abhängen, sind auch dem Ansatz \( \pExt_{;\xi}=0 \), bzw. insbesondere
+\( \partial_{\xi}\pIExt^{i} = [B\pb]^{i}+ \landau(\xi)^{i} \), für den Paralleltransport geschuldet. 
+Könnten die betroffenen Terme somit nicht auch als resultierende Scheinwirkungen des Ansatzes gedeutet werden?
+Schließlich beinhaltet dieser Ansatz einen Zwang an \( \pExt \).
+Wäre stattdessen \( \tensor{\pIExt}{^{i}_{;\xi}}= [B\pb]^{i} + \landau(\xi)^{i} \), d.h 
+\( \partial_{\xi}\pIExt^{i} = 2[B\pb]^{i}+ \landau(\xi)^{i} \),
+also \(  \pIExt^{i}(\Xb) =  p^{i}(\xb) + 2\xi\tensor{B}{_{l}^{i}}(\xb)p^{l}(\xb) + \landau(\xi^{2})^{i}\), 
+dann würden diese Terme verschwinden (s. Herleitung der Rotation) 
+und im speziellen das intrinsische
+Modell ohne \( B \)-Terme entstehen. Aber wie wäre dieser Ansatz zu motivieren?
+(Um eine Betrachtung der höheren Terme in \( \xi \) für eine Erleuchtung wird man dabei wohl nicht herum kommen.)}
+
+Spezialfälle:
+  \subsubsection{Nur Tangentialität ($ \pb^{\xi} = 0 $):}
+  \begin{align}
+      F^{\surf}\left[ \pb, \surf \right] 
+          &= \int_{\surf} \frac{\Ki}{2} \left( \div\pb \right)^{2} 
+                                     +\frac{\Kii}{2}  \left(B_{*\pb,\pb}\right)^{2}
+                                     +\frac{\Kiii}{2} \left( \left\| \pb \right\|^{2}(\rot\pb)^{2} + \left(B_{\pb,\pb}\right)^{2}\right)
+                                     +\frac{\Kn}{4} \left( \left\| \pb \right\|^{2}  - 1  \right)^{2} \mu
+  \end{align}
+  \paragraph{One-Constant (\( \Ki=\Kii=\Kiii=:\K \)):}
+  \begin{align}
+      F^{\surf}\left[ \pb, \surf \right] 
+          &= \int_{\surf} \frac{\K}{2} \left( \left( \div\pb \right)^{2} 
+                                         +\left\| \pb \right\|^{2}\left( (\rot\pb)^{2} + \left\| B\pb \right\|^{2} \right)\right)
+                                     +\frac{\Kn}{4} \left( \left\| \pb \right\|^{2}  - 1  \right)^{2} \mu \formComma
+  \end{align}
+  weil für \( \qb := B\pb = q^{\pb}\pb + q^{*\pb}(*\pb) \) 
+  und der \( \left\{ \pb, *\pb \right\} \)-Basis entsprechenden lokalen orthogonalen (Primal-Dual-)Metrik \( \overset{\pb}{g}_{ij} = \left\| \pb \right\|^{2}\delta_{ij} \)
+  mit \( i,j\in\left\{ \pb,*\pb \right\}_{\text{(syntaktisch)}} \) folgt, dass
+  \begin{align}
+    \left(B_{*\pb,\pb}\right)^{2} + \left(B_{\pb,\pb}\right)^{2} 
+        &= \left\langle *\pb,\qb \right\rangle^{2} + \left\langle \pb,\qb \right\rangle^{2}
+          = \left\| \pb \right\|^{4} \left( q^{\pb} \right)^{2} + \left\| \pb \right\|^{4}\left( q^{*\pb} \right)^{2}  \\
+         &= \left\| \pb \right\|^{4} \delta_{ij}q^{i}q^{j}
+          = \left\| \pb \right\|^{2}  \overset{\pb}{g}_{ij} q^{i}q^{j}
+          = \left\| \pb \right\|^{2} \left\| \qb \right\|^{2} \\
+         &= \left\| \pb \right\|^{2} \left\| B\pb \right\|^{2} \formPeriod
+  \end{align}
+
+  \ingo{Wie man sieht, stimmt durch die One-Constant-Voraussetzung die Dimensionierung nicht mehr.
+        Hier müsste in der entsprechenden Lektüre geprüft werden, inwiefern die Normierung schon in der 3D-Formulierung eingegangen ist.
+        Ansonsten wäre ein Ansatz \( \K := \Ki \approx \left\| \pb \right\|^{2}\Kii =  \left\| \pb \right\|^{2}\Kiii \)
+        schon von der Dimension der Dichte her viel sinniger als obige Annahme und wir erhalten das ''schönere'' Funktional
+        \begin{align}
+          F^{\surf}\left[ \pb, \surf \right] 
+          &= \int_{\surf} \frac{\K}{2} \left( \left( \div\pb \right)^{2} 
+                                         +(\rot\pb)^{2} + \left\| B\pb \right\|^{2} \right)
+                                     +\frac{\Kn}{4} \left( \left\| \pb \right\|^{2}  - 1  \right)^{2} \mu \formPeriod
+        \end{align}
+        }
+  
+  \subsubsection{One-Constant (\( \Ki=\Kii=\Kiii=:\K \)) allgemein:}
+  \begin{align}
+      F^{\surf}\left[ \pb, \surf \right] 
+          &= \int_{\surf} \frac{\K}{2} \left\{ 
+               \left( \div{\pb} + \meanCurvature p^{\xi} \right)^{2} 
+                                              +\left( \left\| \pb \right\|^{2} + \left( p^{\xi} \right)^{2} \right) 
+                                                 \left((\rot\pb)^{2} + \left\| \nabla p^{\xi} + B\pb \right\|^{2} \right)\right.\\
+          &\hspace{50pt}\left. -4p^{\xi}\rot\pb\left\langle *\pb,  \nabla p^{\xi} + B\pb\right\rangle \right\}\\
+          &\hspace{50pt} +\frac{\Kn}{4} \left( \left\| \pb \right\|^{2} + \left( p^{\xi} \right)^{2}  - 1  \right)^{2} 
+                        + \frac{\Kt}{2}\left( p^{\xi} \right)^{2} \mu \\
+          &\ingo{= \int_{\surf} \frac{\K}{2} \left\{ \left( \nabla\cdot\pExt \right)^{2} 
+                                  +\left\| \pExt \right\|^{2}_{\R^{3}}\left\| \nabla\times\pExt \right\|^{2}_{\R^{3}}
+                             -4p^{\xi}\rot\pb\left\langle *\pb,  \nabla p^{\xi} + B\pb\right\rangle \right\}}\\
+          &\ingo{\hspace{50pt} +\frac{\Kn}{4} \left( \left\| \pExt \right\|^{2}_{\R^{3}}  - 1  \right)^{2} 
+                        + \frac{\Kt}{2}\left( p^{\xi} \right)^{2} \mu
+                             }
+  \end{align}
+  \ingo{Ich vermute, dass der ''\( -4p^{\xi}\rot\pb\left\langle *\pb,  \nabla p^{\xi} + B\pb\right\rangle \)''-Term,
+        der zu gleichen Teilen aus der Twist- und Benddichte kommt, nicht richtig ist und 0 sein müsste.
+        Vermutlich ein Vorzeichenfehler, den ich aber gerade nicht finden kann.}
+    
+
+
+
+\end{document}

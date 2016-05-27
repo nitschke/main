@@ -27,7 +27,7 @@ ax1 = fig.add_subplot(111)
 #semilogy(stretch, ftime, label='Fusion Time', linestyle="-", marker="o", linewidth=lw)
 plot(stretch, ftime, label='Fusion Time', linestyle="-", marker="o", linewidth=lw)
 
-cFusion = 0.625 #(0.83325+0.8335)/2. # lin. interpol.
+cFusion = 0.635 #(0.83325+0.8335)/2. # lin. interpol.
 axvspan(0.0,cFusion, facecolor='0.5', alpha=0.5)
 text(0.4, 5, "Not Stable 4 Defects", horizontalalignment='center')
 text(1.4, 5, "Stable 4 Defects", horizontalalignment='center')
