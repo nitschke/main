@@ -541,6 +541,20 @@ DofEdgeVector DofEdgeVector::laplaceCoBeltrami() {
   return lCB;
 }
 
+DofEdgeVector DofEdgeVector::divOnEdgeCenter_averageOnEdgeVertices() const {
+  DofEdgeVector div(edgeMesh, "div");
+  div.set(0.0);
+
+  DOFVector<double> divOnVs = divergence();
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    div[*edgeIter] = 0.5 * (divOnVs[edgeIter->dofEdge.first] + divOnVs[edgeIter->dofEdge.second]);
+  }
+
+  return div;
+}
+
 DOFVector<double> DofEdgeVector::divergence() const {
   DOFVector<double> div(edgeMesh->getFeSpace(), name + "Div");
   div.set(0.0);

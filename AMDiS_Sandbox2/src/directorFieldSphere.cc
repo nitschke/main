@@ -270,23 +270,25 @@ public:
     Parameters::get(probStat->getName() + "->output->filename", csvfn);
     csvfn += "Energies.csv";
     csvout.open(csvfn.c_str(), ios::out);
-    csvout << "Time,Div,Rot,Norm,Full" << endl;
+    csvout << "Time,Div,Rot,B2,Norm,Full" << endl;
 
     
-    //double K0 = -1.0;
-    //Parameters::get("userParameter->K0", K0);
-    //TEST_EXIT(K0 >= 0.0)("K0 must be positive");
-    //MinusK0 = -K0;
+    double K0 = -1.0;
+    Parameters::get("userParameter->K0", K0);
+    TEST_EXIT(K0 >= 0.0)("K0 must be positive");
+    MinusK0 = -K0;
 
     double K1 = -1.0;
     Parameters::get("userParameter->K1", K1);
-    TEST_EXIT(K1 >= 0.0)("K1 must be positive");
-    MinusK1 = -K1;
+    TEST_EXIT(K1 >= 0.0 || K0 >= 0.0)("K1 must be positive");
+    //MinusK1 = -K1;
+    MinusK1 = -K0;
 
     double K3 = -1.0;
     Parameters::get("userParameter->K3", K3);
-    TEST_EXIT(K3 >= 0.0)("K3 must be positive");
-    MinusK3 = -K3;
+    TEST_EXIT(K3 >= 0.0 || K0 >= 0.0)("K3 must be positive");
+    //MinusK3 = -K3;
+    MinusK3 = -K0;
 
     Kn = -1.0;
     Parameters::get("userParameter->Kn", Kn);
@@ -315,9 +317,20 @@ public:
     double ne =  0.25 * Kn * normDeviat.L2NormSquared(); 
     double dive = evecPD.getDirichletEnergy(-0.5 * MinusK3, 0.0);
     double rote = evecPD.getDirichletEnergy(0.0           , -0.5 * MinusK1);
-    double energy = dive + rote + ne;
-    csvout << time << "," << dive << "," << rote << "," << ne << ","<< energy << endl;
 
+    Vector<DofEdgeVector* > sols(2);
+    sols[0] = &solPrimal;
+    sols[1] = &solDual;
+    DofEdgeVector solB2sol(statProb->getMesh(), "pB2p");
+    solB2sol.set(0.0);
+    for (int i = 0; i < 2; ++i) {
+        solB2sol += (*sols[i]).getLocalPDSharp() * (*sols[i]);
+    }
+    double B2e = -0.5 * MinusK0 * solB2sol.surfaceIntegration();
+
+    double energy = dive + rote + B2e + ne ;
+    csvout << time << "," << dive << "," << rote << "," << B2e << "," << ne << ","<< energy << endl;
+    
     if (step == 6)  oldEnergy = energy;
     if (step%2 == 1 && step > 6) { 
       cout << "### Energy: " << oldEnergy << " -> " << energy << " ###" << endl;
@@ -326,32 +339,32 @@ public:
 
       double eps = 2.E-3;
       double tauMax = 10.0;
-      if (eder < eps && tau < tauMax && eder > -1.e-8) {
-        t -= tau; // undo in closeTimestep
-        tau *= 2.0;
-        if (tau > tauMax) tau = tauMax;
-        inv_tau = 1. / tau;
-        t += tau;
-        cout << "### tau -> " << tau << " (coarsening) ###" << endl;
-      }
+      //if (eder < eps && tau < tauMax && eder > -1.e-8) {
+      //  t -= tau; // undo in closeTimestep
+      //  tau *= 2.0;
+      //  if (tau > tauMax) tau = tauMax;
+      //  inv_tau = 1. / tau;
+      //  t += tau;
+      //  cout << "### tau -> " << tau << " (coarsening) ###" << endl;
+      //}
 
       double eps2 = 1.E-2;
       double tauMin = 5.e-3; //=0.01*2^(-6)
-      if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
-        t -= tau; // undo in closeTimestep
-        tau /= 8.0;
-        if (tau < tauMin) tau = tauMin;
-        inv_tau = 1. / tau;
-        t += tau;
-        cout << "### tau -> " << tau << " (refining) ###" << endl;
-      }
+      //if ((eder > eps2 || eder < -1.e-8) && tau > tauMin) {
+      //  t -= tau; // undo in closeTimestep
+      //  tau /= 8.0;
+      //  if (tau < tauMin) tau = tauMin;
+      //  inv_tau = 1. / tau;
+      //  t += tau;
+      //  cout << "### tau -> " << tau << " (refining) ###" << endl;
+      //}
       oldEnergy = energy;
 
       //TEST_EXIT(abs(eder) > 1.0e-15)("STAGNATION EXIT\n");
-      if (abs(eder) < 1.0e-15) {
-        statProb->writeSolution(t-tau);
-        ERROR_EXIT("STAGNATION EXIT\n");
-      }
+      //if (abs(eder) < 1.0e-15) {
+      //  statProb->writeSolution(t-tau);
+      //  ERROR_EXIT("STAGNATION EXIT\n");
+      //}
     }
   }
 
@@ -365,6 +378,10 @@ public:
 
   DofEdgeVector* getSolDual() {
     return &solDual;
+  }
+
+  double* getMinusK0Ptr() {
+    return &MinusK0;
   }
 
   double* getMinusK1Ptr() {
@@ -390,6 +407,7 @@ private:
   DofEdgeVector solPrimal;
   DofEdgeVector solDual;
 
+  double MinusK0;
   double MinusK1;
   double MinusK3;
   double Kn;
@@ -434,10 +452,10 @@ int main(int argc, char* argv[])
 
   DofEdgeVectorPD initSol(edgeMesh, "initSol");
   Noise_d noiseFun(42);
-  initSol.set(&noiseFun);
+  //initSol.set(&noiseFun);
   //initSol.set(new DZPX_d());
   //initSol.bakeDual();
-  //initSol.interpol(new Michael(0.01));
+  initSol.interpol(new Michael(0.01));
   //initSol.interpol(new TwistQP());
   initSol.normalize(1.E-10);
   initSol.writeSharpOnEdgesFile("output/initSolSharp.vtu");
@@ -447,13 +465,13 @@ int main(int argc, char* argv[])
 
   EdgeOperator LaplaceB;
   LaplaceB.addTerm(new LaplaceBeltramiAtEdges());
-  decSphere.addMatrixOperator(LaplaceB, 0, 0, sphereInstat.getMinusK3Ptr());
-  decSphere.addMatrixOperator(LaplaceB, 1, 1, sphereInstat.getMinusK1Ptr());
+  decSphere.addMatrixOperator(LaplaceB, 0, 0, sphereInstat.getMinusK0Ptr());
+  decSphere.addMatrixOperator(LaplaceB, 1, 1, sphereInstat.getMinusK0Ptr());
 
   EdgeOperator LaplaceCB;
   LaplaceCB.addTerm(new LaplaceCoBeltramiAtEdges());
-  decSphere.addMatrixOperator(LaplaceCB, 0, 0, sphereInstat.getMinusK1Ptr());
-  decSphere.addMatrixOperator(LaplaceCB, 1, 1, sphereInstat.getMinusK3Ptr());
+  decSphere.addMatrixOperator(LaplaceCB, 0, 0, sphereInstat.getMinusK0Ptr());
+  decSphere.addMatrixOperator(LaplaceCB, 1, 1, sphereInstat.getMinusK0Ptr());
 
   //// explicite -> need little timesteps
   //EdgeOperator Scale;
@@ -488,6 +506,9 @@ int main(int argc, char* argv[])
   Id.addTerm(new IdentityAtEdges(-1.0));
   decSphere.addMatrixOperator(Id, 0, 0, sphereInstat.getKnPtr());
   decSphere.addMatrixOperator(Id, 1, 1, sphereInstat.getKnPtr());
+  //KnB2p = Knp = -(-Knp)
+  decSphere.addMatrixOperator(Id, 0, 0, sphereInstat.getMinusK0Ptr());
+  decSphere.addMatrixOperator(Id, 1, 1, sphereInstat.getMinusK0Ptr());
 
   EdgeOperator PrimalPrimal;
   PrimalPrimal.addTerm(new EdgeVec2AndEdgeAtEdges(sphereInstat.getSolPrimal(), sphereInstat.getSolPrimal(), new Prod2()));

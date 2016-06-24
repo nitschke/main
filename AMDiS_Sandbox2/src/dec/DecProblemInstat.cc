@@ -1,6 +1,8 @@
 #include "DecProblemInstat.h"
+#include "DecProblemStat.h"
 #include "EdgeOperator.h"
 #include "VertexOperator.h"
+#include "DofVertexVector.h"
 
 using namespace std;
 using namespace AMDiS;

@@ -97,3 +97,17 @@ target_link_libraries(interpolTestSphere ${BASIS_LIBS} dec)
 add_executable(linMapping src/linMapping.cc)
 target_link_libraries(linMapping ${BASIS_LIBS} dec)
 
+add_executable(laplaceConvergenceTest src/LaplaceConvergenceTest.cc)
+target_link_libraries(laplaceConvergenceTest ${BASIS_LIBS} dec)
+
+add_executable(directionDerivationTest src/DirectionDerivationTest.cc)
+target_link_libraries(directionDerivationTest ${BASIS_LIBS} dec)
+
+add_executable(gradDivProblemTest src/GradDivProblemTest.cc)
+target_link_libraries(gradDivProblemTest ${BASIS_LIBS} dec)
+
+add_executable(rotFunTest src/RotFunTest.cc)
+target_link_libraries(rotFunTest ${BASIS_LIBS} dec)
+
+add_executable(phiFlatTest src/phiFlatTest.cc)
+target_link_libraries(phiFlatTest ${BASIS_LIBS} dec)

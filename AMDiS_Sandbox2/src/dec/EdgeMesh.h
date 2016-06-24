@@ -8,12 +8,6 @@
 using namespace std;
 namespace AMDiS { namespace dec {
 
-typedef enum {
-  FIRSTVERTEX = 1,
-  SECONDVERTEX = 2,
-  LEFTFACE = 3,
-  RIGHTFACE = 4
-} EdgeRingIteratorType;
 
 /*                  /\
  *                 /  \
@@ -174,6 +168,12 @@ public:
 
   // volume of the edge skeleton (Vol(|K^(1)|)...length of all edges)
   double getVol() const;
+
+  // maximum (outer) diameter of all faces
+  double getMaxFaceDiameter() const;
+
+  // maximum diameter(=length) of all edges
+  double getMaxEdgeDiameter() const;
 
   //only for debuging
   void printVolInfos(bool ePLen = false, bool eDLen = false) {

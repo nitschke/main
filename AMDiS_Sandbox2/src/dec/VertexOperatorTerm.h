@@ -3,7 +3,8 @@
 
 #include "Dec_fwd.h"
 #include "DecOperatorTerm.h"
-#include "EdgeMesh.h"
+
+using namespace std;
 
 namespace AMDiS { namespace dec {
 
@@ -76,8 +77,20 @@ private:
   DOFVector<double> *dv;
 };
 
+
+
+// < div(alpha) , vertex >
+class  DivAtVertices: public VertexOperatorTerm {
+public:
+  DivAtVertices(double f = 1.0) 
+      : VertexOperatorTerm(EDGESPACE), fac(f) {name="DivAtVertices";};
+  
+  vertexRowValMapper evalRow(const EdgeElement &eel, VertexPosition pos, double factor);
+
+protected:
+  double fac;
+};
+
 }}
-
-
 
 #endif

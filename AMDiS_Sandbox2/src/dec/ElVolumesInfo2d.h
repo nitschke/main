@@ -50,6 +50,16 @@ class ElVolumesInfo2d {
       return 3 - getLocal(dofEdge.first) - getLocal(dofEdge.second);
     }
 
+    DegreeOfFreedom  getOppVertexDof(DofEdge dofEdge) const {
+      FUNCNAME("ElVolumesInfo2d::getOppVertexGlobal(DofEdge dofEdge)")
+      int oppIndex = getOppVertexLocal(dofEdge);
+      std::map<DegreeOfFreedom, int>::const_iterator it = dofToLocal.begin();
+      for (; it != dofToLocal.end(); ++it) {
+        if (it->second == oppIndex) return it->first;
+      }
+      ERROR_EXIT("Das haette nun wirklich nicht passieren duerfen!");
+    }
+
     double getEdgeLen(DofEdge dofEdge) const {
       return getOppEdgeLen(getOppVertexLocal(dofEdge));
     }

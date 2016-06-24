@@ -2,7 +2,6 @@
 #define MESHMOVER_H
 
 #include "Dec_fwd.h"
-#include "EdgeMesh.h"
 
 using namespace std;
 

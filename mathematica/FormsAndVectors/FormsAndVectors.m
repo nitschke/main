@@ -10,6 +10,8 @@ LocalVecFromPara::usage = "Local (u,v)-Vector (tangential part) of a given (x,y,
 GlobalTensorFromPara::usage = "give the global (euclidian) representation of a local tensor";
 LocalTensorFromPara::usage = "give the local representation of a global tensor";
 
+CPPExpression::usage = "convert expression to C++";
+
 GaussCurvFromMetric::usage = "computes the Gauss curvature from metric tensor";
 
 Wedge11::usage = "Wedge product of two 1-forms";
@@ -99,6 +101,8 @@ LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap
 															gInv=Inverse[MetricFromPara[paraMap,x,y]]},
 					gInv.Table[DX[[i]].globT.DX[[j]],{i,2},{j,2}].gInv]
 
+
+CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"sqrt"}]
 
 GaussCurvFromMetric[u_,v_,g_] := Module[
 {T1={{-D[g[[1,1]],v,v]/2+D[g[[1,2]],u,v]-D[g[[2,2]],u,u]/2, D[g[[1,1]],u]/2, D[g[[1,2]],u]-D[g[[1,1]],v]/2},

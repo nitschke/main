@@ -89,6 +89,12 @@ public:
   // - d * delta = grad * div
   DofEdgeVector laplaceCoBeltrami();
 
+  DofEdgeVector divOnEdgeCenter() const {
+    return divOnEdgeCenter_averageOnEdgeVertices();
+  }
+
+  DofEdgeVector divOnEdgeCenter_averageOnEdgeVertices() const;
+
   DOFVector<double> divergence() const;
 
   // l2-Norm -> L2-Norm on K^(1)
@@ -108,9 +114,9 @@ public:
     return errVec.l2Norm() / edgeMesh->getVol();
   }
 
-  double absMax() {
+  double absMax() const {
     double max = -1.0;
-    vector<double>::iterator valIter = edgeVals.begin();
+    vector<double>::const_iterator valIter = edgeVals.begin();
     for (; valIter != edgeVals.end(); ++valIter) {
       double absVal = abs(*valIter);
       if (absVal > max) max = absVal;
@@ -122,6 +128,12 @@ public:
     DofEdgeVector errVec(*this);
     errVec -= sol;
     return errVec.absMax();
+  }
+
+  double errorMaxRel(const DofEdgeVector &sol) {
+    DofEdgeVector errVec(*this);
+    errVec -= sol;
+    return errVec.absMax() / sol.absMax();
   }
 
   // rise indices resp. to local metric gPD = |e|^2 * delta_ij, 
@@ -141,9 +153,9 @@ public:
   // we approx. the integral of the vals with a e *e decomposition of the surface
   // this makes sence for e.q. scalar values, like norms, on the Edges
   // i.e. Int_M(f^2) approx Sum_edges( 0.5 * |e| * |*e| * (f_e)^2 )
-  double L2NormSquared() {
+  double L2NormSquared() const {
     double norm2 = 0.0;
-    vector<double>::iterator valIter = edgeVals.begin();
+    vector<double>::const_iterator valIter = edgeVals.begin();
     vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
     for (; valIter != edgeVals.end(); ++valIter, ++edgeIter){
       DofEdge dofe = edgeIter->dofEdge;
@@ -154,6 +166,19 @@ public:
     }
     return norm2;
   }
+
+  double errorL2(const DofEdgeVector &sol) {
+    DofEdgeVector errVec(*this);
+    errVec -= sol;
+    return sqrt(errVec.L2NormSquared());
+  }
+
+  double errorL2Rel(const DofEdgeVector &sol) {
+    DofEdgeVector errVec(*this);
+    errVec -= sol;
+    return sqrt(errVec.L2NormSquared() / sol.L2NormSquared());
+  }
+
 
   // be careful with the meaning of the result.
   // we approx. the integral of the vals with a e *e decomposition of the surface
@@ -355,9 +380,19 @@ public:
 
   DofEdgeVector getNormOnEdges() const;
 
+  //static DofEdgeVector getNormOnEdges(const DofEdgeVector &primal, const DofEdgeVector &dual) {
+  //  DofEdgeVectorPD pdvec(primal, dual);
+  //  return pdvec.getNormOnEdges();
+  //}
+
   //TODO: implement DofEdgeVector with template argument 
   //      and use DofEdgeVector<WorldVector<double> > for rised indizes on Edges and file writing 
   void writeSharpOnEdgesFile(string name);
+
+  static void writeSharpOnEdgeFile(const DofEdgeVector &primal, const DofEdgeVector &dual, string name) {
+    DofEdgeVectorPD pdvec(primal, dual);
+    pdvec.writeSharpOnEdgesFile(name);
+  }
 
   double getDirichletEnergy(double divFac = 1.0, double rotFac = 1.0) {
     makePrimal();

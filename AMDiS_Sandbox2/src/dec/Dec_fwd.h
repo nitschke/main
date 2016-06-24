@@ -6,14 +6,16 @@
 namespace AMDiS {
   
   namespace dec {
+    class DofEdgeVector;
+    class DofVertexVector;
     class AnimationWriter;
     class DecOperator;
     class DecOperatorTerm;
     class DecProblemStat;
     class DecProblemInstat;
-    class DofEdgeVector;
     class EdgeMesh;
     class ElVolumesInfo2d;
+    class SolverInterface;
 
     struct EdgeElement;
 
@@ -23,6 +25,13 @@ namespace AMDiS {
       EDGESPACE = 2,
       FACESPACE = 3
     } SpaceType;
+
+    typedef enum {
+      FIRSTVERTEX = 1,
+      SECONDVERTEX = 2,
+      LEFTFACE = 3,
+      RIGHTFACE = 4
+    } EdgeRingIteratorType;
 
     //typedef  mtl::compressed2D<double> SparseMatrix;
     //typedef  mtl::dense_vector<double> DenseVector;

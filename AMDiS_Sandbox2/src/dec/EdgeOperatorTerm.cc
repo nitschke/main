@@ -167,3 +167,13 @@ edgeRowValMapper NormSquaredEdgeVecAtEdges::evalRow(const EdgeElement &eel, doub
   return rowMapper;
 }
 
+//<dh,e> = h(v_2) - h(v_1)
+edgeRowValMapper ExteriorDerivativeAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  double f = fac * factor;
+  rowMapper[eel.dofEdge.second] = f;
+  rowMapper[eel.dofEdge.first] = -f;
+
+  return rowMapper;
+}
+

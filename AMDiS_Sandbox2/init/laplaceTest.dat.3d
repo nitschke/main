@@ -1,0 +1,23 @@
+dimension of world:      3
+
+sphereMesh->macro file name:       ./macro/sphere/sphereIko800k.3d
+%sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250,800,3200 
+sphereMesh->global refinements:    0
+sphereMesh->check:    0
+
+sphere->mesh:                    sphereMesh
+sphere->dim:                     2
+sphere->polynomial degree[0]:    1
+sphere->components:              1
+
+sphere->solver:                tfqmr %bicgstab_ell
+sphere->solver->ell:           2
+sphere->solver->max iteration: 10000
+sphere->solver->info:          8
+sphere->solver->tolerance:     1.e-8
+sphere->solver->left precon:   diag
+
+sphere->output->filename:         output/sphere
+sphere->output->edgeForms sharp:        1 
+sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
+sphere->output->edgeForms flat:        0 

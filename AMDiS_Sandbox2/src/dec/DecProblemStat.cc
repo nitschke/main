@@ -2,6 +2,10 @@
 #include "DecOperator.h"
 #include "EdgeOperator.h"
 #include "VertexOperator.h"
+#include "SolverInterface.h"
+#include "AnimationWriter.h"
+#include "DofVertexVector.h"
+#include "DofEdgeVector.h"
 
 
 using namespace AMDiS;
@@ -64,8 +68,8 @@ void DecProblemStat::addMatrixOperator(DecOperator *op, int row, int col, double
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
   if (!spaceTypes[col]) spaceTypes[col] = colType; 
 
-  TEST_EXIT(spaceTypes[row] == rowType)("Wrong SpaceType for the row at adding matrix operator");
-  TEST_EXIT(spaceTypes[col] == colType)("Wrong SpaceType for the col at adding matrix operator");
+  TEST_EXIT(spaceTypes[row] == rowType)("Wrong SpaceType for the row at adding matrix operator in (%d,%d) \n", row, col);
+  TEST_EXIT(spaceTypes[col] == colType)("Wrong SpaceType for the col at adding matrix operator in (%d,%d) \n", row, col);
 
   matrixOperators[row][col].push_back(make_pair(op,factor));
 }
@@ -80,7 +84,7 @@ void DecProblemStat::addVectorOperator(DecOperator *op, int row, double *factor)
   
   if (!spaceTypes[row]) spaceTypes[row] = rowType; 
 
-  TEST_EXIT(spaceTypes[row] == rowType)("Wrong SpaceType for the row at adding vector operator");
+  TEST_EXIT(spaceTypes[row] == rowType)("Wrong SpaceType for the row at adding vector operator in (%d) \n", row);
 
   vectorOperators[row].push_back(make_pair(op,factor));
 }
@@ -120,11 +124,19 @@ void DecProblemStat::assembleSystem() {
   for (int r = 0; r < nComponents; ++r) {
     int ohcol = 0; //overhead
     for( int c = 0; c < nComponents; ++c) {
+      //TODO: only the rowspacetype looks that is neccesarry for the choice of assembling, but proof this in detail
       switch(spaceTypes[r] + 3*spaceTypes[c]) {
         case 4: //VERTEXSPACE x VERTEXSPACE
             assembleMatrixBlock_VertexVertex(matrixOperators[r][c], ohrow, ohcol);
             break;
         case 8: //EDGESPACE x EDGESPACE
+            //cout << "\nAssemble Matrixblock (" << r << "," << c << "):" <<  endl;
+            assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
+            break;
+        case 7: //VERTEXSPACE x EDGESPACE
+            assembleMatrixBlock_VertexVertex(matrixOperators[r][c], ohrow, ohcol);
+            break;
+        case 5: //EDGESPACE x VERTEXSPACE
             //cout << "\nAssemble Matrixblock (" << r << "," << c << "):" <<  endl;
             assembleMatrixBlock_EdgeEdge(matrixOperators[r][c], ohrow, ohcol); 
             break;
@@ -181,6 +193,8 @@ inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<pair<DecOperator*,
   }
 }
 
+//TODO: If there's a vertexmesh (with connected edge relations) implemented, then use vertex iterations 
+//      and change also vertex operators in the same manner like the edge operators
 inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<pair<DecOperator*,double*> > &ops, int ohrow, int ohcol) {
   typedef typename mtl::Collection<SparseMatrix>::value_type vtype;
   mtl::matrix::inserter<SparseMatrix, update_plus<vtype> > insSysMat(*sysMat);
@@ -221,6 +235,7 @@ inline void DecProblemStat::assembleMatrixBlock_VertexVertex(list<pair<DecOperat
 }
 
 //act on uhold if is set in operator
+//TODO: see assembleMatrixBlock_VertexVertex
 inline void DecProblemStat::assembleVectorBlock_Vertex(list<pair<DecOperator*, double*> > &ops, int ohrow) {
   list<pair<DecOperator*, double*> >::const_iterator opIter = ops.begin(); 
   for (; opIter != ops.end(); ++opIter) {
@@ -422,5 +437,33 @@ void DecProblemStat::solveDeprecated() {
   }
 
   MSG("solving needed %.5f seconds\n", t.elapsed());
+}
+
+
+DofEdgeVector DecProblemStat::getSolution(int i) {
+    TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
+    TEST_EXIT(fullSolution)("there is no solution ");
+    TEST_EXIT(spaceTypes[i] == EDGESPACE)("Wrong SpaceType\n");
+    
+    DofEdgeVector soli(emesh, "Sol_" + boost::lexical_cast<std::string>(i));
+    int oh = 0;
+    for (int k = 0; k < i; ++k) oh += ns[k];
+    mtl::irange range(oh, oh + ns[i]);
+    soli.set((*fullSolution)[range]);
+    return soli;
+}
+
+DofVertexVector  DecProblemStat::getVertexSolution(int i) {
+    TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
+    TEST_EXIT(fullSolution)("there is no solution ");
+    TEST_EXIT(spaceTypes[i] == VERTEXSPACE)("Wrong SpaceType\n");
+    
+    DofVertexVector soli(emesh, "Sol_" + boost::lexical_cast<std::string>(i));
+    int oh = 0;
+    for (int k = 0; k < i; ++k) oh += ns[k];
+    for (int k = 0; k < ns[i]; k++) {
+      soli[k] = (*fullSolution)[oh + k];
+    }
+    return soli;
 }
 

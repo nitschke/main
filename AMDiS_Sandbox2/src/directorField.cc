@@ -181,7 +181,10 @@ class Noise_d : public BinaryAbstractFunction<double, WorldVector<double>, World
 {
 public:
   Noise_d(int seed, double fac = 1.0) : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {
-    srand(seed); f = fac;
+    FUNCNAME("Noise_d::Noise_d(int seed, double fac = 1.0)");
+    srand(seed); 
+    f = fac;
+    MSG("created noisy director Field with seed = %d and fac = %f \n", seed, fac);
   }
 
   /// Implementation of AbstractFunction::operator().
@@ -632,7 +635,7 @@ public:
         cout << "### tau -> " << tau << " (coarsening) ###" << endl;
       }
 
-      if ((eder > epsRefine || eder < -1.e-6) && tau > tauMin) {
+      if ((eder > epsRefine || eder < -1.e-3) && tau > tauMin) {
         t -= tau; // undo in closeTimestep
         tau *= facRefine;
         if (tau < tauMin) tau = tauMin;

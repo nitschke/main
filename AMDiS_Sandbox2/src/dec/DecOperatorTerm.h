@@ -1,6 +1,8 @@
 #ifndef DECOPERATORTERM_H
 #define DECOPERATORTERM_H
 
+#include "Dec_fwd.h"
+
 namespace AMDiS { namespace dec {
 
 

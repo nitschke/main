@@ -2,7 +2,6 @@
 #define DECPROBLEMINSTAT_H
 
 #include "Dec_fwd.h"
-#include "DecProblemStat.h"
 
 using namespace std;
 namespace AMDiS { namespace dec {

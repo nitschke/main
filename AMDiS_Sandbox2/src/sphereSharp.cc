@@ -1,11 +1,10 @@
-#include "AMDiS.h"
-#include "EdgeMesh.h"
-#include "DofEdgeVector.h"
+#include "Dec.h"
 #include "io/VtkVectorWriter.h"
 #include "io/ElementFileWriter.h"
 
 using namespace std;
 using namespace AMDiS;
+using namespace dec;
 
 // ===========================================================================
 // ===== function definitions ================================================
@@ -169,7 +168,7 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
 
-  const EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
+  EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
   //cout << *edgeMesh << endl;
 
  

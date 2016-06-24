@@ -2,12 +2,11 @@
 #define EXTREMEVALUETRACKER_H
 
 #include "Dec_fwd.h"
-#include "DofEdgeVector.h"
 #include "DecProblemStat.h"
 
 using namespace std;
 namespace AMDiS { namespace dec {
-
+class DofVertexVector;
 class ExtremeValueTracker {
 public:
 

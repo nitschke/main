@@ -121,6 +121,29 @@ map<int, pair<ElVolumesInfo2d*, vector<EdgeElement> > > EdgeMesh::getFaceEdges()
   return faceEdges;
 }
 
+//doppelte arbeit!
+double EdgeMesh::getMaxFaceDiameter() const {
+  double hMax = 0.0;
+  for (vector<EdgeElement>::const_iterator edgeIter = edges.begin();
+       edgeIter != edges.end(); ++edgeIter) {
+    double hLeft = edgeIter->infoLeft->getDiameter();  
+    double hRight = edgeIter->infoRight->getDiameter();   
+    if (hLeft > hMax) hMax = hLeft;
+    if (hRight > hMax) hMax = hRight;
+  }
+  return hMax;
+}
+
+double EdgeMesh::getMaxEdgeDiameter() const {
+  double hMax = 0.0;
+  for (vector<EdgeElement>::const_iterator edgeIter = edges.begin();
+       edgeIter != edges.end(); ++edgeIter) {
+    double h = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);  
+    if (h > hMax) hMax = h;
+  }
+  return hMax;
+}
+
 double EdgeMesh::getVol() const {
   double vol = 0.0;
   for (vector<EdgeElement>::const_iterator edgeIter = edges.begin();

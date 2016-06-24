@@ -1,4 +1,5 @@
 #include "MeshMover.h"
+#include "EdgeMesh.h"
 
 using namespace AMDiS;
 using namespace dec;

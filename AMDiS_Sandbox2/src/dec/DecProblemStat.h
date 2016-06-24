@@ -2,12 +2,12 @@
 #define DECPROBLEMSTAT_H
 
 #include "Dec_fwd.h"
-#include "DofEdgeVector.h"
 #include "SolverInterface.h"
-#include "AnimationWriter.h"
+#include "DofEdgeVector.h"
 
 using namespace std;
 namespace AMDiS { namespace dec {
+
 
 class DecProblemStat {
 public:
@@ -57,18 +57,7 @@ public:
   void solve();
   void solveDeprecated();
 
-  DofEdgeVector getSolution(int i) {
-    TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
-    TEST_EXIT(fullSolution)("there is no solution ");
-    TEST_EXIT(spaceTypes[i] == EDGESPACE)("Wrong SpaceType\n");
-    
-    DofEdgeVector soli(emesh, "Sol_" + boost::lexical_cast<std::string>(i));
-    int oh = 0;
-    for (int k = 0; k < i; ++k) oh += ns[k];
-    mtl::irange range(oh, oh + ns[i]);
-    soli.set((*fullSolution)[range]);
-    return soli;
-  }
+  DofEdgeVector getSolution(int i = 0);
 
   DofEdgeVector getEdgeSolution(int i) {return getSolution(i);}
 
@@ -81,19 +70,7 @@ public:
     return sols;
   }
 
-  DOFVector<double> getVertexSolution(int i) {
-    TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
-    TEST_EXIT(fullSolution)("there is no solution ");
-    TEST_EXIT(spaceTypes[i] == VERTEXSPACE)("Wrong SpaceType\n");
-    
-    DOFVector<double> soli(emesh->getFeSpace(), "Sol_" + boost::lexical_cast<std::string>(i));
-    int oh = 0;
-    for (int k = 0; k < i; ++k) oh += ns[k];
-    for (int k = 0; k < ns[i]; k++) {
-      soli[k] = (*fullSolution)[oh + k];
-    }
-    return soli;
-  }
+  DofVertexVector getVertexSolution(int i);
 
   void writeSolution(string nameAddition = "");
 

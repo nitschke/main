@@ -125,6 +125,17 @@ private:
   AbstractFunction<double,double> *func;
 };
 
+// < df , edge >
+class  ExteriorDerivativeAtEdges: public EdgeOperatorTerm {
+public:
+  ExteriorDerivativeAtEdges(double f = 1.0) 
+      : EdgeOperatorTerm(VERTEXSPACE), fac(f) {name = "ExteriorDerivativeAtEdges";};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+};
 
 
 }}
