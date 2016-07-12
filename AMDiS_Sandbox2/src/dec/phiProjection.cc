@@ -32,7 +32,7 @@ namespace AMDiS {
 
   WorldVector<double> PhiProject::getNormal(const WorldVector<double> &x) {
      WorldVector<double> evalGradPhi = (*gradPhi)(x);
-     return (1./sqrt(evalGradPhi*evalGradPhi)) * evalGradPhi;
+     return (1./std::sqrt(evalGradPhi*evalGradPhi)) * evalGradPhi;
   }
 
 }

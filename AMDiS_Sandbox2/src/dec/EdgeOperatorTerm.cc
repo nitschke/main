@@ -177,3 +177,57 @@ edgeRowValMapper ExteriorDerivativeAtEdges::evalRow(const EdgeElement &eel, doub
   return rowMapper;
 }
 
+
+/*            w2 
+ *           /^\
+ *          / | \
+ *         / h|  \
+ *       v1------>v2
+ *         \ e|  /
+ *          \ | /
+ *           \|/
+ *            w1
+ */
+// <*df,e> = (1 / sqrt(|g|))(<df,e>(e.h) - <df,h>|e|^2)
+// |g| = |e|^2 |h|^2 - (e.h)^2
+// e = [v1,v2] ; h = [w1 , w2]
+edgeRowValMapper RotAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  double f = fac * factor;
+  
+  DegreeOfFreedom dofv1 = eel.dofEdge.first;
+  DegreeOfFreedom dofv2 = eel.dofEdge.second;
+  DegreeOfFreedom dofw2 = eel.infoLeft->getOppVertexDof (eel.dofEdge);
+  DegreeOfFreedom dofw1 = eel.infoRight->getOppVertexDof(eel.dofEdge);
+
+  WorldVector<double> evec = eel.infoLeft->getEdge(eel.dofEdge);
+  WorldVector<double> hvec = eel.infoLeft->getCoordFromGlobalIndex(dofw2)
+                            -eel.infoRight->getCoordFromGlobalIndex(dofw1);
+
+  double ee = evec * evec;
+  double hh = hvec * hvec;
+  double eh = evec * hvec;
+
+  double sqg= std::sqrt(ee*hh - eh*eh); // sqrt(|g|)
+  // scale
+  double ce = f * eh / sqg;
+  double ch = -f * ee / sqg;
+
+  rowMapper[dofv1] = -ce;
+  rowMapper[dofv2] =  ce;
+  rowMapper[dofw1] = -ch;
+  rowMapper[dofw2] =  ch;
+
+  return rowMapper;
+}
+
+// < f alpha , edge > = 0.5 <alpha, edge> ( <f,v1> + <f,v2> )
+edgeRowValMapper AverageVertexAndEdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  double f = 0.5 * (*evec)[eel] * fac * factor;
+
+  rowMapper[eel.dofEdge.second] = f;
+  rowMapper[eel.dofEdge.first] = f;
+
+  return rowMapper;
+}

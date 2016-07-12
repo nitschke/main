@@ -38,11 +38,14 @@ public:
   
   void assembleSystem();
 
+  void setValAtDof(int comp, DegreeOfFreedom dof, double val);
+
 
   const SparseMatrix getSysMat() {
     TEST_EXIT(sysMat)("sysMat is not initialized\n");
     return *sysMat;
   }
+
 
   const DenseVector getRhs() {
     TEST_EXIT(rhs)("rhs is not initialized\n");
@@ -55,7 +58,7 @@ public:
   }
 
   void solve();
-  void solveDeprecated();
+  //void solveDeprecated();
 
   DofEdgeVector getSolution(int i = 0);
 

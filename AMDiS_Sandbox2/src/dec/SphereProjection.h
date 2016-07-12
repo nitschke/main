@@ -37,7 +37,7 @@ namespace AMDiS {
       /// Implementation of AbstractFunction::operator().
       WorldVector<double> operator()(const WorldVector<double>& x) const 
       {
-        return x / sqrt(x * x);
+        return x / std::sqrt(x * x);
       }
    };
 
@@ -50,7 +50,7 @@ namespace AMDiS {
     /// Implementation of AbstractFunction::operator().
     WorldMatrix<double> operator()(const WorldVector<double>& x) const 
     {
-      double normx = sqrt(x * x); // ||x||
+      double normx = std::sqrt(x * x); // ||x||
       WorldMatrix<double> J;
       J.vecProduct(x, x); // xXx
       J *= - 1.0 / normx / normx; // - xXx/||x||^2

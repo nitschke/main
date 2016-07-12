@@ -3,6 +3,7 @@
 
 #include "Dec_fwd.h"
 #include "EdgeMesh.h"
+#include "DofVertexVector.h"
 #include "io/VtkVectorWriter.h"
 
 
@@ -69,11 +70,11 @@ public:
 
   void interpol(AbstractFunction<WorldVector<double>, WorldVector<double> > *vec);
 
-  DOFVector< WorldVector<double> > getSharpEdgeRingLinMod();
+  DOFVector< WorldVector<double> > getSharpEdgeRingLinMod() const;
 
   DOFVector< WorldVector<double> > getSharpHirani();
 
-  DOFVector< WorldVector<double> > getSharpFaceAverage();
+  DOFVector< WorldVector<double> > getSharpFaceAverage() const;
 
   // sharp procedure is set in the init-file or FaceAveraging 
   DOFVector< WorldVector<double> > getSharp(ProblemStat *ps);
@@ -93,7 +94,22 @@ public:
     return divOnEdgeCenter_averageOnEdgeVertices();
   }
 
+
   DofEdgeVector divOnEdgeCenter_averageOnEdgeVertices() const;
+
+  DofEdgeVector exteriorDerivativOfNorm2() const {
+    //return  exteriorDerivativOfNorm2_oppositeEdges();
+    //return  exteriorDerivativOfNorm2_nextEdges();
+    return  exteriorDerivativOfNorm2_FaceAverage();
+  }
+
+  // ist Mist
+  DofEdgeVector exteriorDerivativOfNorm2_oppositeEdges() const;
+  // ist auch Mist 
+  DofEdgeVector exteriorDerivativOfNorm2_nextEdges() const;
+
+  DofEdgeVector exteriorDerivativOfNorm2_FaceAverage() const;
+
 
   DOFVector<double> divergence() const;
 
@@ -104,7 +120,7 @@ public:
     for (; valIter != edgeVals.end(); ++valIter){
       norm2 += (*valIter) * (*valIter);
     }
-    return sqrt(norm2);
+    return std::sqrt(norm2);
   }
 
   // Error: l2Norm(alpha - solution) / Vol(K^(1))
@@ -170,13 +186,13 @@ public:
   double errorL2(const DofEdgeVector &sol) {
     DofEdgeVector errVec(*this);
     errVec -= sol;
-    return sqrt(errVec.L2NormSquared());
+    return std::sqrt(errVec.L2NormSquared());
   }
 
   double errorL2Rel(const DofEdgeVector &sol) {
     DofEdgeVector errVec(*this);
     errVec -= sol;
-    return sqrt(errVec.L2NormSquared() / sol.L2NormSquared());
+    return std::sqrt(errVec.L2NormSquared() / sol.L2NormSquared());
   }
 
 
@@ -373,12 +389,22 @@ public:
     makePrimal();
   }
 
+  double getPrimalVal(const EdgeElement &ee) const {
+    return edgeVals[ee.edgeDof];
+  }
+
+  double getDualVal(const EdgeElement &ee) const {
+    return edgeDualVals[ee.edgeDof];
+  }
+
   void interpol(BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> > *alpha);
   void interpol(AbstractFunction<WorldVector<double>, WorldVector<double> > *vec);
 
   void normalize(double eps = 0.0);
 
   DofEdgeVector getNormOnEdges() const;
+
+  DofVertexVector interiorProdOnVertices(const DofEdgeVectorPD &pdvec) const;
 
   //static DofEdgeVector getNormOnEdges(const DofEdgeVector &primal, const DofEdgeVector &dual) {
   //  DofEdgeVectorPD pdvec(primal, dual);

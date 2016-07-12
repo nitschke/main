@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 2.8)
 
 #set(CMAKE_MODULE_PATH /home/ingo/Software/Snapshots/2015-02-19/AMDiS/sequentiell/share/amdis/)
 
-set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-02-19/AMDiS/sequentiell/share/amdis/)
+#set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-02-19/AMDiS/sequentiell/share/amdis/)
+#set(AMDIS_DIR /home/ingo/Software/Snapshots/2016-06-27/AMDiS/sequentiell/share/amdis/)
+set(AMDIS_DIR /home/ingo/Software/AMDiS/27062016/build/share/amdis)
 #zuhause
 #set(AMDIS_DIR /home/ingo/Software/Snapshots/2015-03-06/AMDiS/sequentiell/share/amdis/)
 
@@ -106,8 +108,24 @@ target_link_libraries(directionDerivationTest ${BASIS_LIBS} dec)
 add_executable(gradDivProblemTest src/GradDivProblemTest.cc)
 target_link_libraries(gradDivProblemTest ${BASIS_LIBS} dec)
 
+add_executable(rotDivProblemTest src/RotDivProblemTest.cc)
+target_link_libraries(rotDivProblemTest ${BASIS_LIBS} dec)
+
 add_executable(rotFunTest src/RotFunTest.cc)
 target_link_libraries(rotFunTest ${BASIS_LIBS} dec)
 
 add_executable(phiFlatTest src/phiFlatTest.cc)
 target_link_libraries(phiFlatTest ${BASIS_LIBS} dec)
+
+add_executable(stokes src/stokes.cc)
+target_link_libraries(stokes ${BASIS_LIBS} dec)
+
+add_executable(dOfInnerTest src/dOfInnerTest.cc)
+target_link_libraries(dOfInnerTest ${BASIS_LIBS} dec)
+
+add_executable(innerTest src/innerTest.cc)
+target_link_libraries(innerTest ${BASIS_LIBS} dec)
+
+add_executable(innerTest2 src/innerTest2.cc)
+target_link_libraries(innerTest2 ${BASIS_LIBS} dec)
+

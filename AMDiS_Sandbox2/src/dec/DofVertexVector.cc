@@ -4,6 +4,17 @@
 using namespace AMDiS;
 using namespace dec;
 
+DofEdgeVector* DofVertexVector::exteriorDerivative() const {
+  DofEdgeVector *exd = new DofEdgeVector(emesh, "d(" + getName() + ")");
+  exd->set(0.0);
+  
+  vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+  for (; edgeIter != emesh->getEdges()->end(); ++edgeIter) {
+    (*exd)[*edgeIter] = (*this)[edgeIter->dofEdge.second] - (*this)[edgeIter->dofEdge.first];
+  }
+
+  return exd;
+}
 
 DofEdgeVector* DofVertexVector::rotOnEdges_evalOnOppositeVertices() const {
   DofEdgeVector *rot = new DofEdgeVector(emesh, "rot");
@@ -52,7 +63,7 @@ DofEdgeVector* DofVertexVector::rotOnEdges_evalOnAllVertices() const {
     double ee = v1v2*v1v2;
     double hh = w1w2*w1w2;
     double eh = v1v2*w1w2;
-    double sqg= sqrt(ee*hh - eh*eh); // sqrt(|g|)
+    double sqg= std::sqrt(ee*hh - eh*eh); // sqrt(|g|)
     //double sqg= 2.0 * (edgeIter->infoLeft->getVol() + edgeIter->infoRight->getVol()); // ~sqrt(|g|); "=" in the flat case; slightly worse on sphere test with Rot(z);
 
 
@@ -100,8 +111,8 @@ DofEdgeVector* DofVertexVector::rotOnEdges_evalOnAllVerticesAlt() const {
     double hh2 = cw2*cw2;
     double eh1 = v1v2*w1c;
     double eh2 = v1v2*cw2;
-    double sqg1= sqrt(ee*hh1 - eh1*eh1); // sqrt(|g|)
-    double sqg2= sqrt(ee*hh2 - eh2*eh2); // sqrt(|g|)
+    double sqg1= std::sqrt(ee*hh1 - eh1*eh1); // sqrt(|g|)
+    double sqg2= std::sqrt(ee*hh2 - eh2*eh2); // sqrt(|g|)
 
 
     (*rot)[*edgeIter] = 0.5*((eh1*dfe - ee*dfh1) / sqg1 +  (eh2*dfe - ee*dfh2) / sqg2);

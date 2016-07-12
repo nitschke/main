@@ -44,14 +44,14 @@ ElVolumesInfo2d::ElVolumesInfo2d(const ElInfo *el): elInfo(el) {
   WorldVector<double> starE2 = cc - cc2; 
 
   // edge len of the opp vertex
-  oppEdgeLen[0] = sqrt(e0 * e0);
-  oppEdgeLen[1] = sqrt(e1 * e1);
-  oppEdgeLen[2] = sqrt(e2 * e2);
+  oppEdgeLen[0] = std::sqrt(e0 * e0);
+  oppEdgeLen[1] = std::sqrt(e1 * e1);
+  oppEdgeLen[2] = std::sqrt(e2 * e2);
 
   // dual edge len of the opp vertex
-  dualOppEdgeLen[0] = sqrt(starE0 * starE0);
-  dualOppEdgeLen[1] = sqrt(starE1 * starE1);
-  dualOppEdgeLen[2] = sqrt(starE2 * starE2);
+  dualOppEdgeLen[0] = std::sqrt(starE0 * starE0);
+  dualOppEdgeLen[1] = std::sqrt(starE1 * starE1);
+  dualOppEdgeLen[2] = std::sqrt(starE2 * starE2);
 
   // Vol of the dual vertex (voronoi cell) (in T)
   dualVertexVol[0] = 0.25 * (dualOppEdgeLen[1]*oppEdgeLen[1] + dualOppEdgeLen[2]*oppEdgeLen[2]);
@@ -65,12 +65,12 @@ ElVolumesInfo2d::ElVolumesInfo2d(const ElInfo *el): elInfo(el) {
 
 double ElVolumesInfo2d::getDiameter() {
   WorldVector<double> rVec = elInfo->getCoord(0) - cc;
-  return 2.0 * sqrt(rVec * rVec);
+  return 2.0 * std::sqrt(rVec * rVec);
 }
 
 double ElVolumesInfo2d::getAngle(int i) {
    //return atan2(getDualOppEdgeLen(i), 0.5 * getOppEdgeLen(i));
-   return asin(getSin(i));
+   return std::asin(getSin(i));
 }
 
 double ElVolumesInfo2d::getSin(int i) const {

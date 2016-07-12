@@ -17,14 +17,14 @@ void DofEdgeVector::interpolGL4(BinaryAbstractFunction<double, WorldVector<doubl
   edgeMesh->getFeSpace()->getMesh()->getDofIndexCoords(coords);
 
   vector<double> t(4);
-  t[0] = -sqrt(3./7. + 2./7. * sqrt(6./5.));
-  t[1] = -sqrt(3./7. - 2./7. * sqrt(6./5.));
+  t[0] = -std::sqrt(3./7. + 2./7. * std::sqrt(6./5.));
+  t[1] = -std::sqrt(3./7. - 2./7. * std::sqrt(6./5.));
   t[2] = -t[1];
   t[3] = -t[0];
 
   vector<double> a(4);
-  a[0] = (18. - sqrt(30.)) / 36.;
-  a[1] = (18. + sqrt(30.)) / 36.;
+  a[0] = (18. - std::sqrt(30.)) / 36.;
+  a[1] = (18. + std::sqrt(30.)) / 36.;
   a[2] = a[1];
   a[3] = a[0];
   
@@ -215,7 +215,7 @@ void DofEdgeVector::set(double val) {
   }
 }
 
-DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRingLinMod(){
+DOFVector< WorldVector<double> > DofEdgeVector::getSharpEdgeRingLinMod() const{
   using namespace mtl;
   DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), name + "Sharp");
   DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
@@ -277,7 +277,7 @@ DOFVector< WorldVector<double> > DofEdgeVector::getSharpHirani() {
   return sharp;
 }
 
-DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage(){
+DOFVector< WorldVector<double> > DofEdgeVector::getSharpFaceAverage() const{
   using namespace mtl;
   DOFVector< WorldVector<double> > sharp(edgeMesh->getFeSpace(), name + "Sharp");
   DOFVector< list<EdgeElement> > edgeRings = edgeMesh->getEdgeRings();
@@ -555,6 +555,137 @@ DofEdgeVector DofEdgeVector::divOnEdgeCenter_averageOnEdgeVertices() const {
   return div;
 }
 
+DofEdgeVector DofEdgeVector::exteriorDerivativOfNorm2_oppositeEdges() const {
+  using namespace mtl;
+
+  DofEdgeVector dnorm(edgeMesh, "dnorm2");
+  dnorm.set(0.0);
+
+  std::vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    EdgeElement* e11 = edgeIter->edgesRight.first;
+    EdgeElement* e12 = edgeIter->edgesLeft.first;
+    EdgeElement* e21 = edgeIter->edgesRight.second;
+    EdgeElement* e22 = edgeIter->edgesLeft.second;
+
+    WorldVector<double> ev11 = e11->infoLeft->getEdge(e11->dofEdge);
+    WorldVector<double> ev12 = e12->infoLeft->getEdge(e12->dofEdge);
+    WorldVector<double> ev21 = e21->infoLeft->getEdge(e21->dofEdge);
+    WorldVector<double> ev22 = e22->infoLeft->getEdge(e22->dofEdge);
+
+    dense2D<double> gSecond(2,2);
+    dense2D<double> gFirst(2,2);
+    gFirst[0][0] = ev11 * ev11;
+    gFirst[0][1] = gFirst[1][0] = ev11 * ev12;
+    gFirst[1][1] = ev12 * ev12;
+    gSecond[0][0] = ev21 * ev21;
+    gSecond[0][1] = gSecond[1][0] = ev21 * ev22;
+    gSecond[1][1] = ev22 * ev22;
+
+    dense_vector<double> vFirst(2, 0.0);
+    dense_vector<double> vSecond(2, 0.0);
+    vFirst[0]  = edgeVals[e11->edgeDof];
+    vFirst[1]  = edgeVals[e12->edgeDof];
+    vSecond[0] = edgeVals[e21->edgeDof];
+    vSecond[1] = edgeVals[e22->edgeDof];
+
+    double normFirst  = dot((dense_vector<double>)(matrix::inv(gFirst)  * vFirst) , vFirst);
+    double normSecond = dot((dense_vector<double>)(matrix::inv(gSecond) * vSecond), vSecond);
+
+    dnorm[*edgeIter] = normSecond - normFirst;
+  }
+
+  return dnorm;
+}
+
+DofEdgeVector DofEdgeVector::exteriorDerivativOfNorm2_nextEdges() const {
+  using namespace mtl;
+
+  DofEdgeVector dnorm(edgeMesh, "dnorm2");
+  dnorm.set(0.0);
+
+  std::vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    EdgeElement* e1 = edgeIter->edgesLeft.first;
+    EdgeElement* e2 = edgeIter->edgesRight.second;
+
+    WorldVector<double> ev1 = e1->infoLeft->getEdge(e1->dofEdge);
+    WorldVector<double> ev2 = e2->infoLeft->getEdge(e2->dofEdge);
+    WorldVector<double> ev = edgeIter->infoLeft->getEdge(edgeIter->dofEdge);
+
+    dense2D<double> gSecond(2,2);
+    dense2D<double> gFirst(2,2);
+    gFirst[0][0] = gSecond[0][0] = ev * ev;
+    gFirst[0][1] = gFirst[1][0] = ev * ev1;
+    gSecond[0][1] = gSecond[1][0] = ev * ev2;
+    gFirst[1][1] = ev1 * ev1;
+    gSecond[1][1] = ev2 * ev2;
+
+    dense2D<double> gSecondInv = matrix::inv(gSecond);
+    dense2D<double> gFirstInv = matrix::inv(gFirst);
+
+    double det1 = gFirst[0][0] * gFirst[1][1] -  gFirst[0][1] * gFirst[1][0];
+    double det2 = gSecond[0][0] * gSecond[1][1] -  gSecond[0][1] * gSecond[1][0];
+    double det1Inv = 1. / det1;
+    double det2Inv = 1. / det2;
+    gFirstInv[0][0] = det1Inv * gFirst[1][1];
+    gFirstInv[1][1] = det1Inv * gFirst[0][0];
+    gFirstInv[1][0] = - det1Inv * gFirst[1][0];
+    gFirstInv[0][1] = - det1Inv * gFirst[0][1];
+    gSecondInv[0][0] = det2Inv * gSecond[1][1];
+    gSecondInv[1][1] = det2Inv * gSecond[0][0];
+    gSecondInv[1][0] = - det2Inv * gSecond[1][0];
+    gSecondInv[0][1] = - det2Inv * gSecond[0][1];
+
+    dense_vector<double> vFirst(2, 0.0);
+    dense_vector<double> vSecond(2, 0.0);
+    vFirst[0]  = vSecond[0] = edgeVals[edgeIter->edgeDof];
+    vFirst[1]  = edgeVals[e1->edgeDof];
+    vSecond[1] = edgeVals[e2->edgeDof];
+
+
+    double normFirst  = dot((dense_vector<double>)(gFirstInv  * vFirst) , vFirst);
+    double normSecond = dot((dense_vector<double>)(gSecondInv * vSecond), vSecond);
+
+    //double z1 = (edgeIter->infoLeft->getCoordFromGlobalIndex(edgeIter->dofEdge.first))[2];
+    //double z2 = (edgeIter->infoLeft->getCoordFromGlobalIndex(edgeIter->dofEdge.second))[2];
+    //if (abs(z1) > 0.70 && abs(z1) < 0.71) {
+    //cout << (1. - z1*z1) << " -> " << normFirst << endl;
+    //cout << (1. - z2*z2) << " -> " << normSecond << endl << endl;
+    ////WAIT;
+    //}
+
+    dnorm[*edgeIter] = normSecond - normFirst;
+  }
+
+  return dnorm;
+}
+
+DofEdgeVector DofEdgeVector::exteriorDerivativOfNorm2_FaceAverage() const {
+  using namespace mtl;
+
+  DofEdgeVector dnorm(edgeMesh, "dnorm2");
+  dnorm.set(0.0);
+  
+  DOFVector< WorldVector<double> > vecOnVs = getSharpFaceAverage();
+  //DOFVector< WorldVector<double> > vecOnVs = getSharpEdgeRingLinMod();
+
+  std::vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    WorldVector<double> vec1 = vecOnVs[edgeIter->dofEdge.first]; 
+    WorldVector<double> vec2 = vecOnVs[edgeIter->dofEdge.second]; 
+
+    double normFirst = vec1 * vec1;
+    double normSecond = vec2 * vec2;
+
+    dnorm[*edgeIter] = normSecond - normFirst;
+  }
+
+  return dnorm;
+}
+
+
+
 DOFVector<double> DofEdgeVector::divergence() const {
   DOFVector<double> div(edgeMesh->getFeSpace(), name + "Div");
   div.set(0.0);
@@ -664,7 +795,7 @@ void DofEdgeVectorPD::interpol(BinaryAbstractFunction<double, WorldVector<double
     // set primal val
     (*valIterP) = (*alpha)(ce, e);
     
-    double lenP = sqrt(e*e); // length of primal edge 
+    double lenP = std::sqrt(e*e); // length of primal edge 
     p = edgeIter->infoRight->getCircumcenter();
     q = edgeIter->infoLeft->getCircumcenter();
     e = q - p; // dual edge
@@ -693,7 +824,7 @@ void DofEdgeVectorPD::interpol(AbstractFunction<WorldVector<double>, WorldVector
     // set primal val
     (*valIterP) = vecval * e;
     
-    double lenP = sqrt(e*e); // length of primal edge 
+    double lenP = std::sqrt(e*e); // length of primal edge 
     p = edgeIter->infoRight->getCircumcenter();
     q = edgeIter->infoLeft->getCircumcenter();
     e = q - p; // dual edge
@@ -712,7 +843,7 @@ void DofEdgeVectorPD::normalize(double eps) {
   vector<double>::iterator valIterD = edgeDualVals.begin();
   for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD) {
     double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
-    double norm = sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / lenP;
+    double norm = std::sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / lenP;
     double normInv = (norm < eps) ? 0.0 : (1.0/norm);
     (*valIterP) *= normInv;
     (*valIterD) *= normInv;
@@ -727,7 +858,7 @@ DofEdgeVector DofEdgeVectorPD::getNormOnEdges() const{
   vector<double>::const_iterator valIterD = edgeDualVals.begin();
   for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD) {
     double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
-    norms[edgeIter->edgeDof] = sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / lenP;
+    norms[edgeIter->edgeDof] = std::sqrt((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / lenP;
   }
 
   return norms;
@@ -751,6 +882,51 @@ vector<WorldVector<double> > DofEdgeVectorPD::getSharpVecOnEdges() {
 
   return sharp;
 }
+
+DofVertexVector DofEdgeVectorPD::interiorProdOnVertices(const DofEdgeVectorPD &pdvec) const {
+  DofVertexVector iprod(edgeMesh, name + " interprod " + pdvec.getName());
+  iprod.set(0.0);
+  
+  DOFVector<bool> visited(edgeMesh->getFeSpace(),"visited");
+  visited.set(false);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    //first verex
+    DegreeOfFreedom vdof = edgeIter->dofEdge.first;
+    if (!visited[vdof]) {
+      double vvol4 = 0.0;
+      for (EdgeElement::EdgeRingIterator ringIter(&(*edgeIter), FIRSTVERTEX); !ringIter.isEnd(); ++ringIter) {
+        double lenP = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
+        double lenD = ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
+                     +ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
+        vvol4 += lenP * lenD;
+        iprod[vdof] += (lenD / lenP) * ( getPrimalVal(*ringIter) * pdvec.getPrimalVal(*ringIter) 
+                                      + getDualVal(*ringIter) * pdvec.getDualVal(*ringIter)    );
+      }
+      iprod[vdof] /=  vvol4;
+      visited[vdof] = true;
+    }
+    //second vertex
+    vdof = edgeIter->dofEdge.second;
+    if (!visited[vdof]) {
+      double vvol4 = 0.0;
+      for (EdgeElement::EdgeRingIterator ringIter(&(*edgeIter), SECONDVERTEX); !ringIter.isEnd(); ++ringIter) {
+        double lenP = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
+        double lenD = ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
+                     +ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
+        vvol4 += lenP * lenD;
+        iprod[vdof] += (lenD / lenP) *  ( getPrimalVal(*ringIter) * pdvec.getPrimalVal(*ringIter) 
+                                      + getDualVal(*ringIter) * pdvec.getDualVal(*ringIter)    );
+      }
+      iprod[vdof] /=  vvol4;
+      visited[vdof] = true;
+    }
+  }
+
+  return iprod;
+}
+
 
 void DofEdgeVectorPD::writeSharpOnEdgesFile(string name) {
     boost::iostreams::filtering_ostream file;

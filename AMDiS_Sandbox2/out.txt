@@ -1,0 +1,4 @@
+EdgeMesh::EdgeMesh:
+               Init EdgeMesh ...
+               done (3000 Edges; needed 0.00531 seconds)
+DecProblemStat::assembleSystem():

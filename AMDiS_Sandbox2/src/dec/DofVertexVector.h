@@ -24,6 +24,8 @@ public:
 
   const EdgeMesh* getEdgeMesh() const {return emesh;}
 
+  DofEdgeVector* exteriorDerivative() const;
+
   DofEdgeVector* rotOnEdges() const {
     //return rotOnEdges_evalOnOppositeVertices();
     //return rotOnEdges_evalOnAllVertices();
@@ -65,16 +67,28 @@ public:
     return errVec.L2NormSquare() / sol.L2NormSquare();
   }
 
+  void writeFile(std::string name) {
+    io::VtkVectorWriter::writeFile(this, name);
+  }
+
 
   DofVertexVector& operator-=(const DofVertexVector& a) {
-    //DOFVector<double>::Iterator xIterator(dynamic_cast<DOFVector<double>*>(this), USED_DOFS);
-    //DOFVector<double>::Iterator yIterator(const_cast<DOFVector<double>*>(&a), USED_DOFS);
     DOFVector<double>::Iterator xIterator(this, USED_DOFS);
     DOFVector<double>::Iterator yIterator(const_cast<DofVertexVector*>(&a), USED_DOFS);
     
     for (xIterator.reset(), yIterator.reset(); !xIterator.end();
 	              ++xIterator, ++yIterator) {
       (*xIterator) -= (*yIterator); 
+    }
+
+    return *this;
+  }
+
+  DofVertexVector& operator*=(const double& c) {
+    DOFVector<double>::Iterator xIterator(this, USED_DOFS);
+    
+    for (xIterator.reset(); !xIterator.end(); ++xIterator) {
+      (*xIterator) *= c; 
     }
 
     return *this;
@@ -88,6 +102,10 @@ private:
 
 inline DofVertexVector operator-(DofVertexVector a, const DofVertexVector& b) {
   return a -= b;
+}
+
+inline DofVertexVector operator*(const double &c, DofVertexVector b) {
+  return b *= c;
 }
 
 }}

@@ -91,6 +91,21 @@ protected:
   double fac;
 };
 
+// implementation of <j_{gamma#}(alpha), v>,
+// where i_{gamma#}(alpha) = <alpha,gamma> = j_{gamma#}(alpha) + j_{*gamma#}(*alpha)
+class  InterProdPartAtVertices: public VertexOperatorTerm {
+public:
+  InterProdPartAtVertices(DofEdgeVector *gamma_, double f = 1.0) 
+      : VertexOperatorTerm(EDGESPACE), gamma(gamma_), fac(f) {name="InterProdPartAtVertices";};
+  
+  vertexRowValMapper evalRow(const EdgeElement &eel, VertexPosition pos, double factor);
+
+protected:
+  double fac;
+  DofEdgeVector *gamma;
+};
+
+
 }}
 
 #endif

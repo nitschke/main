@@ -110,6 +110,7 @@ private:
 };
 
 // < f(||alpha||), edge >; averaging over all linear local spaces Span{edge, adjacent-edge} 
+// DEPRECATED
 class  NormSquaredEdgeVecAtEdges: public EdgeOperatorTerm {
 public:
   NormSquaredEdgeVecAtEdges(DofEdgeVector *edgeVector, 
@@ -135,6 +136,33 @@ public:
 
 private:
   double fac;
+};
+
+// < *df , edge >
+class  RotAtEdges: public EdgeOperatorTerm {
+public:
+  RotAtEdges(double f = 1.0) 
+      : EdgeOperatorTerm(VERTEXSPACE), fac(f) {name = "RotAtEdges";};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+};
+
+// < f alpha , edge > 
+// with given alpha
+// f will be middled on edge
+class  AverageVertexAndEdgeVecAtEdges: public EdgeOperatorTerm {
+public:
+  AverageVertexAndEdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
+      : EdgeOperatorTerm(VERTEXSPACE), evec(edgeVector), fac(f) {name = "RotAtEdges";};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+  DofEdgeVector *evec;
 };
 
 
