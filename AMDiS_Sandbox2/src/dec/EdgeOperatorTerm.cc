@@ -231,3 +231,112 @@ edgeRowValMapper AverageVertexAndEdgeVecAtEdges::evalRow(const EdgeElement &eel,
 
   return rowMapper;
 }
+
+
+/*                  wL
+ *                  /\
+ *                 /  \
+ *     left.first /    \ left.second
+ *               /      \
+ *              /  left  \
+ *            v1 ---------> v2
+ *              \  right /
+ *               \      /
+ *    right.first \    / right.second
+ *                 \  /
+ *                  \/
+ *                  wR
+ *
+ * factors positiv iff:
+ *    left.first   = [wL,v1]
+ *    left.second  = [v2,wL]
+ *    right.first  = [v1,wR]
+ *    right.second = [wR,v2]
+ *  --> counter clockwise rotation
+ */
+
+
+edgeRowValMapper RotAtEdgeCenterAndEdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  double f = (*evec)[eel] * fac * factor / (eel.infoLeft->getVol() + eel.infoRight->getVol());
+
+  EdgeElement* e = eel.edgesLeft.first;
+  rowMapper[e->edgeDof] = (e->dofEdge.second == eel.dofEdge.first) ?  f : -f;
+
+  e = eel.edgesLeft.second;
+  rowMapper[e->edgeDof] = (e->dofEdge.first == eel.dofEdge.second) ?  f : -f;
+
+  e = eel.edgesRight.first;
+  rowMapper[e->edgeDof] = (e->dofEdge.first == eel.dofEdge.first) ?  f : -f;
+
+  e = eel.edgesRight.second;
+  rowMapper[e->edgeDof] = (e->dofEdge.second == eel.dofEdge.second) ?  f : -f;
+
+  return rowMapper;
+}
+
+edgeRowValMapper DivAtEdgeCenterAndEdgeVecAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  double f = (*evec)[eel] * fac * factor;
+  
+  double vvol1 = 0.0;
+  double vvol2 = 0.0;
+  for(EdgeElement::EdgeRingIterator eIter(&eel, FIRSTVERTEX); !eIter.isEnd(); ++eIter) {
+    vvol1 += eIter.getFace()->getDualVertexVol_global(eIter->dofEdge.first);
+  }
+  for(EdgeElement::EdgeRingIterator eIter(&eel, SECONDVERTEX); !eIter.isEnd(); ++eIter) {
+    vvol2 += eIter.getFace()->getDualVertexVol_global(eIter->dofEdge.second);
+  }
+
+  f /= vvol1 + vvol2;
+
+  // omit the edge itself, because the val on edge will be anhilated with this scaling.
+  // all other edge vals are nonrecurring
+  vertexRowValMapper v1Mapper = divOp->evalRow(eel, FIRSTVERTEX, f * vvol1);
+  vertexRowValMapper v2Mapper = divOp->evalRow(eel, SECONDVERTEX, f * vvol2);
+  for (map<DegreeOfFreedom, double>::const_iterator mapIter = v1Mapper.begin(); mapIter != v1Mapper.end(); ++mapIter) {
+    if (mapIter->first != eel.edgeDof) rowMapper[mapIter->first] = mapIter->second;
+  }
+  for (map<DegreeOfFreedom, double>::const_iterator mapIter = v2Mapper.begin(); mapIter != v2Mapper.end(); ++mapIter) {
+    if (mapIter->first != eel.edgeDof) rowMapper[mapIter->first] = mapIter->second;
+  }
+
+  return rowMapper;
+}
+
+edgeRowValMapper HodgeAtEdges::evalRow(const EdgeElement &eel, double factor) {
+  edgeRowValMapper rowMapper;
+  rowMapper[eel.edgeDof] = 0.0;
+
+  double f = fac * factor / 4.0;
+
+  WorldVector<double> edge = eel.infoLeft->getEdge(eel.dofEdge);
+  double edgeLen2 = edge *edge;
+
+  list< EdgeElement* > relatedEdges;
+  relatedEdges.push_back(eel.edgesLeft.first);
+  relatedEdges.push_back(eel.edgesLeft.second);
+  relatedEdges.push_back(eel.edgesRight.first);
+  relatedEdges.push_back(eel.edgesRight.second);
+
+  list< double > signs;
+  signs.push_back((eel.dofEdge.first  == eel.edgesLeft.first->dofEdge.first) ? 1.0 : -1.0);
+  signs.push_back((eel.dofEdge.second == eel.edgesLeft.second->dofEdge.first) ? 1.0 : -1.0);
+  signs.push_back((eel.dofEdge.first  == eel.edgesRight.first->dofEdge.second) ? 1.0 : -1.0);
+  signs.push_back((eel.dofEdge.second == eel.edgesRight.second->dofEdge.second) ? 1.0 : -1.0);
+
+  list< EdgeElement* >::const_iterator relEdgeIter = relatedEdges.begin();
+  list< double >::const_iterator signIter = signs.begin();
+  for(; relEdgeIter != relatedEdges.end(); ++relEdgeIter, ++signIter) {
+    WorldVector<double> relEdge = (*relEdgeIter)->infoLeft->getEdge((*relEdgeIter)->dofEdge);
+    double relEdgeLen2 = relEdge * relEdge;
+    double prodEdgeRelEdge = edge * relEdge;
+
+    double SqrtDetG = std::sqrt(edgeLen2 * relEdgeLen2 - prodEdgeRelEdge * prodEdgeRelEdge);
+    
+    rowMapper[eel.edgeDof] += f * (*signIter) * prodEdgeRelEdge / SqrtDetG;
+    rowMapper[(*relEdgeIter)->edgeDof] = -f * (*signIter) * edgeLen2 / SqrtDetG;
+  }
+
+  return rowMapper;
+}

@@ -113,6 +113,12 @@ public:
 
   DOFVector<double> divergence() const;
 
+  DofEdgeVector hodgeDual() const {
+    return hodgeDual_unweighted();
+  }
+
+  DofEdgeVector hodgeDual_unweighted() const;
+
   // l2-Norm -> L2-Norm on K^(1)
   double l2Norm() {
     vector<double>::iterator valIter = edgeVals.begin();

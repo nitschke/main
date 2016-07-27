@@ -1,0 +1,35 @@
+dimension of world                            : 3
+
+%sphereMesh->macro file name                  : ./macro/sphere/ikosaeder.3d
+%sphereMesh->macro file name                   : ./macro/sphere/sphereIko1k.3d
+sphereMesh->macro file name                   : ./macro/nonicsPressed/nonic095r1c035b_64k.3d
+
+sphereMesh->global refinements                : 0
+sphereMesh->check                             : 0
+
+sphere->mesh                                  : sphereMesh
+sphere->dim                                   : 2
+sphere->polynomial degree[0]                  : 1
+sphere->components                            : 4
+
+sphere->solver                                : umfpack %umfpack %tfqmr %bicgstab_ell
+sphere->solver->ell                           : 2
+sphere->solver->max iteration                 : 1500
+sphere->solver->info                          : 8
+sphere->solver->tolerance                     : 1.e-8
+sphere->solver->left precon                   : diag
+
+sphere->adapt->start time                     : 0.0
+sphere->adapt->end time                       : 5000.0
+sphere->adapt->timestep                       : 1.e-0
+
+sphere->output->filename                      : output2/NS.DZ.nonic095r1c035b.DX.0001Dif
+sphere->output->ParaView animation            : 1
+sphere->output->edgeForms sharp               : 1 
+sphere->output->sharpType                     : 1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
+sphere->output->edgeForms flat                : 0 
+
+sphere->output->write every i-th timestep     : 1
+sphere->output->index precision               : 8
+
+userParameter->kinematic_viscosity            : 0.001

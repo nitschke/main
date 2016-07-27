@@ -1,5 +1,6 @@
 #include "Dec.h"
 #include "phiProjection.h"
+#include "EllipsoidProjection.h"
 
 using namespace std;
 using namespace AMDiS;
@@ -34,16 +35,20 @@ public:
     //dfvec[0] = -1.*x*z;
     //dfvec[1] = -1.*y*z;
     //dfvec[2] = 1. - 1.*std::pow(z,2);
-    ///// Ellipsoid dz
-    //dfvec[0] = (12.*x*z)/(-45. + 27.*std::pow(x,2) - 27.*std::pow(y,2) + 37.*std::pow(z,2));
-    //dfvec[1] = (24.*y*z)/(-45. + 27.*std::pow(x,2) - 27.*std::pow(y,2) + 37.*std::pow(z,2));
-    //dfvec[2] = (9.*(-5. + 3.*std::pow(x,2) - 3.*std::pow(y,2) + 5.*std::pow(z,2)))/(-45. + 27.*std::pow(x,2) - 27.*std::pow(y,2) + 37.*std::pow(z,2));
-    //sphere d(xyz)
-    for (int i = 0; i < 3; i++) {
-      int ii = (i+1)%3;
-      int iii = (i+2)%3;
-      dfvec[i] = coords[ii] * coords[iii] * (1.0 - 3.0*coords[i]*coords[i]);
-    }
+    //// Ellipsoid dz
+    //dfvec[0] = (72.*x*z)/(-405. + 243.*std::pow(x,2) - 972.*std::pow(y,2) + 148.*std::pow(z,2));
+    //dfvec[1] = (288.*y*z)/(-405. + 243.*std::pow(x,2) - 972.*std::pow(y,2) + 148.*std::pow(z,2));
+    //dfvec[2] = (9.*(-45. + 27.*std::pow(x,2) - 108.*std::pow(y,2) + 20.*std::pow(z,2)))/(-405. + 243.*std::pow(x,2) - 972.*std::pow(y,2) + 148.*std::pow(z,2));
+    ////sphere d(xyz)
+    //for (int i = 0; i < 3; i++) {
+    //  int ii = (i+1)%3;
+    //  int iii = (i+2)%3;
+    //  dfvec[i] = coords[ii] * coords[iii] * (1.0 - 3.0*coords[i]*coords[i]);
+    //}
+    // Ellipsoid d(xyz)
+    dfvec[0] = (2.*y*z*(153. - 513.*std::pow(x,2) + 684.*std::pow(y,2) - 52.*std::pow(z,2)))/(405. - 243.*std::pow(x,2) + 972.*std::pow(y,2) - 148.*std::pow(z,2));
+    dfvec[1] = (-1.*x*z*(63. + 99.*std::pow(x,2) - 1188.*std::pow(y,2) + 4.*std::pow(z,2)))/(-405. + 243.*std::pow(x,2) - 972.*std::pow(y,2) + 148.*std::pow(z,2));
+    dfvec[2] = (27.*x*y*(-15. + 9.*std::pow(x,2) - 36.*std::pow(y,2) + 20.*std::pow(z,2)))/(-405. + 243.*std::pow(x,2) - 972.*std::pow(y,2) + 148.*std::pow(z,2));
     return  dfvec * vec;
   }
 };
@@ -111,7 +116,8 @@ int main(int argc, char* argv[])
   ProblemStat sphere("sphere");
   sphere.initialize(INIT_ALL);
 
-  PhiProject proj(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-15);
+  //PhiProject proj(1, VOLUME_PROJECTION, new Phi(), new GradPhi(), 1.0e-15);
+  EllipsoidProject proj(1, VOLUME_PROJECTION, 1.0, 0.5, 1.5);
   
   EdgeMesh *edgeMesh = new EdgeMesh(sphere.getFeSpace());
 
@@ -120,7 +126,8 @@ int main(int argc, char* argv[])
   df.writeSharpFile("output/df.vtu",&sphere);
 
   DofEdgeVector dfGL4(edgeMesh, "dfGL4");
-  dfGL4.interpolGL4(new GradfEllipt(), proj.getProjection(), proj.getJProjection(1.E-4));
+  //dfGL4.interpolGL4(new GradfEllipt(), proj.getProjection(), proj.getJProjection(1.E-4));
+  dfGL4.interpolGL4(new GradfEllipt(), proj.getProjection(), proj.getJProjection());
   dfGL4.writeSharpFile("output/dfGL4.vtu",&sphere);
 
   DofEdgeVector dfLM(edgeMesh, "dfLM");

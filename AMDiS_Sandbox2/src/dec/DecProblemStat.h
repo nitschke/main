@@ -8,6 +8,13 @@
 using namespace std;
 namespace AMDiS { namespace dec {
 
+struct DofCondition {
+  int rowComp;
+  int colComp;
+  DegreeOfFreedom rowDof;
+  DegreeOfFreedom colDof;
+  double val;
+};
 
 class DecProblemStat {
 public:
@@ -38,7 +45,7 @@ public:
   
   void assembleSystem();
 
-  void setValAtDof(int comp, DegreeOfFreedom dof, double val);
+  void setValAtDof(int rowComp, int colComp, DegreeOfFreedom rowDof, DegreeOfFreedom colDof, double val);
 
 
   const SparseMatrix getSysMat() {
@@ -87,6 +94,8 @@ private:
   inline void assembleVectorBlock_Edge(list<pair<DecOperator*,double*> > &ops, int ohrow);
   inline void assembleVectorBlock_Vertex(list<pair<DecOperator*, double*> > &ops, int ohrow);
 
+  inline void assembleOneDofCondition(int row, int col, double val);
+
 
 //TODO: DESTructur (emesh, sysmat, rhs)
 
@@ -107,6 +116,8 @@ private:
   Matrix< list<pair<DecOperator*,double*> > > matrixOperators;
   Vector< list<pair<DecOperator*,double*> > > vectorOperators;
   Vector< SpaceType > spaceTypes;
+
+  list< DofCondition > oneDofConditions;
 
   DenseVector *fullSolution;
 

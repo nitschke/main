@@ -3,6 +3,7 @@
 
 #include "Dec_fwd.h"
 #include "DecOperatorTerm.h"
+#include "VertexOperatorTerm.h"
 
 using namespace std;
 namespace AMDiS { namespace dec {
@@ -156,13 +157,63 @@ private:
 class  AverageVertexAndEdgeVecAtEdges: public EdgeOperatorTerm {
 public:
   AverageVertexAndEdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
-      : EdgeOperatorTerm(VERTEXSPACE), evec(edgeVector), fac(f) {name = "RotAtEdges";};
+      : EdgeOperatorTerm(VERTEXSPACE), evec(edgeVector), fac(f) {name = "AverageVertexAndEdgeVecAtEdges";};
   
   edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
 
 private:
   double fac;
   DofEdgeVector *evec;
+};
+
+// < rot(alpha) gamma , e > = <rot(alpha),c(e)><gamma,e>
+// with given gamma, rot alpha will be calculated around left and right face of edge e
+class  RotAtEdgeCenterAndEdgeVecAtEdges: public EdgeOperatorTerm {
+public:
+  RotAtEdgeCenterAndEdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), evec(edgeVector), fac(f) {name = " RotAtEdgeCenterAndEdgeVecAtEdge";};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+  DofEdgeVector *evec;
+};
+
+
+//TODO: fails (no convergence) in directionalDerivativeTest2, hence do a standalone test,
+//      maybe, the considered area must be convex -> way out: also take opposite voronoi areas in calculation
+// < div(alpha) gamma , e > = <div(alpha),c(e)><gamma,e>
+// with given gamma, div alpha will be calculated in the voronoi arias around first and second vertex of edge e
+class  DivAtEdgeCenterAndEdgeVecAtEdges: public EdgeOperatorTerm {
+public:
+  DivAtEdgeCenterAndEdgeVecAtEdges(DofEdgeVector *edgeVector, double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE),
+        evec(edgeVector), fac(f) {
+          name = " DivAtEdgeCenterAndEdgeVecAtEdge";
+          divOp = new DivAtVertices();
+        }
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
+  DofEdgeVector *evec;
+
+  DivAtVertices *divOp;
+};
+
+
+// < *alpha , edge >
+class  HodgeAtEdges: public EdgeOperatorTerm {
+public:
+  HodgeAtEdges(double f = 1.0) 
+      : EdgeOperatorTerm(EDGESPACE), fac(f) {name = "LaplaceCoBeltramiAtEdges";};
+  
+  edgeRowValMapper evalRow(const EdgeElement &eel, double factor);
+
+private:
+  double fac;
 };
 
 

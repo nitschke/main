@@ -1,4 +1,40 @@
 EdgeMesh::EdgeMesh:
                Init EdgeMesh ...
-               done (3000 Edges; needed 0.00531 seconds)
+               done (5880 Edges; needed 0.01598 seconds)
+DecProblemInstat::initTimestep:
+               *** Start time iteration step 0 at t = 0.01 ***
 DecProblemStat::assembleSystem():
+               Assemble System ... 
+               done (needed 0.06148 seconds)
+               Fill-in of assembled (15684x15684)-Matrix: 192024 (approx. 12.2 per row)
+DecProblemStat::assembleOneDofCondition(const pair<unsigned int, double> &dofCond):
+               New Fill-in of assembled (15684x15684)-Matrix: 191003 (approx. 12.2 per row)
+DecProblemStat::solve():
+               Solve system ... (with mtl_umfpack)
+               solving needed 0.63961 seconds
+DecProblemInstat::closeTimestep:
+               *** End time iteration step, needed 0.70155 seconds ***
+
+DecProblemInstat::initTimestep:
+               *** Start time iteration step 1 at t = 0.02 ***
+DecProblemStat::assembleSystem():
+               Assemble System ... 
+               done (needed 0.05177 seconds)
+               Fill-in of assembled (15684x15684)-Matrix: 192024 (approx. 12.2 per row)
+DecProblemStat::assembleOneDofCondition(const pair<unsigned int, double> &dofCond):
+               New Fill-in of assembled (15684x15684)-Matrix: 191675 (approx. 12.2 per row)
+DecProblemStat::solve():
+               Solve system ... (with mtl_umfpack)
+               solving needed 0.63117 seconds
+DecProblemInstat::closeTimestep:
+               *** End time iteration step, needed 0.68340 seconds ***
+
+DecProblemInstat::initTimestep:
+               *** Start time iteration step 2 at t = 0.03 ***
+DecProblemStat::assembleSystem():
+               Assemble System ... 
+               done (needed 0.04970 seconds)
+               Fill-in of assembled (15684x15684)-Matrix: 192024 (approx. 12.2 per row)
+DecProblemStat::assembleOneDofCondition(const pair<unsigned int, double> &dofCond):
+               New Fill-in of assembled (15684x15684)-Matrix: 191675 (approx. 12.2 per row)
+DecProblemStat::solve():

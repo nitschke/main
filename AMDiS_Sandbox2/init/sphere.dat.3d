@@ -11,9 +11,9 @@ sphereMesh->check: 0
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              4 %3
+sphere->components:              3 %3
 
-sphere->solver:                tfqmr %umfpack %tfqmr %bicgstab_ell
+sphere->solver:                umfpack %umfpack %tfqmr %bicgstab_ell
 sphere->solver->ell:           2
 sphere->solver->max iteration: 2000
 sphere->solver->info:          8

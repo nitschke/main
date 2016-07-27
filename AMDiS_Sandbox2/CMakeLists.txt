@@ -105,6 +105,9 @@ target_link_libraries(laplaceConvergenceTest ${BASIS_LIBS} dec)
 add_executable(directionDerivationTest src/DirectionDerivationTest.cc)
 target_link_libraries(directionDerivationTest ${BASIS_LIBS} dec)
 
+add_executable(directionDerivationTest2 src/DirectionDerivationTest2.cc)
+target_link_libraries(directionDerivationTest2 ${BASIS_LIBS} dec)
+
 add_executable(gradDivProblemTest src/GradDivProblemTest.cc)
 target_link_libraries(gradDivProblemTest ${BASIS_LIBS} dec)
 
@@ -129,3 +132,8 @@ target_link_libraries(innerTest ${BASIS_LIBS} dec)
 add_executable(innerTest2 src/innerTest2.cc)
 target_link_libraries(innerTest2 ${BASIS_LIBS} dec)
 
+add_executable(navierStokes2 src/navierStokes2.cc)
+target_link_libraries(navierStokes2 ${BASIS_LIBS} dec)
+
+add_executable(hodgeTest src/hodgeTest.cc)
+target_link_libraries(hodgeTest ${BASIS_LIBS} dec)

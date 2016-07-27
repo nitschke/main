@@ -165,6 +165,14 @@ void DecProblemStat::assembleSystem() {
   int numRows = sysMat->num_rows();
   int numCols = sysMat->num_cols();
   MSG("Fill-in of assembled (%ix%i)-Matrix: %i (approx. %.1f per row)\n", numRows, numCols, nnz, ((double)(nnz)/numRows)); 
+
+  for (list< DofCondition >::const_iterator dofCondIter = oneDofConditions.begin(); dofCondIter != oneDofConditions.end(); ++dofCondIter) {
+    int row = dofCondIter->rowDof;
+    int col = dofCondIter->colDof;
+    for (int k = 0; k < dofCondIter->rowComp; ++k) row += ns[k];
+    for (int k = 0; k < dofCondIter->colComp; ++k) col += ns[k];
+    assembleOneDofCondition(row, col, dofCondIter->val);
+  }
 }
 
 inline void DecProblemStat::assembleMatrixBlock_EdgeEdge(list<pair<DecOperator*, double*> > &ops, int ohrow, int ohcol) {
@@ -316,18 +324,21 @@ inline void DecProblemStat::assembleVectorBlock_Edge(list<pair<DecOperator*, dou
   }
 }
 
-void DecProblemStat::setValAtDof(int comp, DegreeOfFreedom dof, double val) {
-  using namespace mtl; 
- 
+void DecProblemStat::setValAtDof(int rowComp, int colComp, DegreeOfFreedom rowDof, DegreeOfFreedom colDof, double val) {
   FUNCNAME("DecProblemStat::setValAtDof(int comp, DegreeOfFreedom dof, double val)");
 
-  unsigned int row = dof;
-  for (int k = 0; k < comp; ++k) row += ns[k];
-  
+  DofCondition dofCond = {rowComp, colComp, rowDof, colDof, val};
+  oneDofConditions.push_back(dofCond);
+}
+
+void DecProblemStat::assembleOneDofCondition(int row, int col, double val) {
+  using namespace mtl; 
+  FUNCNAME("DecProblemStat::assembleOneDofCondition(const pair<unsigned int, double> &dofCond)");
+
   { 
     matrix::inserter<SparseMatrix> ins(*sysMat);
     ins.make_empty(row);
-    ins[row][row] << 1.0;
+    ins[row][col] << 1.0;
   }
   sysMat->crop();
   

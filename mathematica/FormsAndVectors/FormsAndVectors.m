@@ -102,7 +102,7 @@ LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap
 					gInv.Table[DX[[i]].globT.DX[[j]],{i,2},{j,2}].gInv]
 
 
-CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"sqrt"}]
+CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"std::sqrt"}]
 
 GaussCurvFromMetric[u_,v_,g_] := Module[
 {T1={{-D[g[[1,1]],v,v]/2+D[g[[1,2]],u,v]-D[g[[2,2]],u,u]/2, D[g[[1,1]],u]/2, D[g[[1,2]],u]-D[g[[1,1]],v]/2},

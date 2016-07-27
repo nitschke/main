@@ -721,6 +721,48 @@ DOFVector<double> DofEdgeVector::divergence() const {
   return div;
 }
 
+DofEdgeVector DofEdgeVector::hodgeDual_unweighted() const {
+  DofEdgeVector hodge(edgeMesh, "hodge dual");
+  hodge.set(0.0);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    WorldVector<double> edge = edgeIter->infoLeft->getEdge(edgeIter->dofEdge);
+    double edgeLen2 = edge *edge;
+
+    double weightSum = 0.0;
+
+    list< EdgeElement* > relatedEdges;
+    relatedEdges.push_back(edgeIter->edgesLeft.first);
+    relatedEdges.push_back(edgeIter->edgesLeft.second);
+    relatedEdges.push_back(edgeIter->edgesRight.first);
+    relatedEdges.push_back(edgeIter->edgesRight.second);
+
+    list< double > signs;
+    signs.push_back((edgeIter->dofEdge.first  == edgeIter->edgesLeft.first->dofEdge.first) ? 1.0 : -1.0);
+    signs.push_back((edgeIter->dofEdge.second == edgeIter->edgesLeft.second->dofEdge.first) ? 1.0 : -1.0);
+    signs.push_back((edgeIter->dofEdge.first  == edgeIter->edgesRight.first->dofEdge.second) ? 1.0 : -1.0);
+    signs.push_back((edgeIter->dofEdge.second == edgeIter->edgesRight.second->dofEdge.second) ? 1.0 : -1.0);
+
+    list< EdgeElement* >::const_iterator relEdgeIter = relatedEdges.begin();
+    list< double >::const_iterator signIter = signs.begin();
+    for(; relEdgeIter != relatedEdges.end(); ++relEdgeIter, ++signIter) {
+      double weight = 1.0;
+      weightSum += weight;
+
+      WorldVector<double> relEdge = (*relEdgeIter)->infoLeft->getEdge((*relEdgeIter)->dofEdge);
+      double relEdgeLen2 = relEdge * relEdge;
+      double prodEdgeRelEdge = edge * relEdge;
+
+      double detG = edgeLen2 * relEdgeLen2 - prodEdgeRelEdge * prodEdgeRelEdge;
+
+      hodge[*edgeIter] += *(signIter) * weight * (prodEdgeRelEdge * edgeVals[edgeIter->edgeDof] - edgeLen2 * edgeVals[(*relEdgeIter)->edgeDof]) / std::sqrt(detG);
+    }
+    hodge[*edgeIter] /= weightSum;
+  }
+  
+  return hodge;
+}
 
 void DofEdgeVector::writeFile(string name) const {
     boost::iostreams::filtering_ostream file;
