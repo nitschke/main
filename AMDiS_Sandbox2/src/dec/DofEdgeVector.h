@@ -205,7 +205,7 @@ public:
   // be careful with the meaning of the result.
   // we approx. the integral of the vals with a e *e decomposition of the surface
   // this makes sence for e.q. scalar values, like norms, on the Edges
-  // i.e. Int_M(f) approx Sum_edges( 0.5 * |e| * |*e| * (f_e)^2 )
+  // i.e. Int_M(f) approx Sum_edges( 0.5 * |e| * |*e| * f_e )
   double surfaceIntegration() {
     double norm2 = 0.0;
     vector<double>::iterator valIter = edgeVals.begin();
@@ -409,6 +409,8 @@ public:
   void normalize(double eps = 0.0);
 
   DofEdgeVector getNormOnEdges() const;
+
+  static double L2Norm2(const DofEdgeVector &primal, const DofEdgeVector &dual);
 
   DofVertexVector interiorProdOnVertices(const DofEdgeVectorPD &pdvec) const;
 

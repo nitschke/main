@@ -906,6 +906,20 @@ DofEdgeVector DofEdgeVectorPD::getNormOnEdges() const{
   return norms;
 }
 
+double DofEdgeVectorPD::L2Norm2(const DofEdgeVector &primal, const DofEdgeVector &dual){
+  DofEdgeVector norms(primal.getEdgeMesh(), "We've got the PMA!");
+
+  vector<EdgeElement>::const_iterator edgeIter = primal.getEdgeMesh()->getEdges()->begin();
+  vector<double>::const_iterator valIterP = primal.getEdgeVector()->begin();
+  vector<double>::const_iterator valIterD = dual.getEdgeVector()->begin();
+  for (; edgeIter != primal.getEdgeMesh()->getEdges()->end(); ++edgeIter, ++valIterP, ++valIterD) {
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    norms[edgeIter->edgeDof] = ((*valIterP) * (*valIterP) + (*valIterD) * (*valIterD)) / (lenP * lenP);
+  }
+  
+  return norms.surfaceIntegration();
+}
+
 vector<WorldVector<double> > DofEdgeVectorPD::getSharpVecOnEdges() {
   vector<WorldVector<double> > sharp(edgeMesh->getNumberOfEdges());
 
