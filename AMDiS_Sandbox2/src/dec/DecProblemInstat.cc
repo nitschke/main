@@ -104,11 +104,19 @@ void DecProblemInstat::updateUhOlds_EdgeOperators(list<pair<DecOperator*, double
 }
 
 void DecProblemInstat::updateUhOlds_VertexOperators(list<pair<DecOperator*, double*> > &ops, int i) {
+  FUNCNAME("void DecProblemInstat::updateUhOlds_VertexOperators(list<pair<DecOperator*, double*> > &ops, int i)");
   for (list<pair<DecOperator*, double*> >::const_iterator opIter = ops.begin(); opIter != ops.end(); ++opIter) {
     VertexOperator *vop = dynamic_cast<VertexOperator*>(opIter->first);
     if (vop->isUhOldSet()) {
-      DOFVector<double> *soli = new DOFVector<double>(statProb->getVertexSolution(i));
-      vop->setUhOld(soli);
+      if (vop->getColType() == VERTEXSPACE) {
+        DOFVector<double> *soli = new DOFVector<double>(statProb->getVertexSolution(vop->compNum));
+        vop->setUhOldAtVertices(soli);
+      } else if (vop->getColType() == EDGESPACE) {
+        DofEdgeVector *soli = new DofEdgeVector(statProb->getEdgeSolution(vop->compNum));
+        vop->setUhOldAtEdges(soli);
+      } else {
+        ERROR_EXIT("Das haette nicht passieren duerfen!");
+      }
     }
   }
 }

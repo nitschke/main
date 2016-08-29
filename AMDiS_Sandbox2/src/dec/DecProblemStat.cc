@@ -263,8 +263,10 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<pair<DecOperator*, d
           vertexRowValMapper mapper = (*termIter)->evalRow(*edgeIter, FIRSTVERTEX, factor);
           vertexRowValMapper::iterator mapIter = mapper.begin();
           for (; mapIter != mapper.end(); ++mapIter) {
-            if (vop->uhold) {
-              val += mapIter->second * ((*(vop->uhold))[mapIter->first]);
+            if (vop->uholdAtVs) {
+              val += mapIter->second * ((*(vop->uholdAtVs))[mapIter->first]);
+            } else if (vop->uholdAtEs) {
+              val += mapIter->second * ((*(vop->uholdAtEs))[mapIter->first]);
             } else {
               val += mapIter->second;
             }
@@ -279,8 +281,10 @@ inline void DecProblemStat::assembleVectorBlock_Vertex(list<pair<DecOperator*, d
           vertexRowValMapper mapper = (*termIter)->evalRow(*edgeIter, SECONDVERTEX, factor);
           vertexRowValMapper::iterator mapIter = mapper.begin();
           for (; mapIter != mapper.end(); ++mapIter) {
-            if (vop->uhold) {
-              val += mapIter->second * ((*(vop->uhold))[mapIter->first]);
+            if (vop->uholdAtVs) {
+              val += mapIter->second * ((*(vop->uholdAtVs))[mapIter->first]);
+            } else if (vop->uholdAtEs) {
+              val += mapIter->second * ((*(vop->uholdAtEs))[mapIter->first]);
             } else {
               val += mapIter->second;
             }
@@ -473,8 +477,9 @@ void DecProblemStat::writeSolution(double time, string nameAddition) {
 
 
 DofEdgeVector DecProblemStat::getSolution(int i) {
+    FUNCNAME("DecProblemStat::getSolution(int i) aka DecProblemStat::getEdgeSolution(int i)");
     TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
-    TEST_EXIT(fullSolution)("there is no solution ");
+    TEST_EXIT(fullSolution && i >= 0)("there is no solution ");
     TEST_EXIT(spaceTypes[i] == EDGESPACE)("Wrong SpaceType\n");
     
     DofEdgeVector soli(emesh, "Sol_" + boost::lexical_cast<std::string>(i));
@@ -486,8 +491,9 @@ DofEdgeVector DecProblemStat::getSolution(int i) {
 }
 
 DofVertexVector  DecProblemStat::getVertexSolution(int i) {
+    FUNCNAME("DecProblemStat::getVertexSolution(int i)");
     TEST_EXIT(i < nComponents)("The stationary problem has only %d components!\n", nComponents);
-    TEST_EXIT(fullSolution)("there is no solution ");
+    TEST_EXIT(fullSolution && i >= 0)("there is no solution ");
     TEST_EXIT(spaceTypes[i] == VERTEXSPACE)("Wrong SpaceType\n");
     
     DofVertexVector soli(emesh, "Sol_" + boost::lexical_cast<std::string>(i));

@@ -2,7 +2,6 @@
 #include "decOperator.h"
 #include "phiProjection.h"
 #include "torusProjection.h"
-#include "EllipsoidProjection.h"
 #include "meshCorrector.h"
 #include "MeshHelper.h"
 
@@ -227,60 +226,6 @@ private:
   double b;
 };
 
-//Red Blood Cell (RBC)
-class PhiRBC : public AbstractFunction<double, WorldVector<double> >
-{
-public:
-  PhiRBC(double a_,double c_) : AbstractFunction<double, WorldVector<double> >(1), a(a_), c(c_) {
-    FUNCNAME("PhiRBC::PhiRBC(double a_,double c_)")
-    TEST_EXIT(a < c && c < a*std::sqrt(2))("It must hold: a < c < a*sqrt(2)");
-  }
-
-  double operator()(const WorldVector<double>& coords) const 
-  {
-    double x = coords[0];
-    double y = coords[1];
-    double z = coords[2];
-
-    return -1.*std::pow(c,4) - 4.*std::pow(a,2)*(std::pow(x,2) + std::pow(y,2)) + std::pow(std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2),2); 
-  }
-
-private:
-
-  double a;
-  double c;
-};
-
-class GradPhiRBC : public AbstractFunction<WorldVector<double>, WorldVector<double> >
-{
-public:
-  GradPhiRBC(double a_,double c_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), a(a_), c(c_) {
-    FUNCNAME("GradPhiRBC::GradPhiRBC(double a_,double c_)")
-    TEST_EXIT(a < c && c < a*std::sqrt(2))("It must hold: a < c < a*sqrt(2)");
-  }
-
-  WorldVector<double> operator()(const WorldVector<double>& coords) const 
-  {
-    double x = coords[0];
-    double y = coords[1];
-    double z = coords[2];
-
-    WorldVector<double> rval;
-    
-    rval[0] = 4.*x*(-1.*std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2));
-    rval[1] = 4.*y*(-1.*std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2));
-    rval[2] = 4.*z*(std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2));
-
-    return rval;
-  }
-
-private:
-
-  double a;
-  double c;
-};
-
-
 
 // ===========================================================================
 // ===== main program ========================================================
@@ -291,6 +236,18 @@ int main(int argc, char* argv[])
   FUNCNAME("sphere main");
 
   AMDiS::init(argc, argv);
+
+  double stretch = -1.0;
+  Parameters::get("octic->c", stretch);
+  TEST_EXIT(stretch >= 0)("stretch factor must be positive!\n");
+
+  double southRatio = -1.0;
+  Parameters::get("nonic->south ratio", southRatio);
+  TEST_EXIT(southRatio >= 0)("south radio factor must be positive!\n");
+
+  double press = -1.0;
+  Parameters::get("nonic->press", press);
+  TEST_EXIT(press >= 0 && press < 1)("press factor must be positive and lower than 1!\n");
 
   double h;
   Parameters::get("meshCorrector->h", h);
@@ -305,22 +262,57 @@ int main(int argc, char* argv[])
   Parameters::get("meshCorrector->outName", meshOut);
   MeshCorrector mc(sphere.getFeSpace(), meshOut);
 
+// *********************************************
+// all for nonicPressed
+  double c;
+  Parameters::get("edgeForces->c", c);
+  double cNow = 0.8;
+  Parameters::set("edgeForces->c", cNow);
+
+  double hNow = h;
+
+  double stretchOld = stretch;
+  double pressOld = press;
+  Parameters::get("nonic->old->c", stretchOld);
+  Parameters::get("nonic->old->press", pressOld);
+
+  int steps = 100;
+  int iterationsPerStep = 101;
+  Parameters::get("nonic->parameterSteps", steps);
+  Parameters::get("nonic->iterationsPerStep", iterationsPerStep);
+
+
+  double stretchStepSize = (stretchOld - stretch) / steps;
+  double pressStepSize = (pressOld - press) / steps;
+
+  double stretchNow = stretchOld - stretchStepSize;
+  double pressNow = pressOld - pressStepSize;
+
+  double signStretch = (stretchStepSize > 0 ) ? 1 : -1; 
+  double signPress = (pressStepSize > 0 ) ? 1 : -1; 
+
+  int stepsDone = 0;
+  for (; signStretch*stretchNow > signStretch*stretch && signPress*pressNow > signPress*press; 
+          stretchNow -= stretchStepSize, pressNow -= pressStepSize) {
+    MSG("*** Precalculation at STRETCH = %f and PRESS = %f ***\n", stretchNow, pressNow);
+    PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretchNow, southRatio, pressNow), new GradPhiNP(stretchNow, southRatio, pressNow), 1.0e-6);
+    mc.iterate(iterationsPerStep, hNow, meshOut);
+    stepsDone += iterationsPerStep - 1;
+    MSG("****************** DONE ***************************\n");
+  }
+  Parameters::set("edgeForces->c", c);
+// *********************************************
 
   // ===== create projection =====
   //new PhiProject(1, VOLUME_PROJECTION, new PhiN(stretch, southRatio), new GradPhiN(stretch, southRatio), 1.0e-6);
   //new PhiProject(1, VOLUME_PROJECTION, new PhiO(stretch), new GradPhiO(stretch), 1.0e-6);
-  //new PhiProject(1, VOLUME_PROJECTION, new PhiNP(stretch, southRatio, press), new GradPhiNP(stretch, southRatio, press), 1.0e-9);
+  new PhiProject(1, VOLUME_PROJECTION, new PhiNP(stretch, southRatio, press), new GradPhiNP(stretch, southRatio, press), 1.0e-9);
   //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
-  //new EllipsoidProject(1, VOLUME_PROJECTION, 0.5, 0.5, 1.5);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);
   //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
-
-  double a = 0.72;
-  double c = 0.75;
-  new PhiProject(1, VOLUME_PROJECTION, new PhiRBC(a, c), new GradPhiRBC(a, c), 1.0e-8);
   
-  mc.iterate(nMax, h, meshOut);
+  mc.iterate(nMax-stepsDone, h, meshOut);
 
 
   AMDiS::finalize();

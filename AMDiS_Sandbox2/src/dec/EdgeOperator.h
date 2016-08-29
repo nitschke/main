@@ -21,7 +21,7 @@ public:
     return uhold;
   }
 
-  //TODO: revise the uhOld-concept!
+  //TODO: revise the uhOld-concept! ??? colProbNum?!? besser compNum
   void setUhOld(const DofEdgeVector &oldSolution, short rowProblemNumber) {
     uhold = new DofEdgeVector(oldSolution);
     rProbNum = rowProblemNumber;

@@ -347,7 +347,7 @@ DOFVector<WorldVector<double> > getNormalsRootEdgeReciprocalAverage(const Finite
       dof = localIndices[i];
       double len1 = vols.getOppEdgeLen((i+1)%3);
       double len2 = vols.getOppEdgeLen((i+2)%3);
-      normals[dof] += (1.0 / sqrt(len1 * len2)) * normal;
+      normals[dof] += (1.0 / std::sqrt(len1 * len2)) * normal;
     }
   }
 
@@ -433,7 +433,7 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
   one = 1.0;
   double volM = one.Int();
   int nT = feSpace->getMesh()->getNumberOfLeaves(); 
-  double lRef = 2.0 * sqrt(volM/sqrt(3.0)/nT);
+  double lRef = 2.0 * std::sqrt(volM/std::sqrt(3.0)/nT);
 
 
   DOFVector<WorldVector<double> > normals(feSpace, "normals");
@@ -461,8 +461,8 @@ DOFVector<WorldVector<double> > getConnectionForces(const FiniteElemSpace *feSpa
       //double len2 = sqrt(dot(ccccjk, ccccjk));
       WorldVector<double> xDelta = el->getCoord(j) - el->getCoord(i);
       WorldVector<double> xDeltaK = el->getCoord(m) - el->getCoord(i);
-      double len = sqrt(dot(xDelta, xDelta));
-      double lenK = sqrt(dot(xDeltaK, xDeltaK));
+      double len = std::sqrt(dot(xDelta, xDelta));
+      double lenK = std::sqrt(dot(xDeltaK, xDeltaK));
       double cosAngle = dot(xDelta, xDeltaK) / len / lenK;
       double deltaLen = len / lRef - k;
       double deltaA = cosAngle - 0.5;
@@ -492,7 +492,7 @@ double getMaxMagnitude(DOFVector<WorldVector<double> > F) {
   DOFIterator<WorldVector<double> > fIter(&F, USED_DOFS);
   double max = 0;
   for (fIter.reset(); !fIter.end(); fIter++) {
-    double mag = sqrt(dot(*fIter,*fIter));
+    double mag = std::sqrt(dot(*fIter,*fIter));
     if (mag > max) max = mag;
   }
   return max;
@@ -651,7 +651,7 @@ void MeshInfoCSVWriter::appendData(const FiniteElemSpace *feSpace, bool verbose)
     double amin = 4.0;
     for (int i = 0; i < 3; i++) {
       int ii = (i+1)%3;
-      double a = acos(dot(edges[i], (-1.0)*edges[ii]) / wvnorm(edges[i]) / wvnorm(edges[ii]));
+      double a = std::acos(dot(edges[i], (-1.0)*edges[ii]) / wvnorm(edges[i]) / wvnorm(edges[ii]));
       if (a > amax) amax = a;
       if (a < amin) amin = a;
     }

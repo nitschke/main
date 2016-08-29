@@ -52,7 +52,7 @@ namespace AMDiS {
     double xmin = x.min();
     double xmax = x.max();
     for (xIterator.reset(), rvalIterator.reset(); !xIterator.end(); ++xIterator, ++rvalIterator) {
-      *rvalIterator = ((*xIterator) >= 0) ? (sqrt((*xIterator)/xmax)) : (-sqrt((*xIterator)/xmin));
+      *rvalIterator = ((*xIterator) >= 0) ? (std::sqrt((*xIterator)/xmax)) : (-std::sqrt((*xIterator)/xmin));
     }
 
     return rval;
@@ -95,14 +95,14 @@ namespace AMDiS {
       for (xIterator.reset(), yIterator.reset(), zIterator.reset(), rvalIterator.reset(),normalsIterator.reset(); 
            !xIterator.end();
 	         ++xIterator, ++yIterator, ++zIterator, ++rvalIterator, ++normalsIterator) {
-      *rvalIterator = 0.5 * sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator));
+      *rvalIterator = 0.5 * std::sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator));
         if ((*normalsIterator)[0] * (*xIterator) +  (*normalsIterator)[1] * (*yIterator) + (*normalsIterator)[2] * (*zIterator) < 0.0)
           *rvalIterator *= -1.0;
       }
     } else {
       for (xIterator.reset(), yIterator.reset(), zIterator.reset(), rvalIterator.reset(); !xIterator.end();
 	         ++xIterator, ++yIterator, ++zIterator, ++rvalIterator) {
-        *rvalIterator = 0.5 * sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator));
+        *rvalIterator = 0.5 * std::sqrt((*xIterator)*(*xIterator) + (*yIterator)*(*yIterator) + (*zIterator)*(*zIterator));
       }
     }
 

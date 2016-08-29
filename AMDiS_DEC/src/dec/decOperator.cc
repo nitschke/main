@@ -368,7 +368,7 @@ namespace AMDiS {
       }
       WorldVector<double> e1 = elInfo->getCoord(i) - elInfo->getCoord((i+1)%3);
       WorldVector<double> e2 = elInfo->getCoord(i) - elInfo->getCoord((i+2)%3);
-      double angle2 = acos(dot(e1,e2) / sqrt(dot(e1,e1)*dot(e2,e2)));
+      double angle2 = std::acos(dot(e1,e2) / std::sqrt(dot(e1,e1)*dot(e2,e2)));
       opVec[i] -= angle2;
       if (iGlob == 554) {
           cout << "*** " << opVec[i] << endl;

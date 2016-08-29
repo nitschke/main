@@ -10,14 +10,14 @@ namespace AMDiS {
 
 inline double dot(const WorldVector<double> &v1, const WorldVector<double> &v2) {
   double rval = 0.0;
-  for(double *itV1 = v1.begin(), *itV2 = v2.begin(); itV1 != v1.end(); itV1++, itV2++) {
+  for(const double *itV1 = v1.begin(), *itV2 = v2.begin(); itV1 != v1.end(); itV1++, itV2++) {
     rval += *itV1 * *itV2;
   }
   return rval;
 }
 
 inline double wvnorm(const WorldVector<double> &v1) {
-  return sqrt(dot(v1,v1));
+  return std::sqrt(dot(v1,v1));
 }
 
 inline WorldVector<double> cross(const WorldVector<double> &v1, const WorldVector<double> &v2) {

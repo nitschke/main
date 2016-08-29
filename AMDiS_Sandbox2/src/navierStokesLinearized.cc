@@ -1,6 +1,8 @@
 #include "Dec.h"
 #include "SphereProjection.h"
 #include "phiProjection.h"
+#include "EllipsoidProjection.h"
+
 
 using namespace std;
 using namespace AMDiS;
@@ -108,6 +110,48 @@ class GaussCurv_Sphere : public AbstractFunction<double, EdgeElement > {
   }
 };
 
+class GaussCurv_Ellipsoid : public AbstractFunction<double, EdgeElement > {
+  public:
+  GaussCurv_Ellipsoid(double xscale, double yscale, double zscale) : AbstractFunction<double, EdgeElement >(), cx(xscale), cy(yscale), cz(zscale) {}
+
+  double operator()(const EdgeElement& eel) const {
+    WorldVector<double> coords = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(coords);
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+    double K = (4.*std::pow(cx,6)*std::pow(cy,6)*std::pow(cz,6))/std::pow(std::pow(cy,4)*std::pow(cz,4)*std::pow(x,2) + std::pow(cx,2)*std::pow(cy,2)*std::pow(cz,2)*(-1.*std::pow(cz,2)*(std::pow(x,2) + std::pow(y,2)) + std::pow(cy,2)*(std::pow(cz,2) - 1.*std::pow(z,2))) + std::pow(cx,4)*(std::pow(cz,4)*std::pow(y,2) + 2.*std::pow(cy,4)*std::pow(z,2) + std::pow(cy,2)*(std::pow(cz,4) - 1.*std::pow(cz,2)*std::pow(z,2))),2);    
+    return K;
+  }
+
+  private:
+  double cx; 
+  double cy;
+  double cz;
+};
+
+class GaussCurv_RBC : public AbstractFunction<double, EdgeElement > {
+  public:
+  GaussCurv_RBC(double a_,double c_) : AbstractFunction<double, EdgeElement >(), a(a_), c(c_) {
+    FUNCNAME("GaussCurv_RBC::GaussCurv_RBC(double a_,double c_)")
+    TEST_EXIT(a < c && c < a*std::sqrt(2))("It must hold: a < c < a*sqrt(2)");
+  }
+
+  double operator()(const EdgeElement& eel) const {
+    WorldVector<double> coords = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(coords);
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+    double K = (-4.*std::pow(a,6) + std::pow(c,4)*std::sqrt(std::pow(c,4) + 4.*std::pow(a,2)*(std::pow(x,2) + std::pow(y,2))) + 8.*std::pow(a,4)*(-3.*std::pow(x,2) - 3.*std::pow(y,2) + std::sqrt(std::pow(c,4) + 4.*std::pow(a,2)*(std::pow(x,2) + std::pow(y,2)))) + std::pow(a,2)*(-5.*std::pow(c,4) + 6.*(std::pow(x,2) + std::pow(y,2))*std::sqrt(std::pow(c,4) + 4.*std::pow(a,2)*(std::pow(x,2) + std::pow(y,2)))))/(std::pow(c,4)*(std::pow(a,4) + std::pow(c,4) + std::pow(a,2)*(4.*std::pow(x,2) + 4.*std::pow(y,2) - 2.*std::sqrt(std::pow(c,4) + 4.*std::pow(a,2)*(std::pow(x,2) + std::pow(y,2))))));    
+    return K;
+  }
+
+  private:
+  double a;
+  double c;
+};
+
 class GaussCurv_Nonic095r : public AbstractFunction<double, EdgeElement > {
   public:
   GaussCurv_Nonic095r(double press, double stretch) : AbstractFunction<double, EdgeElement >(), c(stretch), B(press) {}
@@ -183,6 +227,61 @@ private:
 };
 
 
+//Red Blood Cell (RBC)
+class PhiRBC : public AbstractFunction<double, WorldVector<double> >
+{
+public:
+  PhiRBC(double a_,double c_) : AbstractFunction<double, WorldVector<double> >(1), a(a_), c(c_) {
+    FUNCNAME("PhiRBC::PhiRBC(double a_,double c_)")
+    TEST_EXIT(a < c && c < a*std::sqrt(2))("It must hold: a < c < a*sqrt(2)");
+  }
+
+  double operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    return -1.*std::pow(c,4) - 4.*std::pow(a,2)*(std::pow(x,2) + std::pow(y,2)) + std::pow(std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2),2); 
+  }
+
+private:
+
+  double a;
+  double c;
+};
+
+class GradPhiRBC : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  GradPhiRBC(double a_,double c_) : AbstractFunction<WorldVector<double>, WorldVector<double> >(1), a(a_), c(c_) {
+    FUNCNAME("GradPhiRBC::GradPhiRBC(double a_,double c_)")
+    TEST_EXIT(a < c && c < a*std::sqrt(2))("It must hold: a < c < a*sqrt(2)");
+  }
+
+  WorldVector<double> operator()(const WorldVector<double>& coords) const 
+  {
+    double x = coords[0];
+    double y = coords[1];
+    double z = coords[2];
+
+    WorldVector<double> rval;
+    
+    rval[0] = 4.*x*(-1.*std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2));
+    rval[1] = 4.*y*(-1.*std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2));
+    rval[2] = 4.*z*(std::pow(a,2) + std::pow(x,2) + std::pow(y,2) + std::pow(z,2));
+
+    return rval;
+  }
+
+private:
+
+  double a;
+  double c;
+};
+
+
+
 class MyInstat : public DecProblemInstat {
 public:
   MyInstat(DecProblemStat *probStat, DofEdgeVector initSolP, DofEdgeVector initSolD)
@@ -204,7 +303,9 @@ public:
 
     double EKin = 0.5 * DofEdgeVectorPD::L2Norm2(solPrimal, solDual);
     csvout << 0.0 << "," << EKin << endl;
-    cout << "### RelKinErr: " << EKin << " ###" << endl;
+    cout << "### KinE: " << EKin << " ###" << endl;
+
+    minusDivSolDual = -1.0 * solDual.divOnEdgeCenter();
   }
 
 
@@ -213,10 +314,11 @@ public:
     DecProblemInstat::closeTimestep();
     solPrimal = statProb->getSolution(0);
     solDual =  statProb->getSolution(1);
+    minusDivSolDual = - 1.0 * solDual.divOnEdgeCenter();
 
     double EKin = 0.5 * DofEdgeVectorPD::L2Norm2(solPrimal, solDual);
     csvout << time << "," << EKin << endl;
-    cout << "### RelKinErr: " << EKin << " ###" << endl;
+    cout << "### KinE: " << EKin << " ###" << endl;
   }
 
   DofEdgeVector* getSolPrimal() {
@@ -227,11 +329,16 @@ public:
     return &solDual;
   }
 
+  DofEdgeVector* getMinusDivSolDual() {
+    return &minusDivSolDual;
+  }
+
   ~MyInstat() {csvout.close();}
 
 private:
   DofEdgeVector solPrimal;
   DofEdgeVector solDual;
+  DofEdgeVector minusDivSolDual;
 
   ofstream csvout;
 };
@@ -261,7 +368,9 @@ int main(int argc, char* argv[])
   //alphaP.interpolGL4(new RotXYZ_Sphere(), proj.getProjection(), proj.getJProjection());
   //alphaP.interpolGL4(new RotZ_Sphere(), proj.getProjection(), proj.getJProjection());
   //alphaD.set(new DXYZ());
-  alphaD.set(new DLin(0.1, 1.0, 0.1));
+  //alphaD.set(new DLin(0.1, 1.0, 0.1));
+  //alphaD.set(new DLin(0., 0.25, 0.0125)); // for ellipsoid
+  alphaD.set(new DLin(0., 1., 1.)); // for RBC
   //alphaD *= -1.0;
   //alphaD.set(new DZ());
   //alphaD.set(new DX());
@@ -271,12 +380,22 @@ int main(int argc, char* argv[])
   MyInstat sphereInstat(&decSphere, alphaP, alphaD);
 
   // Gauss curvature on edge circumcenters
-  double press = 0.35;
-  double stretch = 1.0;
-  PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretch, 0.95, press), new GradPhiNP(stretch, 0.95, press), 1.0e-6);
   DofEdgeVector K(edgeMesh, "K"); 
-  K.set(new GaussCurv_Nonic095r(press, stretch));
+  //double press = 0.35;
+  //double stretch = 1.0;
+  //PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretch, 0.95, press), new GradPhiNP(stretch, 0.95, press), 1.0e-6);
+  //K.set(new GaussCurv_Nonic095r(press, stretch));
+  double cx = 0.5;
+  double cy = 0.5;
+  double cz = 1.5;
+  //new EllipsoidProject(1, VOLUME_PROJECTION, cx, cy, cz);
+  //K.set(new GaussCurv_Ellipsoid(cx, cy, cz));
   //K.set(new GaussCurv_Sphere());
+
+  double a = 0.72;
+  double c = 0.75;
+  new PhiProject(1, VOLUME_PROJECTION, new PhiRBC(a, c), new GradPhiRBC(a, c), 1.0e-8);
+  K.set(new GaussCurv_RBC(a, c));
   K.writeFile("K.vtu");
 
 // determine hodge dual
@@ -307,7 +426,15 @@ int main(int argc, char* argv[])
 // *alpha rot(alpha)   (convection)
   EdgeOperator HAlphaRotAlpha;
   HAlphaRotAlpha.addTerm(new RotAtEdgeCenterAndEdgeVecAtEdges(sphereInstat.getSolDual()));
+  HAlphaRotAlpha.setUhOld(alphaP, 0);
   decSphere.addMatrixOperator(HAlphaRotAlpha, 0, 0);
+  decSphere.addVectorOperator(HAlphaRotAlpha, 0);
+
+  EdgeOperator DivHAlphaHAlpha;
+  DivHAlphaHAlpha.addTerm(new EdgeVecAtEdges(sphereInstat.getMinusDivSolDual()));
+  decSphere.addMatrixOperator(DivHAlphaHAlpha, 0, 1);
+
+
 
 // dq  (convection + pressure)
   EdgeOperator ExDQ;
@@ -315,13 +442,25 @@ int main(int argc, char* argv[])
   decSphere.addMatrixOperator(ExDQ,0, 2);
 
 // q = 0.5 <alpha,alpha> + p  (convection + pressure)
-  VertexOperator jAlphaAlpha;
-  jAlphaAlpha.addTerm(new InterProdPartAtVertices(sphereInstat.getSolPrimal(), 0.5));
-  decSphere.addMatrixOperator(jAlphaAlpha, 2, 0);
+// linearize: <alpha,alpha> = 2 <alphaOld,alpha> - <alphaOld,alphaOld>
+//    i.e.:  <alphaOld,alpha> + p - q =  0.5 <alphaOld,alphaOld>
+  VertexOperator jAlphaOldAlpha;
+  jAlphaOldAlpha.addTerm(new InterProdPartAtVertices(sphereInstat.getSolPrimal()));
+  decSphere.addMatrixOperator(jAlphaOldAlpha, 2, 0);
 
-  VertexOperator jHAlphaHAlpha;
-  jHAlphaHAlpha.addTerm(new InterProdPartAtVertices(sphereInstat.getSolDual(), 0.5));
-  decSphere.addMatrixOperator(jHAlphaHAlpha, 2, 1);
+  VertexOperator jHAlphaOldHAlpha;
+  jHAlphaOldHAlpha.addTerm(new InterProdPartAtVertices(sphereInstat.getSolDual()));
+  decSphere.addMatrixOperator(jHAlphaOldHAlpha, 2, 1);
+
+  VertexOperator jAlphaOldAlphaOld;
+  jAlphaOldAlphaOld.addTerm(new InterProdPartAtVertices(sphereInstat.getSolPrimal(), 0.5));
+  jAlphaOldAlphaOld.setUhOldAtEdges(alphaP, 0);
+  decSphere.addVectorOperator(jAlphaOldAlphaOld, 2);
+
+  VertexOperator jHAlphaOldHAlphaOld;
+  jHAlphaOldHAlphaOld.addTerm(new InterProdPartAtVertices(sphereInstat.getSolDual(), 0.5));
+  jHAlphaOldHAlphaOld.setUhOldAtEdges(alphaD, 1);
+  decSphere.addVectorOperator(jHAlphaOldHAlphaOld, 2);
 
   VertexOperator IdP;
   IdP.addTerm(new IdentityAtVertices());

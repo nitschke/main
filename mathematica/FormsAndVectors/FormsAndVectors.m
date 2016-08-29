@@ -11,6 +11,7 @@ GlobalTensorFromPara::usage = "give the global (euclidian) representation of a l
 LocalTensorFromPara::usage = "give the local representation of a global tensor";
 
 CPPExpression::usage = "convert expression to C++";
+ParaViewExpression::usage = "convert expression for ParaviewCalculater";
 
 GaussCurvFromMetric::usage = "computes the Gauss curvature from metric tensor";
 
@@ -103,6 +104,8 @@ LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap
 
 
 CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"std::sqrt"}]
+
+ParaViewExpression[expr_] := StringReplace[ToString[expr//N//InputForm],{". "->"",".*"->"*","["->"(","]"->")","x"->"coordsX","y"->"coordsY","z"->"coordsZ","Sqrt"->"sqrt"}]
 
 GaussCurvFromMetric[u_,v_,g_] := Module[
 {T1={{-D[g[[1,1]],v,v]/2+D[g[[1,2]],u,v]-D[g[[2,2]],u,u]/2, D[g[[1,1]],u]/2, D[g[[1,2]],u]-D[g[[1,1]],v]/2},

@@ -140,3 +140,6 @@ target_link_libraries(hodgeTest ${BASIS_LIBS} dec)
 
 add_executable(navierStokesSphere src/navierStokesSphere.cc)
 target_link_libraries(navierStokesSphere ${BASIS_LIBS} dec)
+
+add_executable(navierStokesLinearized src/navierStokesLinearized.cc)
+target_link_libraries(navierStokesLinearized ${BASIS_LIBS} dec)

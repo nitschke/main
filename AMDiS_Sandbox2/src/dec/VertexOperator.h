@@ -12,15 +12,27 @@ class VertexOperator : public DecOperator {
 public:
   
   VertexOperator() : DecOperator(VERTEXSPACE) {
-    uhold = NULL;
+    uholdAtVs = NULL;
+    uholdAtEs = NULL;
+    compNum = -1;
   }
 
   bool isUhOldSet() {
-    return uhold;
+    return uholdAtVs || uholdAtEs;
   }
 
-  void setUhOld(const DOFVector<double> &oldSolution) {
-    uhold = new DOFVector<double>(oldSolution);
+  void setUhOldAtVertices(const DOFVector<double> &oldSolution, short componentNumber) {
+    FUNCNAME("void VertexOperator::setUhOldAtVertices(const DOFVector<double> &oldSolution)");
+    TEST_EXIT(colType == VERTEXSPACE)("VertexOperator col space type mismatch: You can only use DofVertexVector for old Solution!");
+    uholdAtVs = new DOFVector<double>(oldSolution);
+    compNum = componentNumber;
+  }
+
+  void setUhOldAtEdges(const DofEdgeVector &oldSolution, short componentNumber) {
+    FUNCNAME("void VertexOperator::setUhOldAtEdges(const DOFVector<double> &oldSolution)");
+    TEST_EXIT(colType == EDGESPACE)("VertexOperator col space type mismatch: You can only use DofEdgeVector for old Solution!");
+    uholdAtEs = new DofEdgeVector(oldSolution);
+    compNum = componentNumber;
   }
 
   void addTerm(VertexOperatorTerm *term) {
@@ -44,14 +56,22 @@ public:
 
 private:
 
-  void setUhOld(DOFVector<double> *oldSolution) {
-    if (uhold) delete uhold;
-    uhold = oldSolution;
+  void setUhOldAtVertices(DOFVector<double> *oldSolution) {
+    if (uholdAtVs) delete uholdAtVs;
+    uholdAtVs = oldSolution;
+  }
+
+  void setUhOldAtEdges(DofEdgeVector *oldSolution) {
+    if (uholdAtEs) delete uholdAtEs;
+    uholdAtEs = oldSolution;
   }
 
   list< VertexOperatorTerm* > opTs;
 
-  DOFVector<double> *uhold;
+  DOFVector<double> *uholdAtVs;
+  DofEdgeVector *uholdAtEs;
+
+  short compNum;
 
   friend class DecProblemStat;
   friend class DecProblemInstat;

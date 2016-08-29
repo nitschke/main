@@ -1,7 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:        ./macro/sphereIko100k.3d
-sphereMesh->macro file name:        /home/ingo/Schreibtisch/sandbox/ACVD/ACVD/nonicPressed/nonic095r18c075b_RAW.3d
+sphereMesh->macro file name:        /home/ingo/Software/ACVD/RBC_072_075_32k_RAW.3d
 %sphereMesh->macro file name:        ../AMDiS_Sandbox2/macro/octics/octic_C1.200_100k.3d
 %sphereMesh->macro file name:        /home/ingo/git/main/AMDiS_Sandbox2/macro/nonicsPressed/nonic095r175c06125b_64k.3d
 %sphereMesh->macro file name:        ./macro/torus1k.3d
@@ -22,7 +22,7 @@ sphere->solver: cg
 meshCorrector->h: 0.002 %0.002 for nonic-stuff %0.003 %0.0007 %0.0005
 
 meshCorrector->nMax: 100001
-meshCorrector->outName: nonic095r5c08b_64k
+meshCorrector->outName: RBC_072_075_8k
 
 
 
@@ -39,4 +39,4 @@ nonic->parameterSteps: 0 %1000
 nonic->iterationsPerStep: 5
 
 corrector->fMin: 0.002
-corrector->write every ith step: 100
+corrector->write every ith step: 50

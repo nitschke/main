@@ -32,21 +32,21 @@ namespace AMDiS {
     WorldVector<double> starE2 = cc - cc2; 
 
     // edge len of the opp vertex
-    oppEdgeLen[0] = sqrt(dot(e0, e0));
-    oppEdgeLen[1] = sqrt(dot(e1, e1));
-    oppEdgeLen[2] = sqrt(dot(e2, e2));
+    oppEdgeLen[0] = std::sqrt(dot(e0, e0));
+    oppEdgeLen[1] = std::sqrt(dot(e1, e1));
+    oppEdgeLen[2] = std::sqrt(dot(e2, e2));
 
     // dual edge len of the opp vertex
-    dualOppEdgeLen[0] = sqrt(dot(starE0, starE0));
-    dualOppEdgeLen[1] = sqrt(dot(starE1, starE1));
-    dualOppEdgeLen[2] = sqrt(dot(starE2, starE2));
+    dualOppEdgeLen[0] = std::sqrt(dot(starE0, starE0));
+    dualOppEdgeLen[1] = std::sqrt(dot(starE1, starE1));
+    dualOppEdgeLen[2] = std::sqrt(dot(starE2, starE2));
 
     // sinus of edge and dual edge
     WorldVector<double> oppCos;
     oppCos[0] = dot(e0, starE0) / (wvnorm(e0) * wvnorm(starE0));
     oppCos[1] = dot(e1, starE1) / (wvnorm(e1) * wvnorm(starE1));
     oppCos[2] = dot(e2, starE2) / (wvnorm(e2) * wvnorm(starE2));
-    for (int i = 0; i < 3 ; i++) oppSin[i] = sqrt(1 - oppCos[i]*oppCos[i]);
+    for (int i = 0; i < 3 ; i++) oppSin[i] = std::sqrt(1 - oppCos[i]*oppCos[i]);
     //cout << oppSin[0] << endl;
     //cout << oppSin[1] << endl;
     //cout << oppSin[2] << endl;
