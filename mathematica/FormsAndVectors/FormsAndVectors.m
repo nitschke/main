@@ -12,6 +12,7 @@ LocalTensorFromPara::usage = "give the local representation of a global tensor";
 
 CPPExpression::usage = "convert expression to C++";
 ParaViewExpression::usage = "convert expression for ParaviewCalculater";
+ParaViewVecExpression::usage = "convert vector expression for ParaviewCalculater";
 
 GaussCurvFromMetric::usage = "computes the Gauss curvature from metric tensor";
 
@@ -50,11 +51,14 @@ LDeRham1::usage = "Laplace-De-Rham (\[Delta]d+d\[Delta]) of a 1-form";
 LDeRham1Vec::usage = "Laplace-De-Rham (\[Delta]d+d\[Delta]) of a vector (with pre-flat and post-sharp)";
 LDeRham2::usage = "aplace-De-Rham (d\[Delta]) of a 2-form";
 
+TransposeSFTensor::usage = "Transpose sharp-flat-te results in a flat-sharp-tensor"
+
 LieD0::usage = "Lie-derivative of a 0-form";
 LieD1::usage = "Lie-derivative of a 1-form";
 LieD1Vec::usage = "Lie-derivative of a vector";
-LieD2::usage = "Lie-derivative of a 2-form";
-LieDT02::usage = "Lie-derivative of a (0,2)-Tensor";
+
+LieDFFTensor::usage = "Lie-derivative of a (0,2)-Tensor";
+LieDSSTensor::usage = "Lie-derivative of a (2,0)-Tensor";
 
 Inner1::usage = "Contraction of a 1-form";
 Inner2::usage = "Contraction of a 2-form";
@@ -76,6 +80,16 @@ CoDFFTensor::usage = "Covariant Derivative of a flat-flat-tensor -> Typ (0,2)";
 CoDFFFTensor::usage = "Covariant Derivative of a flat-flat-flat-tensor -> Typ (0,3)";
 
 DivSFTensor::usage = "Divergence of a sharp-flat-tensor (Typ(1,1)), results in a vector";
+
+Rot1FFTensor::usage = "rot_1 of flat-flat-tensor";
+Rot2FFTensor::usage = "rot_2 of flat-flat-tensor";
+Div1FFTensor::usage = "div_1 of flat-flat-tensor";
+Div2FFTensor::usage = "div_2 of flat-flat-tensor";
+
+Hodge1FFTensor::usage = "*_1 of flat-flat-tensor";
+Hodge2FFTensor::usage = "*_2 of flat-flat-tensor";
+
+RotFTensor::usage = "Rot of a flat-tensor (1-form)";
 
 TransposeSFTensor::usage = "Transpose of mixed sharp-flat-Tensor, [Flat[t]^T]Sharp";
 
@@ -105,7 +119,8 @@ LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap
 
 CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"std::sqrt"}]
 
-ParaViewExpression[expr_] := StringReplace[ToString[expr//N//InputForm],{". "->"",".*"->"*","["->"(","]"->")","x"->"coordsX","y"->"coordsY","z"->"coordsZ","Sqrt"->"sqrt"}]
+ParaViewExpression[expr_] := StringReplace[ToString[expr//N//InputForm],{". "->"",".*"->"*","["->"(","]"->")","x"->"coordsX","y"->"coordsY","z"->"coordsZ","Sqrt"->"sqrt","ArcSin"->"asin","Sin"->"sin","Cos"->"cos"}]
+ParaViewVecExpression[expr_]:=StringJoin["(",ParaViewExpression[expr[[1]]],")*iHat+(",ParaViewExpression[expr[[2]]],")*jHat+(",ParaViewExpression[expr[[3]]],")*kHat"]
 
 GaussCurvFromMetric[u_,v_,g_] := Module[
 {T1={{-D[g[[1,1]],v,v]/2+D[g[[1,2]],u,v]-D[g[[2,2]],u,u]/2, D[g[[1,1]],u]/2, D[g[[1,2]],u]-D[g[[1,1]],v]/2},
@@ -152,13 +167,13 @@ LDeRham1[alpha_,x_,y_,g_] := -LBeltrami1[alpha,x,y,g] - LCoBeltrami1[alpha,x,y,g
 LDeRham1Vec[vec_,x_,y_,g_] := Sharp1[LDeRham1[Flat1[vec,g],x,y,g],g]
 LDeRham2[omega_,x_,y_,g_] := -LCoBeltrami2[omega,x,y,g]
 
+TransposeSFTensor[t_,g_] := Transpose[g.CDw].Inverse[g]
+
 LieD0[vec_,f_,x_,y_] := vec.ExD0[f,x,y]
-(*LieD1[vec_,alpha_,x_,y_] := {vec[[1]]D[alpha[[1]],x] + vec[[2]]D[alpha[[1]],y] + alpha[[1]]D[vec[[1]],x] + alpha[[2]]D[vec[[2]],x],
-							  vec[[1]]D[alpha[[2]],x] + vec[[2]]D[alpha[[2]],y] + alpha[[1]]D[vec[[1]],y] + alpha[[2]]D[vec[[2]],y]}*)
 LieD1[vec_,alpha_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[j]]D[alpha[[i]],xv[[j]]] + alpha[[j]]D[vec[[j]],xv[[i]]],{j,1,2}],{i,1,2}]]
 LieD1Vec[vec_,wec_,x_,y_]:= Module[{xv={x,y}},Table[Sum[vec[[j]]D[wec[[i]],xv[[j]]] - wec[[j]]D[vec[[i]],xv[[j]]],{j,1,2}],{i,1,2}]]
-LieD2[vec_,omega_,x_,y_] := {{D[omega[[1,1]]vec[1],x] + D[omega[[1,1]]vec[2],y]}}
-LieDT02[vec_,sigma_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[k]]D[sigma[[i,j]],xv[[k]]]+sigma[[k,j]]D[vec[[k]],xv[[i]]]+sigma[[i,k]]D[vec[[k]],xv[[j]]],{k,1,2}],{i,1,2},{j,1,2}]]
+LieDFFTensor[vec_,sigma_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[k]]D[sigma[[i,j]],xv[[k]]]+sigma[[k,j]]D[vec[[k]],xv[[i]]]+sigma[[i,k]]D[vec[[k]],xv[[j]]],{k,1,2}],{i,1,2},{j,1,2}]]
+LieDSSTensor[vec_,sigma_,x_,y_] := Module[{xv={x,y}},Table[Sum[vec[[k]]D[sigma[[i,j]],xv[[k]]]-sigma[[k,j]]D[vec[[i]],xv[[k]]]-sigma[[i,k]]D[vec[[j]],xv[[k]]],{k,1,2}],{i,1,2},{j,1,2}]]
 
 Inner1[vec_,alpha_] := vec.alpha
 Inner2[vec_,omega_] := omega[[1,1]]{-vec[[2]],vec[[1]]}
@@ -233,6 +248,40 @@ DivSFTensor[t_,x_,y_,g_] :=
 				Table[Sum[gInv[[j,k]]codt[[i,j,k]],{j,2},{k,2}],
 				{i,2}
 				]
+	]
+
+RotFTensor[a_,x_,y_,g_] :=Hodge2FFTensor[CoDForm1[a,x,y,g]//Simplify,g]
+
+Rot1FFTensor[t_,x_,y_,g_] :=
+	Module[{codt=CoDFFTensor[t,x,y,g]//Simplify,LCSS=(1/Sqrt[Det[g]])*LeviCivitaTensor[2]//Normal},
+				Table[Sum[LCSS[[k,j]]codt[[j,i,k]],{j,2},{k,2}],{i,2}]
+	]
+
+Rot2FFTensor[t_,x_,y_,g_] :=
+	Module[{codt=CoDFFTensor[t,x,y,g]//Simplify,LCSS=(1/Sqrt[Det[g]])*LeviCivitaTensor[2]//Normal},
+				Table[Sum[LCSS[[k,j]]codt[[i,j,k]],{j,2},{k,2}],{i,2}]
+	]
+
+Div1FFTensor[t_,x_,y_,g_] :=
+	Module[{codt=CoDFFTensor[t,x,y,g]//Simplify,gInv=Inverse[g]},
+				Table[Sum[gInv[[j,k]]codt[[j,i,k]],{j,2},{k,2}],{i,2}]
+	]
+
+Div2FFTensor[t_,x_,y_,g_] :=
+	Module[{codt=CoDFFTensor[t,x,y,g]//Simplify,gInv=Inverse[g]},
+				Table[Sum[gInv[[j,k]]codt[[i,j,k]],{j,2},{k,2}],{i,2}]
+	]
+
+Hodge1FFTensor[t_,g_] := 
+	Module[{gInv=Inverse[g], LC=Sqrt[Det[g]]*LeviCivitaTensor[2]//Normal},
+				Table[Sum[LC[[k,i]]gInv[[k,l]]t[[l,j]],{k,2},{l,2}],
+					{i,2},{j,2}]
+	]
+
+Hodge2FFTensor[t_,g_] := 
+	Module[{gInv=Inverse[g], LC=Sqrt[Det[g]]*LeviCivitaTensor[2]//Normal},
+				Table[Sum[LC[[k,j]]gInv[[k,l]]t[[i,l]],{k,2},{l,2}],
+					{i,2},{j,2}]
 	]
 
 TransposeSFTensor[t_,g_]:= Transpose[g.t].Inverse[g] (*falsch?*)

@@ -1,0 +1,91 @@
+\documentclass[a4paper,11pt]{scrartcl}
+
+\usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+
+\usepackage{hyperref}
+\usepackage{color}
+\input{declarations}
+
+\usepackage{tensor}
+
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\RSpan}[1]{\text{Span}_{\R}\left\{ #1 \right\}}
+
+\newcommand{\surfh}{\surf_{h}}
+\newcommand{\landau}{\mathcal{O}}
+\newcommand{\adj}{\text{adj}}
+\newcommand{\tildeCh}[3]{\widetilde{\Gamma}_{#1 #2}^{#3}} %Chrisoffel-Symb. 2. Art in der Dünnschicht
+\newcommand{\Ch}[3]{\Gamma_{#1 #2}^{#3}} %Chrisoffel-Symb. 2. Art auf der Oberfläche
+
+
+\newcommand{\Qb}{\mathbf{Q}}
+\newcommand{\QExt}{\extend{\Qb}}
+\newcommand{\QIExt}{\extend{Q}}
+
+\newcommand{\Bb}{\mathbf{B}}
+
+
+\title{Uniaxialer Ansatz und Taylor-Approximationen zum Q-Tensor-Modell (ohne Beweise)} 
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+
+Bezeichner usw. siehe \textit{Notizen zum Q-Tensor-Modell} und \textit{Notizen zur Konvergenz der Frank-Oseen-Energie im Dünnschichtmodell gegen die Oberflächenformulierung}.
+Das Prozedere ist analog zum Vorgehen in \textit{Notizen zur Konvergenz der Frank-Oseen-Energie im Dünnschichtmodell gegen die Oberflächenformulierung}.
+
+Wir verfolgen hier den Ansatz\footnote{\( \extend{\mathbf{g}} \equiv \mathbf{I} - \surfNormal \otimes \surfNormal \) im Euklidischen \( \R^{3} \)} (voll covariant)
+\begin{align}
+  \QExt &= \extend{s}\left( \pExt\otimes\pExt - \frac{1}{2}\extend{\mathbf{g}} \right)
+\end{align}
+mit parallel-erweiterten und rein tangentialen Director, d.h. \( \tensor{\pIExt}{^{I}_{|\xi}} = 0 \) und \( \pIExt^{\xi} = 0 \).
+Dieser Ansatz ist äquivalent zum Ansatz \(  \QIExt_{IJ|\xi} = 0 \) und \( \QIExt_{I\xi} = 0 \).
+
+Taylor-Approximation liefert (voll covariant)
+\begin{align}
+  \QExt = \Qb - \xi \left( \Bb\Qb + \Qb\Bb \right) + \landau(\xi^{2})
+\end{align}
+mit Oberflächen Q-Tensor \( \Qb \) und Shape-Operator \( \Bb \).
+Somit ergeben sich die Spuren der Q-Tensor-Potenzen zu
+\begin{align}
+  \Tr\QExt = \Tr\QExt^{3} &= 0\\
+  \Tr\QExt^{2} &= \Tr\Qb^{2} + \landau(\xi) = \left\| \Qb \right\|^{2} + \landau(\xi) \\
+  \Tr\QExt^{4} &= \frac{1}{2}\left( \Tr\QExt^{2} \right)^{2} = \Tr\Qb^{4} + \landau(\xi) = \frac{1}{2}\left\| \Qb \right\|^{4} + \landau(\xi)
+\end{align}
+und die Kontraktionen der Ableitung zu
+\begin{align}
+  \left\| \nabla\QExt \right\|^{2} &= \left\| \nabla\Qb \right\|^{2} + 2\left\| \Bb\Qb \right\|^{2} + \landau(\xi) \\
+                                   &= 2\left( \left\| \div\Qb \right\|^{2} + \gaussianCurvature\left\| \Qb \right\|^{2} + \left\| \Bb\Qb \right\|^{2}\right) + \landau(\xi) \\
+  \left\| \div\QExt \right\|^{2} &= \left\| \div\Qb \right\|^{2} + \left( \Tr(\Bb\Qb) \right)^{2} + \landau(\xi) \formPeriod
+\end{align}
+Folgen wir den Energiedichten in \cite{Emmerich2012}
+mit \( \psi = 1 \),
+dann ergibt sich (103) zu
+\begin{align}
+  f_{\textup{id}} &= \frac{17}{3} + \frac{4}{15} \Tr\QExt^{2} + \frac{8}{315}\Tr\QExt^{4} \\
+                  &= \frac{17}{3} + \frac{4}{15} \Tr\Qb^{2} + \frac{8}{315}\Tr\Qb^{4} + \landau(\xi) \\
+                  &= \frac{17}{3} + \frac{4}{15}\left( \left\| \Qb \right\|^{2} + \frac{1}{21}\left\| \Qb \right\|^{4} \right) + \landau(\xi)
+\end{align}
+und (105) zu (\(\tilde{K}_{2}\) partiell integriert)
+\begin{align}
+  f_{\textup{exc}}^{(2)} &= A_{1} + B_{1}\Tr\QExt^{2} + \tilde{K}_{1}\left\| \div\QExt \right\|^{2} - \tilde{K}_{2}\left\| \nabla\QExt \right\|^{2} \\
+                         &= A_{1} + B_{1}\left\| \Qb \right\|^{2} + \left( \tilde{K}_{1} - 2\tilde{K}_{2} \right)\left\| \div\Qb \right\|^{2}
+                              + \tilde{K}_{1}\left( \Tr(\Bb\Qb) \right)^{2} - 2\tilde{K}_{2}\left( \gaussianCurvature\left\| \Qb \right\|^{2} + \left\| \Bb\Qb \right\|^{2} \right)
+                              +\landau(\xi)
+\end{align}
+
+Folgen wir der Energiedichte in \cite{Mucci2012} (1.9), dann erhalten wir
+\begin{align}
+  f &= \frac{L}{2}\left\| \nabla\QExt \right\|^{2} - \frac{a}{2}\Tr\QExt^{2}  -\frac{b}{3}\Tr\QExt^{3} + \frac{c}{2}\Tr\QExt^{4} \\
+    &= L \left( \left\| \div\Qb \right\|^{2} + \gaussianCurvature\left\| \Qb \right\|^{2} + \left\| \Bb\Qb \right\|^{2}\right) 
+       -\frac{a}{2} \left\| \Qb \right\|^{2}  + \frac{c}{4}\left\| \Qb \right\|^{4 } + \landau(\xi)
+\end{align}
+
+
+
+\bibliography{bibl}
+\bibliographystyle{alpha}
+
+\end{document}

@@ -1,0 +1,314 @@
+\documentclass[a4paper,10pt]{scrartcl}
+
+\usepackage[top=2.5cm, bottom=2.5cm, left=1cm, right=1cm]{geometry}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+
+\usepackage{relsize}
+
+\usepackage{tensor}
+
+\usepackage{tikz}
+
+\usepackage{hyperref}
+
+\newcommand{\surf}{\mathcal{S}}
+\newcommand{\T}{\mathrm{T}}
+
+%arbitrary index highness
+\newcommand{\tps}[1]{\T^{(#1)}\surf}
+\newcommand{\tzs}{\tps{0}}
+\newcommand{\tos}{\tps{1}}
+\newcommand{\tts}{\tps{2}}
+\newcommand{\tns}{\tps{n}}
+\newcommand{\tpsprop}[2]{\T^{(#1)}_{#2}\surf}
+\newcommand{\ttssym}{\tpsprop{2}{\mathrm{Sym}}}
+\newcommand{\ttsskew}{\tpsprop{2}{\mathrm{Skew}}}
+\newcommand{\ttstrfree}{\tpsprop{2}{\mathrm{Tr}}}
+\newcommand{\qts}{\mathcal{Q}\surf}
+
+\newcommand{\volval}{\sqrt{| g |}}
+
+\newcommand{\exd}{\mathbf{d}}
+\newcommand{\iup}{\mathrm{i}}
+
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\rot}{\mathrm{rot}}
+\renewcommand{\div}{\mathrm{div}}
+\newcommand{\Rot}{\mathrm{Rot}}
+\newcommand{\lie}{\mathcal{L}}
+\newcommand{\dq}{\mathcal{D}_{\mathcal{Q}}}
+
+\newcommand{\gb}{\mathbf{g}}
+\newcommand{\Eb}{\mathbf{E}}
+
+
+
+\title{Formulas for Calculus on Surfaces} 
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Assumptions, Definitions and Notations}
+\( \surf \) \dotfill orientable, boundaryless, Riemannian Surface\\
+\( \gb \) \dotfill metric tensor in \( \T_{2}\surf \cong \tts \)\\
+\( f,\varphi,\psi \) \dotfill scalar quantities in \( \tzs = C^{\infty}\left( \surf \right)\)\\
+\( \alpha,\beta,\gamma \) \dotfill vector quantities in \( \tos \cong \T_{1}\surf = \T\surf \cong \T^{1}\surf = T^{*}\surf = \Lambda^{1}\surf \)\\
+\( t,s \) \dotfill tensor quantities in \( \tns \)\\
+\( \omega \) \dotfill skew symmetric 2-tensor quantities (2-forms) in \( \ttsskew \cong \Lambda^{2}\surf \)\\
+\( \mu, \Eb\) \dotfill volume form in \( \ttsskew \cong \Lambda^{2}\surf \)\\
+\( q \) \dotfill Q-Tensor (trace-free and symmetric) in \( \qts = \ttstrfree \cap \ttssym \)\\
+If it matters, all quantities are handled \textbf{full covariant}, unless otherwise is defined.
+
+
+\section{Wedge Product \( \wedge \)}
+\begin{align*}
+  f\wedge\psi &= \psi\wedge f  = f\psi \in \tzs \\
+  f\wedge\alpha &= \alpha\wedge f = f\alpha \in \tos\\
+  f\wedge\omega &= \omega\wedge f = f\omega \in \ttsskew\\
+  \alpha\wedge\beta &= -\beta\wedge\alpha = \frac{1}{\volval}\left( \alpha_{1}\beta_{2} - \alpha_{2}\beta_{1} \right)\mu \in \ttsskew
+                  & \left[ \alpha\wedge\beta \right]_{ij} = \alpha^{k}\beta^{l}E_{kl}E_{ij}
+                                                          = \alpha_{i}\beta_{j} - \alpha_{j}\beta_{j}
+\end{align*}
+
+\subsection{Conclusions}
+  \begin{align*}
+    \alpha \wedge *\beta &= \beta \wedge *\alpha = \left\langle \alpha,\beta \right\rangle\mu
+            & \left[  \alpha \wedge *\beta \right]_{ij} &= \alpha_{k}\beta^{k}E_{ij} \\
+    *\left( \alpha \wedge *\beta \right) &= \left\langle \alpha, \beta \right\rangle
+                            & \left\langle \alpha, \beta \right\rangle &= \alpha^{i}\alpha_{i} \\
+    -*\left( \alpha \wedge \beta \right) &= \left\langle \alpha, *\beta \right\rangle
+  \end{align*}
+
+\section{Hodge Star \( *\)}
+\begin{align*}
+  *f &= f\mu 
+            &\left[ *f \right]_{ij} &= fE_{ij} \\
+  **f &= f\\
+  *\alpha &= \iup_{\alpha}\mu = \alpha\Eb = -\Eb\alpha = *_{1}\alpha
+              &\left[ *\alpha \right]_{i} &= -E_{ij}\alpha^{j}\\
+  **\alpha &= -\alpha \\
+  **\omega &= \omega \\
+  *_{1}t &= -\Eb t
+          & \left[ *t_{1} \right]_{i_{1}\ldots i_{n}} &= -E_{i_{1}j}\tensor{t}{^{j}_{i_{2}\ldots i_{n}}} \\
+  *_{1}*_{1}t &= -t\\
+  *_{r}t && \left[ *_{r}t \right]_{i_{1}\ldots i_{n}} &= -E_{i_{r}j}\tensor{t}{_{i_{1}\ldots i_{r-1}}^{j}_{i_{r+1}\ldots i_{n}}} \\
+  *_{n}t &= t\Eb
+          & \left[ *_{n}t \right]_{i_{1}\ldots i_{n}} &= -E_{i_{n}j}\tensor{t}{^{i_{1}\ldots i_{n-1}}^{j}} \\
+  *q &= *_{1} q = *_{2} q
+\end{align*}
+
+\subsection{Conclusions}
+  \begin{align*}
+    \left\langle \alpha, \beta \right\rangle &= \left\langle *\alpha , *\beta \right\rangle \\
+    \left\| \alpha \right\| &= \left\| *\alpha \right\|\\
+    \left\langle \alpha, *\alpha \right\rangle &= 0 \\
+    \left\langle \alpha, *\beta \right\rangle &= -\left\langle *\alpha , \beta \right\rangle = -*\left( \alpha \wedge \beta \right)\\
+    \left\langle \alpha, *\beta \right\rangle^{2} &= \left\| \alpha \wedge \beta \right\|^{2}
+                                                    =\left\| \alpha \right\|^{2}\left\| \beta \right\|^{2} - \left\langle \alpha, \beta \right\rangle^{2}\\
+    (*\alpha)\otimes(*\beta) + \beta\otimes\alpha &= \left\langle \alpha, \beta \right\rangle \gb \\
+    (*\alpha)\otimes(*\alpha) + \alpha\otimes\alpha &= \left\| \alpha \right\|^{2} \gb \\
+    \alpha\otimes(*\beta) - (*\beta)\otimes\alpha &= \left\langle \alpha, \beta \right\rangle \Eb \\
+    \alpha\otimes(*\alpha) - (*\alpha)\otimes\alpha &=  \left\| \alpha \right\|^{2} \Eb\\
+    *_{1}t+*_{2}t &\in \ttssym &\text{for } t &\in\tts
+  \end{align*}
+
+\section{Levi-Civita Tensor \( \Eb \)}
+
+\begin{align*}
+  \Eb(\alpha,\beta) &= \mu(\alpha,\beta)
+          &E_{ij} &= \sqrt{|g|}\epsilon_{ij}
+              \cong E^{ij} = \frac{1}{|\gb|}E_{ij} = \frac{1}{\volval}\epsilon_{ij} \\
+  \left\langle \Eb, \gb \right\rangle &= \Eb\gb = 0
+          &E_{ij}g^{ij} &= 0\\
+  \Eb^{T} &= -\Eb 
+           &\left[ \Eb^{T} \right]_{ij} &= E_{ji} = -E_{ij} \\
+  \Eb\otimes\Eb &= \left( \gb\otimes\gb\right)^{T_{2,3}} - \left( \gb\otimes\gb\right)^{T_{2,4}}
+           &E_{ij}E_{kl} &= g_{ik}g_{jl} - g_{il}g_{jk}
+\end{align*}
+
+\subsection{Conclusions}
+  \begin{align*}
+    -\Eb\alpha &= \alpha\Eb = \iup_{\alpha}\mu = *\alpha
+            &\left[ *\alpha \right]_{i} &= -E_{ij}\alpha^{j}\\
+     -\Eb t &= *_{1}t 
+            &\left[ *_{1}t \right]_{i_{1}\ldots i_{n}} &= -E_{i_{1}j}\tensor{t}{^{j}_{i_{2}\ldots i_{n}}} \\
+      t\Eb &= *_{n}t
+            &\left[ *_{n}t \right]_{i_{1}\ldots i_{n}} &= -E_{i_{n}j}\tensor{t}{^{i_{1}\ldots i_{n-1}}^{j}} \\
+      \Eb\Eb &= \Eb^{2} = -\gb
+            &E_{ik}\tensor{E}{^{k}_{j}} &= -g_{ij} \\
+      \Eb^{-1} &= -\tensor[^{\sharp}]{\Eb}{^{\sharp}}
+            &\left[ \Eb^{-1} \right]^{ij} &= -E^{ij} = E^{ji}\\
+      \left\| \Eb \right\|^{2} &= \Tr\left( \Eb\Eb^{T} \right) = 2 \\
+      *_{1}*_{2}t &= *_{2}*_{1}t = -\Eb t \Eb = \left( \Tr t \right)\gb - t^{T}
+                &\left[ *_{1}*_{2}t \right]_{ij} &= \tensor{t}{_{k}^{k}}g_{ij} - t_{ji} \\
+      \left| t \right|\Eb &= \left| g \right|t\Eb t^{T}
+                &\left| t \right|E_{ij} &= \left| g \right|E^{kl}t_{ik}t_{jl} \\
+      \left| t \right| &=\left| g \right|\left| t^{\sharp} \right| = \left| g \right|\left| ^{\sharp}t \right| = \left| g \right|^{2}\left| ^{\sharp}t^{\sharp} \right|\\
+        &= -\frac{\left| g \right|}{2}\left\langle *_{1}t , *_{2}t \right\rangle = \frac{\left| g \right|}{2}\left( \left( \Tr t \right)^{2} - \Tr t^{2} \right)
+                &\left| t \right| &= \frac{\left| g \right|}{2} E_{ij}E_{kl}t^{ik}t^{jl} = \frac{\left| g \right|}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)\\
+      0 &= t^{2} - \left( \Tr t \right) t + \frac{\left| t \right|}{\left| g \right|} g
+            &\left[ 0 \right]_{ij} &= t_{ik}\tensor{t}{^{k}_{j}} -  \tensor{t}{_{k}^{k}}t_{ij} + \frac{1}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)g_{ij}
+  \end{align*}
+
+\section{Christoffel Symbols \( \Gamma^{\cdot}_{\cdot\cdot} \)}
+\begin{align*}
+  \Gamma &&\Gamma^{k}_{ij} &= \Gamma^{k}_{ji} = g^{kl}\Gamma_{lij} = \frac{1}{2}g^{kl}\left( \partial_{i}g_{jl} + \partial_{j}g_{il} - \partial_{l}g_{ij} \right) \\
+\end{align*}
+
+\section{First Order Derivatives \( \exd \), \( \nabla \), \( \div \), \( \rot \), \( \Rot \), \( \lie_{\gamma^{\sharp}} \), \( \dq \), \( \dq^{*} \)}
+\begin{align*}
+  \nabla f &\cong \exd f 
+          & \left[ \nabla f \right]_{i} &= f_{|i} = \left[ \exd f \right]_{i} = \partial_{i}f \\
+  \nabla \alpha &
+          & \left[ \nabla \alpha \right]_{i|j} &= \alpha_{i|j} = \partial_{j}\alpha_{i} - \Gamma^{k}_{ij}\alpha_{k} \\
+          &&&\cong \tensor{\alpha}{^{i}_{|j}} = \partial_{j}\alpha^{i} + \Gamma^{i}_{jk}\alpha^{k}\\
+  \nabla t &
+          & \left[ \nabla t \right]_{ij|k} &= t_{ij|k} = \partial_{k}t_{ij} - \Gamma^{l}_{ki}t_{lj} - \Gamma^{l}_{kj}t_{il} \\
+                       &&&\cong \tensor{t}{^{i}_{j|k}} = \partial_{k}\tensor{t}{^{i}_{j}} + \Gamma^{i}_{kl}\tensor{t}{^{l}_{j}} - \Gamma^{l}_{kj}\tensor{t}{^{i}_{l}}\\
+                    &&&\cong \tensor{t}{_{i}^{j}_{|k}} = \partial_{k}\tensor{t}{_{i}^{j}} - \Gamma^{l}_{ki}\tensor{t}{_{l}^{j}} + \Gamma^{j}_{kl}\tensor{t}{_{i}^{l}}\\
+                       &&&\cong\tensor{t}{^{ij}_{k}}   = \partial_{k}t^{ij} + \Gamma^{i}_{kl}t^{lj} + \Gamma^{j}_{kl}t^{il}\\
+  \nabla \gb &= 0 & g_{ij|k} &= 0\\
+  \nabla \Eb &= 0 & E_{ij|k} &= 0
+\end{align*}
+\begin{align*}
+  \div\alpha &= *\exd * \alpha = \left\langle \nabla\alpha, \gb \right\rangle = \Tr\nabla\alpha
+          &\div\alpha &= \tensor{\alpha}{^{i}_{|i}} \\
+  \div_{1}t &= \gb:\nabla t
+          & \left[ \div_{1}t \right]_{i} &= \tensor{t}{^{k}_{i|k}}\\
+  \div_{2}t &= \nabla t :\gb = \div_{1}t^{T}
+          & \left[ \div_{2}t \right]_{i} &= \tensor{t}{_{i}^{k}_{|k}}\\
+  \div_{r}t &
+          & \left[ \div_{r}t \right]_{i_{1}\ldots \widehat{i_{r}} \ldots i_{n}} &=\tensor{t}{_{i_{1}\ldots i_{r-1}}^{k}_{i_{r+1}\ldots i_{n}|k}} \\
+  \div q &= \div_{1}q = \div_{2}q
+\end{align*}
+\begin{align*}
+  \rot\alpha &= *\exd\alpha = -\left\langle \nabla\alpha , \Eb \right\rangle
+          & \rot\alpha &= -E_{ij}\alpha^{i|j} = \frac{1}{\sqrt{|\gb|}}\left( \alpha_{2|1} - \alpha_{1|2} \right)
+                                              = \frac{1}{\sqrt{|\gb|}}\left( \partial_{1}\alpha_{2} - \partial_{2}\alpha_{1} \right) \\
+  \rot_{1}t &= -\nabla t^{T} :\Eb
+          &\left[ \rot_{1}t \right]_{i} &= -E_{jk}\tensor{t}{^{j}_{i}^{|k}} \\
+  \rot_{2}t &= -\nabla t : \Eb = \rot_{1}t^{T}
+          &\left[ \rot_{2}t \right]_{i} &= -E_{jk}\tensor{t}{_{i}^{j|k}}\\
+  \rot_{r}t &
+          &\left[ \rot_{r}t \right]_{i_{1}\ldots \widehat{i_{r}} \ldots i_{n}} &= -E_{jk}\tensor{t}{_{i_{1}\ldots i_{r-1}}^{j}_{i_{r+1}\ldots i_{n}}^{|k}} \\
+  \rot q &= \rot_{1} q = \rot_{2} q
+\end{align*}
+\begin{align*}
+  \Rot f &= *\exd f = -\Eb\nabla f
+          &\left[ \Rot f \right]_{i} &= -E_{ij}f^{|j} \\
+  \Rot\alpha &= *_{2}\nabla\alpha = \left( \nabla\alpha \right) \Eb
+             &\left[ \Rot\alpha \right]_{ij} &= -E_{jk}\tensor{\alpha}{_{i}^{|k}}\\
+  \Rot t &=  *_{n}\nabla\alpha = \left( \nabla\alpha \right) \Eb
+             &\left[ \Rot t \right]_{i_{1} \ldots i_{n} k} &= -E_{kl}\tensor{t}{_{i_{1} \ldots i_{n}}^{|l}}
+\end{align*}
+\begin{align*}
+  \lie_{\gamma^{\sharp}} f &= \left\langle \gamma , \nabla f \right\rangle = \nabla_{\gamma}f
+         &\lie_{\gamma^{\sharp}}f &= \gamma^{k}\partial_{k}f \\
+  \lie_{\gamma^{\sharp}} \alpha &= \nabla_{\gamma}\alpha + \alpha\nabla\gamma 
+        &\left[ \lie_{\gamma^{\sharp}} \alpha \right]_{i} &= \gamma^{k}\partial_{k}\alpha_{i} + \alpha_{k}\partial_{i}\gamma^{k}
+                          = \gamma^{k}\alpha_{i|k} + \alpha^{k}\gamma_{k|i}\\
+  \lie_{\gamma^{\sharp}} \alpha^{\sharp} &= \nabla_{\gamma}\alpha - \nabla_{\alpha}\gamma
+        &\left[ \lie_{\gamma^{\sharp}} \alpha^{\sharp} \right]^{i} &= \gamma^{k}\partial_{k}\alpha^{i} - \alpha^{k}\partial_{k}\gamma^{i}
+                          =\gamma^{k}\tensor{\alpha}{^{i}_{|k}} - \alpha^{k}\tensor{\gamma}{^{i}_{|k}}\\
+  \lie_{\gamma^{\sharp}}t &= (\nabla t)\gamma + \left( \nabla\gamma \right)^{T}t + t\nabla\gamma
+        &\left[ \lie_{\gamma^{\sharp}}t \right]_{ij} &= \gamma^{k}\partial_{k}t_{ij} + t_{kj}\partial_{i}\gamma^{k} + t_{ik}\partial_{j}\gamma^{k}
+              = \gamma^{k}t_{ij|k} + t_{kj}\tensor{\gamma}{^{k}_{|i}} +  t_{ik}\tensor{\gamma}{^{k}_{|j}}\\
+  \lie_{\gamma^{\sharp}}\gb &= \nabla\gamma + \left( \nabla\gamma \right)^{T}
+        &\left[ \lie_{\gamma^{\sharp}}\gb \right]_{ij} &= \gamma_{i|j} + \gamma_{j|i}\\
+  \lie_{\gamma^{\sharp}}\Eb &= \left( \nabla*\gamma \right)^{T} - \left( \nabla*\gamma \right)
+        &\left[ \lie_{\gamma^{\sharp}}\Eb \right]_{ij} &= \left[ *\gamma \right]_{j|i} - \left[ *\gamma \right]_{i|j}
+              = E_{kj}\tensor{\gamma}{^{k}_{|i}} + E_{ik}\tensor{\gamma}{^{k}_{|j}} \\
+  \lie_{\gamma^{\sharp}}\tensor[^{\sharp}]{t}{^{\sharp}} &= (\nabla t)\gamma - \left( \nabla\gamma \right)t - t\left( \nabla\gamma \right)^{T}
+        &\left[ \lie_{\gamma^{\sharp}}\tensor[^{\sharp}]{t}{^{\sharp}} \right]^{ij}
+            &= \gamma^{k}\partial_{k}t^{ij} - t^{kj}\partial_{k}\gamma^{i} - t^{ik}\partial_{k}\gamma^{i}
+             = \gamma^{k}\tensor{t}{^{ij}_{|k}} - t^{kj}\tensor{\gamma}{^{i}_{|k}} - t^{ik}\tensor{\gamma}{^{j}_{|k}}\\
+  \lie_{\gamma^{\sharp}}\gb^{-1} &= \lie_{\gamma^{\sharp}}\tensor[^{\sharp}]{\gb}{^{\sharp}} = -\left(\nabla\gamma + \left( \nabla\gamma \right)^{T}\right)
+        &\left[ \lie_{\gamma^{\sharp}}\gb^{-1} \right]^{ij} &= -\left(\gamma^{i|j} + \gamma^{j|i}\right)\\
+  \lie_{\gamma^{\sharp}}\Eb^{-1} &= -\lie_{\gamma^{\sharp}}\tensor[^{\sharp}]{\Eb}{^{\sharp}} = \Rot\gamma - \left( \Rot\gamma \right)^{T}
+        &\left[ \lie_{\gamma^{\sharp}}\Eb^{-1} \right]^{ij} &= E^{kj}\tensor{\gamma}{^{i}_{|k}} + E^{ik}\tensor{\gamma}{^{j}_{|k}}\\
+  \lie_{\gamma^{\sharp}}t &
+        &\tensor{\left[ \lie_{\gamma^{\sharp}}t \right]}{^{i_{1}\ldots i_{r}}_{j_{1}\ldots j_{s}}}
+            &= \gamma^{k}\partial_{k}\tensor{t}{^{i_{1}\ldots i_{r}}_{j_{1}\ldots j_{s}}} \\
+                        &&&\quad -\tensor{t}{^{ki_{2}\ldots i_{r}}_{j_{1}\ldots j_{s}}}\partial_{k}\gamma^{i_{1}}
+                           - \ldots - \tensor{t}{^{i_{1}\ldots i_{r-1}k}_{j_{1}\ldots j_{s}}} \partial_{k}\gamma^{i_{r}} \text{ (uppers)}\\
+                        &&&\quad +\tensor{t}{^{i_{1}\ldots i_{r}}_{kj_{2}\ldots j_{s}}}\partial_{j_{1}}\gamma^{k}
+                           + \ldots + \tensor{t}{^{i_{1}\ldots i_{r}}_{j_{1}\ldots j_{s-1}k}}\partial_{j_{s}}\gamma^{k} \text{ (lowers)} \\
+          &&&= \gamma^{k}\tensor{t}{^{i_{1}\ldots i_{r}}_{j_{1}\ldots j_{s}|k}} \\
+                        &&&\quad -\tensor{t}{^{ki_{2}\ldots i_{r}}_{j_{1}\ldots j_{s}}}\tensor{\gamma}{^{i_{1}}_{|k}}
+                          - \ldots - \tensor{t}{^{i_{1}\ldots i_{r-1}k}_{j_{1}\ldots j_{s}}}\tensor{\gamma}{^{i_{r}}_{|k}}  \text{ (uppers)}\\
+                        &&&\quad +\tensor{t}{^{i_{1}\ldots i_{r}}_{kj_{2}\ldots j_{s}}}\tensor{\gamma}{^{k}_{|j_{1}}}
+                           + \ldots + \tensor{t}{^{i_{1}\ldots i_{r}}_{j_{1}\ldots j_{s-1}k}}\tensor{\gamma}{^{k}_{|j_{s}}} \text{ (lowers)}
+\end{align*}
+\begin{align*}
+  \dq\alpha &= \lie_{\alpha^{\sharp}}\gb - \left(\div\alpha\right)\gb 
+              = \nabla\alpha + \left( \nabla\alpha \right)^{T} - \left(\div\alpha\right)\gb 
+              = 2\Pi_{\mathcal{Q}}(\nabla\alpha) \in \qts
+        &\left[\dq\alpha  \right]_{ij} &= \alpha_{i|j} + \alpha_{j|i} - \tensor{\alpha}{^{k}_{|k}}g_{ij}\\
+  \dq^{*} q &= -2 \div q = - 2*\rot q = -2 \rot *q
+          &\int_{\surf} \left\langle \dq^{*}q , \alpha \right\rangle \mu &= \int_{\surf} \left\langle q , \dq\alpha \right\rangle \mu
+\end{align*}
+  
+  \subsection{Conclusions}
+  \begin{align*}
+    \rot*\alpha &= *\exd*\alpha = \div\alpha\\
+    \Rot*\alpha &= *_{2}\nabla*\alpha = *_{1}*_{2}\nabla\alpha = \left( \div\alpha \right)\gb - \left( \nabla\alpha \right)^{T}
+                & \left[ \Rot*\alpha  \right]_{ij} &= \tensor{\alpha}{^{k}_{|k}}g_{ij} - \alpha_{j|i}\\
+    \rot_{1}*_{1}t &= \div_{1} t
+                &\left[ \rot_{1}*_{1}t \right]_{i} &= \tensor{t}{^{k}_{i|k}}\\
+    \rot_{2}*_{2}t &= \div_{2} t
+                &\left[ \rot_{2}*_{2}t \right]_{i} &= \tensor{t}{_{i}^{k}_{|k}}\\
+    *\rot_{1} t &= \rot_{1}*_{2}t = \div_{2} t - \nabla\Tr t
+                &\left[ \rot_{1}*_{2}t \right]_{i} &= \tensor{t}{_{i}^{k}_{|k}} - \tensor{t}{^{k}_{k|i}}\\
+    *\rot_{2} t &= \rot_{2}*_{1}t = \div_{1} t - \nabla\Tr t
+                &\left[ \rot_{2}*_{1}t \right]_{i} &= \tensor{t}{^{k}_{i|k}} - \tensor{t}{^{k}_{k|i}}\\
+    \nabla\left( \psi f \right) &= \psi\nabla f + f\nabla\psi
+                &\left[ \nabla\left( \psi f \right) \right]_{i} &= \psi f_{|i} + f \psi_{|i}\\
+    \nabla\left\langle \alpha, \beta \right\rangle &= \alpha\nabla\beta + \beta\nabla\alpha
+                &\left[ \nabla\left\langle \alpha, \beta \right\rangle \right]_{i} &= \alpha^{k}\beta_{k|i} + \beta^{k}\alpha_{k|i}\\
+    \nabla\left( f\alpha \right) &= f\nabla\alpha + \alpha\otimes\nabla f
+                &\left[ \nabla\left( f\alpha \right) \right]_{ij} &= f\alpha_{i|j} + \alpha_{i}f_{|j}\\
+    \nabla\left( f t \right) &= f\nabla t + t \otimes\nabla f
+                &\left[ \nabla\left( f t \right) \right]_{ijk} &= f t_{ij|k} + t_{ij}f_{|k}\\
+    \rot\left( f\alpha \right) &= f\rot\alpha + \left\langle \alpha, \Rot f \right\rangle
+                &\rot\left( f\alpha \right) &= -fE_{ij}\alpha^{i|j} - \alpha^{i}E_{ij}f^{|j}\\
+    \div\left( f\alpha \right) &= f\div\alpha + \left\langle \alpha, \nabla f \right\rangle
+                &\div\left( f\alpha \right) &= f\tensor{\alpha}{^{k}_{|k}} + \alpha^{k}f_{|k}\\
+    \div_{1}\left( f t \right) &= f\div_{1}t + (\nabla f)t
+                &\left[  \div_{1}\left( f t \right) \right]_{i} &= f\tensor{t}{^{k}_{i|k}} + f^{|k}t_{ki}\\
+    \div_{2}\left( f t \right) &= f\div_{2}t + t\nabla f
+                &\left[  \div_{2}\left( f t \right) \right]_{i} &= f\tensor{t}{_{i}^{k}_{|k}} + f^{|k}t_{ik}\\
+    \div\left( f \gb \right) &= \nabla f
+  \end{align*}
+  \begin{align*}
+    \lie_{\gamma^{\sharp}}\gb &= -\tensor[^{\flat}]{\left( \lie_{\gamma^{\sharp}}\gb^{-1} \right)}{^{\flat}} \\
+    \lie_{\gamma^{\sharp}}\exd f &= \exd\lie_{\gamma^{\sharp}}f\\
+    *_{1}\lie_{*\gamma^{\sharp}}\gb &= \left(\div\gamma\right)\gb - 2\nabla\gamma \in \ttstrfree
+              &\left[ *_{1}\lie_{*\gamma^{\sharp}}\gb \right]_{ij} &= \tensor{\gamma}{^{k}_{|k}}g_{ij} - 2\gamma_{i|j}\\
+    *_{2}\lie_{*\gamma^{\sharp}}\gb &= \left(\div\gamma\right)\gb - 2\left(\nabla\gamma\right)^{T} \in \ttstrfree
+              &\left[ *_{2}\lie_{*\gamma^{\sharp}}\gb \right]_{ij} &= \tensor{\gamma}{^{k}_{|k}}g_{ij} - 2\gamma_{j|i}\\
+    \lie_{*\gamma^{\sharp}}\gb &=\nabla * \gamma + \left( \nabla * \gamma \right)^{T} = \left(\div\gamma\right)\Eb + 2\nabla * \gamma \in \ttssym
+              &\left[ \lie_{*\gamma^{\sharp}}\gb \right]_{ij} 
+                    &=  E_{ki}\tensor{\gamma}{^{k}_{|j}} + E_{kj}\tensor{\gamma}{^{k}_{|i}}
+                     =  \tensor{\gamma}{^{k}_{|k}}E_{ij} + 2 E_{ki}\tensor{\gamma}{^{k}_{|j}}
+  \end{align*}
+  \begin{align*}
+    *\dq\alpha &= *_{1}\dq\alpha = *_{2}\dq\alpha = \dq*\alpha \in \qts \\
+    *\dq^{*} q &= \dq^{*} *_{1} q =  \dq^{*} *_{2} q = \dq^{*} * q\\
+    \dq\alpha &= -\frac{1}{2}\left( *_{1} + *_{2} \right)\lie_{*\alpha^{\sharp}}\gb = -*\dq*\alpha\\
+    \dq\exd f &= -*\lie_{\Rot f}\gb = -*\dq\Rot f \\
+    \dq\Rot f &= \lie_{\Rot f}\gb = *\dq\exd f\\
+    \dq\left( \Rot \phi + \exd\psi + \gamma \right) &= \lie_{\Rot \phi}\gb - *\lie_{\Rot \psi}\gb + \lie_{\gamma^{\sharp}}\gb
+              &&\text{ for }\div\gamma=\rot\gamma=0
+  \end{align*}
+
+\end{document}

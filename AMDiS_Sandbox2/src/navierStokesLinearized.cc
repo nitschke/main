@@ -2,6 +2,8 @@
 #include "SphereProjection.h"
 #include "phiProjection.h"
 #include "EllipsoidProjection.h"
+#include "torusProjection.h"
+#include "ExtremeValueTracker.h"
 
 
 using namespace std;
@@ -71,6 +73,95 @@ public:
   }
 };
 
+class Xu_Torus : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  Xu_Torus() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  WorldVector<double>operator()(const WorldVector<double>& coords) const 
+  {
+    WorldVector<double> coordss = coords;
+    Projection::getProjection(1)->project(coordss);
+    double x = coordss[0];
+    double z = coordss[2];
+    WorldVector<double> rvec;
+    rvec[0] = -1.*z;
+    rvec[1] = 0.;
+    rvec[2] = x;
+    return rvec;
+  }
+};
+
+class XuHarm_Torus : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  XuHarm_Torus() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  WorldVector<double>operator()(const WorldVector<double>& coords) const 
+  {
+    WorldVector<double> coordss = coords;
+    Projection::getProjection(1)->project(coordss);
+    double x = coordss[0];
+    double z = coordss[2];
+    WorldVector<double> rvec;
+    rvec[0] = (-0.25*z)/(std::pow(x,2) + std::pow(z,2));
+    rvec[1] = 0.;
+    rvec[2] = (0.25*x)/(std::pow(x,2) + std::pow(z,2));
+    return rvec;
+  }
+};
+
+// Non-Harmonic part of Xu
+class XuNonHarm_Torus : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  XuNonHarm_Torus() : AbstractFunction<WorldVector<double>, WorldVector<double> >() {}
+
+  /// Implementation of AbstractFunction::operator().
+  WorldVector<double>operator()(const WorldVector<double>& coords) const 
+  {
+    WorldVector<double> coordss = coords;
+    Projection::getProjection(1)->project(coordss);
+    double x = coordss[0];
+    double y = coordss[1];
+    double z = coordss[2];
+    WorldVector<double> rvec;
+    rvec[0] = 0.125*z*(-4. + (47. + 4.*std::pow(y,2))/(std::pow(x,2) + std::pow(z,2)) - 16./std::sqrt(std::pow(x,2) + std::pow(z,2)));
+    rvec[1] = 0.;
+    rvec[2] = 0.125*x*(4. - (1.*(47. + 4.*std::pow(y,2)))/(std::pow(x,2) + std::pow(z,2)) + 16./std::sqrt(std::pow(x,2) + std::pow(z,2)));
+    return rvec;
+  }
+};
+
+
+// A_Xu*XuHarm + A_Xv*XvHarm
+class LinHarm_Torus : public AbstractFunction<WorldVector<double>, WorldVector<double> >
+{
+public:
+  LinHarm_Torus(double AXu_ = 0.5, double AXv_ = 0.5) : AbstractFunction<WorldVector<double>, WorldVector<double> >(), AXu(AXu_), AXv(AXv_) {}
+
+  /// Implementation of AbstractFunction::operator().
+  WorldVector<double>operator()(const WorldVector<double>& coords) const 
+  {
+    WorldVector<double> coordss = coords;
+    Projection::getProjection(1)->project(coordss);
+    double x = coordss[0];
+    double y = coordss[1];
+    double z = coordss[2];
+    WorldVector<double> rvec;
+    rvec[0] = AXu * (-0.25*z)/(std::pow(x,2) + std::pow(z,2)) + AXv * (-0.5*x*y)/(std::pow(x,2) + std::pow(z,2));
+    rvec[1] = AXv * (0.5 - 1./std::sqrt(std::pow(x,2) + std::pow(z,2)));
+    rvec[2] = AXu * (0.25*x)/(std::pow(x,2) + std::pow(z,2)) + AXv * (-0.5*y*z)/(std::pow(x,2) + std::pow(z,2));
+    return rvec;
+  }
+
+private:
+  double AXu;
+  double AXv;
+};
+
 class DXYZ : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
 {
 public:
@@ -80,6 +171,18 @@ public:
   {
     // f(X) = xyz
     return  q[0]*q[1]*q[2] - p[0]*p[1]*p[2];
+  }
+};
+
+class DXYZZ : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  DXYZZ() : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >() {}
+
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    // f(X) = xyz
+    return  q[0]*q[1]*q[2]*q[2] - p[0]*p[1]*p[2]*p[2];
   }
 };
 
@@ -150,6 +253,23 @@ class GaussCurv_RBC : public AbstractFunction<double, EdgeElement > {
   private:
   double a;
   double c;
+};
+
+class GaussCurv_Torus : public AbstractFunction<double, EdgeElement > {
+  public:
+  GaussCurv_Torus(double r_ = 0.5,double R_ = 2.0) : AbstractFunction<double, EdgeElement >(), r(r_), R(R_) {}
+
+  double operator()(const EdgeElement& eel) const {
+    WorldVector<double> coords = eel.infoLeft->getEdgeCenter(eel.dofEdge);
+    Projection::getProjection(1)->project(coords);
+    double x = coords[0];
+    double z = coords[2];
+    return 4. - 8./std::sqrt(std::pow(x,2) + std::pow(z,2));
+  }
+
+  private:
+  double r;
+  double R;
 };
 
 class GaussCurv_Nonic095r : public AbstractFunction<double, EdgeElement > {
@@ -287,7 +407,8 @@ public:
   MyInstat(DecProblemStat *probStat, DofEdgeVector initSolP, DofEdgeVector initSolD)
       : DecProblemInstat(probStat),
         solPrimal(initSolP),
-        solDual(initSolD) 
+        solDual(initSolD),
+        tracker(probStat)
   {
     FUNCNAME("MyInstat::MyInstat(...)");
     
@@ -306,6 +427,9 @@ public:
     cout << "### KinE: " << EKin << " ###" << endl;
 
     minusDivSolDual = -1.0 * solDual.divOnEdgeCenter();
+
+    //DofEdgeVectorPD evecPD(solPrimal, solDual);
+    //tracker.trackdownMinima(evecPD.getNormOnEdges(), 0.0);
   }
 
 
@@ -319,6 +443,9 @@ public:
     double EKin = 0.5 * DofEdgeVectorPD::L2Norm2(solPrimal, solDual);
     csvout << time << "," << EKin << endl;
     cout << "### KinE: " << EKin << " ###" << endl;
+
+    //DofEdgeVectorPD evecPD(solPrimal, solDual);
+    //tracker.trackdownMinima(evecPD.getNormOnEdges(), time);
   }
 
   DofEdgeVector* getSolPrimal() {
@@ -340,6 +467,8 @@ private:
   DofEdgeVector solDual;
   DofEdgeVector minusDivSolDual;
 
+  OneMinValTrackerInPositiveZ tracker;
+
   ofstream csvout;
 };
 
@@ -353,6 +482,7 @@ int main(int argc, char* argv[])
   sphere.initialize(INIT_ALL);
 
   //SphereProject proj(42, VOLUME_PROJECTION);
+  new TorusProject(1, VOLUME_PROJECTION);
 
   double nu = -1.0;
   Parameters::get("userParameter->kinematic_viscosity", nu);
@@ -365,17 +495,26 @@ int main(int argc, char* argv[])
   // Definition of alpha0 = [*dz, -dz]//
   DofEdgeVector alphaP(edgeMesh, "alphaPrimalInit");
   DofEdgeVector alphaD(edgeMesh, "alphaDualInit");
+  //alphaP.interpol(new Xu_Torus());
+  //alphaP.interpol(new XuNonHarm_Torus());
+  //alphaP.interpol(new XuHarm_Torus());
+  //alphaP.interpol(new XvHarm_Torus());
+  alphaP.interpol(new LinHarm_Torus(0.01, 0.99));
+  alphaD = alphaP.hodgeDual();
   //alphaP.interpolGL4(new RotXYZ_Sphere(), proj.getProjection(), proj.getJProjection());
   //alphaP.interpolGL4(new RotZ_Sphere(), proj.getProjection(), proj.getJProjection());
   //alphaD.set(new DXYZ());
+  //alphaD.set(new DXYZZ());
   //alphaD.set(new DLin(0.1, 1.0, 0.1));
-  //alphaD.set(new DLin(0., 0.25, 0.0125)); // for ellipsoid
-  alphaD.set(new DLin(0., 1., 1.)); // for RBC
+  //alphaD.set(new DLin(0., 1.0, 0.1)); // for ellipsoid
+  //alphaD.set(new DLin(0., 1.0, 0.1)); // for ellipsoid
+  //alphaD.set(new DLin(0., 1., 1.)); // for RBC
   //alphaD *= -1.0;
   //alphaD.set(new DZ());
   //alphaD.set(new DX());
-  alphaP = alphaD.hodgeDual();
-  alphaD *= -1.0;
+  //alphaP = alphaD.hodgeDual();
+  //alphaD *= -1.0;
+
 
   MyInstat sphereInstat(&decSphere, alphaP, alphaD);
 
@@ -385,17 +524,18 @@ int main(int argc, char* argv[])
   //double stretch = 1.0;
   //PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretch, 0.95, press), new GradPhiNP(stretch, 0.95, press), 1.0e-6);
   //K.set(new GaussCurv_Nonic095r(press, stretch));
-  double cx = 0.5;
-  double cy = 0.5;
-  double cz = 1.5;
+  //double cx = 0.5;
+  //double cy = 0.5;
+  //double cz = 1.5;
   //new EllipsoidProject(1, VOLUME_PROJECTION, cx, cy, cz);
   //K.set(new GaussCurv_Ellipsoid(cx, cy, cz));
   //K.set(new GaussCurv_Sphere());
+  K.set(new GaussCurv_Torus());
 
-  double a = 0.72;
-  double c = 0.75;
-  new PhiProject(1, VOLUME_PROJECTION, new PhiRBC(a, c), new GradPhiRBC(a, c), 1.0e-8);
-  K.set(new GaussCurv_RBC(a, c));
+  //double a = 0.72;
+  //double c = 0.75;
+  //new PhiProject(1, VOLUME_PROJECTION, new PhiRBC(a, c), new GradPhiRBC(a, c), 1.0e-8);
+  //K.set(new GaussCurv_RBC(a, c));
   K.writeFile("K.vtu");
 
 // determine hodge dual
