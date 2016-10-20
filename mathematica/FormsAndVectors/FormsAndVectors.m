@@ -10,6 +10,8 @@ LocalVecFromPara::usage = "Local (u,v)-Vector (tangential part) of a given (x,y,
 GlobalTensorFromPara::usage = "give the global (euclidian) representation of a local tensor";
 LocalTensorFromPara::usage = "give the local representation of a global tensor";
 
+GlobalSSSTensorFromPara::usage = "give the global (euclidian) representation of a local SSS-tensor";
+
 CPPExpression::usage = "convert expression to C++";
 ParaViewExpression::usage = "convert expression for ParaviewCalculater";
 ParaViewVecExpression::usage = "convert vector expression for ParaviewCalculater";
@@ -67,14 +69,17 @@ DotForm1::usage = "Dot product of 1-forms";
 NormForm1::usage = "Norm of 1-form";
 Norm2Form1::usage = "Norm square of 1-form";
 
-Frob2FFFTensor::usage = "Frobenius norm of a Tensor (Typ(0,3))"
-Frob2FFTensor::usage = "Frobenius norm of a Tensor (Typ(0,2))"
+Frob2FFFTensor::usage = "Frobenius norm of a Tensor (Typ(0,3))";
+Frob2FFTensor::usage = "Frobenius norm of a Tensor (Typ(0,2))";
+
+InnerFFTensor::usage = "(Frobenius) inner product of two flat-flat-tensors";
 
 CoDVecVec11::usage = "Covariant Directional Derivative \!\(\*SubscriptBox[\(\[Del]\), \(U\)]\)V";
 CoDVec1::usage = "Covariant Derivative of a vector";
 CoDForm1::usage = "Covariant Derivative of a 1-form";
 
 CoDSFTensor::usage = "Covariant Derivative of a sharp-flat-tensor -> Typ (1,1)";
+CoDSSTensor::usage = "Covariant Derivative of a sharp-sharp-tensor -> Typ (2,0)";
 CoDFFTensor::usage = "Covariant Derivative of a flat-flat-tensor -> Typ (0,2)";
 
 CoDFFFTensor::usage = "Covariant Derivative of a flat-flat-flat-tensor -> Typ (0,3)";
@@ -85,6 +90,7 @@ Rot1FFTensor::usage = "rot_1 of flat-flat-tensor";
 Rot2FFTensor::usage = "rot_2 of flat-flat-tensor";
 Div1FFTensor::usage = "div_1 of flat-flat-tensor";
 Div2FFTensor::usage = "div_2 of flat-flat-tensor";
+Div3FFFTensor::usage = "div_3 of flat-flat-flat-tensor";
 
 Hodge1FFTensor::usage = "*_1 of flat-flat-tensor";
 Hodge2FFTensor::usage = "*_2 of flat-flat-tensor";
@@ -92,6 +98,8 @@ Hodge2FFTensor::usage = "*_2 of flat-flat-tensor";
 RotFTensor::usage = "Rot of a flat-tensor (1-form)";
 
 TransposeSFTensor::usage = "Transpose of mixed sharp-flat-Tensor, [Flat[t]^T]Sharp";
+
+DQForm1::usage = "Q-Derivative of a 1-form";
 
 L2Prod0::usage = "L2 Product of 0-forms";
 L2Prod1::usage = "L2 Product of 1-forms";
@@ -110,11 +118,14 @@ GlobalVecFromPara[locVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraM
 LocalVecFromPara[globVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, 
 										          Sharp1[{globVec.Dx, globVec.Dy},Outer[Dot,{Dx,Dy},{Dx,Dy},1]]]
 
-GlobalTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}},
+GlobalTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}//Simplify},
 					Sum[locT[[i,j]]*Outer[Times,DX[[i]],DX[[j]]],{i,2},{j,2}]]
 LocalTensorFromPara[globT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}, 
 															gInv=Inverse[MetricFromPara[paraMap,x,y]]},
 					gInv.Table[DX[[i]].globT.DX[[j]],{i,2},{j,2}].gInv]
+
+GlobalSSSTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}//Simplify},
+					Sum[locT[[i,j,k]]*Outer[Times,DX[[i]],DX[[j]],DX[[k]]],{i,2},{j,2},{k,2}]]
 
 
 CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"std::sqrt"}]
@@ -190,6 +201,10 @@ Frob2FFTensor[t_,g_]:=Module[{g1=Inverse[g]//Simplify},
 			Sum[t[[i,j]]t[[l,m]]g1[[i,l]]g1[[j,m]],
 					{i,2},{j,2},{l,2},{m,2}]]
 
+InnerFFTensor[s_,t_,g_] := Module[{g1=Inverse[g]//Simplify},
+			Sum[s[[i,j]]t[[l,m]]g1[[i,l]]g1[[j,m]],
+					{i,2},{j,2},{l,2},{m,2}]]
+
 CoDVecVec11[vec1_,vec2_,x_,y_,g_] := 
 		Module[{ch2=ChristoffelSecondKind[x,y,g], var={x,y}},
 				Table[Sum[vec1[[i]]*vec2[[j]]*ch2[[i,j,k]],{i,2},{j,2}]
@@ -219,6 +234,15 @@ CoDSFTensor[t_,x_,y_,g_] :=
 				Table[D[t[[i,j]],var[[k]]]
 						+Sum[ch2[[k,l,i]]t[[l,j]],{l,2}]
 						-Sum[ch2[[k,j,l]]t[[i,l]],{l,2}],
+				{i,2},{j,2},{k,2}
+				]
+		]
+
+CoDSSTensor[t_,x_,y_,g_] := 
+	Module[{ch2=ChristoffelSecondKind[x,y,g]//Simplify, var={x,y}},
+				Table[D[t[[i,j]],var[[k]]]
+						+Sum[ch2[[k,l,i]]t[[l,j]],{l,2}]
+						+Sum[ch2[[k,l,j]]t[[i,l]],{l,2}],
 				{i,2},{j,2},{k,2}
 				]
 		]
@@ -272,6 +296,11 @@ Div2FFTensor[t_,x_,y_,g_] :=
 				Table[Sum[gInv[[j,k]]codt[[i,j,k]],{j,2},{k,2}],{i,2}]
 	]
 
+Div3FFFTensor[t_,x_,y_,g_] :=
+	Module[{codt=CoDFFFTensor[t,x,y,g]//Simplify,gInv=Inverse[g]},
+				Table[Sum[gInv[[k,l]]codt[[i,j,k,l]],{k,2},{l,2}],{i,2},{j,2}]
+	]
+
 Hodge1FFTensor[t_,g_] := 
 	Module[{gInv=Inverse[g], LC=Sqrt[Det[g]]*LeviCivitaTensor[2]//Normal},
 				Table[Sum[LC[[k,i]]gInv[[k,l]]t[[l,j]],{k,2},{l,2}],
@@ -285,6 +314,8 @@ Hodge2FFTensor[t_,g_] :=
 	]
 
 TransposeSFTensor[t_,g_]:= Transpose[g.t].Inverse[g] (*falsch?*)
+
+DQForm1[form_,x_,y_,g_]:=LieDFFTensor[Sharp1[form,g],g,x,y]+ExCoD1[form,x,y,g]*g
 
 L2Prod0[f1_,f2_,ivalx_,ivaly_,g_] := Integrate[f1*Hodge0[f2,g][[1,1]],ivalx,ivaly]
 L2Prod1[alpha_,beta_,ivalx_,ivaly_,g_] := Integrate[Wedge11[alpha,Hodge1[beta,g]][[1,1]],ivalx,ivaly]

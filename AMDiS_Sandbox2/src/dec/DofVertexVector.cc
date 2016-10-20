@@ -16,6 +16,40 @@ DofEdgeVector* DofVertexVector::exteriorDerivative() const {
   return exd;
 }
 
+DofVertexVector* DofVertexVector::laplace() const {
+  DofVertexVector *lb = new DofVertexVector(emesh, "Laplace_Of_" + getName());
+  lb->set(0.0);
+  
+  // voronoi areas on vertices
+  DOFVector<double> vvol(emesh->getFeSpace(), "vvol");
+  vvol.set(0.0);
+
+  vector<EdgeElement>::const_iterator edgeIter = emesh->getEdges()->begin();
+  for (; edgeIter !=  emesh->getEdges()->end(); ++edgeIter) {
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    double lenD = edgeIter->infoLeft->getDualEdgeLen(edgeIter->dofEdge)
+                + edgeIter->infoRight->getDualEdgeLen(edgeIter->dofEdge);
+    DegreeOfFreedom dof1 = edgeIter->dofEdge.first;
+    DegreeOfFreedom dof2 = edgeIter->dofEdge.second;
+    double edgeval = (lenD / lenP) * ( (*this)[dof2] - (*this)[dof1] );
+    (*lb)[dof1] += edgeval;
+    (*lb)[dof2] -= edgeval;
+
+    // this ensure that we not doubled the local voronoi areas
+    vvol[dof1] += edgeIter->infoLeft->getDualVertexVol_global(dof1);
+    vvol[dof2] += edgeIter->infoRight->getDualVertexVol_global(dof2);
+  }
+
+  // scaling with precalculated voronoi areas
+  DOFVector<double>::Iterator lbIter(const_cast<DofVertexVector*>(lb), USED_DOFS);
+  DOFVector<double>::Iterator vvolIter(const_cast<DOFVector<double>*>(&vvol), USED_DOFS);
+  for (lbIter.reset(), vvolIter.reset(); !lbIter.end(); ++lbIter, ++vvolIter) {
+    (*lbIter) /= (*vvolIter);
+  }
+
+  return lb;
+}
+
 DofEdgeVector* DofVertexVector::rotOnEdges_evalOnOppositeVertices() const {
   DofEdgeVector *rot = new DofEdgeVector(emesh, "rot");
   rot->set(0.0);

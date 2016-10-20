@@ -26,6 +26,8 @@ public:
 
   DofEdgeVector* exteriorDerivative() const;
 
+  DofVertexVector* laplace() const;
+
   DofEdgeVector* rotOnEdges() const {
     //return rotOnEdges_evalOnOppositeVertices();
     //return rotOnEdges_evalOnAllVertices();
@@ -71,6 +73,18 @@ public:
     io::VtkVectorWriter::writeFile(this, name);
   }
 
+  DofVertexVector& operator+=(const DofVertexVector& a) {
+    DOFVector<double>::Iterator xIterator(this, USED_DOFS);
+    DOFVector<double>::Iterator yIterator(const_cast<DofVertexVector*>(&a), USED_DOFS);
+    
+    for (xIterator.reset(), yIterator.reset(); !xIterator.end();
+	              ++xIterator, ++yIterator) {
+      (*xIterator) += (*yIterator); 
+    }
+
+    return *this;
+  }
+
 
   DofVertexVector& operator-=(const DofVertexVector& a) {
     DOFVector<double>::Iterator xIterator(this, USED_DOFS);
@@ -79,6 +93,18 @@ public:
     for (xIterator.reset(), yIterator.reset(); !xIterator.end();
 	              ++xIterator, ++yIterator) {
       (*xIterator) -= (*yIterator); 
+    }
+
+    return *this;
+  }
+
+  DofVertexVector& operator*=(const DofVertexVector& a) {
+    DOFVector<double>::Iterator xIterator(this, USED_DOFS);
+    DOFVector<double>::Iterator yIterator(const_cast<DofVertexVector*>(&a), USED_DOFS);
+    
+    for (xIterator.reset(), yIterator.reset(); !xIterator.end();
+	              ++xIterator, ++yIterator) {
+      (*xIterator) *= (*yIterator); 
     }
 
     return *this;
@@ -100,8 +126,16 @@ private:
 
 };
 
+inline DofVertexVector operator+(DofVertexVector a, const DofVertexVector& b) {
+  return a += b;
+}
+
 inline DofVertexVector operator-(DofVertexVector a, const DofVertexVector& b) {
   return a -= b;
+}
+
+inline DofVertexVector operator*(DofVertexVector a, const DofVertexVector& b) {
+  return a *= b;
 }
 
 inline DofVertexVector operator*(const double &c, DofVertexVector b) {

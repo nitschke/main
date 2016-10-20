@@ -162,6 +162,13 @@ int main(int argc, char* argv[])
   cout << "f: RelError L2:  " << errL2Rel_f << endl;
   cout << "f: RelError Max: " << errMaxRel_f << endl;
 
+  DofVertexVector *lbhfvec = fvec.laplace();
+  double errMaxRel_lbf = lbhfvec->errorMaxRel(lbfvec);
+  double errL2Rel_lbf = lbhfvec->errorL2Rel(lbfvec);
+  cout << endl;
+  cout << "lbf: RelError L2:  " << errL2Rel_lbf << endl;
+  cout << "lbf: RelError Max: " << errMaxRel_lbf << endl;
+
   //cout << endl;
   //cout << "maxDiameter,maxLength,errorL2Rel,errorMaxRel" << endl;
   //cout << hdia << "," << hlen << "," << errL2Rel << ", " << errMaxRel << endl;

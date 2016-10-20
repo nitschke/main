@@ -143,3 +143,6 @@ target_link_libraries(navierStokesSphere ${BASIS_LIBS} dec)
 
 add_executable(navierStokesLinearized src/navierStokesLinearized.cc)
 target_link_libraries(navierStokesLinearized ${BASIS_LIBS} dec)
+
+add_executable(qtensorHelmholtz src/qtensorHelmholtz.cc)
+target_link_libraries(qtensorHelmholtz ${BASIS_LIBS} dec)

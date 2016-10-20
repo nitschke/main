@@ -11,16 +11,22 @@
 \usepackage{amssymb}
 \usepackage{amsbsy}
 
+\usepackage{mathtools}
+
 \usepackage{relsize}
 
 \usepackage{tensor}
 
 \usepackage{tikz}
 
+\usepackage{dsfont}
+
 \usepackage{hyperref}
 
 \newcommand{\surf}{\mathcal{S}}
 \newcommand{\T}{\mathrm{T}}
+
+\newcommand{\R}{\mathds{R}}
 
 %arbitrary index highness
 \newcommand{\tps}[1]{\T^{(#1)}\surf}
@@ -35,6 +41,8 @@
 \newcommand{\qts}{\mathcal{Q}\surf}
 
 \newcommand{\volval}{\sqrt{| g |}}
+\newcommand{\gauss}{\mathcal{K}}
+\newcommand{\mean}{\mathcal{H}}
 
 \newcommand{\exd}{\mathbf{d}}
 \newcommand{\iup}{\mathrm{i}}
@@ -45,9 +53,37 @@
 \newcommand{\Rot}{\mathrm{Rot}}
 \newcommand{\lie}{\mathcal{L}}
 \newcommand{\dq}{\mathcal{D}_{\mathcal{Q}}}
+\newcommand{\hess}{\mathcal{H}}
+
+\newcommand{\sgn}{\mathrm{sgn}}
+
+\newcommand{\laplace}[1]{\Delta^{#1}}
+\newcommand{\lderham}{\laplace{\textup{DeR}}}
+\newcommand{\ldivgrad}{\laplace{\textup{dG}}}
+\newcommand{\lgraddiv}{\laplace{\textup{Gd}}}
+\newcommand{\lrotrot}{\laplace{\textup{Rr}}}
+\newcommand{\lbeltrami}{\laplace{\textup{B}}}
+\newcommand{\lQ}{\laplace{\mathcal{Q}}}
+
+\newcommand{\piQ}{\Pi_{\mathcal{Q}}}
 
 \newcommand{\gb}{\mathbf{g}}
 \newcommand{\Eb}{\mathbf{E}}
+
+
+\newcommand{\pism}{\Pi}
+\newcommand{\pis}[1]{\pism\left[ #1 \right]}
+\newcommand{\pissf}[2]{\tensor{\pism}{^{#1}_{#2}}}
+
+\newcommand{\bsf}[2]{\tensor{B}{^{#1}_{#2}}}
+
+\newcommand{\landau}{\mathcal{O}}
+\newcommand{\landauo}{\landau\left( \xi \right)}
+\newcommand{\landaut}{\landau\left( \xi^{2} \right)}
+
+\newcommand{\ints}[1]{\int_{S} #1 \mu}
+
+\newcommand{\talpha}{\tilde{\alpha}}
 
 
 
@@ -67,6 +103,7 @@
 \( \omega \) \dotfill skew symmetric 2-tensor quantities (2-forms) in \( \ttsskew \cong \Lambda^{2}\surf \)\\
 \( \mu, \Eb\) \dotfill volume form in \( \ttsskew \cong \Lambda^{2}\surf \)\\
 \( q \) \dotfill Q-Tensor (trace-free and symmetric) in \( \qts = \ttstrfree \cap \ttssym \)\\
+\( \tilde{\alpha}, \tilde{\beta}, \tilde{t}, \tilde{s}, \) etc. \dotfill \( \R^{3} \) extensions of quantities, e.g. in \( \T^{(n)}\R^{3} \)\\
 If it matters, all quantities are handled \textbf{full covariant}, unless otherwise is defined.
 
 
@@ -157,7 +194,9 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
         &= -\frac{\left| g \right|}{2}\left\langle *_{1}t , *_{2}t \right\rangle = \frac{\left| g \right|}{2}\left( \left( \Tr t \right)^{2} - \Tr t^{2} \right)
                 &\left| t \right| &= \frac{\left| g \right|}{2} E_{ij}E_{kl}t^{ik}t^{jl} = \frac{\left| g \right|}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)\\
       0 &= t^{2} - \left( \Tr t \right) t + \frac{\left| t \right|}{\left| g \right|} g
-            &\left[ 0 \right]_{ij} &= t_{ik}\tensor{t}{^{k}_{j}} -  \tensor{t}{_{k}^{k}}t_{ij} + \frac{1}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)g_{ij}
+            &\left[ 0 \right]_{ij} &= t_{ik}\tensor{t}{^{k}_{j}} -  \tensor{t}{_{k}^{k}}t_{ij} + \frac{1}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)g_{ij}\\
+      0 &= B^{2} -\mean B + \gauss \gb\\
+      0 &= \left\| B \right\|^{2} - \mean^{2} + 2\gauss 
   \end{align*}
 
 \section{Christoffel Symbols \( \Gamma^{\cdot}_{\cdot\cdot} \)}
@@ -279,6 +318,10 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
                 &\left[ \nabla\left( f\alpha \right) \right]_{ij} &= f\alpha_{i|j} + \alpha_{i}f_{|j}\\
     \nabla\left( f t \right) &= f\nabla t + t \otimes\nabla f
                 &\left[ \nabla\left( f t \right) \right]_{ijk} &= f t_{ij|k} + t_{ij}f_{|k}\\
+    \nabla\left\| t \right\|^{2} &= 2t:\nabla t
+                &\left( t^{jk}t_{jk} \right)_{|i} &= 2t^{jk}t_{jk|i}\\
+    \nabla\left\langle t , t^{T} \right\rangle &= 2t^{T}:\nabla t
+                &\left( t^{jk}t_{kj} \right)_{|i} &= 2t^{kj}t_{jk|i}\\
     \rot\left( f\alpha \right) &= f\rot\alpha + \left\langle \alpha, \Rot f \right\rangle
                 &\rot\left( f\alpha \right) &= -fE_{ij}\alpha^{i|j} - \alpha^{i}E_{ij}f^{|j}\\
     \div\left( f\alpha \right) &= f\div\alpha + \left\langle \alpha, \nabla f \right\rangle
@@ -287,11 +330,33 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
                 &\left[  \div_{1}\left( f t \right) \right]_{i} &= f\tensor{t}{^{k}_{i|k}} + f^{|k}t_{ki}\\
     \div_{2}\left( f t \right) &= f\div_{2}t + t\nabla f
                 &\left[  \div_{2}\left( f t \right) \right]_{i} &= f\tensor{t}{_{i}^{k}_{|k}} + f^{|k}t_{ik}\\
-    \div\left( f \gb \right) &= \nabla f
+    \div\left( f \gb \right) &= \nabla f \\
+    \div\lie_{\alpha^{\sharp}}\alpha &= \div\left( \nabla_{\alpha}\alpha +  \alpha\nabla\alpha \right)
+                = \Delta\left\| \alpha \right\|^{2} - \left( \rot\alpha \right)^{2} - \left\langle \lrotrot\alpha , \alpha \right\rangle
   \end{align*}
   \begin{align*}
-    \lie_{\gamma^{\sharp}}\gb &= -\tensor[^{\flat}]{\left( \lie_{\gamma^{\sharp}}\gb^{-1} \right)}{^{\flat}} \\
+    \nabla_{\alpha}\alpha &= \frac{1}{2}\exd\left\| \alpha \right\|^{2} + \left( \rot\alpha \right)\left( *\alpha \right)
+                &\left[ \nabla_{\alpha}\alpha \right]_{i} 
+                    &= \alpha^{j}\alpha_{i|j}
+                      = \frac{1}{2}\left( \alpha^{j}\alpha_{j} \right)_{|i} + (\rot\alpha)(*\alpha)_{i} \\
+    \alpha\nabla\alpha &= \frac{1}{2}\exd\left\| \alpha \right\|^{2}
+                &\left[ \alpha\nabla_{\alpha} \right]_{i} &= \alpha^{j}\alpha_{j|i}
+                          = \frac{1}{2}\left( \alpha^{j}\alpha_{j} \right)_{|i}\\
+    \nabla_{\beta}\alpha-\beta\nabla\alpha &= (\rot\alpha)(*\beta)\\
+    \left\| \nabla\alpha \right\|^{2} &= \div\left( \alpha\nabla\alpha \right) - \left\langle \ldivgrad\alpha , \alpha \right\rangle
+            &\alpha^{i|j}\alpha_{i|j} &= \left( \alpha_{j}\alpha^{j|i} \right)_{|i} - \alpha^{j}\tensor{\alpha}{_{j}^{|i}_{|i}}\\
+    \left\langle \nabla\alpha,\left( \nabla\alpha \right)^{T} \right\rangle 
+        &= \div\left( \nabla_{\alpha}\alpha \right) - \left\langle \div_{1}\nabla\alpha, \alpha \right\rangle
+            &\alpha^{i|j}\alpha_{j|i} &= \left( \alpha_{j}\alpha^{i|j} \right)_{|i} - \alpha^{j}\tensor{\alpha}{^{i}_{|j|i}}\\
+        &= \div\left( \nabla_{\alpha}\alpha \right) + \left\langle \lrotrot\alpha - \ldivgrad\alpha , \alpha \right\rangle
+  \end{align*}
+  \begin{align*}
     \lie_{\gamma^{\sharp}}\exd f &= \exd\lie_{\gamma^{\sharp}}f\\
+    \lie_{\gamma^{\sharp}}\alpha &= \nabla\left\langle \gamma, \alpha \right\rangle + \left( \rot\alpha \right)\left( *\gamma \right)\\
+    \left( \lie_{\gamma^{\sharp}}\alpha^{\sharp} \right)^{\flat}
+             &= -\left( \lie_{\alpha^{\sharp}}\gamma^{\sharp} \right)^{\flat}
+              = \left( \div\alpha \right)\gamma - \left( \div\gamma \right)\alpha - \Rot\left\langle \gamma, *\alpha \right\rangle\\
+    \lie_{\gamma^{\sharp}}\gb &= -\tensor[^{\flat}]{\left( \lie_{\gamma^{\sharp}}\gb^{-1} \right)}{^{\flat}} \\
     *_{1}\lie_{*\gamma^{\sharp}}\gb &= \left(\div\gamma\right)\gb - 2\nabla\gamma \in \ttstrfree
               &\left[ *_{1}\lie_{*\gamma^{\sharp}}\gb \right]_{ij} &= \tensor{\gamma}{^{k}_{|k}}g_{ij} - 2\gamma_{i|j}\\
     *_{2}\lie_{*\gamma^{\sharp}}\gb &= \left(\div\gamma\right)\gb - 2\left(\nabla\gamma\right)^{T} \in \ttstrfree
@@ -299,7 +364,11 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
     \lie_{*\gamma^{\sharp}}\gb &=\nabla * \gamma + \left( \nabla * \gamma \right)^{T} = \left(\div\gamma\right)\Eb + 2\nabla * \gamma \in \ttssym
               &\left[ \lie_{*\gamma^{\sharp}}\gb \right]_{ij} 
                     &=  E_{ki}\tensor{\gamma}{^{k}_{|j}} + E_{kj}\tensor{\gamma}{^{k}_{|i}}
-                     =  \tensor{\gamma}{^{k}_{|k}}E_{ij} + 2 E_{ki}\tensor{\gamma}{^{k}_{|j}}
+                     =  \tensor{\gamma}{^{k}_{|k}}E_{ij} + 2 E_{ki}\tensor{\gamma}{^{k}_{|j}}\\
+    \left\| \lie_{\gamma^{\sharp}}\gb \right\|^{2} &= 2\left\langle \nabla\gamma , \nabla\gamma+\left( \nabla\gamma \right)^{T} \right\rangle
+              & \left\| \lie_{\gamma^{\sharp}}\gb \right\|^{2} &= 2\gamma^{i|j}\left( \gamma_{i|j} + \gamma_{j|i} \right)\\
+    \left( \lie_{\alpha^{\sharp}}\gb \right)\beta &= \beta \left( \lie_{\alpha^{\sharp}}\gb \right)
+                = \lie_{\alpha^{\sharp}}\beta - \left( \lie_{\alpha^{\sharp}}\beta^{\sharp} \right)^{\flat}
   \end{align*}
   \begin{align*}
     *\dq\alpha &= *_{1}\dq\alpha = *_{2}\dq\alpha = \dq*\alpha \in \qts \\
@@ -308,7 +377,149 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
     \dq\exd f &= -*\lie_{\Rot f}\gb = -*\dq\Rot f \\
     \dq\Rot f &= \lie_{\Rot f}\gb = *\dq\exd f\\
     \dq\left( \Rot \phi + \exd\psi + \gamma \right) &= \lie_{\Rot \phi}\gb - *\lie_{\Rot \psi}\gb + \lie_{\gamma^{\sharp}}\gb
-              &&\text{ for }\div\gamma=\rot\gamma=0
+              &&\text{ for }\div\gamma=\rot\gamma=0 \\
+    \left\| \dq\alpha \right\|^{2} &= \left\| *\dq\alpha \right\|^{2} = \left\| \lie_{\alpha^{\sharp}}\gb \right\|^{2} - 2\left( \div\alpha \right)^{2}\\
+                    &= 2\left( \Delta\left\| \alpha \right\|^{2} - 2\left\langle \ldivgrad\alpha , \alpha \right\rangle 
+                                  -\left( \div\alpha \right)^{2} - \left( \rot\alpha \right)^{2}\right)\\
+                    &= 2\left( \Delta\left\| \alpha \right\|^{2} -2\gauss\left\| \alpha \right\|^{2} - 2\left\langle \Delta\alpha , \alpha \right\rangle 
+                                  -\left( \div\alpha \right)^{2} - \left( \rot\alpha \right)^{2}\right)\\
+    \beta\left( \dq\alpha \right)\gamma
+          &= -\sum_{\mathclap{\sigma\in\left\{ \textup{id}, \left( \alpha,\beta \right), \left( \alpha,\gamma \right) \right\}}}
+                    \sgn(\sigma)\left\langle \sigma(\alpha),\exd\left\langle \sigma(\beta),\sigma(\gamma) \right\rangle \right\rangle\\
+          &\hphantom{=}  -\sum_{\mathclap{\sigma\in\left\{ \textup{id}, \left( *\alpha,\beta \right), \left( *\alpha,\gamma \right) \right\}}}
+                     \sgn(\sigma) \rot\sigma(*\alpha)\left\langle \sigma(\beta) , \sigma(\gamma) \right\rangle\\
+          &= \left\langle \gamma,\exd\left\langle \alpha,\beta \right\rangle \right\rangle
+             +\left\langle \beta,\exd\left\langle \alpha,\gamma \right\rangle \right\rangle
+             -\left\langle \alpha,\exd\left\langle \beta,\gamma \right\rangle \right\rangle  \\
+          &\hphantom{=}   +(\rot\gamma)\left\langle *\alpha,\beta \right\rangle
+             +(\rot\beta)\left\langle *\alpha,\gamma \right\rangle
+             -(\div\alpha)\left\langle \beta, \gamma \right\rangle\\
+    \beta\dq\alpha &= \left( \dq\alpha \right)\beta = \lie_{\alpha^{\sharp}}\beta - \left( \lie_{\alpha^{\sharp}}\beta^{\sharp} \right)^{\flat} - \left( \div\alpha \right)\beta\\
+                   &= \nabla\left\langle \alpha, \beta \right\rangle + \Rot\left\langle \alpha , *\beta \right\rangle
+                        - \left( \div\beta \right)\alpha - \left(\div\left(*\beta\right)\right)\left(*\alpha\right) \\
+    \alpha\dq\alpha &= \left( \dq\alpha \right)\alpha = \lie_{\alpha^{\sharp}}\alpha - \left( \div\alpha \right)\alpha\\
+                    &= \left( \rot\alpha \right)\left( *\alpha \right) - \left( \div\alpha \right)\alpha +\exd\left\| \alpha \right\|^{2}\\
+                    &= \exd\left\| \alpha \right\|^{2} -  \left( \div\alpha \right)\alpha -  \left( \div\left( *\alpha \right)\right)\left( *\alpha \right)
+  \end{align*}
+  \begin{align*}
+    EW(\dq\alpha) &= \left\{ \pm \frac{\left\| \dq\alpha \right\|}{\sqrt{2}} \right\}
+           =\left\{ \pm \sqrt{\Delta\left\| \alpha \right\|^{2} - 2\left\langle \ldivgrad\alpha , \alpha \right\rangle 
+                                  -\left( \div\alpha \right)^{2} - \left( \rot\alpha \right)^{2}} \right\}
+  \end{align*}
+
+\section{Laplace-like Derivatives}
+\begin{align*}
+  \Delta f &= \lbeltrami f = \ldivgrad f= -\lderham f
+        &\Delta f &= \tensor{f}{^{|i}_{|i}} \\
+           &= *\exd*\exd f = \Tr\hess f\\
+  \Delta\alpha &= -\lderham\alpha = \left( \lgraddiv + \lrotrot \right)\alpha 
+        &\left[ \Delta\alpha \right]_{i} &= \tensor{\alpha}{_{i}^{|k}_{|k}} + \tensor{\alpha}{^{k}_{|k|i}} - \tensor{\alpha}{^{k}_{|i|k}}\\
+               &= \left( \exd*\exd* + *\exd*\exd \right)\alpha
+                = \ldivgrad\alpha - \gauss\alpha = \lQ\alpha - 2\gauss\alpha \\
+  \lgraddiv\alpha &= \nabla\div\alpha
+        &\left[ \lgraddiv\alpha \right]_{i} &= \tensor{\alpha}{^{k}_{|k|i}} \\
+  \lrotrot\alpha &= \Rot\rot\alpha
+        &\left[ \lrotrot\alpha \right]_{i} &= \tensor{\alpha}{_{i}^{|k}_{|k}} - \tensor{\alpha}{^{k}_{|i|k}}\\
+  \ldivgrad\alpha &= \div_{2}\nabla\alpha  = \Delta\alpha + \gauss\alpha = \lQ\alpha - \gauss\alpha
+        &\left[ \ldivgrad\alpha \right]_{i} &= \tensor{\alpha}{_{i}^{|k}_{|k}}\\
+  \lQ\alpha &= -\frac{1}{2}\dq^{*}\dq\alpha = \div\dq\alpha = 2\div\piQ\nabla\alpha
+        &\left[ \lQ\alpha \right]_{i} &=\tensor{\alpha}{_{i}^{|k}_{|k}} - \tensor{\alpha}{^{k}_{|k|i}} + \tensor{\alpha}{^{k}_{|i|k}}\\
+            &= \ldivgrad\alpha + \gauss\alpha = \Delta\alpha + 2\gauss\alpha \\
+  \Delta q &= \lrotrot q + \lgraddiv q = \ldivgrad q -2\gauss q 
+        &\left[ \Delta q \right]_{ij} &= \tensor{q}{_{ij}^{|k}_{|k}} + \tensor{q}{_{i}^{k}_{|k|j}} - \tensor{q}{_{i}^{k}_{|j|k}}\\
+           &= \lQ q = -\frac{1}{2}\dq\dq^{*} q = \dq\div q = 2\piQ\nabla\div q \\
+           &=  2\piQ\lgraddiv q = 2\piQ\lrotrot q\\
+  \lgraddiv q &= \nabla\div q 
+           & \left[ \lgraddiv q \right]_{ij} &= \tensor{q}{_{i}^{k}_{|k|j}} \\
+  \lrotrot q &= \Rot\rot q
+           &\left[ \lrotrot q \right]_{ij} &= \tensor{q}{_{ij}^{|k}_{|k}} - \tensor{q}{_{i}^{k}_{|j|k}}\\
+  \ldivgrad q &= \div\nabla q = \Delta q + 2\gauss q
+           & \left[ \ldivgrad q \right]_{ij} &= \tensor{q}{_{ij}^{|k}_{|k}}
+\end{align*}
+
+\section{\( \R^{3} \) Representations}
+
+\begin{align*}
+  \pism &= \textup{Id}_{\R^{3}} - \nu\otimes\nu = \textup{Id}_{\surf}
+        &\pissf{I}{J} &= \tensor{\delta}{^{I}_{J}} - \nu^{I}\nu_{J} \\
+  \pis{\tilde{t}} &= t \in\tns
+        & t^{i_{1}\ldots i_{n}} &\cong t^{I_{1}\ldots I_{n}} = \pissf{I_{1}}{J_{1}}\ldots\pissf{I_{n}}{J_{n}}\tilde{t}^{J_{1}\ldots J_{n}} \\
+  D &= \pis{\partial} = \pism\cdot\partial
+        &D_{I} &= _{:I} = \pissf{J}{I}\partial_{J}\\
+  B &= \textup{Gram}\left( \pis{\partial}\nu , \pis{\partial}X \right) = \nu \cdot \left(\pis{\partial} \otimes \pis{\partial}\right) X
+        &B_{ij} &= -\partial_{i}\nu \cdot \partial_{j}X = \nu \cdot \partial_{i}\partial_{j}X\\
+  B^{2} &= \textup{Gram}\left( \pis{\partial}\nu , \pis{\partial}\nu \right)
+        &\tensor{B}{_{i}^{k}}B_{kj} &= \partial_{i}\nu \cdot \partial_{j}\nu\\
+  \mean &= \Tr B
+        &\mean &= \bsf{i}{i} = \bsf{I}{I}
+\end{align*}
+\begin{align*}
+  0 &= B^{2} - \mean B + \gauss\pi
+        &\tensor{\left[ 0 \right]}{^{I}_{J}} &= \bsf{I}{K}\bsf{K}{J} - \mean\bsf{I}{J} + \gauss\pissf{I}{J}
+\end{align*}
+
+  \subsection{Thin Shell Metric Quantities}
+  \begin{align*}
+    \tilde{X} &= \tilde{X}\left(\left\{ x^{i} \right\},\xi\right) = X\left( \left\{ x^{i} \right\} \right) + \xi\nu\left( \left\{ x^{i} \right\} \right) = X + \xi\nu
+        &\tilde{X}_{I} &= X_{I} + \xi\nu_{I} \\
+    \pis{\partial}\tilde{X} &= \pis{\partial}X + \xi\pis{\partial}\nu
+        &\partial_{i}\tilde{X}_{J} &= \partial_{i}X_{J} + \xi\partial_{i}\nu_{J}\\
+    \partial_{\xi}\tilde{X} &= \nu
+        &\partial_{\xi}\tilde{X}_{I} &= \nu_{I}\\
+  \end{align*}
+  \begin{align*}
+    \pis{\tilde{\gb}} &= \left( \gb - \xi B \right)^{2} = \gb - 2\xi B + \xi^{2}B^{2}
+          &\tilde{g}_{ij} &= g_{ij} - 2\xi B_{ij} + \xi^{2}\tensor{B}{_{i}^{k}}B_{kj}\\
+    \pism\cdot\tilde{\gb}\cdot\nu &= \nu\cdot\tilde{\gb}\cdot\pism = 0
+          &\tilde{g}_{i\xi} &= \tilde{g}_{\xi i} = 0\\
+    \nu\cdot\tilde{\gb}\cdot\nu &= 1
+          &\tilde{g}_{\xi\xi} &= 1\\
+    \pis{\tilde{\gb}^{-1}} &= \gb^{-1} + \landauo
+          &\tilde{g}^{ij} &= g^{ij} +\landauo^{ij}
+                          ={\color{red} \frac{g^{ij}-2\xi\gauss\left[ B^{-1} \right]^{ij} + \xi^{2}\gauss^{2}\left[ B^{-2} \right]^{ij}}{\left( 1 + \xi\mean + \xi^{2}\gauss \right)^{2}}}\\
+    \pism\cdot\tilde{\gb}^{-1}\cdot\nu &= \nu\cdot\tilde{\gb}^{-1}\cdot\pism = 0
+          &\tilde{g}^{i\xi} &= \tilde{g}^{\xi i} = 0\\
+    \nu\cdot\tilde{\gb}^{-1}\cdot\nu &= 1
+          &\tilde{g}^{\xi\xi} &= 1\\
+    \sqrt{\left| \tilde{\gb} \right|} &= \left( 1 + \xi\mean + \xi^{2}\gauss \right)\sqrt{\left| \gb \right|}
+  \end{align*}
+  \begin{align*}
+    \tilde{\Gamma} &
+          &\tilde{\Gamma}^{K}_{IJ} &= \frac{1}{2}\tilde{g}^{KL}\left( \partial_{I}\tilde{g}_{JL} + \partial_{J}\tilde{g}_{IL} - \partial_{L}\tilde{g}_{IJ} \right)\\
+         &&\tilde{\Gamma}^{k}_{ij} &= \Gamma^{k}_{ij} + \landauo^{k}_{ij}\\
+         &&\tilde{\Gamma}^{\xi}_{ij} &= B_{ij} + \landauo_{ij}\\
+         &&\tilde{\Gamma}^{k}_{i\xi} &= \tilde{\Gamma}^{k}_{\xi i} = -\tensor{B}{_{i}^{k}} + \landauo_{i}^{k} = -\tensor{B}{^{k}_{i}} + \landauo_{i}^{k}\\
+         &&\tilde{\Gamma}^{K}_{\xi\xi} &= \tilde{\Gamma}^{\xi}_{I\xi} = \tilde{\Gamma}^{\xi}_{\xi I} = 0
+  \end{align*}
+  \begin{align*}
+    \tilde{\Eb} &= \sqrt{\left| \tilde{\gb} \right|}\varepsilon_{\R^{3}} = \sqrt{\left| \gb \right|}\varepsilon_{\R^{3}} + \landauo
+          &\tilde{E}_{IJK} &= \sqrt{\left| \gb \right|}\varepsilon_{IJK} + \landauo_{IJK}\\
+         &&\tilde{E}_{\xi i j} &= -\tilde{E}_{i \xi j} = \tilde{E}_{i j \xi} = E_{ij} + \landauo_{ij}
+  \end{align*}
+
+  \subsection{First Order Derivatives on Surfaces (\( \xi = 0 \))}
+  \begin{align*}
+    \nabla\tilde{\alpha} &= \pis{\nabla_{\R^{3}}\tilde{\alpha}} + \left( \tilde{\alpha}\cdot\nu \right) B
+          &\tensor{\tilde{\alpha}}{^{I}_{|J}} &= \pissf{I}{K}\pissf{L}{J}\partial_{L}\tilde{\alpha}^{K} + \nu_{K}\tilde{\alpha}^{K}\bsf{I}{J} \\
+           &= \pism\cdot D\alpha + \left( \tilde{\alpha}\cdot\nu \right) B
+                                              &&= \pissf{I}{K}\tensor{\tilde{\alpha}}{^{K}_{:J}} + \nu_{K}\tilde{\alpha}^{K}\bsf{I}{J}\\
+    \nabla\tilde{t} &= \pis{\nabla_{\R^{3}}\tilde{t}} + \left( \left( \nu\cdot\tilde{t}\cdot\pism \right)\otimes B \right)^{T_{1,2}} 
+                                                     + \left( \pism\cdot\tilde{t}\cdot\nu \right)\otimes B
+          &\tensor{\tilde{t}}{^{IJ}_{K}} &= \pissf{I}{\hat{I}}\pissf{J}{\hat{J}}\pissf{\hat{K}}{K}\partial_{\hat{K}}\tilde{t}^{\hat{I}\hat{J}}
+                                            + \nu_{L}\pissf{J}{\hat{J}}\tilde{t}^{L\hat{J}}\bsf{I}{K} + \nu_{L}\pissf{I}{\hat{I}}\tilde{t}^{\hat{I}L}\bsf{J}{K}\\
+                        &&&{\color{red}\text{Not verifiable with \texttt{Mathematica}. (Complexity)}.}\\
+   \div\talpha &= \Tr D\talpha + \mean \talpha\cdot\nu
+          & \div\talpha &= \tensor{\talpha}{^{I}_{:I}} + \mean \talpha^{I}\nu_{I}
+  \end{align*}
+
+  \subsection{Weak Formulations}
+  \begin{align*}
+    \ints{\left\langle \ldivgrad\tilde{\alpha} , \tilde{\gamma} \right\rangle}
+        &= -\ints{\left( \pism\cdot D\tilde{\alpha} \right):D\tilde{\gamma} + \left( B:D \tilde{\alpha} \right)\left( \nu\cdot\tilde{\gamma} \right)
+            +\left( \nu\cdot\tilde{\alpha} \right)\left( B: D \tilde{\gamma} \right) + \left\| B \right\|^{2}\left( \nu\cdot\tilde{\alpha} \right)\left( \nu\cdot\tilde{\gamma} \right)} \\
+        &= -\ints{\pissf{I}{J}\tilde{\alpha}_{I:K}\tilde{\gamma}^{J:K}  +  \nu_{J}\bsf{K}{I}\tensor{\tilde{\alpha}}{^{I}_{:K}}\tilde{\gamma}^{J}
+                +  \nu_{I}\bsf{K}{J}\tilde{\alpha}^{I}\tensor{\tilde{\gamma}}{^{J}_{:K}}
+                +  \nu_{I}\nu_{J}\bsf{K}{L}\bsf{L}{K}\tilde{\alpha}^{I}\tilde{\gamma}^{J}}
   \end{align*}
 
 \end{document}

@@ -545,7 +545,7 @@ DofEdgeVector DofEdgeVector::divOnEdgeCenter_averageOnEdgeVertices() const {
   DofEdgeVector div(edgeMesh, "div");
   div.set(0.0);
 
-  DOFVector<double> divOnVs = divergence();
+  DofVertexVector divOnVs = divergence();
 
   vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
   for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
@@ -686,8 +686,8 @@ DofEdgeVector DofEdgeVector::exteriorDerivativOfNorm2_FaceAverage() const {
 
 
 
-DOFVector<double> DofEdgeVector::divergence() const {
-  DOFVector<double> div(edgeMesh->getFeSpace(), name + "Div");
+DofVertexVector DofEdgeVector::divergence() const {
+  DofVertexVector div(edgeMesh, name + "Div");
   div.set(0.0);
   
   // voronoi areas on vertices
@@ -712,7 +712,7 @@ DOFVector<double> DofEdgeVector::divergence() const {
   }
 
   // scaling with precalculated voronoi areas
-  DOFVector<double>::Iterator divIter(const_cast<DOFVector<double>*>(&div), USED_DOFS);
+  DOFVector<double>::Iterator divIter(const_cast<DofVertexVector*>(&div), USED_DOFS);
   DOFVector<double>::Iterator vvolIter(const_cast<DOFVector<double>*>(&vvol), USED_DOFS);
   for (divIter.reset(), vvolIter.reset(); !divIter.end(); ++divIter, ++vvolIter) {
     (*divIter) /= (*vvolIter);
@@ -920,6 +920,22 @@ double DofEdgeVectorPD::L2Norm2(const DofEdgeVector &primal, const DofEdgeVector
   return norms.surfaceIntegration();
 }
 
+double DofEdgeVectorPD::L2Inner(const DofEdgeVector &primalA, const DofEdgeVector &dualA, const DofEdgeVector &primalB, const DofEdgeVector &dualB){
+  DofEdgeVector inner(primalA.getEdgeMesh(), "We've got the PMA!");
+
+  vector<EdgeElement>::const_iterator edgeIter = primalA.getEdgeMesh()->getEdges()->begin();
+  vector<double>::const_iterator valIterPA = primalA.getEdgeVector()->begin();
+  vector<double>::const_iterator valIterDA = dualA.getEdgeVector()->begin();
+  vector<double>::const_iterator valIterPB = primalB.getEdgeVector()->begin();
+  vector<double>::const_iterator valIterDB = dualB.getEdgeVector()->begin();
+  for (; edgeIter != primalA.getEdgeMesh()->getEdges()->end(); ++edgeIter, ++valIterPA, ++valIterDA, ++valIterPB, ++valIterDB) {
+    double lenP = edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    inner[edgeIter->edgeDof] = ((*valIterPA) * (*valIterPB) + (*valIterDA) * (*valIterDB)) / (lenP * lenP);
+  }
+  
+  return inner.surfaceIntegration();
+}
+
 vector<WorldVector<double> > DofEdgeVectorPD::getSharpVecOnEdges() {
   vector<WorldVector<double> > sharp(edgeMesh->getNumberOfEdges());
 
@@ -974,6 +990,51 @@ DofVertexVector DofEdgeVectorPD::interiorProdOnVertices(const DofEdgeVectorPD &p
         vvol4 += lenP * lenD;
         iprod[vdof] += (lenD / lenP) *  ( getPrimalVal(*ringIter) * pdvec.getPrimalVal(*ringIter) 
                                       + getDualVal(*ringIter) * pdvec.getDualVal(*ringIter)    );
+      }
+      iprod[vdof] /=  vvol4;
+      visited[vdof] = true;
+    }
+  }
+
+  return iprod;
+}
+
+DofVertexVector DofEdgeVectorPD::interiorProdOnVertices(const DofEdgeVector &primalA, const DofEdgeVector &dualA, const DofEdgeVector &primalB, const DofEdgeVector &dualB) {
+  const EdgeMesh *edgeMesh = primalA.getEdgeMesh();
+  DofVertexVector iprod(edgeMesh, primalA.getName() + "_interprod_" + primalB.getName());
+  iprod.set(0.0);
+  
+  DOFVector<bool> visited(edgeMesh->getFeSpace(),"visited");
+  visited.set(false);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  for (; edgeIter != edgeMesh->getEdges()->end(); ++edgeIter) {
+    //first verex
+    DegreeOfFreedom vdof = edgeIter->dofEdge.first;
+    if (!visited[vdof]) {
+      double vvol4 = 0.0;
+      for (EdgeElement::EdgeRingIterator ringIter(&(*edgeIter), FIRSTVERTEX); !ringIter.isEnd(); ++ringIter) {
+        double lenP = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
+        double lenD = ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
+                     +ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
+        vvol4 += lenP * lenD;
+        iprod[vdof] += (lenD / lenP) * ( primalA[*ringIter] * primalB[*ringIter]
+                                      + dualA[*ringIter] * dualB[*ringIter]    );
+      }
+      iprod[vdof] /=  vvol4;
+      visited[vdof] = true;
+    }
+    //second vertex
+    vdof = edgeIter->dofEdge.second;
+    if (!visited[vdof]) {
+      double vvol4 = 0.0;
+      for (EdgeElement::EdgeRingIterator ringIter(&(*edgeIter), SECONDVERTEX); !ringIter.isEnd(); ++ringIter) {
+        double lenP = ringIter->infoLeft->getEdgeLen(ringIter->dofEdge);
+        double lenD = ringIter->infoLeft->getDualEdgeLen(ringIter->dofEdge)
+                     +ringIter->infoRight->getDualEdgeLen(ringIter->dofEdge);
+        vvol4 += lenP * lenD;
+        iprod[vdof] += (lenD / lenP) *  ( primalA[*ringIter] * primalB[*ringIter]
+                                      + dualA[*ringIter] * dualB[*ringIter]    );
       }
       iprod[vdof] /=  vvol4;
       visited[vdof] = true;

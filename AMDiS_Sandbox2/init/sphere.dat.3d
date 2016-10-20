@@ -1,7 +1,7 @@
 dimension of world:      3
 
 %sphereMesh->macro file name:       ./macro/sphere/ikosaeder.3d
-sphereMesh->macro file name:       ./macro/sphere/sphereIko2k.3d
+sphereMesh->macro file name:       ./macro/sphere/sphereIko25k.3d
 %sphereMesh->macro file name:       ./macro/ellipsoid/ellipsoid_100k_improved.3d
 %sphereMesh->macro file name:       ./macro/bunnyWellcentered40k.3d
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250,800,3200 
@@ -11,11 +11,11 @@ sphereMesh->check: 0
 sphere->mesh:                    sphereMesh
 sphere->dim:                     2
 sphere->polynomial degree[0]:    1
-sphere->components:              3 %3
+sphere->components:              2 %3
 
-sphere->solver:                umfpack %umfpack %tfqmr %bicgstab_ell
+sphere->solver:                bicgstab_ell %umfpack %tfqmr %bicgstab_ell
 sphere->solver->ell:           2
-sphere->solver->max iteration: 2000
+sphere->solver->max iteration: 5000
 sphere->solver->info:          8
 sphere->solver->tolerance:     1.e-8
 sphere->solver->left precon:   diag
@@ -24,7 +24,7 @@ sphere->adapt->start time:      0.0
 sphere->adapt->end time:        5.0
 sphere->adapt->timestep:        1.e-3
 
-sphere->output->filename:         output/sphere. %MichaelLinearized100kKn1000TauE3/sphere
+sphere->output->filename:         output/qtensorHelmholtz_5k.
 sphere->output->ParaView animation:   1
 sphere->output->edgeForms sharp:        1 
 sphere->output->sharpType:            1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)

@@ -111,7 +111,8 @@ public:
   DofEdgeVector exteriorDerivativOfNorm2_FaceAverage() const;
 
 
-  DOFVector<double> divergence() const;
+  //DOFVector<double> divergence() const;
+  DofVertexVector divergence() const;
 
   DofEdgeVector hodgeDual() const {
     return hodgeDual_unweighted();
@@ -411,8 +412,15 @@ public:
   DofEdgeVector getNormOnEdges() const;
 
   static double L2Norm2(const DofEdgeVector &primal, const DofEdgeVector &dual);
+  static double L2Inner(const DofEdgeVector &primalA, const DofEdgeVector &dualA, const DofEdgeVector &primalB, const DofEdgeVector &dualB);
 
   DofVertexVector interiorProdOnVertices(const DofEdgeVectorPD &pdvec) const;
+  
+  static DofVertexVector interiorProdOnVertices(const DofEdgeVector &primalA, const DofEdgeVector &dualA, const DofEdgeVector &primalB, const DofEdgeVector &dualB);
+
+  static  DofVertexVector normOnVertices(const DofEdgeVector &primalA, const DofEdgeVector &dualA) {
+    return interiorProdOnVertices(primalA, dualA, primalA, dualA);
+  }
 
   //static DofEdgeVector getNormOnEdges(const DofEdgeVector &primal, const DofEdgeVector &dual) {
   //  DofEdgeVectorPD pdvec(primal, dual);

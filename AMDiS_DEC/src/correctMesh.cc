@@ -311,14 +311,14 @@ int main(int argc, char* argv[])
   //new PhiProject(1, VOLUME_PROJECTION, new PhiO(stretch), new GradPhiO(stretch), 1.0e-6);
   //new PhiProject(1, VOLUME_PROJECTION, new PhiNP(stretch, southRatio, press), new GradPhiNP(stretch, southRatio, press), 1.0e-9);
   //new TorusProject(1, VOLUME_PROJECTION, 2.0, 0.5);
-  //new EllipsoidProject(1, VOLUME_PROJECTION, 0.5, 0.5, 1.5);
+  new EllipsoidProject(1, VOLUME_PROJECTION, 1.0, 1.0, 1.25);
   //WorldVector<double> ballCenter;
   //ballCenter.set(0.0);
   //new BallProject(1, VOLUME_PROJECTION, ballCenter, 1.0);
 
-  double a = 0.72;
-  double c = 0.75;
-  new PhiProject(1, VOLUME_PROJECTION, new PhiRBC(a, c), new GradPhiRBC(a, c), 1.0e-8);
+  //double a = 0.72;
+  //double c = 0.75;
+  //new PhiProject(1, VOLUME_PROJECTION, new PhiRBC(a, c), new GradPhiRBC(a, c), 1.0e-8);
   
   mc.iterate(nMax, h, meshOut);
 
