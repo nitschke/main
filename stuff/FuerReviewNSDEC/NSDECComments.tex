@@ -1,0 +1,170 @@
+\documentclass[a4paper,11pt]{scrartcl}
+
+\usepackage{ngerman}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+
+
+\usepackage{tensor}
+
+\usepackage{tikz}
+
+\usepackage{hyperref}
+\renewcaptionname{ngerman}{\figurename}{Abb.}
+\newcaptionname{ngerman}{\figureautorefname}{Abb.}
+
+%Bezeichner
+\newcommand{\U}{u} %Komponenten des Geschwindigkeitfeldes
+\newcommand{\Ub}{\mathbf{\U}} %Geschwindigkeitsfeld
+\newcommand{\tU}{\tilde{u}} %Komponenten des Geschwindigkeitfeldes
+\newcommand{\tUb}{\mathbf{\tU}} %Geschwindigkeitsfeld
+\newcommand{\V}{v} %Komponenten des Geschwindigkeitfeldes
+\newcommand{\Vb}{\mathbf{\V}} %Geschwindigkeitsfeld
+\renewcommand{\P}{p} %Druck
+\newcommand{\g}{\mathbf{g}} % metrischer Tensor, Oberflaechenidentitaet
+\newcommand{\lc}{\mathbf{E}} % Levi-Civita-Tensor
+\newcommand{\gauss}{\mathcal{K}} % Gauss-Kruemmung
+\newcommand{\ekin}{\textup{E}_{\textup{Kin}}} %kinetische Energie
+\newcommand{\dtekin}{\dot{\textup{E}}_{\textup{Kin}}} %kinetische Energie
+\newcommand{\landau}{\mathcal{O}}
+
+% General
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+
+%Raeume
+\newcommand{\surf}{\mathcal{S}} %Oberflaeche
+\newcommand{\uspace}{\mathcal{T}^{(1)}(\surf)} % Typ 1 Tensor; Co- bzw. Contravarintes Tangentialbuendel
+\newcommand{\Tangent}{\mathsf{T}}
+\newcommand{\R}{\mathbb{R}}
+
+%Operatoren
+\renewcommand{\div}{\operatorname{div}} %Divergenzoperator
+\newcommand{\rot}{\operatorname{rot}} %Rotationsoperator
+\newcommand{\lie}{\mathcal{L}} %Lie-Ableitung
+\newcommand{\exd}{\mathbf{d}} %Aeussere Ableitung
+\newcommand{\lrr}{\Delta^{\textup{Rr}}} %Rot-rot-Laplace
+\newcommand{\ldg}{\Delta^{\textup{dG}}} %div-Grad-Laplace
+\newcommand{\lgd}{\Delta^{\textup{Gd}}} %Grad-div-Laplace
+\newcommand{\ldr}{\Delta^{\textup{DR}}} %Laplace-deRham
+\newcommand{\jup}{\textup{j}} % teilweises inneres Produkt
+
+% DEC declarations
+\newcommand{\SC}{\mathcal{K}} % simplicial complex
+\newcommand{\Vs}{\mathcal{V}} % set of vertices
+\newcommand{\Es}{\mathcal{E}} % set of edges
+\newcommand{\Fs}{\mathcal{T}} % set of faces
+\newcommand{\face}{T} % one face
+\newcommand{\FormSpace}{\Lambda^{1}} % space of 1 forms
+\newcommand{\flatgb}[2]{\overset{#1 #2}{\g}}
+\newcommand{\flatg}[2]{\overset{#1 #2}{g}}
+
+\newcommand{\facesim}{\overset{\face}{\sim}}
+
+
+%Zeug
+\newcommand{\formComma}{\,\text{,}}
+\newcommand{\formPeriod}{\,\text{.}}
+\newcommand{\ingo}[1]{{\color{blue}#1}}
+
+
+
+\title{Erläuterungen zum NSDEC-Paper} 
+\author{Ingo Nitschke}
+
+\begin{document}
+\maketitle
+%\tableofcontents
+
+\section{Konsistenz zeitdiskreter Advektion}
+
+Wir bedienen uns im Folgenden der Lagrange-Darstellung des Fluids auf der Oberfläche.
+D.h. die Wahl lokaler Koordinaten soll weder von der Strömung \( \Ub \) noch von der Zeit \( t \) abhängen.
+Somit gilt insbesondere \( \partial_{t}\g = 0 \).
+Folglich sind kovariante Ortsableitungen und die Zeitableitung zu einander kommutativ in der Reihenfolge der Verkettung.
+Wir bezeichen mit \( \Ub = \Ub(t) = \Ub_{k+1} \) das Geschwindigkeits(-1-Form-)feld zur aktuellen Zeit \( t =t_{k+1}\)
+und \( \tUb = \Ub(t-\tau) =\Ub_{k}\) das Geschwindigkeitsfeld zur vergangenen Zeit \( t-\tau = t_{k} \).
+Tayler-Approximation vorwärts in der Zeit, für die relevanten Größen, liefert
+\begin{align}
+  \left[ \tUb \right]^{j} &= \tU^{j} = \U^{j} - \tau\partial_{t}\U^{j} + \landau\left( \tau^{2} \right) \\
+  \left[ \nabla\tUb \right]_{ij} &= \tU_{i|j} = \U_{i|j} - \tau\partial_{t}\U_{i|j} + \landau\left( \tau^{2} \right) \formPeriod
+\end{align}
+Somit erhalten wir die Entwicklungen
+\begin{align}
+  \left[ \nabla_{\Ub}\tUb \right]_{i}
+        &=\U^{j}\tU_{i|j} = \U^{j}\U_{i|j} - \tau\U^{j}\partial_{t}\U_{i|j} + \landau\left( \tau^{2} \right) \\
+        &= \left[ \nabla_{\Ub}\Ub - \tau\nabla_{\Ub}\partial_{t}\Ub \right]_{i} + \landau\left( \tau^{2} \right) \\
+  \left[ \nabla_{\tUb}\Ub \right]_{i}
+        &= \tU^{j}\U_{i|j} = \U^{j}\U_{i|j} - \tau\left(\partial_{t}\U^{j}\right)\U_{i|j} + \landau\left( \tau^{2} \right) \\
+        &= \left[ \nabla_{\Ub}\Ub - \tau\nabla_{\partial_{t}\Ub}\Ub \right]_{i} + \landau\left( \tau^{2} \right) \\
+  \left[ \nabla_{\tUb}\tUb \right]_{i}
+        &= \tU^{j}\tU_{i|j} = \left( \U^{j} - \tau\partial_{t}\U^{j} \right)\left(  \U_{i|j} - \tau\partial_{t}\U_{i|j} \right) + \landau\left( \tau^{2} \right)\\
+        &= \U^{j}\U_{i|j} - \tau \left( \U^{j}\partial_{t}\U_{i|j} + \left(\partial_{t}\U^{j}\right)\U_{i|j} \right) + \landau\left( \tau^{2} \right) \\
+        &= \left[ \nabla_{\Ub}\Ub - \tau \left( \nabla_{\Ub}\partial_{t}\Ub + \nabla_{\partial_{t}\Ub}\Ub \right) \right]_{i} + \landau\left( \tau^{2} \right)
+\end{align}
+Für den linearisierten Advektionsterm erhalten wir nun
+\begin{align}\label{eq:adlin}
+  \nabla_{\Ub}\tUb + \nabla_{\tUb}\Ub - \nabla_{\tUb}\tUb 
+        &=  \nabla_{\Ub}\Ub + \landau\left( \tau^{2} \right)
+\end{align}
+und somit eine Konsistenzordnung von 2 in der Zeit.
+
+In ''NAVIER–STOKES EQUATIONS IN ROTATION FORM: A ROBUST
+MULTIGRID SOLVER FOR THE VELOCITY PROBLEM'' (2002),  by M. A. Olshanskii
+A. Reusken, findet effektiv nur der erste Term Beachtung\footnote{\( \nabla_{\Ub}\Ub = \rot(\Ub)(*\Ub) + \frac{1}{2}\exd\left\| \Ub \right\|^{2} \),
+wobei \( (\rot\Ub)(*\Ub) = \left( \text{curl}\Ub \right)\times\Ub \) im flachen Fall und die exakte Form \( \frac{1}{2}\exd\left\| \Ub \right\|^{2} \)
+lässt sich in den generalisierten Druck schieben.
+Linearisiert wird der Term \( \left( \text{curl}\Ub \right)\times\Ub \) zu \( \left( \text{curl}\tUb \right)\times\Ub \).},
+d.h.
+\begin{align}
+  \nabla_{\Ub}\tUb &= \nabla_{\Ub}\Ub + \landau\left( \tau \right)\formComma
+\end{align}
+was nur eine Konsistenzordnung von 1 in der Zeit bringt.
+
+Um eine diskrete Lie-Ableitung, wie in ''Discrete Lie Advection of
+Differential Forms'' (2011), by P. Mullen, A. McKenzie , D. Pavlov, L.
+Durant, Y. Tong, E. Kanso, J.E. Marsden, and M. Desbrun,
+sinnvoll nutzen zu können, muss die zeitdiskrete Advektion ihre Symmetrieeigenschaft beibehalten, 
+da es sonst zu viele zusätzliche (antisymmetrische) Terme gibt.
+Gemeint ist, dass zwar
+\begin{align}\label{eq:liesimple}
+  \nabla_{\Ub}\Ub &= \lie_{\Ub^{\sharp}}\Ub - \frac{1}{2}\exd\left\| \Ub \right\|^{2}
+\end{align}
+gilt, aber allgemeiner auch
+\begin{align}\label{eq:liefull}
+  \nabla_{\Ub}\tUb &= \lie_{\Ub^{\sharp}}\tUb - \frac{1}{2}\left\langle \Ub , \tUb \right\rangle
+                          +\frac{1}{2}\left( \left( \rot\Ub \right)\left( *\tUb \right) -  \left( \rot\tUb \right)\left( *\Ub \right)
+                          +\left( \div\tUb \right)\Ub - \left( \div\Ub \right)\tUb
+                          -*\exd\left\langle \Ub, *\tUb \right\rangle\right)\formComma
+\end{align}
+was zu der schon schlechteren zeitlichen Konsistenz auch keinen Gewinn in der Ortsdiskretisierung ergeben würde.
+Deshalb könnte man gleich die Lie-Advection der rechten Seite von \eqref{eq:liesimple} linearisieren, 
+was uns zu  (analog zu oben)
+\begin{align}
+  \nabla_{\Ub}\Ub &= \lie_{\tUb^{\sharp}}\Ub + \lie_{\Ub^{\sharp}}\tUb - \lie_{\tUb^{\sharp}}\tUb - \frac{1}{2}\exd\left\| \Ub \right\|^{2} + \landau\left( \tau^{2} \right)
+\end{align}
+führt.
+Oder wir setzen \eqref{eq:liefull} in die schon linearisierte Advektion \eqref{eq:adlin} ein.
+Wegen der Symmetrie der Form \eqref{eq:adlin} in \( \Ub \) und \( \tUb \), verschwinden die zusätzlichen Terme und wir erhalten
+\begin{align}
+  \nabla_{\Ub}\Ub &= \lie_{\tUb^{\sharp}}\Ub + \lie_{\Ub^{\sharp}}\tUb - \lie_{\tUb^{\sharp}}\tUb + \frac{1}{2}\exd\left( \left\| \tUb \right\|^{2} - 2\left\langle \Ub, \tUb \right\rangle \right)
+                      + \landau\left( \tau^{2} \right) \formPeriod
+\end{align}
+Beide Varianten unterscheiden sich augenscheinlich nur um eine exakte 1-Form, welche sich wieder in gewohnter Weise in den generalisierten Druck überführen lässt.
+Genauer ist es sogar so, dass 
+\begin{align}
+  \frac{1}{2}\exd\left( \left\| \tUb \right\|^{2} - 2\left\langle \Ub, \tUb \right\rangle \right) + \frac{1}{2}\exd\left\| \Ub \right\|^{2} 
+         &= \frac{1}{2}\exd\left\| \Ub-\tUb \right\|^{2} = \landau\left( \tau^{2} \right)
+\end{align}
+gilt und sich beide Varianten nur um \( \landau\left( \tau^{2} \right) \) unterscheiden.
+
+Es sei außerdem darauf hingewiesen, dass in 'Discrete Lie Advection of
+Differential Forms'' zwar ein allgemeines Vorgehen angegeben ist, aber explizit
+ist die Diskrete Lie-Ableitung hier nur für flache uniforme Vierecksgitter gegeben.
+
+\end{document}

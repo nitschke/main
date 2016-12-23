@@ -1,0 +1,358 @@
+\documentclass[a4paper,11pt]{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{hyperref}
+\usepackage{color}
+
+\usepackage{tensor}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+
+\usepackage{bm}
+
+\usepackage{hyperref}
+
+\newcommand{\surf}{\mathcal{S}}
+\newcommand{\surfh}{\surf_{h}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\tangentspace}{T}
+\newcommand{\tensorspace}{\mathcal{T}}
+
+\newcommand{\Tr}{\text{Tr}}
+
+\newcommand{\landau}{\mathcal{O}}
+\newcommand{\adj}{\text{adj}}
+
+\renewcommand{\Im}{\text{Im}}
+
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\txb}{\tilde{\xb}}
+\newcommand{\nub}{\bm{\nu}}
+\newcommand{\gb}{\mathbf{g}}
+\newcommand{\tgb}{\tilde{\gb}}
+\newcommand{\tg}{\tilde{g}}
+\newcommand{\tb}{\mathbf{t}}
+\newcommand{\Bb}{\mathbf{B}}
+\newcommand{\alphab}{\bm{\alpha}}
+\newcommand{\deltab}{\bm{\delta}}
+
+\newcommand{\ttt}{\tilde{t}}
+
+\newcommand{\tch}[2]{\widetilde{\Gamma}_{#1}^{#2}}
+\newcommand{\ch}[2]{\Gamma_{#1}^{#2}}
+
+\newcommand{\meanc}{\mathcal{H}}
+\newcommand{\gaussc}{\mathcal{K}}
+
+\newcommand{\fraki}{\mathfrak{i}}
+\newcommand{\frakk}{\mathfrak{k}}
+\newcommand{\frakl}{\mathfrak{l}}
+
+\newcommand{\formComma}{\,\text{,}}
+\newcommand{\formPeriod}{\,\text{.}}
+\newcommand{\ie}{i.\,e.}%
+\newcommand{\eg}{e.\,g.}
+
+\newcommand{\newterm}[1]{\textbf{\textit{#1}}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{conclusion}{Conclusion}
+
+\title{Thin Shell Stuff} 
+\author{Ingo Nitschke}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Metric Quantities}
+In the following, we consider a \newterm{thin shell} of constant thickness \( h\in\R \) around an oriented, boundarieless, compact Riemannian 2-manifold (surface) \( \surf \)
+defined by
+\begin{align}
+ \surfh := \surf\times\left[ -\frac{h}{2}, \frac{h}{2} \right] \subset \R^{3} \formPeriod
+\end{align}
+Constant thickness means, that the orthogonal measurement of the  two disjoint boundaries \( \partial^{+}\surfh\sqcup\partial^{-}\surfh = \partial\surfh \) is \( h \)
+at all boundary points.
+Thereby, be \( h \) small enough, so that  \( \surfh\subset \R^{3} \) contains no overlaps,
+\ie, it exists a surjection \( \surfh \twoheadrightarrow \surf \).
+
+\subsection{Coordinates}
+We define the coordinate in normal direction \( \nub \) of the surface \( \surf \) by \( \xi\in\left[ -\frac{h}{2}, \frac{h}{2} \right] \).
+If we use any choice of local coordinates \( (u,v)\in U \) of the surface, so that the immersion 
+\( \xb:U \rightarrowtail \R^{3} \) parameterize \( \surf= \Im(\xb)\),
+then we can define the immersion \( \txb: U\times\left[ -\frac{h}{2}, \frac{h}{2} \right] \rightarrowtail \R^{3} \) with  \( \surfh= \Im(\txb)\) by
+\begin{align}
+  \txb &= \txb(u,v,\xi) := \xb(u,v) + \xi\nub(u,v) = \xb + \xi\nub\formPeriod 
+\end{align}
+
+\subsection{Arrangements}
+\begin{description}
+  \item[Lowercase letters] \( i,j,k,\ldots \) are used as index for \( u \) and \( v \), \eg, \( \alpha_{i}dx^{i} \) is an 1-form in \( T^{*}\surf \).
+  \item[Uppercase letters] \( I,J,K,\ldots \)  are used for \( u \), \( v \) and \( \xi \), \eg, 
+  \( \tilde{\alpha}^{I}\partial_{I}\txb = \tilde{\alpha}^{i}\partial_{i}\txb +\tilde{\alpha}^{\xi}\partial_{\xi}\txb \) is a (contravariant) vector in \( T\surfh \).
+  \item[The Tilde] are used for quantities and relations in context of \( \surfh \),
+        \eg, \(  \tilde{\alphab}\in T\surfh \) but \( \alphab\in  T\surf\) and we can construct a relation \( \tilde{\alphab} = \alphab + \alpha^{\xi}\nub \).
+  \item[Full covariant descriptions] (lower indices) are always used, unless otherwise is defined,
+        \eg, \( \Bb = \left\{ B_{ij} \right\} \) is the full covariant shape operator, \ie, the second fundamental form in this representation.
+  \item[Indexing and collector brackets], \( \left[  \right] \) and \( \left\{  \right\} \), are used to switch between components and object representations, \eg,
+      \( \left[ \tb \right]_{ij} = t_{ij} \) and \( \left\{ t_{ij} \right\} = \tb \).
+  \item[Sharp and flat operator on tensors] are generalisations of the usual flat and sharp operator on vector valued quantities and can be realized by matrix multiplications with the
+  metric tensor \( \gb \) and its inverse \( \gb^{-1} \),
+          \eg, \( \tensor[^\flat]{\left\{ \tensor{t}{^{i}_{j}} \right\}}{^{\sharp}} = \gb\left\{ \tensor{t}{^{i}_{j}} \right\}\gb^{-1} 
+                  =  \left\{ \tensor{t}{_{i}^{j}} \right\} = \tb^{\sharp} \).
+  \item[Tensor product] means always the contraction of the last component of a tensor with the first of another tensor,
+          \eg, \( \left[ \bm{s}\tb \right]_{ij} = \tensor{s}{_{i}^{k}}t_{kj} \), \eg, with an usual matrix product \( \cdot \), 
+            this implies \( \bm{s}\tb = \bm{s}\cdot\gb^{-1}\cdot\tb \).
+\end{description}
+
+\subsection{The Metric Tensor and Shape Operator}
+With an arbitrary choice of surface coordinates \( (u,v)\in U \), we can calculate the canonical basic vectors \( \partial_{I}\txb\in T\surfh \) by
+\begin{align}
+  \partial_{i}\txb &= \partial_{i}\xb + \xi\partial_{i}\nub \\
+  \partial_{\xi}\txb &= \nub \formPeriod
+\end{align}
+
+The \newterm{metric tensor} (\newterm{first fundamental form}) of thin shell is given by its components \( \tg_{IJ} = \left\langle \partial_{I}\txb , \partial_{J}\txb \right\rangle_{\surfh} \).
+Therefore, for the mixed tangential-normal components holds \( \tg_{i\xi} = \tg_{\xi i} = 0 \), 
+because 
+\begin{align}
+ \left\langle \partial_{i}\nub , \nub \right\rangle_{\surfh} = \frac{1}{2}\partial_{i}\left\| \nub \right\|^{2}_{\surfh} = 0 \formPeriod
+\end{align}
+For the pure normal component, we obtain \( \tg_{\xi\xi} = \left\| \nub \right\|^{2}_{\surfh} = 1 \),
+\ie, the co- and contravariant normal components of a tensor quantity are equivalently,
+\eg, (detailed)
+\begin{align}
+ \tensor{\ttt}{^{I}_{\xi J}} &= \tg_{\xi K} \tensor{\ttt}{^{IK}_{J}} 
+                          = \tg_{\xi k} \tensor{\ttt}{^{Ik}_{J}} + \tg_{\xi \xi} \tensor{\ttt}{^{I\xi}_{J}}
+                          = \tensor{\ttt}{^{I\xi}_{J}} \formPeriod
+\end{align}
+For the pure tangential components, we get a second degree tensor polynomial in \( \xi \)
+\begin{align}
+  \tg_{ij} &= g_{ij} - 2\xi B_{ij} + \xi^{2}\left[ \Bb^{2} \right]_{ij}
+            = \left[ \left( g - \xi\Bb \right)^{2} \right]_{ij}\\
+           &= g_{ij} - 2\xi B_{ij} + \xi^{2}\left( \meanc B_{ij} - \gaussc g_{ij} \right) \formPeriod
+\end{align}
+where the \newterm{covariant shape operator} (\newterm{second fundamental form}) is given by 
+\begin{align}
+ B_{ij} = -\left\langle \partial_{i}\xb , \partial_{j}\nub  \right\rangle_{\surfh} 
+\end{align}
+and the \newterm{third fundamental form} by
+\begin{align}
+ \left[ \Bb^{2} \right]_{ij} &= \left\langle \partial_{i}\nub , \partial_{j}\nub  \right\rangle_{\surfh}\formComma
+\end{align}
+see \cite{HartmanWintner1953}.
+\( \gaussc = \left| \Bb^{\sharp} \right| \) is the \newterm{Gaussian curvature} and \( \meanc := \Tr\Bb = \tensor{B}{^{i}_{i}} \) the \newterm{mean curvature}.
+(In a more differential geometrical context on surfaces, this is minus twice the mean curvature.)
+A more classical representation of the third fundamental form \( \Bb^{2} \) is
+\begin{align}\label{eq:shapesquare}
+  \Bb^{2} = \meanc\Bb - \gaussc\gb\formPeriod
+\end{align}
+
+\begin{theorem}
+  For the inverse thin shell metric \( \tgb^{-1} \) holds
+  \begin{align}
+    \tg^{ij} &= \left( g^{ik} + \sum_{\frakl = 1}^{\infty} \xi^{\frakl}\left[ \Bb^{\frakl} \right]^{ik} \right)
+               \left( \delta_{k}^{j} + \sum_{\frakk = 1}^{\infty} \xi^{\frakk}\tensor{\left[ \Bb^{\frakk} \right]}{_{k}^{j}} \right) \\
+             &= \left[\left( \gb + \sum_{\frakk = 1}^{\infty} \xi^{\frakk} \Bb^{\frakk} \right)^{2}\right]^{ij}\formComma\\
+    \tg^{\xi\xi} &= 1 \formComma\\
+    \tg^{i\xi} &= \tg^{\xi i} = 0 \formPeriod
+  \end{align}
+\end{theorem}
+\begin{proof}
+  First we define the pure tangential components of the thin shell metric tensor as \( \tgb_{t} := \left\{ \tg_{ij} \right\} \).
+  With \( \deltab = \left\{ \delta^{i}_{j} \right\} \) the Kronecker delta, we can write down in usual matrix notation
+  \begin{align}
+    \tgb\cdot\tgb^{-1} &=
+      \begin{bmatrix}
+        \tgb_{t} & O \\
+          O      & 1
+      \end{bmatrix}
+      \cdot
+      \begin{bmatrix}
+         \left\{ \tg^{ij} \right\} & \left\{ \tg^{i\xi} \right\} \\
+         \left\{ \tg^{\xi i} \right\} & \tg^{\xi\xi}
+      \end{bmatrix}
+          =
+             \begin{bmatrix}
+                \deltab & O \\
+                O       & 1
+             \end{bmatrix} \formPeriod
+  \end{align}
+  Thus, we obtain
+  \begin{align}
+    \tg^{\xi\xi} &= 1 \formComma\\
+    \tg^{i\xi} &= \tg^{\xi i} = 0 \formComma\\
+    \left\{ \tg^{ij} \right\} &= \tgb_{t}^{-1}
+                         =\left( \gb - \xi\Bb \right)^{-2}
+                         = \left( \gb - \xi\Bb \right)^{-1} \cdot \left( \deltab - \xi\Bb^{\sharp} \right)^{-1}\formPeriod
+  \end{align}
+  For \( h \) small enough, so that \( \xi\left\| \Bb \right\| \le h\left\| \Bb \right\| < 1 \) and exponent with a dot indicate matrix (endomorphism) power, we can use the Neumann serie 
+  \begin{align}
+    \left( \deltab - \xi\Bb^{\sharp} \right)^{-1} = \deltab + \sum_{\frakk = 1}^{\infty}\xi^{\frakk}\left( \Bb^{\sharp} \right)^{\cdot\frakk} \formComma
+  \end{align}
+  and therefore the assertion, 
+  because 
+  %for a linear idempotent invertible operator \( F \), like the left or right sharp or flat operator, and \( \frakk\in\mathbb{Z} \) is
+  %\begin{align}
+  %  \left( F[t] \right)^{l} &= F^{l}[t^{l}] = F[t^{l}]
+  %\end{align}
+  %valid on a tensor \( t \) (\( \gb \) is a homomorphism with respect to tensor product).
+  with \( \Bb^{\frakk}  = \left( \Bb\cdot\gb^{-1} \right)^{\cdot\frakk} \cdot \gb\) we get
+  \begin{align}
+    \left( \Bb^{\sharp} \right)^{\cdot\frakk} &= \left( \Bb\cdot\gb^{-1} \right)^{\cdot\frakk} = \Bb^{\frakk}\cdot\gb^{-1} = \left( \Bb^{\frakk} \right)^{\sharp}
+  \end{align}
+  and
+  \begin{align}
+    \left( \gb - \xi\Bb \right)^{-1} 
+          &= \left( \left( \deltab - \xi\Bb^{\sharp} \right)\cdot \gb \right)^{-1}
+          = \gb^{-1} \cdot \left( \deltab - \xi\Bb^{\sharp} \right)^{-1}
+          = \tensor[^{\sharp}]{\left( \deltab - \xi\Bb^{\sharp} \right)}{^{-1}} \formPeriod
+  \end{align}
+\end{proof}
+Therefore, we get for \( \tgb_{t}^{-1} \) a polynomial in \( \xi\Bb \) and with successively applying \eqref{eq:shapesquare},\ie,
+\( \Bb^{\frakk} = \meanc\Bb^{\frakk-1} - \gaussc\Bb^{\frakk-2} \), we can always find
+polynomials \( p \) and \( q \) in \( \gaussc \), \( \meanc \) and \( \xi \), so that holds
+\( \tgb_{t}^{-1} = p(\gaussc, \meanc, \xi)\gb^{-1} + q(\gaussc, \meanc, \xi)\tensor[^{\sharp}]{\Bb}{^{\sharp}} \).
+We will not carry this out in full generality, but let us mention some developments in \( \xi \).
+\begin{conclusion}
+  The developments of \( \tgb_{t}^{-1} \) up to second degree in \( \xi \) are
+  \begin{align}
+    \tgb_{t}^{-1} &= \gb^{-1} + \landau(\xi)\formComma\\
+    \tgb_{t}^{-1} &= \gb^{-1} + 2\xi\tensor[^{\sharp}]{\Bb}{^{\sharp}} + \landau(\xi^{2})\formComma \\
+    \tgb_{t}^{-1} &= \gb^{-1} + 2\xi\tensor[^{\sharp}]{\Bb}{^{\sharp}} +  3\xi^{2}\tensor[^{\sharp}]{\left( \Bb^{2} \right)}{^{\sharp}} + \landau(\xi^{3})\\
+                  &= \left( 1 - 3 \xi^{2}\gaussc \right)\gb^{-1} + \xi\left( 2 + 3\xi\meanc \right)\tensor[^{\sharp}]{\Bb}{^{\sharp}} + \landau(\xi^{3}) \formPeriod
+  \end{align}
+\end{conclusion}
+
+
+\subsubsection{The Volume Element}
+  To develop the thin shell volume element \( \tilde{\mu} \) in normal direction at the surface volume element \( \mu \), 
+  we need a development of the determinant of the metric tensor \( \tgb \).
+  \begin{theorem}
+    For the determinant of the thin shell metric tensor \( \left| \tgb \right| \) holds
+    \begin{align}
+       \left| \tgb \right| &= \left( 1 - \xi\meanc + \xi^{2}\gaussc \right)^{2}\left| \gb \right|\formComma
+    \end{align}
+  \end{theorem}
+  \begin{proof}
+    The mixed components are zero, so we get
+    \begin{align}
+      \left| \tgb \right| &= \tg_{\xi\xi}\left| \tgb_{t} \right| = \left| \tgb_{t} \right|\formPeriod
+    \end{align}
+    Now, we define \( \sqrt{\tgb_{t}^{\sharp}}   := \left(\gb - \xi \Bb\right)^{\sharp} \) as a square root of \( \tgb_{t}^{\sharp} \),
+    because
+    \begin{align}
+      \tgb_{t}^{\sharp} &= \left( \left( \gb -\xi\Bb \right)^{2} \right)^{\sharp}
+              = \left( \left( \gb -\xi\Bb \right)^{\sharp}\left( \gb -\xi\Bb \right)  \right)^{\sharp}
+              = \left( \gb -\xi\Bb \right)^{\sharp}\left( \gb -\xi\Bb \right)^{\sharp} 
+              = \left( \sqrt{\tgb_{t}^{\sharp}} \right)^{2} \formPeriod
+    \end{align}
+    Hence, we can calculate
+    \begin{align}
+      \left| \tgb \right| &= \left| \tgb_{t} \right| = \left| \tgb_{t}^{\sharp}\gb \right|
+                    =\left| \tgb_{t}^{\sharp} \right| \left| \gb \right|
+                    =\left| \sqrt{\tgb_{t}^{\sharp}} \right|^{2} \left| \gb \right| \formPeriod
+    \end{align}
+    For the determinant of \( \sqrt{\tgb_{t}^{\sharp}} \), we regard that \( \gb^{\sharp} \) is the Kronecker delta,
+    so we obtain
+    \begin{align}
+       \left| \sqrt{\tgb_{t}^{\sharp}} \right| 
+            &= \left| \gb^{\sharp} - \xi\Bb^{\sharp} \right|
+             = \left( 1 - \xi\tensor{B}{_{u}^{u}} \right)\left( 1 - \xi\tensor{B}{_{v}^{v}} \right)
+                  - \xi^{2}\tensor{B}{_{u}^{v}}\tensor{B}{_{v}^{u}} \\
+            &= 1 - \xi\left( \tensor{B}{_{u}^{u}} + \tensor{B}{_{v}^{v}} \right) 
+                  + \xi^{2}\left( \tensor{B}{_{u}^{u}} \tensor{B}{_{v}^{v}} - \tensor{B}{_{u}^{v}}\tensor{B}{_{v}^{u}} \right)
+             =\left( 1 - \xi\meanc + \xi^{2}\gaussc \right) \formPeriod
+    \end{align}
+  \end{proof}
+  Therefore a representation of the \newterm{thin shell volume element} \( \tilde{\mu} \), depending on the surface volume element \( \mu \), is
+  \begin{align}
+    \tilde{\mu} &= \sqrt{\left| \tgb \right|} du\wedge dv \wedge d\xi
+            = \left(  1 - \xi\meanc + \xi^{2}\gaussc\right)  \mu \wedge d\xi \\
+                &= \left(  1 - \xi\meanc + \xi^{2}\gaussc\right)  d\xi \wedge \mu \formPeriod
+  \end{align}
+
+\subsubsection{The Levi-Civita Tensor and Hodge-Dualism}
+
+\subsection{Christoffel Symbols}
+  The \newterm{Christoffel symbols} are needed to define an unique metric compatible derivation (Levi-Civita connection).
+  With a choice of coordinates, the christoffel symbols (of second kind) on the thin shell are
+  \begin{align}
+    \tch{IJ}{K} &= \frac{1}{2} \tg^{KL}\left( \partial_{I}\tg_{JL} + \partial_{J}\tg_{IL} - \partial_{L}\tg_{IJ} \right)\formPeriod
+  \end{align}
+  On the surface \( \surf \), they are equal defined, just omit the tilde and use lowercase letters for indexing.
+  \begin{theorem}
+    With \( \tensor{\beta}{_{ij}^{k}} := \tensor{B}{_{i}^{k}_{|j}} +  \tensor{B}{_{j}^{k}_{|i}} - \tensor{B}{_{ij}^{|k}}\)
+    the second order expansions in normal direction of Christoffel symbols are
+    \begin{align}
+      \tch{ij}{k} &= \ch{ij}{k} - \xi\tensor{\beta}{_{ij}^{k}} + \landau(\xi^{2})\\
+      \tch{ij}{\xi} &= B_{ij} - \xi \left[ \Bb^{2} \right]_{ij} 
+                          &= \left( 1 - \xi\meanc \right)B_{ij} + \xi\gaussc g_{ij}\\
+      \tch{i\xi}{k} = \tch{\xi i}{k} &= -\tensor{B}{_{i}^{k}} - \xi\tensor{\left[ \Bb^{2} \right]}{_{i}^{k}} + \landau(\xi^{2})
+                                        &= -\left( 1 + \xi\meanc \right)\tensor{B}{_{i}^{k}} + \xi\gaussc\delta_{i}^{k} + \landau(\xi^{2})\\
+      \tch{\xi\xi}{K} &= 0 \\
+      \tch{I\xi}{\xi} = \tch{\xi I}{\xi} &= 0 \formPeriod
+    \end{align}
+  \end{theorem}
+  \begin{proof}
+    Properties of the thin shell metric \( \tgb \) are the mixed tangential-normal components are zero (the same holds for the inverse metric) and the pure normal component is constant.
+    Hence, we get
+    \begin{align}
+      \tch{\xi\xi}{K} &= \frac{1}{2}\tg^{KL}\left( \partial_{\xi}\tg_{\xi L} + \partial_{\xi}\tg_{\xi L} - \partial_{L}\tg_{\xi\xi} \right)
+                        = 0 \formComma\\
+      \tch{I\xi}{\xi} &= \frac{1}{2} \tg^{\xi \xi}\left( \partial_{I}\tg_{\xi\xi} + \partial_{\xi}\tg_{\xi L} - \partial_{\xi}\tg_{I \xi} \right)\formPeriod
+    \end{align}
+    The partial derivative in normal direction of the tangential part of thin shell metric is
+    \begin{align}
+      \partial_{\xi}\tg_{ij} &= 2\left( -B_{ij} + \xi\left[ \Bb^{2} \right]_{ij} \right)\formPeriod
+    \end{align}
+    Therefore, we obtain
+    \begin{align}
+      \tch{ij}{\xi} &= \frac{1}{2} \tg^{\xi\xi}\left( \partial_{i}\tg_{j\xi} + \partial_{j}\tg_{i\xi} - \partial_{\xi}\tg_{ij} \right)
+                     = B_{ij} - \xi\left[ \Bb^{2} \right]_{ij} \formComma \\
+      \tch{i\xi}{k} &= \frac{1}{2} \tg^{kl}\left( \partial_{i}\tg_{\xi l} + \partial_{\xi}\tg_{il} - \partial_{l}\tg_{i\xi} \right)
+                     = \left( g^{kl} + 2\xi B^{kl} +  \landau(\xi^{2}) \right)\left( -B_{il}  + \xi\left[ \Bb^{2} \right]_{il} \right)\\
+                    &= -\tensor{B}{_{i}^{k}} - \xi\tensor{\left[ \Bb^{2} \right]}{_{i}^{k}} + \landau(\xi^{2}) 
+    \end{align}
+    and with the substitution \eqref{eq:shapesquare} the remaining statements of these two terms.
+    For the pure tangential thin shell Christoffel symbols, we first determine \( \tensor{\beta}{_{ij}^{k}} \) at the surface in terms of partial derivatives 
+    and take advantage of the symmetry of the
+    shape operator,\ie,
+    \begin{align}
+      \tensor{\beta}{_{ij}^{k}} 
+                   &= g^{kl}\left( B_{il|j} + B_{jl|i} - B_{ij|l} \right) \\
+                   &\hspace{-20pt}= g^{kl}\left( \partial_{j}B_{il} - \ch{ij}{m}B_{ml} - \ch{jl}{m}B_{im} 
+                                 + \partial_{i}B_{jl} - \ch{ij}{m}B_{ml} - \ch{il}{m}B_{jm} 
+                                 - \partial_{l}B_{ij} + \ch{il}{m}B_{mj} + \ch{jl}{m}B_{im}\right)\\
+                   &= g^{kl}\left( \partial_{j}B_{il} + \partial_{i}B_{jl} - \partial_{l}B_{ij} - 2\ch{ij}{m}B_{ml}  \right) \\
+                   &= g^{kl}\left( \partial_{j}B_{il} + \partial_{i}B_{jl} - \partial_{l}B_{ij} \right)
+                        -2\Gamma_{ijl}B^{kl} \\
+                   &= g^{kl}\left( \partial_{j}B_{il} + \partial_{i}B_{jl} - \partial_{l}B_{ij} \right)
+                        -B^{kl}\left( \partial_{j}g_{il} + \partial_{i}g_{jl} - \partial_{l}g_{ij} \right) \formPeriod
+    \end{align}
+    Hence, we get
+    \begin{align}
+      \tch{ij}{k} &= \frac{1}{2} \tg^{kl}\left( \partial_{i}\tg_{jl} + \partial_{j}\tg_{il} - \partial_{l}\tg_{ij} \right) \\
+                  &=  \frac{1}{2} \left( g^{kl} + 2\xi B^{kl} +  \landau(\xi^{2}) \right)
+                        \left( \partial_{j}g_{il} + \partial_{i}g_{jl} - \partial_{l}g_{ij} 
+                                  -2\xi\left( \partial_{j}B_{il} + \partial_{i}B_{jl} - \partial_{l}B_{ij} \right)\right)\\
+                  &= \ch{ij}{k} + \xi\left( B^{kl}\left( \partial_{j}g_{il} + \partial_{i}g_{jl} - \partial_{l}g_{ij} \right) 
+                                               - g^{kl}\left( \partial_{j}B_{il} + \partial_{i}B_{jl} - \partial_{l}B_{ij} \right)\right)
+                                  +  \landau(\xi^{2})\\
+                  &= \ch{ij}{k} - \xi\tensor{\beta}{_{ij}^{k}} + \landau(\xi^{2})\formPeriod
+    \end{align}
+  \end{proof}
+
+
+\bibliography{bibl}
+\bibliographystyle{alpha}
+
+
+\end{document}

@@ -144,5 +144,11 @@ target_link_libraries(navierStokesSphere ${BASIS_LIBS} dec)
 add_executable(navierStokesLinearized src/navierStokesLinearized.cc)
 target_link_libraries(navierStokesLinearized ${BASIS_LIBS} dec)
 
+add_executable(eulerLinearizedUpwind src/eulerLinearizedUpwind.cc)
+target_link_libraries(eulerLinearizedUpwind ${BASIS_LIBS} dec)
+
+add_executable(navierStokesLinearizedNullDiff src/navierStokesLinearizedNullDiff.cc)
+target_link_libraries(navierStokesLinearizedNullDiff ${BASIS_LIBS} dec)
+
 add_executable(qtensorHelmholtz src/qtensorHelmholtz.cc)
 target_link_libraries(qtensorHelmholtz ${BASIS_LIBS} dec)

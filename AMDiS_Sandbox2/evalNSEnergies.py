@@ -5,8 +5,18 @@ from pylab import *
 import sys
 
 
-
 fnsDec = sys.argv[1:]
+
+try:
+    maxtime = float(fnsDec[0])
+except ValueError:
+    maxtime = inf
+
+if maxtime < inf:
+    print maxtime
+    fnsDec = fnsDec[1:]
+
+
 
 xlabel("time")
 ylabel("kinetic error")
@@ -18,6 +28,8 @@ for fn in fnsDec:
     with open(fn, 'rb') as f:
         reader = csv.reader(f, skipinitialspace = True)
         for row in reader:
+            if float(row[0]) > maxtime:
+                break
             timeDec.append(row[0])
             KinErrDec.append(row[1])
 

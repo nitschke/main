@@ -428,8 +428,8 @@ public:
 
     minusDivSolDual = -1.0 * solDual.divOnEdgeCenter();
 
-    DofEdgeVectorPD evecPD(solPrimal, solDual);
-    tracker.trackdownMinima(evecPD.getNormOnEdges(), 0.0);
+    //DofEdgeVectorPD evecPD(solPrimal, solDual);
+    //tracker.trackdownMinima(evecPD.getNormOnEdges(), 0.0);
   }
 
 
@@ -444,8 +444,8 @@ public:
     csvout << time << "," << EKin << endl;
     cout << "### KinE: " << EKin << " ###" << endl;
 
-    DofEdgeVectorPD evecPD(solPrimal, solDual);
-    tracker.trackdownMinima(evecPD.getNormOnEdges(), time);
+    //DofEdgeVectorPD evecPD(solPrimal, solDual);
+    //tracker.trackdownMinima(evecPD.getNormOnEdges(), time);
   }
 
   DofEdgeVector* getSolPrimal() {
@@ -483,6 +483,10 @@ int main(int argc, char* argv[])
 
   //SphereProject proj(42, VOLUME_PROJECTION);
   //new TorusProject(1, VOLUME_PROJECTION);
+  double cx = 0.5;
+  double cy = 0.5;
+  double cz = 1.5;
+  new EllipsoidProject(1, VOLUME_PROJECTION, cx, cy, cz);
 
   double nu = -1.0;
   Parameters::get("userParameter->kinematic_viscosity", nu);
@@ -506,11 +510,7 @@ int main(int argc, char* argv[])
   //alphaD.set(new DXYZ());
   //alphaD.set(new DXYZZ());
   //alphaD.set(new DLin(0.1, 1.0, 0.1));
-  //alphaD.set(new DLin(0., 1.0, 0.1)); // for ellipsoid_05_05_15
-  //alphaD.set(new DLin(1.0, 0.0, 0.0)); // for ellipsoid_1_05_15
-  double eps = 0.81;
-  double delta = 2.0 * (1.0 - eps);
-  alphaD.set(new DLin(eps, eps, delta)); // for ellipsoid_1_05_15 sligthly disturbance in dz
+  alphaD.set(new DLin(0., 1.0, 0.1)); // for ellipsoid
   //alphaD.set(new DLin(0., 1., 1.)); // for RBC
   //alphaD *= -1.0;
   //alphaD.set(new DZ());
@@ -527,13 +527,6 @@ int main(int argc, char* argv[])
   //double stretch = 1.0;
   //PhiProject proj(1, VOLUME_PROJECTION, new PhiNP(stretch, 0.95, press), new GradPhiNP(stretch, 0.95, press), 1.0e-6);
   //K.set(new GaussCurv_Nonic095r(press, stretch));
-  double cx = 1.0;
-  double cy = 0.5;
-  double cz = 1.5;
-  //double cx = 0.5;
-  //double cy = 0.5;
-  //double cz = 1.5;
-  new EllipsoidProject(1, VOLUME_PROJECTION, cx, cy, cz);
   K.set(new GaussCurv_Ellipsoid(cx, cy, cz));
   //K.set(new GaussCurv_Sphere());
   //K.set(new GaussCurv_Torus());
@@ -563,11 +556,15 @@ int main(int argc, char* argv[])
 // diffusion
   EdgeOperator RotrotPrimal;
   RotrotPrimal.addTerm(new LaplaceBeltramiAtEdges(-nu));
+  RotrotPrimal.setUhOld(alphaP, 0);
   decSphere.addMatrixOperator(RotrotPrimal, 0, 0);
+  decSphere.addVectorOperator(RotrotPrimal, 0);
 
   EdgeOperator Gauss;
   Gauss.addTerm(new EdgeVecAtEdges(&K, NULL, -2.0*nu));
+  Gauss.setUhOld(alphaP, 0);
   decSphere.addMatrixOperator(Gauss,0,0);
+  decSphere.addVectorOperator(Gauss,0);
 
 // *alpha rot(alpha)   (convection)
   EdgeOperator HAlphaRotAlpha;

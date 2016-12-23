@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt]{scrartcl}
+\documentclass[a4paper,7pt]{scrartcl}
 
 \usepackage[top=2.5cm, bottom=2.5cm, left=1cm, right=1cm]{geometry}
 
@@ -10,7 +10,6 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsbsy}
-
 \usepackage{mathtools}
 
 \usepackage{relsize}
@@ -84,7 +83,13 @@
 \newcommand{\ints}[1]{\int_{S} #1 \mu}
 
 \newcommand{\talpha}{\tilde{\alpha}}
+\newcommand{\tgamma}{\tilde{\gamma}}
 
+\newcommand{\tsym}{\mathfrak{t}}
+\newcommand{\ssym}{\mathfrak{s}}
+
+\newcommand{\ttsym}{\tilde{\tsym}}
+\newcommand{\tssym}{\tilde{\ssym}}
 
 
 \title{Formulas for Calculus on Surfaces} 
@@ -103,7 +108,8 @@
 \( \omega \) \dotfill skew symmetric 2-tensor quantities (2-forms) in \( \ttsskew \cong \Lambda^{2}\surf \)\\
 \( \mu, \Eb\) \dotfill volume form in \( \ttsskew \cong \Lambda^{2}\surf \)\\
 \( q \) \dotfill Q-Tensor (trace-free and symmetric) in \( \qts = \ttstrfree \cap \ttssym \)\\
-\( \tilde{\alpha}, \tilde{\beta}, \tilde{t}, \tilde{s}, \) etc. \dotfill \( \R^{3} \) extensions of quantities, e.g. in \( \T^{(n)}\R^{3} \)\\
+\( \tsym, \ssym \) \dotfill symmetric 2-tensors in \( \ttssym \)\\
+\( \tilde{\alpha}, \tilde{\beta}, \tilde{t}, \tilde{s}, \ttsym\) etc. \dotfill \( \R^{3} \) extensions of quantities, e.g. in \( \T^{(n)}\R^{3} \)\\
 If it matters, all quantities are handled \textbf{full covariant}, unless otherwise is defined.
 
 
@@ -156,7 +162,7 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
     (*\alpha)\otimes(*\alpha) + \alpha\otimes\alpha &= \left\| \alpha \right\|^{2} \gb \\
     \alpha\otimes(*\beta) - (*\beta)\otimes\alpha &= \left\langle \alpha, \beta \right\rangle \Eb \\
     \alpha\otimes(*\alpha) - (*\alpha)\otimes\alpha &=  \left\| \alpha \right\|^{2} \Eb\\
-    *_{1}t+*_{2}t &\in \ttssym &\text{for } t &\in\tts
+    *_{1}t+*_{2}t &\in \qts &\text{for } t &\in\tts
   \end{align*}
 
 \section{Levi-Civita Tensor \( \Eb \)}
@@ -193,6 +199,10 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
       \left| t \right| &=\left| g \right|\left| t^{\sharp} \right| = \left| g \right|\left| ^{\sharp}t \right| = \left| g \right|^{2}\left| ^{\sharp}t^{\sharp} \right|\\
         &= -\frac{\left| g \right|}{2}\left\langle *_{1}t , *_{2}t \right\rangle = \frac{\left| g \right|}{2}\left( \left( \Tr t \right)^{2} - \Tr t^{2} \right)
                 &\left| t \right| &= \frac{\left| g \right|}{2} E_{ij}E_{kl}t^{ik}t^{jl} = \frac{\left| g \right|}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)\\
+      \left\| q \right\|^{2} &= -\frac{2}{\left| g \right|}\left| q \right|
+                              = -2\left| q^{\sharp} \right|
+                              = -2\left| {}^{\sharp}q \right|
+                              = -2\left| g \right|\left| {}^{\sharp}q^{\sharp} \right|\\
       0 &= t^{2} - \left( \Tr t \right) t + \frac{\left| t \right|}{\left| g \right|} g
             &\left[ 0 \right]_{ij} &= t_{ik}\tensor{t}{^{k}_{j}} -  \tensor{t}{_{k}^{k}}t_{ij} + \frac{1}{2}\left( \left( \tensor{t}{_{k}^{k}} \right)^{2} - t_{kl}t^{lk} \right)g_{ij}\\
       0 &= B^{2} -\mean B + \gauss \gb\\
@@ -228,6 +238,7 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
           & \left[ \div_{2}t \right]_{i} &= \tensor{t}{_{i}^{k}_{|k}}\\
   \div_{r}t &
           & \left[ \div_{r}t \right]_{i_{1}\ldots \widehat{i_{r}} \ldots i_{n}} &=\tensor{t}{_{i_{1}\ldots i_{r-1}}^{k}_{i_{r+1}\ldots i_{n}|k}} \\
+  \div \tsym &= \div_{1}\tsym = \div_{2}\tsym\\
   \div q &= \div_{1}q = \div_{2}q
 \end{align*}
 \begin{align*}
@@ -240,6 +251,7 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
           &\left[ \rot_{2}t \right]_{i} &= -E_{jk}\tensor{t}{_{i}^{j|k}}\\
   \rot_{r}t &
           &\left[ \rot_{r}t \right]_{i_{1}\ldots \widehat{i_{r}} \ldots i_{n}} &= -E_{jk}\tensor{t}{_{i_{1}\ldots i_{r-1}}^{j}_{i_{r+1}\ldots i_{n}}^{|k}} \\
+  \rot \tsym &= \rot_{1} \tsym = \rot_{2} \tsym\\
   \rot q &= \rot_{1} q = \rot_{2} q
 \end{align*}
 \begin{align*}
@@ -348,7 +360,20 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
     \left\langle \nabla\alpha,\left( \nabla\alpha \right)^{T} \right\rangle 
         &= \div\left( \nabla_{\alpha}\alpha \right) - \left\langle \div_{1}\nabla\alpha, \alpha \right\rangle
             &\alpha^{i|j}\alpha_{j|i} &= \left( \alpha_{j}\alpha^{i|j} \right)_{|i} - \alpha^{j}\tensor{\alpha}{^{i}_{|j|i}}\\
-        &= \div\left( \nabla_{\alpha}\alpha \right) + \left\langle \lrotrot\alpha - \ldivgrad\alpha , \alpha \right\rangle
+        &= \div\left( \nabla_{\alpha}\alpha \right) + \left\langle \lrotrot\alpha - \ldivgrad\alpha , \alpha \right\rangle\\
+    \nabla_{\left( \beta \!\right.}\!\left. \alpha \right)
+        &= \frac{1}{2}\left( \nabla_{\beta}\alpha + \nabla_{\alpha}\beta \right)\\
+        &= \frac{1}{2}\left( \left( \rot\alpha \right)\left( *\beta \right) + \left( \rot\beta \right)\left( *\alpha \right) + \exd\left\langle \alpha, \beta \right\rangle \right)\\
+        &= \frac{1}{2}\left( \lie_{\beta^{\sharp}}\alpha + \left( \rot\beta \right)\left( *\alpha \right) \right)\\
+    \nabla_{\left[ \beta \!\right.}\!\left. \alpha \right]
+        &= \frac{1}{2}\left( \nabla_{\beta}\alpha - \nabla_{\alpha}\beta \right)
+         = \frac{1}{2}\left( \lie_{\beta^{\sharp}}\alpha^{\sharp} \right)^{\flat} \\
+        &= \frac{1}{2}\left( \left( \div\alpha \right)\beta - \left( \div\beta \right)\alpha + \Rot\left\langle \alpha , *\beta \right\rangle \right)\\
+    \nabla_{\beta}\alpha &= \nabla_{\left( \beta \!\right.}\!\left. \alpha \right) + \nabla_{\left[ \beta \!\right.}\!\left. \alpha \right] \\
+        &= \frac{1}{2}\left( \left( \rot\alpha \right)\left( *\beta \right) + \left( \rot\beta \right)\left( *\alpha \right) + \exd\left\langle \alpha, \beta \right\rangle 
+                            +\left( \div\alpha \right)\beta - \left( \div\beta \right)\alpha + \Rot\left\langle \alpha , *\beta \right\rangle\right)\\
+        &= \frac{1}{2}\left( \lie_{\beta^{\sharp}}\alpha + \left( \lie_{\beta^{\sharp}}\alpha^{\sharp} \right)^{\flat} +  \left( \rot\beta \right)\left( *\alpha \right) \right)\\
+        &= \lie_{\beta^{\sharp}}\alpha - \alpha\nabla\beta
   \end{align*}
   \begin{align*}
     \lie_{\gamma^{\sharp}}\exd f &= \exd\lie_{\gamma^{\sharp}}f\\
@@ -378,7 +403,10 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
     \dq\Rot f &= \lie_{\Rot f}\gb = *\dq\exd f\\
     \dq\left( \Rot \phi + \exd\psi + \gamma \right) &= \lie_{\Rot \phi}\gb - *\lie_{\Rot \psi}\gb + \lie_{\gamma^{\sharp}}\gb
               &&\text{ for }\div\gamma=\rot\gamma=0 \\
-    \left\| \dq\alpha \right\|^{2} &= \left\| *\dq\alpha \right\|^{2} = \left\| \lie_{\alpha^{\sharp}}\gb \right\|^{2} - 2\left( \div\alpha \right)^{2}\\
+    \left\langle \dq\alpha , \dq\beta \right\rangle &= 2\left\langle \dq\alpha , \nabla\beta \right\rangle\\
+    \left\| \dq\alpha \right\|^{2} &= \left\| *\dq\alpha \right\|^{2} 
+                                  = 2\left\langle \dq\alpha , \nabla\alpha \right\rangle
+                                  = \left\| \lie_{\alpha^{\sharp}}\gb \right\|^{2} - 2\left( \div\alpha \right)^{2}\\
                     &= 2\left( \Delta\left\| \alpha \right\|^{2} - 2\left\langle \ldivgrad\alpha , \alpha \right\rangle 
                                   -\left( \div\alpha \right)^{2} - \left( \rot\alpha \right)^{2}\right)\\
                     &= 2\left( \Delta\left\| \alpha \right\|^{2} -2\gauss\left\| \alpha \right\|^{2} - 2\left\langle \Delta\alpha , \alpha \right\rangle 
@@ -454,8 +482,25 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
         &\mean &= \bsf{i}{i} = \bsf{I}{I}
 \end{align*}
 \begin{align*}
+  \div_{D,r}\tilde{t} &= \Tr_{r,n+1}Dt\\
+  \div_{D}\ttsym &= \Tr_{2,3}D\ttsym
+      & \left[ \div_{D}\ttsym \right]^{I} &= \tensor{\ttsym}{^{IJ}_{:J}} =  \pissf{K}{J}\partial_{K}\ttsym^{IJ}
+\end{align*}
+\begin{align*}
   0 &= B^{2} - \mean B + \gauss\pi
-        &\tensor{\left[ 0 \right]}{^{I}_{J}} &= \bsf{I}{K}\bsf{K}{J} - \mean\bsf{I}{J} + \gauss\pissf{I}{J}
+        &\tensor{\left[ 0 \right]}{^{I}_{J}} &= \bsf{I}{K}\bsf{K}{J} - \mean\bsf{I}{J} + \gauss\pissf{I}{J}\\
+  \left( B+\mean\pism \right)^{2} &= 3\mean B + \left( \mean^{2} - \gauss \right)\pism\\
+  \left\| B \right\|^{2} &= \mean^{2} - 2\gauss\\
+  \Tr t &= \Tr_{\R^{3}}\pis{t} = \Tr_{\R^{3}}t - \nu\cdot t \cdot \nu = \pism : t
+            & \Tr t &= \tensor{t}{^{I}_{I}} - \nu_{I}\nu_{J}t^{IJ} = \pissf{I}{J} \tensor{t}{^{J}_{I}}\\
+  \ttsym\tssym &= \ttsym\cdot\pism\cdot\tssym = \ttsym\cdot\tssym - \left( \nu\cdot\ttsym \right) \otimes \left( \nu\cdot\tssym \right)
+            & \left[ \ttsym\tssym \right]^{IJ} &= \ttsym^{IK}\pism_{KL}\tssym^{LJ} 
+                = \tensor{\ttsym}{^{I}_{K}}\tssym^{KJ} - \nu_{K}\nu_{L}\ttsym^{KI}\tssym^{LJ}\\
+  \left\langle \ttsym , \tssym \right\rangle &= \ttsym:\tssym 
+                                                - 2\left( \nu\cdot\ttsym \right) \cdot \left( \nu\cdot\tssym \right) 
+                                                + \left( \nu\cdot\ttsym\cdot\nu \right) \left( \nu\cdot\tssym \cdot\nu \right)
+            & \left\langle \ttsym , \tssym \right\rangle
+                &= \ttsym^{IJ}\tssym_{IJ} - 2 \nu_{I}\nu_{J}\ttsym^{IK}\tensor{\tssym}{^{J}_{K}} + \nu_{I}\nu_{J}\nu_{K}\nu_{L}\ttsym^{IJ}\tssym^{KL}
 \end{align*}
 
   \subsection{Thin Shell Metric Quantities}
@@ -474,8 +519,8 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
           &\tilde{g}_{i\xi} &= \tilde{g}_{\xi i} = 0\\
     \nu\cdot\tilde{\gb}\cdot\nu &= 1
           &\tilde{g}_{\xi\xi} &= 1\\
-    \pis{\tilde{\gb}^{-1}} &= \gb^{-1} + \landauo
-          &\tilde{g}^{ij} &= g^{ij} +\landauo^{ij}
+    \pis{\tilde{\gb}^{-1}} &= \gb^{-1} + 2\xi\tensor[^{\sharp}]{B}{^{\sharp}}+\landaut
+          &\tilde{g}^{ij} &= g^{ij} + 2\xi B^{ij} + \landaut^{ij}
                           ={\color{red} \frac{g^{ij}-2\xi\gauss\left[ B^{-1} \right]^{ij} + \xi^{2}\gauss^{2}\left[ B^{-2} \right]^{ij}}{\left( 1 + \xi\mean + \xi^{2}\gauss \right)^{2}}}\\
     \pism\cdot\tilde{\gb}^{-1}\cdot\nu &= \nu\cdot\tilde{\gb}^{-1}\cdot\pism = 0
           &\tilde{g}^{i\xi} &= \tilde{g}^{\xi i} = 0\\
@@ -505,21 +550,79 @@ If it matters, all quantities are handled \textbf{full covariant}, unless otherw
                                               &&= \pissf{I}{K}\tensor{\tilde{\alpha}}{^{K}_{:J}} + \nu_{K}\tilde{\alpha}^{K}\bsf{I}{J}\\
     \nabla\tilde{t} &= \pis{\nabla_{\R^{3}}\tilde{t}} + \left( \left( \nu\cdot\tilde{t}\cdot\pism \right)\otimes B \right)^{T_{1,2}} 
                                                      + \left( \pism\cdot\tilde{t}\cdot\nu \right)\otimes B
-          &\tensor{\tilde{t}}{^{IJ}_{K}} &= \pissf{I}{\hat{I}}\pissf{J}{\hat{J}}\pissf{\hat{K}}{K}\partial_{\hat{K}}\tilde{t}^{\hat{I}\hat{J}}
+          &\tensor{\tilde{t}}{^{IJ}_{|K}} &= \pissf{I}{\hat{I}}\pissf{J}{\hat{J}}\tensor{\tilde{t}}{^{\hat{I}\hat{J}}_{:K}}
                                             + \nu_{L}\pissf{J}{\hat{J}}\tilde{t}^{L\hat{J}}\bsf{I}{K} + \nu_{L}\pissf{I}{\hat{I}}\tilde{t}^{\hat{I}L}\bsf{J}{K}\\
                         &&&{\color{red}\text{Not verifiable with \texttt{Mathematica}. (Complexity)}.}\\
-   \div\talpha &= \Tr D\talpha + \mean \talpha\cdot\nu
-          & \div\talpha &= \tensor{\talpha}{^{I}_{:I}} + \mean \talpha^{I}\nu_{I}
+   \div\talpha &= \div_{D}\talpha + \mean \talpha\cdot\nu
+          & \div\talpha &= \tensor{\talpha}{^{I}_{:I}} + \mean \talpha^{I}\nu_{I}\\
+   \div_{2}\tilde{t} &= \pism\cdot\div_{D,2}\tilde{t} + \nu\cdot\tilde{t}\cdot B + \mean \pism\cdot\tilde{t}\cdot\nu
+          & \left[ \div_{2}\tilde{t} \right]^{I} 
+              &= \tensor{\tilde{t}}{^{IJ}_{|J}}
+               = \pissf{I}{K}\tensor{\tilde{t}}{^{KJ}_{:J}} +\nu_{K}\tilde{t}^{KJ}\bsf{I}{J} + \mean \nu_{K}\pissf{I}{J}\tilde{t}^{JK} \\
+   \div\ttsym &= \pism\cdot\div_{D}\ttsym + \left( B + \mean\pism \right)\cdot\left( \ttsym\cdot\nu \right)
+          &\left[ \div_{2}\ttsym \right]^{I} 
+              &= \tensor{\ttsym}{^{IJ}_{|J}}
+               = \pissf{I}{K}\tensor{\ttsym}{^{KJ}_{:J}} + \left( \bsf{I}{J} + \mean\pissf{I}{J} \right) \nu_{K} \ttsym^{JK}\\
+   \dq\talpha &= \pism\cdot D\talpha + \left( D\talpha \right)^{T} \cdot \pism - \left( \div_{D}\talpha \right)\pism
+                  +\left( \nu\cdot\talpha \right)\left( 2B - \mean\pism \right)
+         &\left[ \dq\talpha \right]_{IJ} &= \pism_{IK}\tensor{\talpha}{^{K}_{:J}} + \pism_{JK}\tensor{\talpha}{^{K}_{:I}} - \tensor{\talpha}{^{K}_{:K}}\pism_{IJ}
+            +\nu_{K}\talpha^{K}\left( 2B_{IJ} - \mean\pism_{IJ} \right)
   \end{align*}
 
   \subsection{Weak Formulations}
+  {\color{red}\text{Allmost all formulas are not verifiable with \texttt{Mathematica}. (Complexity)}.}
   \begin{align*}
+    \ints{\left\langle \talpha, \tgamma \right\rangle}
+        &= \ints{\talpha \cdot \pism \cdot \tgamma} = \ints{\talpha \cdot \tgamma - \left( \nu \cdot\talpha \right)\left( \nu \cdot\tgamma \right)}\\
+        &= \ints{\pism_{IJ}\talpha^{I}\tgamma^{J}} = \ints{\talpha^{I}\tgamma_{I} - \nu_{I}\nu_{J}\talpha^{I}\tgamma^{J}}\\
     \ints{\left\langle \ldivgrad\tilde{\alpha} , \tilde{\gamma} \right\rangle}
+        &=-\ints{\left\langle \nabla\talpha, \nabla\tilde{\gamma} \right\rangle}\\
         &= -\ints{\left( \pism\cdot D\tilde{\alpha} \right):D\tilde{\gamma} + \left( B:D \tilde{\alpha} \right)\left( \nu\cdot\tilde{\gamma} \right)
             +\left( \nu\cdot\tilde{\alpha} \right)\left( B: D \tilde{\gamma} \right) + \left\| B \right\|^{2}\left( \nu\cdot\tilde{\alpha} \right)\left( \nu\cdot\tilde{\gamma} \right)} \\
+        &= -\ints{\left( \pism\cdot D\tilde{\alpha} \right):D\tilde{\gamma} + \left( B:D \tilde{\alpha} \right)\left( \nu\cdot\tilde{\gamma} \right)
+            +\left( \nu\cdot\tilde{\alpha} \right)\left( B: D \tilde{\gamma} \right) + \left(  \mean^{2} - 2\gauss \right)\left( \nu\cdot\tilde{\alpha} \right)\left( \nu\cdot\tilde{\gamma} \right)} \\
         &= -\ints{\pissf{I}{J}\tilde{\alpha}_{I:K}\tilde{\gamma}^{J:K}  +  \nu_{J}\bsf{K}{I}\tensor{\tilde{\alpha}}{^{I}_{:K}}\tilde{\gamma}^{J}
                 +  \nu_{I}\bsf{K}{J}\tilde{\alpha}^{I}\tensor{\tilde{\gamma}}{^{J}_{:K}}
-                +  \nu_{I}\nu_{J}\bsf{K}{L}\bsf{L}{K}\tilde{\alpha}^{I}\tilde{\gamma}^{J}}
+                +  \nu_{I}\nu_{J}\bsf{K}{L}\bsf{L}{K}\tilde{\alpha}^{I}\tilde{\gamma}^{J}}\\
+        &= -\ints{\pissf{I}{J}\tilde{\alpha}_{I:K}\tilde{\gamma}^{J:K}  +  \nu_{J}\bsf{K}{I}\tensor{\tilde{\alpha}}{^{I}_{:K}}\tilde{\gamma}^{J}
+                +  \nu_{I}\bsf{K}{J}\tilde{\alpha}^{I}\tensor{\tilde{\gamma}}{^{J}_{:K}}
+                +  \left( \mean^{2} - 2\gauss \right)\nu_{I}\nu_{J}\tilde{\alpha}^{I}\tilde{\gamma}^{J}}\\
+    \ints{\left\langle \lgraddiv\ttsym,\tssym \right\rangle}
+        &=-\ints{\left\langle \div\ttsym, \div\tssym \right\rangle}\\
+        &= -\ints{\div_{D}\ttsym\cdot\pism\cdot\div_{D}\tssym 
+                  +\div_{D}\ttsym\cdot\left(  B + \mean\pism  \right)\cdot\left( \tssym\cdot\nu \right)
+                  +\left( \ttsym\cdot\nu \right)\cdot\left(  B + \mean\pism  \right)\cdot\div_{D}\tssym 
+                  +\left( \ttsym\cdot\nu \right)\cdot\left(  B + \mean\pism  \right)^{2}\left( \tssym\cdot\nu \right)}\\
+        &= -\ints{\div_{D}\ttsym\cdot\pism\cdot\div_{D}\tssym 
+                  +\div_{D}\ttsym\cdot\left(  B + \mean\pism  \right)\cdot\left( \tssym\cdot\nu \right)
+                  +\left( \ttsym\cdot\nu \right)\cdot\left(  B + \mean\pism  \right)\cdot\div_{D}\tssym 
+                  +\left( \ttsym\cdot\nu \right)\cdot\left(  3\mean B + \left( \mean^{2} - \gauss \right)\pism  \right)\left( \tssym\cdot\nu \right)}\\
+        &= -\ints{\pism_{KL} \tensor{\ttsym}{^{KI}_{:I}} \tensor{\tssym}{^{LJ}_{:J}}
+                +\nu_{J} \left( B_{KL} + \mean \pism_{KL} \right) \tensor{\ttsym}{^{KI}_{:I}} \tssym^{LJ} 
+                +\nu_{I} \left( B_{KL} + \mean \pism_{KL} \right) \ttsym^{KI} \tensor{\tssym}{^{LJ}_{:J}} 
+                +\nu_{I} \nu_{J}\left( B_{KM} + \mean \pism_{KM} \right)\left( \bsf{M}{L} + \mean \pissf{M}{L} \right) \ttsym^{KI} \tssym^{LJ} }\\
+        &= -\ints{\pism_{KL} \tensor{\ttsym}{^{KI}_{:I}} \tensor{\tssym}{^{LJ}_{:J}}
+                +\nu_{J} \left( B_{KL} + \mean \pism_{KL} \right) \tensor{\ttsym}{^{KI}_{:I}} \tssym^{LJ} 
+                +\nu_{I} \left( B_{KL} + \mean \pism_{KL} \right) \ttsym^{KI} \tensor{\tssym}{^{LJ}_{:J}} 
+                +\nu_{I} \nu_{J}\left( 3\mean B_{KL} + \left( \mean^{2} - \gauss \right)\pism_{KL}  \right) \ttsym^{KI} \tssym^{LJ} }\\
+    \ints{\left\langle \ldivgrad\ttsym , \tssym \right\rangle}
+        &= -\ints{\left\langle \nabla\ttsym , \nabla\tssym \right\rangle}\\
+        &= -\ints{\left\langle D\ttsym , D\tssym \right\rangle
+                + 2 \left( D\ttsym : B \right) \cdot \pism \cdot \left( \tssym\cdot\nu \right)
+                + 2 \left( \ttsym\cdot\nu \right) \cdot \pism \cdot \left( D\tssym : B \right) 
+                + 2  \left( \ttsym\cdot\nu \right) \cdot \left( \left\| B \right\|^{2}\pism + B^{2} \right) \cdot \left( \tssym\cdot\nu \right) }\\
+        &= -\ints{\left\langle D\ttsym , D\tssym \right\rangle
+                + 2 \left( D\ttsym : B \right) \cdot \pism \cdot \left( \tssym\cdot\nu \right)
+                + 2 \left( \ttsym\cdot\nu \right) \cdot \pism \cdot \left( D\tssym : B \right) 
+                + 2  \left( \ttsym\cdot\nu \right) \cdot \left( \left( \mean^{2} - 3\gauss \right)\pism + \mean B \right) \cdot \left( \tssym\cdot\nu \right) }\\
+        &= -\ints{\pism_{IK} \pism_{JL} \tensor{\ttsym}{^{IJ}_{:M}} \tssym^{KL:M}
+                + 2 \nu_{K} \pism_{JL} \bsf{M}{I} \tensor{\ttsym}{^{IJ}_{:M}} \tssym^{KL}
+                + 2 \nu_{I} \pism_{JL} \bsf{M}{K} \ttsym^{IJ} \tensor{\tssym}{^{KL}_{:M}}  
+                + 2 \nu_{I} \nu_{K} \left( \bsf{M}{N}\bsf{N}{M}\pism_{JL} + B_{JM}\bsf{M}{L} \right) \ttsym^{IJ} \tssym^{KL} } \\
+        &= -\ints{\pism_{IK} \pism_{JL} \tensor{\ttsym}{^{IJ}_{:M}} \tssym^{KL:M}
+                + 2 \nu_{K} \pism_{JL} \bsf{M}{I} \tensor{\ttsym}{^{IJ}_{:M}} \tssym^{KL}
+                + 2 \nu_{I} \pism_{JL} \bsf{M}{K} \ttsym^{IJ} \tensor{\tssym}{^{KL}_{:M}}  
+                + 2 \nu_{I} \nu_{K} \left( \left( \mean^{2} - 3\gauss \right)\pism_{JL} + \mean B_{JL} \right) \ttsym^{IJ} \tssym^{KL} }
   \end{align*}
 
 \end{document}

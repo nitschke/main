@@ -6,6 +6,7 @@ MetricFromPara::usage = "Metric from parametricmap {x[u,v],y[u,v],z[u,v]}";
 
 GlobalVecFromPara::usage = "Global (x,y,z)-Vector of a given local (u,v)-Tangentialvector from parametrisation";
 LocalVecFromPara::usage = "Local (u,v)-Vector (tangential part) of a given (x,y,z)-Vector from parametrisation";
+LocalFormFromPara::usage = "Local 1-Form (tangential part) of a given (x,y,z)-Vector from parametrisation";
 
 GlobalTensorFromPara::usage = "give the global (euclidian) representation of a local tensor";
 LocalTensorFromPara::usage = "give the local representation of a global tensor";
@@ -15,6 +16,9 @@ GlobalSSSTensorFromPara::usage = "give the global (euclidian) representation of 
 CPPExpression::usage = "convert expression to C++";
 ParaViewExpression::usage = "convert expression for ParaviewCalculater";
 ParaViewVecExpression::usage = "convert vector expression for ParaviewCalculater";
+
+ParaViewPythonExpression::usage = "convert expression for ParaviewPythonCalculator";
+ParaViewTensorPythonExpression::usage = "convert expression for ParaviewPythonCalculator";
 
 GaussCurvFromMetric::usage = "computes the Gauss curvature from metric tensor";
 
@@ -110,6 +114,8 @@ DoubleDotFormForm11::usage = "Double dot product (:) of 1-forms of 1-forms";
 ChristoffelFirstKind::usage = "Christoffel symbols \!\(\*SubscriptBox[\(\[CapitalGamma]\), \(ijl\)]\) of the first kind";
 ChristoffelSecondKind::usage = "Christoffel symbols \!\(\*SubsuperscriptBox[\(\[CapitalGamma]\), \(ij\), \(k\)]\) of the second kind";
 
+RiemannCurvatureTensor::usage = "RiemannCurvatureTensor R^i_jkl"
+
 Begin["Private`"]
 
 MetricFromPara[paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, Outer[Dot,{Dx,Dy},{Dx,Dy},1]]
@@ -117,6 +123,8 @@ MetricFromPara[paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, Out
 GlobalVecFromPara[locVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, locVec[[1]]Dx + locVec[[2]]Dy]
 LocalVecFromPara[globVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x], Dy=D[paraMap,y]}, 
 										          Sharp1[{globVec.Dx, globVec.Dy},Outer[Dot,{Dx,Dy},{Dx,Dy},1]]]
+LocalFormFromPara[globVec_,paraMap_,x_,y_] := Module[{Dx=D[paraMap,x]//Simplify, Dy=D[paraMap,y]//Simplify}, 
+										          {globVec.Dx, globVec.Dy}]
 
 GlobalTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[paraMap,y]}//Simplify},
 					Sum[locT[[i,j]]*Outer[Times,DX[[i]],DX[[j]]],{i,2},{j,2}]]
@@ -130,8 +138,21 @@ GlobalSSSTensorFromPara[locT_,paraMap_,x_,y_] := Module[{DX={D[paraMap,x],D[para
 
 CPPExpression[expr_] := StringReplace[ToString[expr//CForm//N],{"Power"->"std::pow","Sqrt"->"std::sqrt"}]
 
-ParaViewExpression[expr_] := StringReplace[ToString[expr//N//InputForm],{". "->"",".*"->"*","["->"(","]"->")","x"->"coordsX","y"->"coordsY","z"->"coordsZ","Sqrt"->"sqrt","ArcSin"->"asin","Sin"->"sin","Cos"->"cos"}]
+ParaViewExpression[expr_] := StringReplace[ToString[expr//N//InputForm],{"*^"->"e","./"->"/",". "->"",".*"->"*","["->"(","]"->")","x"->"coordsX","y"->"coordsY","z"->"coordsZ","Sqrt"->"sqrt","ArcSin"->"asin","Sin"->"sin","Cos"->"cos"}]
 ParaViewVecExpression[expr_]:=StringJoin["(",ParaViewExpression[expr[[1]]],")*iHat+(",ParaViewExpression[expr[[2]]],")*jHat+(",ParaViewExpression[expr[[3]]],")*kHat"]
+
+ParaViewPythonExpression[expr_]:=StringReplace[ToString[expr//CForm//N],{"./"->"/",". "->"",".*"->"*","x"->"points[:,0]","y"->"points[:,1]","z"->"points[:,2]","Sqrt"->"sqrt","ArcSin"->"asin","Sin"->"sin","Cos"->"cos","Power"->"pow"}]
+
+ParaViewTensorPythonExpression[expr_]:=StringJoin[
+				"(",ParaViewPythonExpression[expr[[1,1]]],")*np.repeat(np.array([[[1,0,0],[0,0,0],[0,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[1,2]]],")*np.repeat(np.array([[[0,1,0],[0,0,0],[0,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[1,3]]],")*np.repeat(np.array([[[0,0,1],[0,0,0],[0,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[2,1]]],")*np.repeat(np.array([[[0,0,0],[1,0,0],[0,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[2,2]]],")*np.repeat(np.array([[[0,0,0],[0,1,0],[0,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[2,3]]],")*np.repeat(np.array([[[0,0,0],[0,0,1],[0,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[3,1]]],")*np.repeat(np.array([[[0,0,0],[0,0,0],[1,0,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[3,2]]],")*np.repeat(np.array([[[0,0,0],[0,0,0],[0,1,0]]]),np.array(points[:,0]).size,axis=0)+",
+				"(",ParaViewPythonExpression[expr[[3,3]]],")*np.repeat(np.array([[[0,0,0],[0,0,0],[0,0,1]]]),np.array(points[:,0]).size,axis=0)"]
 
 GaussCurvFromMetric[u_,v_,g_] := Module[
 {T1={{-D[g[[1,1]],v,v]/2+D[g[[1,2]],u,v]-D[g[[2,2]],u,u]/2, D[g[[1,1]],u]/2, D[g[[1,2]],u]-D[g[[1,1]],v]/2},
@@ -325,6 +346,12 @@ DoubleDotFormForm11[sigma_,tau_,g_] := Module[{gInv=Inverse[g]}, Sum[sigma[[i,k]
 
 ChristoffelFirstKind[x_,y_,g_] := Module[{var={x,y}},Table[D[g[[j,l]],var[[i]]]+D[g[[i,l]],var[[j]]]-D[g[[i,j]],var[[l]]],{i,2},{j,2},{l,2}]/2]
 ChristoffelSecondKind[x_,y_,g_] := Module[{gInv=Inverse[g], ch1=ChristoffelFirstKind[x,y,g]},Table[Sum[gInv[[k,l]]*ch1[[i,j,l]],{l,2}],{i,2},{j,2},{k,2}]]
+
+RiemannCurvatureTensor[x_,y_,g_]:=Module[{var={x,y},ch2=ChristoffelSecondKind[x,y,g]//Simplify},
+										Table[D[ch2[[l,j,i]],var[[k]]] - D[ch2[[k,j,i]],var[[l]]]
+										+Sum[ch2[[k,m,i]]ch2[[l,j,m]] - ch2[[l,m,i]]ch2[[k,j,m]],{m,2}],
+														{i,2},{j,2},{k,2},{l,2}]]
+	
 End[]
 
 EndPackage[]
