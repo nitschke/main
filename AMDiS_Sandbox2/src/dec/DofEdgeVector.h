@@ -114,6 +114,16 @@ public:
   //DOFVector<double> divergence() const;
   DofVertexVector divergence() const;
 
+  // average scalar vals. in edge centers to vertices:   
+  //         __                                 
+  //       \      w f(e)                       
+  //       /__ e>v e                         1 
+  //f(v) = -------------              w : = ---
+  //          __                       e    |e|
+  //         \      w                          
+  //         /__ e>v e
+  DofVertexVector averageEdgeCentersToVertices() const;
+
   DofEdgeVector hodgeDual() const {
     return hodgeDual_unweighted();
   }

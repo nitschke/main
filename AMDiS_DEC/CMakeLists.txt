@@ -26,6 +26,9 @@ include_directories(src/spalte)
 add_executable(meshCorrector src/correctMesh.cc)
 target_link_libraries(meshCorrector ${BASIS_LIBS} dec)
 
+add_executable(meshCorrectorNonics src/correctMeshNonics.cc)
+target_link_libraries(meshCorrectorNonics ${BASIS_LIBS} dec)
+
 add_executable(improveMesh src/improveMesh.cc)
 target_link_libraries(improveMesh ${BASIS_LIBS} dec)
 

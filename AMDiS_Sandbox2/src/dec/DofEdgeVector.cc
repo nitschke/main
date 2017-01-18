@@ -721,6 +721,42 @@ DofVertexVector DofEdgeVector::divergence() const {
   return div;
 }
 
+
+DofVertexVector  DofEdgeVector::averageEdgeCentersToVertices() const {
+  DofVertexVector vv(edgeMesh, name);
+  vv.set(0.0);
+
+  //          __                  
+  //         \      w                          
+  //         /__ e>v e
+  DOFVector<double> sumws(edgeMesh->getFeSpace(), "sumws");
+  sumws.set(0.0);
+
+  vector<EdgeElement>::const_iterator edgeIter = edgeMesh->getEdges()->begin();
+  vector<double>::const_iterator valIter = edgeVals.begin();
+  for (; edgeIter !=  edgeMesh->getEdges()->end(); ++edgeIter, ++valIter) {
+    double len1 = 1.0 / edgeIter->infoLeft->getEdgeLen(edgeIter->dofEdge);
+    DegreeOfFreedom dof1 = edgeIter->dofEdge.first;
+    DegreeOfFreedom dof2 = edgeIter->dofEdge.second;
+    
+    vv[dof1] += len1 * (*valIter);
+    vv[dof2] += len1 * (*valIter);
+
+    sumws[dof1] += len1;
+    sumws[dof2] += len1;
+  }
+
+  //scaling
+  DOFVector<double>::Iterator vvIter(const_cast<DofVertexVector*>(&vv), USED_DOFS);
+  DOFVector<double>::Iterator sumwsIter(const_cast<DOFVector<double>*>(&sumws), USED_DOFS);
+  for (vvIter.reset(), sumwsIter.reset(); !vvIter.end(); ++vvIter, ++sumwsIter) {
+    (*vvIter) /= (*sumwsIter);
+  }
+
+
+  return vv;
+}
+
 DofEdgeVector DofEdgeVector::hodgeDual_unweighted() const {
   DofEdgeVector hodge(edgeMesh, "hodge dual");
   hodge.set(0.0);

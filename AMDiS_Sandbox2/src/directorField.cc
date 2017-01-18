@@ -405,6 +405,19 @@ private:
   double eps;
 };
 
+class CoreIndicator : public AbstractFunction<double,double> {
+public:
+  CoreIndicator(double eps=0.5) : AbstractFunction<double,double>() {
+    maxNorm = 1.0 - eps;
+  }
+
+  double operator()(const double &norm_p) const {
+    return (norm_p < maxNorm) ? 1.0 : 0.0;
+  }
+private:
+  double maxNorm;
+};
+
 // Nonic Surface Pressed (double well (in z) strain of the unit sphere in x-direction (factor c on north pole and r*c on south pole)
 // pressed to x-z-plane with factor 0<=b<1 (1:total flat pressed, 0:no pressing))
 class PhiNP : public AbstractFunction<double, WorldVector<double> >
@@ -461,6 +474,7 @@ private:
 };
 
 
+
 class MyInstat : public DecProblemInstat {
 public:
   MyInstat(DecProblemStat *probStat, DofEdgeVectorPD initSol)
@@ -470,7 +484,8 @@ public:
         solDual(initSol.getDual()),
         tracker(probStat),
         delta(0.01),
-        B2EVs(2,2)
+        B2EVs(2,2),
+        coreIndicatorFun(0.5)
     {
     FUNCNAME("MyInstat::MyInstat(...)");
     string csvfn;
@@ -481,6 +496,13 @@ public:
     //divWriter = new AnimationWriter(divAnim);
     //rotWriter = new AnimationWriter(rotAnim);
     //////////////
+    //// Core-Energies /////////////
+    coreIndicatorWriter = new AnimationWriter(csvfn + "CoreIndicator.pvd");
+
+    string csvfnCore = csvfn + "CoreEnergies.csv";
+    csvoutCore.open(csvfnCore.c_str(), ios::out);
+    csvoutCore << "Time,Area,Rot,Div,Intr,Extr,Norm,Full" << endl;
+    /////////////////////////////
     string csvNumDefFn = csvfn + "NumberOfDefects.csv";
     csvfn += "Energies.csv";
 
@@ -594,7 +616,56 @@ public:
 
     double energy = dive + rote + B2e + ne ;
     csvout << time << "," << dive << "," << rote << "," << B2e << "," << ne << ","<< energy << endl;
+
+//////// Core-Energies ///////////////////
+    string bn;
+    Parameters::get(statProb->getName() + "->output->filename", bn);
+    int prec = 3;
+    Parameters::get("sphere->output->index precision", prec);
+    ostringstream timeoss;
+    timeoss << setprecision(prec) << fixed << time;
+    string fnCoreIndicator = bn + "CoreIndicator." + timeoss.str() + ".vtu";
     
+    DofEdgeVector coreIndicatorAtEdges(normAlpha);
+    coreIndicatorAtEdges.evalFunction(&coreIndicatorFun);
+    DofVertexVector coreIndicatorAtVertices = coreIndicatorAtEdges.averageEdgeCentersToVertices();
+    io::VtkVectorWriter::writeFile(coreIndicatorAtVertices,fnCoreIndicator);
+    coreIndicatorWriter->updateAnimationFile(time,fnCoreIndicator);
+    
+    double intDistCoreEnergy;
+    double rotCoreEnergy;
+    double divCoreEnergy;
+    {
+      DofVertexVector divAtVs = solPrimal.divergence();
+      DofVertexVector rotAtVs = solDual.divergence(); //proper -rot
+      DofVertexVector rotCoreEDensity = coreIndicatorAtVertices * rotAtVs * rotAtVs;
+      DofVertexVector divCoreEDensity = coreIndicatorAtVertices * divAtVs * divAtVs;
+      rotCoreEnergy = rotCoreEDensity.Int();
+      divCoreEnergy = divCoreEDensity.Int();
+      intDistCoreEnergy = rotCoreEnergy + divCoreEnergy;
+    }
+
+    double extDistCoreEnergy;
+    {
+      DofVertexVector solB2solVs_core =  coreIndicatorAtVertices * solB2sol.averageEdgeCentersToVertices();
+      extDistCoreEnergy = solB2solVs_core.Int();
+    }
+    
+    double normPenaltyCoreEnergy;
+    {
+      DofVertexVector normDeviatVs = normDeviat.averageEdgeCentersToVertices();  // ||alpa||^2 - 1
+      DofVertexVector normPenaltyCoreDensity = coreIndicatorAtVertices *  normDeviatVs *  normDeviatVs;
+      normPenaltyCoreEnergy = normPenaltyCoreDensity.Int();
+    }
+
+    double coreEnergy = 0.5 * K0 * (intDistCoreEnergy + extDistCoreEnergy) + 0.25 * Kn * normPenaltyCoreEnergy;
+
+    double area = coreIndicatorAtVertices.Int();
+    csvoutCore << time << "," << area << "," << 0.5 * K0 * rotCoreEnergy << "," << 0.5 * K0 * divCoreEnergy << "," << 0.5 * K0 * intDistCoreEnergy << "," << 0.5 * K0 * extDistCoreEnergy << "," << 0.25 * Kn * normPenaltyCoreEnergy << "," << coreEnergy << endl;
+
+    cout << "### Core-Energy: " << coreEnergy << " ###" << endl;
+//////////////////////////////////////////
+
 
     double epsCoarse = -1./0.; // no coarsing
     double tauMax = -1.; // no coarsing
@@ -693,7 +764,10 @@ public:
     return &MinusKn;
   }
 
-  ~MyInstat() {csvout.close();}
+  ~MyInstat() {
+    csvout.close();
+    csvoutCore.close();
+  }
 
 private:
   DofEdgeVector normAlpha;
@@ -717,9 +791,16 @@ private:
 
   Matrix<DofEdgeVector* > B2EVs; //Co-Contra-variant PD-Tensor on all edges
   
+  CoreIndicator coreIndicatorFun;
+
   ////for standalone part
   //AnimationWriter *divWriter;
   //AnimationWriter *rotWriter;
+
+  //////// Core-Energie ////////////////
+  AnimationWriter *coreIndicatorWriter;
+  ofstream csvoutCore;
+  /////////////////////////////////////
 };
 
 
