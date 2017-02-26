@@ -629,9 +629,11 @@ public:
     DofEdgeVector coreIndicatorAtEdges(normAlpha);
     coreIndicatorAtEdges.evalFunction(&coreIndicatorFun);
     DofVertexVector coreIndicatorAtVertices = coreIndicatorAtEdges.averageEdgeCentersToVertices();
-    io::VtkVectorWriter::writeFile(coreIndicatorAtVertices,fnCoreIndicator);
-    coreIndicatorWriter->updateAnimationFile(time,fnCoreIndicator);
-    
+    if (step%100 == 0) {
+      io::VtkVectorWriter::writeFile(coreIndicatorAtVertices,fnCoreIndicator);
+      coreIndicatorWriter->updateAnimationFile(time,fnCoreIndicator);
+    }
+
     double intDistCoreEnergy;
     double rotCoreEnergy;
     double divCoreEnergy;

@@ -484,9 +484,9 @@ int main(int argc, char* argv[])
   cout << endl << "********** d(x*y*z) *************" << endl;
   DofEdgeVector dxyz(edgeMesh, "dxyz");
   //dxyz.interpolGL4(new DXYZ(), new Proj(), new JProj());
-  dxyz.interpolNC(new DXYZ(), 7, new Proj());
+  //dxyz.interpolNC(new DXYZ(), 7, new Proj());
   //dxyz.interpolLinTrapz(new DXYZ());
-  //dxyz.set(new DXYZ_d());
+  dxyz.set(new DXYZ_d());
   dxyz.writeFile("output/dxyz.vtu");
   DOFVector< WorldVector<double> > dxyzSharp = dxyz.getSharpFaceAverage();
   AMDiS::io::VtkVectorWriter::writeFile(dxyzSharp, string("output/dxyzSharp.vtu"));

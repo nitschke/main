@@ -1,6 +1,6 @@
 dimension of world                            : 3
 
-sphereMesh->macro file name                   : ./macro/nonicsPressed/nonic095r15c0525b_64k.3d
+sphereMesh->macro file name                   : ./macro/nonicsPressed/nonic095r15c0525b_128k.3d
 sphereMesh->global refinements                : 0
 sphereMesh->check                             : 0
 
@@ -20,7 +20,7 @@ sphere->adapt->start time                     : 0.0
 sphere->adapt->end time                       : 20000.0
 sphere->adapt->timestep                       : 1.e-3 %2.5e-3
 
-sphere->output->filename                      : outNonicPressed/nonic095r15c0525b_64k_4D.
+sphere->output->filename                      : outNonicPressed/nonic095r15c0525b_128k_4D.
 sphere->output->ParaView animation            : 1
 sphere->output->edgeForms sharp               : 1 
 sphere->output->sharpType                     : 1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
@@ -34,8 +34,8 @@ userParameter->K1                             : 1.0  % minimize div
 userParameter->K3                             : 1.0  % minimize rot
 userParameter->Kn                             : 200.0 %200 % minimize norm^2 - 1
 
-userParameter->B                              : 1.5 %compress factor 
-userParameter->C                              : 0.525 %stretch factor 
+userParameter->B                              : 0.525 %compress factor 
+userParameter->C                              : 1.5 %stretch factor 
 
 userParameter->adapt->first test at timestep  : 6
 userParameter->adapt->test every i-th timestep: 2 
@@ -54,6 +54,6 @@ userParameter->trunc->epsStagnation           : 1.e-14
 userParameter->seed                           : 42
 
 %userParameter->initField                     : rotated_ey % 2 Defects
-%userParameter->initField                     : ex % 4 Defects
-userParameter->initField                      : ex
+userParameter->initField                     : ex % 4 Defects
+%userParameter->initField                      : ex
 userParameter->rotated_ey->angle              : 0.05
