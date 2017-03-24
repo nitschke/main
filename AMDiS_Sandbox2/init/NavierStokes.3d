@@ -5,8 +5,8 @@ dimension of world                            : 3
 %sphereIkoFlavor: ikosaeder.3d, 1,2,5,10,25,50,100,250,800,3200 
 %sphereMesh->macro file name                   : ./macro/nonicsPressed/nonic095r1c035b_64k.3d
 %sphereMesh->macro file name                   : ./macro/ellipsoid/ellipsoid_05_05_15_32k.3d
-sphereMesh->macro file name                   : ./macro/ellipsoid/ellipsoid_10k_improved.3d
-%sphereMesh->macro file name                   : ./macro/torus/torus5k_improved.3d
+%sphereMesh->macro file name                   : ./macro/ellipsoid/ellipsoid_10k_improved.3d
+sphereMesh->macro file name                   : ./macro/torus/torus50k_improved.3d
 %torusFlavors: (1, 2, 5, 10, 25, 50, 100, 250)k
 %sphereMesh->macro file name                   : ./macro/RBC/RBC_072_075_32k.3d
 
@@ -26,23 +26,23 @@ sphere->solver->tolerance                     : 1.e-5
 sphere->solver->left precon                   : no
 
 sphere->adapt->start time                     : 0.0
-sphere->adapt->end time                       : 2000.0
+sphere->adapt->end time                       : 300.0
 sphere->adapt->timestep                       : 0.1
 
 %sphere->output->filename                      : RotLinOnNonic/Lin_Tau005_nonic095r1c035b_64k_visc1em3.
 %sphere->output->filename                      : output/Tau01_ellipsoid_05_05_15_8k_D01Long.
-%sphere->output->filename                      : output2/test.
+sphere->output->filename                      : output9/torus.
 %sphere->output->filename                      : RotLinOnRBC/Tau01_Re200_RBC_072_075_32k.
 %sphere->output->filename                      : output/LinHarm001099_Tau01_Re10_Torus_5k.
 %sphere->output->filename                      : RotLinOnEllipsoid/ZOA_Tau01_ellipsoid_05_05_15_32k_Re10.
-sphere->output->filename                      : RotLinOnEllipsoid100515/DistDE081dZ_Tau01_ellipsoid_10k_Re500.
+%sphere->output->filename                      : RotLinOnEllipsoid100515/DistDE081dZ_Tau01_ellipsoid_10k_Re500.
 %sphere->output->filename                      : RotLinOnEllipsoid100515/DX_Tau01_ellipsoid_10k_Re500.
 sphere->output->ParaView animation            : 1
 sphere->output->edgeForms sharp               : 1 
 sphere->output->sharpType                     : 1 % FaceAverage(1), EdgeRingLinMod(2), Hirani(3)
 sphere->output->edgeForms flat                : 0 
 
-sphere->output->write every i-th timestep     : 10
+sphere->output->write every i-th timestep     : 1
 sphere->output->index precision               : 8
 
 userParameter->kinematic_viscosity            : 0.002

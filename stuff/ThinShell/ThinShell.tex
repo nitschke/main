@@ -43,9 +43,17 @@
 \newcommand{\deltab}{\bm{\delta}}
 
 \newcommand{\ttt}{\tilde{t}}
+\newcommand{\talphab}{\tilde{\alphab}}
+\newcommand{\talpha}{\tilde{\alpha}}
+
+\newcommand{\tnabla}{\tilde{\nabla}}
 
 \newcommand{\tch}[2]{\widetilde{\Gamma}_{#1}^{#2}}
 \newcommand{\ch}[2]{\Gamma_{#1}^{#2}}
+
+\newcommand{\boundary}[1]{\Upsilon_{h}^{#1}}
+\newcommand{\AtBoundary}[1]{\big|_{\boundary{#1}}}
+\newcommand{\AtSurface}{\big|_{\surf}}
 
 \newcommand{\meanc}{\mathcal{H}}
 \newcommand{\gaussc}{\mathcal{K}}
@@ -78,7 +86,7 @@ defined by
 \begin{align}
  \surfh := \surf\times\left[ -\frac{h}{2}, \frac{h}{2} \right] \subset \R^{3} \formPeriod
 \end{align}
-Constant thickness means, that the orthogonal measurement of the  two disjoint boundaries \( \partial^{+}\surfh\sqcup\partial^{-}\surfh = \partial\surfh \) is \( h \)
+Constant thickness means, that the orthogonal measurement of the  two disjoint boundaries \( \boundary{+}\sqcup\boundary{-} = \boundary{} :=\partial\surfh \) is \( h \)
 at all boundary points.
 Thereby, be \( h \) small enough, so that  \( \surfh\subset \R^{3} \) contains no overlaps,
 \ie, it exists a surjection \( \surfh \twoheadrightarrow \surf \).
@@ -350,6 +358,105 @@ We will not carry this out in full generality, but let us mention some developme
     \end{align}
   \end{proof}
 
+\section{Boundary Conditions}
+  If we consider the limit case \( h\rightarrow 0 \) for an differential expression or especially an operator \( L_{h} \), 
+  then we may get remaining partial normal derivation \( \partial_{\xi}^{p} \) with arbitrary order \( p\ge 0 \).
+  Those expressions may be undetermined on the surface \( \surf \). 
+  One way out is to set an additional condition on the whole thin shell, \eg \newterm{parallel transportation} of quantities,
+  \eg for  a tensor \( \tilde{\tb} \), we set \( \nabla_{\xi}\tilde{\tb} \equiv 0 \).
+  Another possibility is to take boundary conditions of the thin shell into account by expanding in normal directions.
+
+
+  \subsection{No-Penetration Condition (NPC) for vector quantities}
+    We consider the \newterm{No-Penetration Condition}
+    \begin{align}
+      \nub \cdot \talphab &= \talpha_{\xi} = 0 \text{ on }\boundary{} \formPeriod
+      \tag{NPC}
+    \end{align}
+    Taylor expansion at the surface \( \surf \) results in
+    \begin{align}
+      0 &= \talpha_{\xi}\AtBoundary{\pm} 
+          = \talpha_{\xi}\AtSurface \pm \frac{h}{2}\partial_{\xi}\talpha_{\xi}\AtSurface + \frac{h^{2}}{8}\partial_{\xi}^{2}\talpha_{\xi}\AtSurface + \landau(h^{3})\\
+      0 &= \talpha_{\xi}\AtBoundary{+} + \talpha_{\xi}\AtBoundary{-}
+         = 2 \talpha_{\xi}\AtSurface + \landau(h^{2}) 
+       &\Rightarrow \boxed{\talpha_{\xi}\AtSurface = \landau(h^{2})}\\
+      0 &= \talpha_{\xi}\AtBoundary{+} - \talpha_{\xi}\AtBoundary{-}
+         = h \partial_{\xi}\talpha_{\xi}\AtSurface + \landau(h^{3})
+        &\Rightarrow \boxed{\partial_{\xi}\talpha_{\xi}\AtSurface = \landau(h^{2})} \formPeriod
+    \end{align}
+
+  \subsection{Neumann Condition (NC) for vector quantities}
+    We consider the \newterm{Neumann Condition}
+    \begin{align}
+      \tnabla_{\nub}\talphab = \left\{ \tnabla_{\xi}\talpha_{I} \right\} = \left\{ \tnabla_{\xi}\talpha^{I} \right\} = 0 \text{ on }\boundary{} \formPeriod
+      \tag{NPC}
+    \end{align}
+    First we investigate the tangential parts 
+    \begin{align}
+      \tnabla_{\xi}\talpha_{i} 
+              &= \partial_{\xi}\talpha_{i} - \tch{\xi i}{J}\talpha_{J} 
+              = \partial_{\xi}\talpha_{i} - \tch{\xi i}{j}\talpha_{j}\\
+              &= \partial_{\xi}\talpha_{i} + \tensor{B}{_{i}^{j}}\talpha_{j} + \xi\tensor{\left[ \Bb^{2} \right]}{_{i}^{j}}\talpha_{j} + \landau(\xi^{2})\\
+      \tnabla_{\xi}\talpha_{i}\AtBoundary{\pm}
+              &= \partial_{\xi}\talpha_{i}\AtBoundary{\pm} + \tensor{B}{_{i}^{j}}\talpha_{j}\AtBoundary{\pm} 
+                      \pm \frac{h}{2} \tensor{\left[ \Bb^{2} \right]}{_{i}^{j}}\talpha_{j}\AtBoundary{\pm} + \landau(h^{2}) \formPeriod \label{eq:normalDerivationAtBoundary}
+    \end{align}
+    Taylor expansion at the surface \( \surf \) for \( p \ge 0 \) results in
+    \begin{align}
+      \partial_{\xi}^{p}\talphab\AtBoundary{+} + \partial_{\xi}^{p}\talphab\AtBoundary{-}
+          &= 2\partial_{\xi}^{p}\talphab\AtSurface + \landau(h^{2}) \\
+      \partial_{\xi}^{p}\talphab\AtBoundary{+} - \partial_{\xi}^{p}\talphab\AtBoundary{-}
+          &= h \partial_{\xi}^{p+1}\talphab\AtSurface + \landau(h^{3}) \formPeriod
+    \end{align}
+    Therefor by making up the sum and the difference of \eqref{eq:normalDerivationAtBoundary} one obtain 
+    \begin{align}
+      0 = \tnabla_{\xi}\talpha_{i}\AtBoundary{+} + \tnabla_{\xi}\talpha_{i}\AtBoundary{-}
+          &= 2\partial_{\xi}\talpha_{i}\AtSurface + 2\tensor{B}{_{i}^{j}}\alpha_{j} + \landau(h^{2})\\
+          &\Longrightarrow \boxed{\partial_{\xi}\talpha_{i}\AtSurface = - \tensor{B}{_{i}^{j}}\alpha_{j} + \landau(h^{2})} \formComma \label{eq:NeumannFirstOrderFlat}\\
+      0 = \tnabla_{\xi}\talpha_{i}\AtBoundary{+} - \tnabla_{\xi}\talpha_{i}\AtBoundary{-}
+          &= h\partial_{\xi}^{2}\talpha_{i}\AtSurface + h\tensor{B}{_{i}^{j}}\partial_{\xi}\talpha_{j}\AtSurface + h\tensor{\left[ \Bb^{2} \right]}{_{i}^{j}}\alpha_{j} + \landau(h^{3})\\
+          &= h\partial_{\xi}^{2}\talpha_{i}\AtSurface + \landau(h^{3})\\
+        &\Longrightarrow \boxed{\partial_{\xi}^{2}\talpha_{i}\AtSurface = \landau(h^{3})} \formPeriod \label{eq:NeumannSecondOrderFlat}
+    \end{align}
+    But we are carefully about the meaning of the results relating to rising the indices,
+    \ie, \( \partial_{\xi}\talpha^{i}\AtSurface \neq g^{ij}\partial_{\xi}\talpha_{j}\AtSurface  \) generally,
+    because \(\partial_{\xi}\tgb \neq 0  \) neither at \( \surf \) nor in whole \( \surfh \).
+    But with
+    \begin{align}
+      \partial_{\xi}\tg^{ij} &= 2B^{ij} + \landau(\xi) \formComma\\
+      \partial_{\xi}^{2}\tg^{ij} &= 6\left[ \Bb^{2} \right]^{ij} + \landau(\xi) \formComma\\
+      \partial_{\xi}\talpha^{i} &= \partial_{\xi}\left(\tg^{ij}\talpha_{j}\right) 
+                                = \tg^{ij}\partial_{\xi}\talpha_{j} + \talpha_{j}\partial_{\xi}\tg^{ij} \\
+                                &= \tg^{ij}\partial_{\xi}\talpha_{j} + 2B^{ij}\talpha_{j} + \landau(\xi) \formComma  \\
+      \partial_{\xi}^{2}\talpha^{i} &= \partial_{\xi}^{2}\left(\tg^{ij}\talpha_{j}\right)
+                                = \tg^{ij}\partial_{\xi}^{2}\talpha_{j} + \talpha_{j}\partial_{\xi}^{2}\tg^{ij} 
+                                      + 2\left( \partial_{\xi}\tg^{ij} \right)\left( \partial_{\xi}\talpha_{j}\right)\\
+                               &= \tg^{ij}\partial_{\xi}^{2}\talpha_{j} + 4B^{ij}\partial_{\xi}\talpha_{j} + 6\left[ \Bb^{2} \right]^{ij}\talpha_{j}  + \landau(\xi) \formComma
+    \end{align}
+    \eqref{eq:NeumannFirstOrderFlat}, and \eqref{eq:NeumannSecondOrderFlat}, we get for the restriction to the surface
+    \begin{align}
+      \boxed{\partial_{\xi}\talpha^{i}\AtSurface = \tensor{B}{^{i}_{j}}\alpha^{j} + \landau(h^{2})} \formComma\\
+      \boxed{\partial_{\xi}^{2}\talpha^{i}\AtSurface = 2 \tensor{\left[ \Bb^{2} \right]}{^{i}_{j}}\alpha^{j} + \landau(h^{2})} \formPeriod
+    \end{align}
+    The former is also consistent to the covariant normal derivation formulation
+    \begin{align}
+      \boxed{\tnabla_{\xi}\talpha^{i}\AtSurface = g^{ij}\tnabla_{\xi}\talpha_{i}\AtSurface = \landau(h^{2})} \formPeriod
+    \end{align}
+    For the boundary condition in normal direction, namely
+    \begin{align}
+      \tnabla_{\xi}\talpha_{\xi}\AtBoundary{\pm} =  \partial_{\xi} \talpha_{\xi}\AtBoundary{\pm} = 0 \formComma
+    \end{align}
+    we have
+    \begin{align}
+      0 = \tnabla_{\xi}\talpha_{\xi}\AtBoundary{+} + \tnabla_{\xi}\talpha_{\xi}\AtBoundary{-}
+        &= 2\partial_{\xi}\talpha_{\xi}\AtSurface + \landau(h^{2})
+            &\Rightarrow \boxed{\partial_{\xi}\talpha_{\xi}\AtSurface = \partial_{\xi}\talpha^{\xi}\AtSurface = \landau(h^{2})} \formComma\\
+      0 = \tnabla_{\xi}\talpha_{\xi}\AtBoundary{+} - \tnabla_{\xi}\talpha_{\xi}\AtBoundary{-}
+        &= h\partial_{\xi}^{2}\talpha_{\xi}\AtSurface + \landau(h^{3})
+            &\Rightarrow \boxed{\partial_{\xi}^{2}\talpha_{\xi}\AtSurface  = \partial_{\xi}^{2}\talpha^{\xi}\AtSurface = \landau(h^{2})} \formPeriod
+    \end{align}
+  
+    
 
 \bibliography{bibl}
 \bibliographystyle{alpha}

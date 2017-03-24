@@ -203,6 +203,32 @@ private:
   double Az;
 };
 
+class DStreamline_Vortex : public BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >
+{
+public:
+  DStreamline_Vortex(WorldVector<double> vpos_, double factor_, double radius_ = 0.4) : BinaryAbstractFunction<double, WorldVector<double>, WorldVector<double> >(), 
+                                      vpos(vpos_), radius(radius_), factor(factor_) 
+  {
+    Projection::getProjection(1)->project(vpos);
+  }
+
+  double operator()(const WorldVector<double>& p, const WorldVector<double>& q) const 
+  {
+    WorldVector<double> pv = p - vpos;
+    WorldVector<double> qv = q - vpos;
+    double distp = std::sqrt(pv * pv);
+    double distq = std::sqrt(qv * qv);
+    double fp = (distp < radius) ? std::pow(distp/radius - 1., 2) * (1. + 2.* distp/radius) : 0.;
+    double fq = (distp < radius) ? std::pow(distq/radius - 1., 2) * (1. + 2.* distq/radius) : 0.;
+    return  factor * (fq - fp);
+  }
+
+private:
+  WorldVector<double> vpos;
+  double radius;
+  double factor;
+};
+
 
 class GaussCurv_Sphere : public AbstractFunction<double, EdgeElement > {
   public:
@@ -482,7 +508,7 @@ int main(int argc, char* argv[])
   sphere.initialize(INIT_ALL);
 
   //SphereProject proj(42, VOLUME_PROJECTION);
-  //new TorusProject(1, VOLUME_PROJECTION);
+  new TorusProject(1, VOLUME_PROJECTION);
 
   double nu = -1.0;
   Parameters::get("userParameter->kinematic_viscosity", nu);
@@ -508,10 +534,45 @@ int main(int argc, char* argv[])
   //alphaD.set(new DLin(0.1, 1.0, 0.1));
   //alphaD.set(new DLin(0., 1.0, 0.1)); // for ellipsoid_05_05_15
   //alphaD.set(new DLin(1.0, 0.0, 0.0)); // for ellipsoid_1_05_15
-  double eps = 0.81;
-  double delta = 2.0 * (1.0 - eps);
-  alphaD.set(new DLin(eps, eps, delta)); // for ellipsoid_1_05_15 sligthly disturbance in dz
-  //alphaD.set(new DLin(0., 1., 1.)); // for RBC
+  //double eps = 0.81;
+  //double delta = 2.0 * (1.0 - eps);
+  //alphaD.set(new DLin(eps, eps, delta)); // for ellipsoid_1_05_15 sligthly disturbance in dz
+  //alphaD.set(new DLin(1., 0., 0.)); // for RBC
+  //double v1posar[3] = {2.5,0.,0.};
+  //double v1posar[3] = {2.2,0.4,0.};
+  //double phi = M_PI / 16.;
+  //double v2posar[3] = {2.5 * std::cos(phi),0.,2.5 * std::sin(phi)};
+  //double radius = 0.4;
+  //double factor = 1.0;
+  //double v1posar[3] = {2.0, 0.5, 0.0};
+  //double v2posar[3] = {-2.0, 0.5, 0.0};
+  //double v3posar[3] = {0.0, 0.5, 2.0};
+  //double v4posar[3] = {0.0, 0.5, -2.0};
+  //WorldVector<double> v1pos(VALUE_LIST,v1posar);
+  //WorldVector<double> v2pos(VALUE_LIST,v2posar);
+  //WorldVector<double> v3pos(VALUE_LIST,v3posar);
+  //WorldVector<double> v4pos(VALUE_LIST,v4posar);
+  //DofEdgeVector v1D(edgeMesh, "V1DualInit");
+  //DofEdgeVector v2D(edgeMesh, "V2DualInit");
+  //DofEdgeVector v3D(edgeMesh, "V3DualInit");
+  //DofEdgeVector v4D(edgeMesh, "V4DualInit");
+  //v1D.set(new DStreamline_Vortex(v1pos, factor, radius));
+  //v2D.set(new DStreamline_Vortex(v2pos, factor, radius));
+  //v3D.set(new DStreamline_Vortex(v3pos, factor, radius));
+  //v4D.set(new DStreamline_Vortex(v4pos, factor, radius));
+  //alphaD = v1D + v2D + v3D + v4D;
+  double radius = 0.4;
+  double factor = 1.0;
+  double v1posar[3] = {2.5, 0.0, 0.0};
+  double phi = M_PI / 2.;
+  double v2posar[3] = {2.5 * std::cos(phi),0.,2.5 * std::sin(phi)};
+  WorldVector<double> v1pos(VALUE_LIST,v1posar);
+  WorldVector<double> v2pos(VALUE_LIST,v2posar);
+  DofEdgeVector v1D(edgeMesh, "V1DualInit");
+  DofEdgeVector v2D(edgeMesh, "V2DualInit");
+  v1D.set(new DStreamline_Vortex(v1pos, factor, radius));
+  v2D.set(new DStreamline_Vortex(v2pos, -factor, radius));
+  alphaD = v1D + v2D;
   //alphaD *= -1.0;
   //alphaD.set(new DZ());
   //alphaD.set(new DX());
@@ -533,10 +594,10 @@ int main(int argc, char* argv[])
   //double cx = 0.5;
   //double cy = 0.5;
   //double cz = 1.5;
-  new EllipsoidProject(1, VOLUME_PROJECTION, cx, cy, cz);
-  K.set(new GaussCurv_Ellipsoid(cx, cy, cz));
+  //new EllipsoidProject(1, VOLUME_PROJECTION, cx, cy, cz);
+  //K.set(new GaussCurv_Ellipsoid(cx, cy, cz));
   //K.set(new GaussCurv_Sphere());
-  //K.set(new GaussCurv_Torus());
+  K.set(new GaussCurv_Torus());
 
   //double a = 0.72;
   //double c = 0.75;
