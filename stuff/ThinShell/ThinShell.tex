@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{scrartcl}
+\documentclass[a4paper,10pt]{scrartcl}
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
@@ -12,6 +12,8 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+
+%\usepackage{nath}
 
 \usepackage{bm}
 
@@ -40,13 +42,30 @@
 \newcommand{\tb}{\mathbf{t}}
 \newcommand{\Bb}{\mathbf{B}}
 \newcommand{\alphab}{\bm{\alpha}}
+\newcommand{\betab}{\bm{\beta}}
+\newcommand{\gammab}{\bm{\gamma}}
 \newcommand{\deltab}{\bm{\delta}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\rot}{\operatorname{rot}}
 
 \newcommand{\ttt}{\tilde{t}}
+\newcommand{\ttb}{\tilde{\tb}}
 \newcommand{\talphab}{\tilde{\alphab}}
 \newcommand{\talpha}{\tilde{\alpha}}
+\newcommand{\tbetab}{\tilde{\betab}}
+\newcommand{\tgamma}{\tilde{\gamma}}
+\newcommand{\tgammab}{\tilde{\gammab}}
+\newcommand{\tbeta}{\tilde{\beta}}
+\newcommand{\tmu}{\tilde{\mu}}
+
+\newcommand{\tF}{\tilde{F}}
 
 \newcommand{\tnabla}{\tilde{\nabla}}
+\newcommand{\tlaplace}{\tilde{\Delta}}
+\newcommand{\tdiv}{\widetilde{\div}}
+
+\newcommand{\tnorm}[1]{\left\Vert\mkern-1.9mu\left\vert #1 \right\vert\mkern-1.9mu\right\Vert}
+\newcommand{\tscal}[1]{\left\langle\mkern-8mu\left\langle #1 \right\rangle\mkern-8mu\right\rangle}
 
 \newcommand{\tch}[2]{\widetilde{\Gamma}_{#1}^{#2}}
 \newcommand{\ch}[2]{\Gamma_{#1}^{#2}}
@@ -54,6 +73,8 @@
 \newcommand{\boundary}[1]{\Upsilon_{h}^{#1}}
 \newcommand{\AtBoundary}[1]{\big|_{\boundary{#1}}}
 \newcommand{\AtSurface}{\big|_{\surf}}
+
+\newcommand{\tLC}{\tilde{E}}
 
 \newcommand{\meanc}{\mathcal{H}}
 \newcommand{\gaussc}{\mathcal{K}}
@@ -315,7 +336,8 @@ We will not carry this out in full generality, but let us mention some developme
     \begin{align}
       \tch{\xi\xi}{K} &= \frac{1}{2}\tg^{KL}\left( \partial_{\xi}\tg_{\xi L} + \partial_{\xi}\tg_{\xi L} - \partial_{L}\tg_{\xi\xi} \right)
                         = 0 \formComma\\
-      \tch{I\xi}{\xi} &= \frac{1}{2} \tg^{\xi \xi}\left( \partial_{I}\tg_{\xi\xi} + \partial_{\xi}\tg_{\xi L} - \partial_{\xi}\tg_{I \xi} \right)\formPeriod
+      \tch{I\xi}{\xi} &= \frac{1}{2} \tg^{\xi \xi}\left( \partial_{I}\tg_{\xi\xi} + \partial_{\xi}\tg_{I \xi} - \partial_{\xi}\tg_{I \xi} \right)
+                        = 0\formPeriod
     \end{align}
     The partial derivative in normal direction of the tangential part of thin shell metric is
     \begin{align}
@@ -416,7 +438,7 @@ We will not carry this out in full generality, but let us mention some developme
       0 = \tnabla_{\xi}\talpha_{i}\AtBoundary{+} - \tnabla_{\xi}\talpha_{i}\AtBoundary{-}
           &= h\partial_{\xi}^{2}\talpha_{i}\AtSurface + h\tensor{B}{_{i}^{j}}\partial_{\xi}\talpha_{j}\AtSurface + h\tensor{\left[ \Bb^{2} \right]}{_{i}^{j}}\alpha_{j} + \landau(h^{3})\\
           &= h\partial_{\xi}^{2}\talpha_{i}\AtSurface + \landau(h^{3})\\
-        &\Longrightarrow \boxed{\partial_{\xi}^{2}\talpha_{i}\AtSurface = \landau(h^{3})} \formPeriod \label{eq:NeumannSecondOrderFlat}
+        &\Longrightarrow \boxed{\partial_{\xi}^{2}\talpha_{i}\AtSurface = \landau(h^{2})} \formPeriod \label{eq:NeumannSecondOrderFlat}
     \end{align}
     But we are carefully about the meaning of the results relating to rising the indices,
     \ie, \( \partial_{\xi}\talpha^{i}\AtSurface \neq g^{ij}\partial_{\xi}\talpha_{j}\AtSurface  \) generally,
@@ -425,12 +447,12 @@ We will not carry this out in full generality, but let us mention some developme
     \begin{align}
       \partial_{\xi}\tg^{ij} &= 2B^{ij} + \landau(\xi) \formComma\\
       \partial_{\xi}^{2}\tg^{ij} &= 6\left[ \Bb^{2} \right]^{ij} + \landau(\xi) \formComma\\
-      \partial_{\xi}\talpha^{i} &= \partial_{\xi}\left(\tg^{ij}\talpha_{j}\right) 
-                                = \tg^{ij}\partial_{\xi}\talpha_{j} + \talpha_{j}\partial_{\xi}\tg^{ij} \\
+      \partial_{\xi}\talpha^{i} &= \partial_{\xi}\left(\tg^{ij}\talpha_{j}\right)  \label{eq:dnuCoToContra}
+                                = \tg^{ij}\partial_{\xi}\talpha_{j} + \talpha_{j}\partial_{\xi}\tg^{ij} \\\notag
                                 &= \tg^{ij}\partial_{\xi}\talpha_{j} + 2B^{ij}\talpha_{j} + \landau(\xi) \formComma  \\
-      \partial_{\xi}^{2}\talpha^{i} &= \partial_{\xi}^{2}\left(\tg^{ij}\talpha_{j}\right)
+      \partial_{\xi}^{2}\talpha^{i} &= \partial_{\xi}^{2}\left(\tg^{ij}\talpha_{j}\right) \label{eq:dnudnuCoToContra}
                                 = \tg^{ij}\partial_{\xi}^{2}\talpha_{j} + \talpha_{j}\partial_{\xi}^{2}\tg^{ij} 
-                                      + 2\left( \partial_{\xi}\tg^{ij} \right)\left( \partial_{\xi}\talpha_{j}\right)\\
+                                      + 2\left( \partial_{\xi}\tg^{ij} \right)\left( \partial_{\xi}\talpha_{j}\right)\\\notag
                                &= \tg^{ij}\partial_{\xi}^{2}\talpha_{j} + 4B^{ij}\partial_{\xi}\talpha_{j} + 6\left[ \Bb^{2} \right]^{ij}\talpha_{j}  + \landau(\xi) \formComma
     \end{align}
     \eqref{eq:NeumannFirstOrderFlat}, and \eqref{eq:NeumannSecondOrderFlat}, we get for the restriction to the surface
@@ -455,8 +477,323 @@ We will not carry this out in full generality, but let us mention some developme
         &= h\partial_{\xi}^{2}\talpha_{\xi}\AtSurface + \landau(h^{3})
             &\Rightarrow \boxed{\partial_{\xi}^{2}\talpha_{\xi}\AtSurface  = \partial_{\xi}^{2}\talpha^{\xi}\AtSurface = \landau(h^{2})} \formPeriod
     \end{align}
+
+    \subsubsection{No-Penetration Neumann Condition (NPNC)}
+      If we add up (NPC) and (NC) but omit the condition \( \tnabla_{\xi}\talpha_{\xi} = \partial_{\xi}\talpha_{\xi} = 0 \), then we have
+      the boundary conditions
+      \begin{align}
+        \talpha_{\xi} = \tnabla_{\xi}\talpha_{i} = 0 \text{ on }\boundary{} \formPeriod
+      \tag{NPNC}
+      \end{align}
+      In other words, we have Dirichlet (essential) BC for the normal component and Neumann (natural) BC for the tangential components at the Boundaries.
+      However, the assignments to the surface are
+      \begin{align}
+        \partial_{\xi}\talpha_{i}\AtSurface &= - \tensor{B}{_{i}^{j}}\alpha_{j} + \landau(h^{2})
+                &\Rightarrow\ \partial_{\xi}\talpha^{i}\AtSurface &= \tensor{B}{^{i}_{j}}\alpha^{j} + \landau(h^{2}) \\
+        \partial_{\xi}^{2}\talpha_{i}\AtSurface &= \landau(h^{2})
+                &\Rightarrow\ \partial_{\xi}^{2}\talpha^{i}\AtSurface &= 2\tensor{\left[\Bb^{2}\right]}{^{i}_{j}}\alpha^{j} + \landau(h^{2}) \\
+        \talpha_{\xi}\AtSurface = \partial_{\xi}\talpha_{\xi}\AtSurface &= \landau(h^{2}) \formPeriod
+      \end{align}
+      Note that \( \partial_{\xi}^{2}\talpha_{\xi} \) keep undetermined and occupies the role of a function independent of \( \alphab =\left\{ \alpha_{i} \right\} \) on the surface \( \surf \).
+        
+
   
-    
+  \subsection{Hodge Condition (HC) for vector quantities}
+    We consider the \newterm{Hodge Condition}
+    \begin{align}
+      \nub \times \tnabla \times \talphab^{\sharp}= 0 \text{ on }\boundary{} \formPeriod
+      \tag{HC}
+    \end{align}
+    That means that the tangential part of the vorticity vector of \( \talphab^{\sharp} \) has to vanish at the boundary, \ie, 
+    \( \left[ \widetilde{\operatorname{rot}}\talphab \right]^{i}\AtBoundary{\pm} = 0 \), \ie,
+    only rotation on the boundary surface is allowed but not through it.
+
+    First, let us develop a general statement, how arbitrary tensor-like zero boundary conditions can be assigned to the surface.
+    Consider a tensor \( \ttb = 0 \) on the boundary and its expansion at the surface
+    \begin{align}
+      0 &= \ttb\AtBoundary{\pm} = \ttb\AtSurface \pm \frac{h}{2}\partial_{\xi}\ttb\AtSurface + \frac{h^{2}}{8}\partial_{\xi}^{2}\ttb\AtSurface + \landau(h^{3})\formPeriod
+    \end{align}
+    Hence, we get
+    \begin{align}
+      0 &= \ttb\AtBoundary{+} - \ttb\AtBoundary{-} = h\partial_{\xi}\ttb\AtSurface + \landau(h^{3})
+          &\Rightarrow\ \partial_{\xi}\ttb\AtSurface &= \landau(h^{2}) \formComma\\
+      0 &= \ttb\AtBoundary{+} + \ttb\AtBoundary{-} = 2\ttb\AtSurface + \landau(h^{2})
+          &\Rightarrow\ \ttb\AtSurface &= \landau(h^{2}) \formPeriod
+    \end{align}
+
+    Applying the Levi-Civita machinery in Hodge Condition to determine the cross products, we obtain a simpler representation of the boundary condition, namely 
+    \begin{align}
+      0 &= \left[ \nub \times \tnabla \times \talphab^{\sharp} \right]_{I}
+         = \tLC_{I\xi K}\left( -\tensor{\tLC}{^{K}_{LM}}\left[ \tnabla\alphab \right]^{LM} \right)
+         = \tLC_{K\xi I}\tensor{\tLC}{^{K}_{LM}}\left[ \tnabla\alphab \right]^{LM}\\\notag
+        &= \left( \tgb_{\xi L}\tgb_{I M} - \tgb_{\xi M}\tgb_{I L}\right)\left[ \tnabla\alphab \right]^{LM}
+         = \left[ \tnabla\alphab \right]_{\xi I} - \left[ \tnabla\alphab \right]_{I \xi}\\\notag
+        &= \partial_{I}\talpha_{\xi} - \tch{\xi I}{K}\talpha_{K} - \left(\partial_{\xi}\talpha_{I} - \tch{\xi I}{K}\talpha_{K}\right)
+         = \partial_{I}\talpha_{\xi} - \partial_{\xi}\talpha_{I}
+    \end{align}
+    at \( \boundary{} \).
+    The normal part of this condition is always true and the tangential part is assigned to the surface by
+    \begin{align}
+    \boxed{
+      \partial_{\xi}\talpha_{i}\AtSurface = \partial_{i}\talpha_{\xi}\AtSurface + \landau(h^{2}) \formComma}\\
+    \boxed{
+      \partial_{\xi}^{2}\talpha_{i}\AtSurface = \partial_{i}\partial_{\xi}\talpha_{\xi}\AtSurface + \landau(h^{2}) \formPeriod
+     }
+    \end{align}
+    And for a contravariant formulation, we have with \eqref{eq:dnuCoToContra} and \eqref{eq:dnudnuCoToContra}
+    \begin{align}
+      \boxed{\partial_{\xi}\talpha^{i}\AtSurface = \partial^{i}\talpha_{\xi}\AtSurface + 2\tensor{B}{^{i}_{j}}\alpha^{j} + \landau(h^{2})} \formComma\\
+      \boxed{
+        \partial_{\xi}^{2}\talpha^{i}\AtSurface = \partial^{i}\partial_{\xi}\talpha_{\xi}\AtSurface
+                                                  +4B^{ij}\partial_{j}\talpha_{\xi}\AtSurface
+                                                  +6\tensor{\left[\Bb^{2}\right]}{^{i}_{j}}\alpha^{j} + \landau(h^{2})
+      }\formPeriod
+    \end{align}
+
+    \subsubsection{No-Penetration Hodge Condition (NPHC)}
+      The combination of the No-Penetration Condition and the Hodge Condition becomes to
+      \begin{align}
+        \talpha_{\xi} = \partial_{\xi}\talpha_{i} = 0 \text{ on }\boundary{} \formPeriod
+      \end{align}
+      With our previous work, we easily see, that holds
+      \begin{align}
+        \partial_{\xi}\talpha_{i}\AtSurface &= \landau(h^{2})
+                &\Rightarrow\ \partial_{\xi}\talpha^{i}\AtSurface &= 2\tensor{B}{^{i}_{j}}\alpha^{j} + \landau(h^{2}) \\
+        \partial_{\xi}^{2}\talpha_{i}\AtSurface &= \landau(h^{2})
+                &\Rightarrow\ \partial_{\xi}^{2}\talpha^{i}\AtSurface &= 6\tensor{\left[\Bb^{2}\right]}{^{i}_{j}}\alpha^{j} + \landau(h^{2}) \\
+        \talpha_{\xi}\AtSurface = \partial_{\xi}\talpha_{\xi}\AtSurface &= \landau(h^{2}) \formPeriod
+      \end{align}
+      Note that \( \partial_{\xi}^{2}\talpha_{\xi} \) keep undetermined and occupies the role of a function independent of \( \alphab =\left\{ \alpha_{i} \right\} \) on the surface \( \surf \).
+
+  \subsection{Thin Shell Limit of the Vector-Poisson Problem}
+    Let us develop a deeper understanding of the Poisson Problem and its thin shell limit depending on boundary conditions.
+    In its differential form, the Poisson equation is given by
+    \begin{align}
+      \tlaplace\talphab &= \tbetab &\text{in }\surfh
+    \end{align}
+    with one of the following boundary conditions at \( \boundary{}\)
+    \begin{align}
+      \nub\cdot\talphab = 0 \text{ and } \tnabla_{\nub}\Pi\left[ \talphab \right] &= 0
+        &\Leftrightarrow&& \talpha_{\xi} = \tnabla_{\xi}\talpha_{i} &= 0  \tag{NPNC}\formComma\\
+      \nub\cdot\talphab = 0 \text{ and } \nub \times \tnabla \times \talphab &= 0
+        &\Leftrightarrow&& \talpha_{\xi} = \partial_{\xi}\talpha_{i} &= 0 \tag{NPHC} \formPeriod
+    \end{align}
+    These two boundary value problems are one of the Euler-Lagrange equations of the action functionals
+    \begin{align}
+      \tF_{N}\left[ \talphab \right] &:= \int_{\surfh} \frac{1}{2}\tnorm{\tnabla\talphab}^{2} + \tscal{\tbetab,\talphab}\tmu \formComma\\
+      \tF_{H}\left[ \talphab \right] &:= \int_{\surfh} \frac{1}{2}\left( \left( \tdiv\talphab \right)^{2} + \tnorm{\tnabla\times\talphab}^{2} \right) + \tscal{\tbetab,\talphab}\tmu\formPeriod
+    \end{align}
+    Another representation of the rotation part is
+    \begin{align}
+      \tnorm{\tnabla\times\talphab}^{2}
+          &= \tLC_{IJK}\tensor{\tLC}{^{I}_{LM}} \talpha^{J:K}\talpha^{L:M}
+          = \left( \tg_{JL}\tg_{KM} - \tg_{JM}\tg_{KL} \right) \talpha^{J:K}\talpha^{L:M}\\
+          &=      \talpha^{J:K}\talpha_{J:K} -    \talpha^{J:K}\talpha_{K:J}  
+          = \tnorm{\tnabla\talphab}^{2} - \tscal{\tnabla\talphab, \left( \tnabla\talphab \right)^{T}}\formPeriod
+    \end{align}
+    Integration by parts of all terms containing derivatives, results in
+    \begin{align}
+      \int_{\surfh} \tnorm{\tnabla\talphab}^{2} \tmu
+          &= \int_{\surfh}\tensor{\talpha}{_{I}^{:J}}\tensor{\talpha}{^{I}_{:J}}\tmu
+           = \int_{\surfh} -\tensor{\talpha}{_{I}^{:J}_{:J}}\talpha^{I} + \left( \tensor{\talpha}{_{I}^{:J}} \talpha^{I} \right)_{:J} \tmu \\
+          &= -\int_{\surfh} \tscal{\tlaplace\talphab , \talphab} \tmu
+             + \sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \talpha^{I}\talpha_{I:\xi} \mu_{\Upsilon^{s}}\\
+      \int_{\surfh} \tscal{\tnabla\talphab, \left( \tnabla\talphab \right)^{T}} \tmu
+          &= \int_{\surfh} \tensor{\talpha}{^{I}_{:J}} \tensor{\talpha}{^{J}_{:I}} \tmu
+           = \int_{\surfh} - \tensor{\talpha}{^{I}_{:J:I}}\talpha^{J} + \left( \tensor{\talpha}{^{I}_{:J}}\talpha^{J} \right)_{:I} \tmu \\
+          &= -\int_{\surfh} \tensor{\talpha}{^{I}_{:J:I}}\talpha^{J} \tmu
+             + \sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \talpha^{I} \talpha_{\xi:I} \mu_{\Upsilon^{s}} \\
+      \int_{\surfh}\left( \tdiv\talphab \right)^{2} \tmu
+          &=  \int_{\surfh} \tensor{\talpha}{^{I}_{:I}} \tensor{\talpha}{^{J}_{:J}} \tmu
+           = \int_{\surfh} -\tensor{\talpha}{^{I}_{:I:J}}\talpha^{J} + \left( \tensor{\talpha}{^{I}_{:I}} \talpha^{J} \right)_{:J} \tmu \\
+          &= -\int_{\surfh} \tensor{\talpha}{^{I}_{:I:J}}\talpha^{J} \tmu
+             + \sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \talpha_{\xi}\tensor{\talpha}{^{I}_{:I}}  \mu_{\Upsilon^{s}} \formPeriod
+    \end{align}
+    We observe that the thin shell \( \surfh \) is a flat three-dimensional manifold,
+    therefore the Riemannian curvature tensor \( \left\{ \tensor{R}{^{I}_{JKL}} \right\} \) vanish and the Levi-Civita connection \( \tnabla \) 
+    commutes\footnote{We see this behaviour also by coordinate transformation to Euclidian \( \R^{3} \), where \( \tnabla_{I}=\partial_{I} \).}, 
+    \ie, \( \tensor{\talpha}{^{K}_{:J:I}} = \tensor{\talpha}{^{K}_{:I:J}} \), generally.
+    Hence, the difference between the two action functionals is
+    \begin{align}
+      \left( \tF_{N} - \tF_{H} \right)\left[ \talphab \right]
+          &= \frac{1}{2} \sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \talpha^{I} \talpha_{\xi:I} - \talpha_{\xi}\tensor{\talpha}{^{I}_{:I}} \mu_{\Upsilon^{s}}\\
+          &= \frac{1}{2} \sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \talpha^{i} \talpha_{\xi:i} - \talpha_{\xi}\tensor{\talpha}{^{i}_{:i}} \mu_{\Upsilon^{s}}\formComma
+    \end{align}
+    which does not vanish for an fixed thickness \( h \), generally, neither for No-Penetration Condition \(\talpha_{\xi}\AtBoundary{\pm} = 0  \).
+    Remember, \( \talpha_{\xi:i} \) is not supposed to be a surface derivative on \( \Upsilon^{s} \), 
+    so this term does not support integration by parts on the boundary.
+    If we define a family of layers \( \surf(\xi) := \text{Im}\txb(\cdot,\cdot,\xi) \) for arbitrary fixed \( \xi \) and
+    \begin{align}
+      b\left[ \talphab \right]\left( \xi \right) &:= \frac{1}{2}\int_{\surf(\xi)} \talpha^{i} \talpha_{\xi:i} - \talpha_{\xi}\tensor{\talpha}{^{i}_{:i}} \mu_{\surf(\xi)}\formComma
+    \end{align}
+    then we obtain
+    \begin{align}
+      \frac{1}{h}\left( \tF_{N} - \tF_{H} \right)\left[ \talphab \right]
+          = \frac{1}{h}\left( b\left[ \talphab \right]\left( \frac{h}{2} \right) -  b\left[ \talphab \right]\left( -\frac{h}{2} \right)\right)
+          = \partial_{\xi}  b\left[ \talphab \right]\left( 0 \right) + \landau(h^{2})\formPeriod
+    \end{align}
+    The rescaling of the left hand side with \( \frac{1}{h} \) is necessary, because all thin shell action functional are vanishing with at least \( \landau(h) \),
+    independent of their density.
+    Moreover, this is the natural way to define the limiting process in \( h \), which is consistency respect to the volumes,
+    \ie, \( |\surfh|\rightarrow|\surf| \) for \( h\rightarrow 0 \).
+    For \(\talpha_{\xi}\AtBoundary{\pm} = 0  \), which fulfill both boundary conditions (NPHC) and (NPNC), we have
+    \begin{align}
+      \partial_{\xi}  b\left[ \talphab \right]\left( 0 \right) 
+            &=  -\frac{1}{2}\partial_{\xi}  \int_{\surf(\xi)} \tg_{kj}\tch{\xi i}{k} \talpha^{i}\talpha^{j} \mu_{\surf(\xi)}\Big|_{\xi=0} \\
+            &= \frac{1}{2}\partial_{\xi} \int_{\surf(\xi)}\left( B_{ij} - \xi\left[ \Bb^{2} \right]_{ij} \right) \talpha^{i}\talpha^{j} \left( 1 - \xi\meanc + \xi^{2}\gaussc\right)\mu\Big|_{\xi=0}\\
+            &=  \frac{1}{2} \int_{\surf} -\left[ \Bb^{2} \right]_{ij}\alpha^{i}\alpha^{j} 
+                                         +2B_{ij}\alpha^{i}\partial_{\xi}\talpha^{j}\big|_{\surf}
+                                         -\meanc B_{ij}\alpha^{i}\alpha^{j} \mu \\
+            &=              
+              \begin{cases}
+                 \frac{1}{2} \int_{\surf} \left[ \Bb^{2} - \meanc\Bb \right]_{ij}\alpha^{i}\alpha^{j} \mu + \landau(h^{2}) & \text{for (NPNC)} \\
+                  \frac{1}{2} \int_{\surf} \left[ 3\Bb^{2} - \meanc\Bb \right]_{ij}\alpha^{i}\alpha^{j} \mu + \landau(h^{2}) & \text{for (NPHC)}
+              \end{cases}\\
+             &=
+              \begin{cases}
+                \frac{1}{2} \int_{\surf} -\gaussc\left\| \alphab \right\| \mu + \landau(h^{2}) & \text{for (NPNC)} \\
+                \frac{1}{2} \int_{\surf} -\gaussc\left\| \alphab \right\| + \left\| \Bb\alphab \right\|^{2}\mu + \landau(h^{2}) & \text{for (NPHC)}
+              \end{cases} \\
+             &= \landau(1) \text{ , generally}
+            \formPeriod
+    \end{align}
+    Consequently, \( \tF_{N} \) and \( \tF_{H} \) differ at the boundaries, also in the limit case, and hence, 
+    we have to equip both functionals with their own boundary conditions to fulfill the associated Euler-Lagrange (EL) equations.
+    The functional derivatives are
+    \begin{align}
+      \int_{\surfh} \tscal{\frac{\delta\tF_{N}}{\delta\talphab}, \tgammab} \tmu
+            &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu
+             + \frac{1}{2}\sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \tgamma^{I}\talpha_{I:\xi} \mu_{\Upsilon^{s}} \\
+            &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu \quad\text{ for (NPNC)} \\
+      \int_{\surfh} \tscal{\frac{\delta\tF_{H}}{\delta\talphab}, \tgammab} \tmu
+            &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu \\
+            &\quad+\frac{1}{2}\sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} 
+                    \tgamma_{\xi}\tensor{\talpha}{^{I}_{:I}}
+                  +\tgamma^{I}\left( \talpha_{I:\xi} - \talpha_{\xi : I} \right) \tmu \\
+            &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu \quad\text{ for (NPHC)}
+    \end{align}
+    Therefor, the EL equations give us the boundary value problems formulated at the beginning of this section.
+
+    In the next two sections, we will show, that the limiting process \( h\rightarrow 0 \) commutes with the EL equation for our two functionals and associated boundary conditions,
+    \ie, there is no difference between first \( \tF\left[ \talphab \right] \rightarrow F\left[ \alphab \right] \) under BCs and than formulate the EL equation on the surface without
+    boundaries, or first formulate the EL equation in the thin shell and than do the limiting process under BCs to the surface.
+    We leave a general statement for arbitrary action functionals and convenient BCs as an open question.
+
+    \subsubsection{Limit of the Functionals}
+      First we approximate all necessary derivations at the surface and incorporate the BCs.
+      \begin{align}
+        \talpha_{i:j}\big|_{\surf} &= \partial_{j}\talpha_{i}\big|_{\surf} - \tch{ij}{K}\talpha_{K}\big|_{\surf}
+                       = \alpha_{i|j} - B_{ij}\talpha_{\xi}\big|_{\surf}\\
+                       &= \left[ \nabla\alphab \right]_{ij} + \landau(h^{2})\quad\text{ for (NP)} \\
+        \talpha_{\xi :j}\big|_{\surf} &= \partial_{j}\talpha_{\xi}\big|_{\surf} - \tch{j\xi}{K}\talpha_{K}\big|_{\surf}
+                                       = \partial_{j}\talpha_{\xi}\big|_{\surf} + \tensor{B}{_{j}^{k}}\alpha_{k}\\
+                                      &= \left[ \Bb\alphab \right]_{j} + \landau(h^{2})\quad\text{ for (NP)}\\
+        \talpha_{i :\xi}\big|_{\surf} &= \partial_{\xi}\talpha_{i}\big|_{\surf} - \tch{i\xi}{K}\talpha_{K}\big|_{\surf}
+                                       =\partial_{\xi}\talpha_{i}\big|_{\surf} + \tensor{B}{_{i}^{k}}\alpha_{k}\\
+                                      &=
+                                          \begin{cases}
+                                            \landau(h^{2}) & \text{ for (NPNC)} \\
+                                            \left[ \Bb\alphab \right]_{i} + \landau(h^{2}) & \text{ for (NPHC)}
+                                          \end{cases} \\
+        \talpha_{\xi :\xi}\big|_{\surf} &= \partial_{\xi}\talpha_{\xi}\big|_{\surf} = \landau(h^{2})\quad\text{ for (NP)}
+      \end{align}
+      Hence, we obtain for the limit cases
+      \begin{align}
+        \frac{1}{h}\tF_{N}\left[ \talphab \right]
+            &= \frac{1}{2h} \int_{\surfh} \left\| \nabla\alphab \right\|^{2} + \left\| \Bb\alpha \right\|^{2} 
+                    + 2\left\langle \betab,\alphab \right\rangle + \landau\left( \xi + h^{2} \right)\tmu\\
+            &\rightarrow \frac{1}{2}\int_{\surf} \left\| \nabla\alphab \right\|^{2} + \left\| \Bb\alpha \right\|^{2} + 2\left\langle \betab,\alphab \right\rangle\mu
+             =: F_{N}\left[ \alphab \right]\\
+        \frac{1}{h}\tF_{H}\left[ \talphab \right]
+            &= \frac{1}{2h} \int_{\surfh} \left( \div\alphab \right)^{2} 
+                                           + \left\| \nabla\alphab \right\|^{2} + 2\left\| \Bb\alpha \right\|^{2} 
+                            - \left\langle \nabla\alphab, \left( \nabla\alphab \right)^{T} \right\rangle \\
+                            &\hspace{40pt} - 2\left\| \Bb\alpha \right\|^{2} + 2\left\langle \betab,\alphab \right\rangle
+                                          + \landau\left( \xi + h^{2} \right)\tmu \\
+            &\rightarrow \frac{1}{2}\int_{\surf} \left( \div\alphab \right)^{2} + \left( \rot\alphab \right)^{2} + 2\left\langle \betab,\alphab \right\rangle \mu
+            =: F_{H}\left[ \alphab \right]
+      \end{align}
+      Therefor, the EL equations for \( F_{N} \) and \( F_{H} \) on the surface \( \surf \) are
+      \begin{align}
+        \Delta^{dG}\alphab - \Bb^{2}\alphab &= \betab &&\text{for (NPNC)} \formComma\\
+        \Delta\alphab &= \betab &&\text{for (NPHC)} \formComma
+      \end{align}
+      where \( \Delta \) is the Laplace-DeRham operator and \( \Delta^{dG}\alphab = \div\left( \nabla\alphab \right) = \Delta\alphab + \gaussc\alphab \),
+      so we can write down equivalently 
+      \begin{align}
+        \Delta\alphab + 2\gaussc\alphab - \meanc\Bb\alphab &= \betab &&\text{for (NPNC)} \formPeriod
+      \end{align}
+
+    \subsubsection{Limit of the EL Equations}
+      The Laplace operator is given by
+      \begin{align}
+        \left[ \tlaplace\talphab \right]_{I}
+            &= \tensor{\talpha}{_{I}^{:J}_{:J}}
+             = \partial_{J}\tensor{\talpha}{_{I}^{:J}} + \tch{JK}{J}\tensor{\talpha}{_{I}^{:K}} - \tch{JI}{L}\tensor{\talpha}{_{L}^{:J}} \\
+            &= \partial_{j}\tensor{\talpha}{_{I}^{:j}} + \tch{jK}{j}\tensor{\talpha}{_{I}^{:K}} - \tch{jI}{L}\tensor{\talpha}{_{L}^{:j}}
+                +\partial_{\xi}\talpha_{I:\xi} - \tch{\xi I}{l}\talpha_{l:\xi}\formPeriod
+      \end{align}
+      We observe, that we need a higher order expansion on \( \talpha_{i:\xi} \), that is
+      \begin{align}
+        \talpha_{i:\xi} &= \partial_{\xi}\talpha_{i} + \tensor{B}{_{i}^{j}}\talpha_{j} + \xi\tensor{\left[ \Bb^{2} \right]}{_{i}^{j}}\talpha_{j} +\landau(\xi^{2})\formPeriod
+      \end{align}
+      Hence, the normal partial derivative evaluatet on \( \surf \) is
+      \begin{align}
+        \partial_{\xi}\talpha_{i:\xi}\big|_{\surf} &= \partial_{\xi}^{2} \talpha_{i}\big|_{\surf} 
+                            + \tensor{B}{_{i}^{j}}\partial_{\xi}\talpha_{j}\big|_{\surf}
+                            + \tensor{\left[ \Bb^{2} \right]}{_{i}^{j}}\alpha_{j}\\
+               &=
+                  \begin{cases}
+                    \landau(h^{2}) & \text{ for (NPNC)} \\
+                    \left[ \Bb^{2}\alphab \right]_{i} + \landau(h^{2}) & \text{ for (NPHC)}
+                  \end{cases} \formPeriod
+      \end{align}
+      Apply all necessary identities from this section, we obtain for the tangential components on \( \surf \)
+      \begin{align}
+        \left[ \tlaplace\talphab \right]_{i}\big|_{\surf}
+            &= \partial_{j} \tensor{\talpha}{_{i}^{:j}}\big|_{\surf} + \ch{jk}{j}\tensor{\talpha}{_{i}^{:k}}\big|_{\surf} 
+                - \tensor{B}{_{j}^{j}}\talpha_{i:\xi}\big|_{\surf} - \ch{ij}{l} \tensor{\talpha}{_{l}^{:j}}\big|_{\surf}
+                -B_{ij} \tensor{\talpha}{_{\xi}^{:j}}\big|_{\surf} \\
+                &\quad+ \partial_{\xi}\talpha_{i:\xi}\big|_{\surf}
+                +\tensor{B}{_{i}^{l}}\talpha_{l:\xi}\big|_{\surf}\\
+            &= \left[ \Delta^{dG}\alphab \right]_{i} - \left[ \Bb^{2}\alphab \right]_{i} +
+                \begin{cases}
+                  \landau(h^{2}) & \text{ for (NPNC)} \\
+                  2\left[ \Bb^{2}\alphab \right]_{i} - \meanc\left[ \Bb\alphab \right]_{i} +\landau(h^{2}) & \text{ for (NPHC)} 
+                \end{cases} \\
+            &=
+              \begin{cases}
+                \left[ \Delta^{dG}\alphab - \Bb^{2}\alphab\right]_{i} + \landau(h^{2}) & \text{ for (NPNC)} \\
+                \left[ \Delta\alphab\right]_{i} + \landau(h^{2}) & \text{ for (NPHC)} \formPeriod
+              \end{cases} 
+      \end{align}
+      This means for the limit case \( h \rightarrow 0 \)
+      \begin{align}
+        \Pi\left[\tlaplace\talphab = \tbetab  \right] &\longrightarrow 
+            \begin{cases}
+                \Delta^{dG}\alphab - \Bb^{2}\alphab = \betab & \text{ for (NPNC)} \\
+                \Delta\alphab = \betab & \text{ for (NPHC)} \formComma
+              \end{cases}
+      \end{align}
+      and therefor commutes with our results from the previous section.
+
+      For the normal part, we derive
+      \begin{align}
+        \left[ \tlaplace\talphab \right]_{\xi}\big|_{\surf}
+            &= \partial_{j}\tensor{\talpha}{_{\xi}^{:j}}\big|_{\surf} + \ch{jk}{j}\tensor{\talpha}{_{\xi}^{:k}}\big|_{\surf}
+              - \tensor{B}{_{j}^{j}}\partial_{\xi}\talpha_{\xi}\big|_{\surf}
+              +  \tensor{B}{_{j}^{l}}\tensor{\talpha}{_{l}^{:j}}\big|_{\surf} + \partial_{\xi}^{2}\talpha_{\xi}\big|_{\surf}\\
+            &= \div(\Bb\alphab) + \left\langle \Bb,\nabla\alphab \right\rangle + \partial_{\xi}^{2}\talpha_{\xi}\big|_{\surf} + \landau(h^{2})
+              \quad\text{ for (NP)}\formComma
+      \end{align}
+      and hence, for \( q:=\partial_{\xi}^{2}\talpha_{\xi}\big|_{\surf} \) and \( r:= \tbeta_{\xi}\big|_{\surf} \)
+      \begin{align}
+        \nub\cdot\left[\tlaplace\talphab = \tbetab  \right] &\longrightarrow
+               \div(\Bb\alphab) + \left\langle \Bb,\nabla\alphab \right\rangle + q
+                  =  r  \quad\text{ for (NP)}\formPeriod
+      \end{align}
+      But we see that the normal part equation is decoupled completely from the tangential part by the additional scalar valued degree of freedom \( q \)
+      and this equation can be omitted as a consequence.
 
 \bibliography{bibl}
 \bibliographystyle{alpha}
