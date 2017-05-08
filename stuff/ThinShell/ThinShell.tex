@@ -13,8 +13,9 @@
 \usepackage{amsfonts}
 \usepackage{amsthm}
 
-%\usepackage{nath}
+\usepackage{MnSymbol}
 
+%\newcommand{\bmmax}{3}
 \usepackage{bm}
 
 \usepackage{hyperref}
@@ -45,8 +46,14 @@
 \newcommand{\betab}{\bm{\beta}}
 \newcommand{\gammab}{\bm{\gamma}}
 \newcommand{\deltab}{\bm{\delta}}
+\newcommand{\Qb}{\bm{Q}}
+\newcommand{\qb}{\bm{q}}
+\newcommand{\Psib}{\bm{\Psi}}
+\newcommand{\psib}{\bm{\psi}}
+
 \renewcommand{\div}{\operatorname{div}}
 \newcommand{\rot}{\operatorname{rot}}
+\newcommand{\trace}{\operatorname{Tr}}
 
 \newcommand{\ttt}{\tilde{t}}
 \newcommand{\ttb}{\tilde{\tb}}
@@ -56,6 +63,10 @@
 \newcommand{\tgamma}{\tilde{\gamma}}
 \newcommand{\tgammab}{\tilde{\gammab}}
 \newcommand{\tbeta}{\tilde{\beta}}
+\newcommand{\tQ}{\tilde{Q}}
+\newcommand{\tQb}{\tilde{\Qb}}
+\newcommand{\tPsi}{\tilde{\Psi}}
+\newcommand{\tPsib}{\tilde{\Psib}}
 \newcommand{\tmu}{\tilde{\mu}}
 
 \newcommand{\tF}{\tilde{F}}
@@ -64,8 +75,10 @@
 \newcommand{\tlaplace}{\tilde{\Delta}}
 \newcommand{\tdiv}{\widetilde{\div}}
 
-\newcommand{\tnorm}[1]{\left\Vert\mkern-1.9mu\left\vert #1 \right\vert\mkern-1.9mu\right\Vert}
-\newcommand{\tscal}[1]{\left\langle\mkern-8mu\left\langle #1 \right\rangle\mkern-8mu\right\rangle}
+%\newcommand{\tnorm}[1]{\left\Vert\mkern-1.9mu\left\vert #1 \right\vert\mkern-1.9mu\right\Vert}
+%\newcommand{\tscal}[1]{\left\langle\mkern-8mu\left\langle #1 \right\rangle\mkern-8mu\right\rangle}
+\newcommand{\tnorm}[1]{\left\lsem #1 \right\rsem}
+\newcommand{\tscal}[1]{\left\llangle #1 \right\rrangle}
 
 \newcommand{\tch}[2]{\widetilde{\Gamma}_{#1}^{#2}}
 \newcommand{\ch}[2]{\Gamma_{#1}^{#2}}
@@ -651,8 +664,8 @@ We will not carry this out in full generality, but let us mention some developme
               \end{cases}\\
              &=
               \begin{cases}
-                \frac{1}{2} \int_{\surf} -\gaussc\left\| \alphab \right\| \mu + \landau(h^{2}) & \text{for (NPNC)} \\
-                \frac{1}{2} \int_{\surf} -\gaussc\left\| \alphab \right\| + \left\| \Bb\alphab \right\|^{2}\mu + \landau(h^{2}) & \text{for (NPHC)}
+                \frac{1}{2} \int_{\surf} -\gaussc\left\| \alphab \right\|^{2} \mu + \landau(h^{2}) & \text{for (NPNC)} \\
+                \frac{1}{2} \int_{\surf} -\gaussc\left\| \alphab \right\|^{2} + \left\| \Bb\alphab \right\|^{2}\mu + \landau(h^{2}) & \text{for (NPHC)}
               \end{cases} \\
              &= \landau(1) \text{ , generally}
             \formPeriod
@@ -663,11 +676,11 @@ We will not carry this out in full generality, but let us mention some developme
     \begin{align}
       \int_{\surfh} \tscal{\frac{\delta\tF_{N}}{\delta\talphab}, \tgammab} \tmu
             &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu
-             + \frac{1}{2}\sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \tgamma^{I}\talpha_{I:\xi} \mu_{\Upsilon^{s}} \\
+             + \sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} \tgamma^{I}\talpha_{I:\xi} \mu_{\Upsilon^{s}} \label{eq:IntByPartsForFN}\\
             &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu \quad\text{ for (NPNC)} \\
       \int_{\surfh} \tscal{\frac{\delta\tF_{H}}{\delta\talphab}, \tgammab} \tmu
             &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu \\
-            &\quad+\frac{1}{2}\sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} 
+            &\quad+\sum_{s\in\{+,-\}}s\int_{\Upsilon^{s}} 
                     \tgamma_{\xi}\tensor{\talpha}{^{I}_{:I}}
                   +\tgamma^{I}\left( \talpha_{I:\xi} - \talpha_{\xi : I} \right) \tmu \\
             &= \int_{\surfh} \tscal{-\tlaplace\talphab + \tbetab, \tgammab}\tmu \quad\text{ for (NPHC)}
@@ -794,6 +807,342 @@ We will not carry this out in full generality, but let us mention some developme
       \end{align}
       But we see that the normal part equation is decoupled completely from the tangential part by the additional scalar valued degree of freedom \( q \)
       and this equation can be omitted as a consequence.
+
+  \subsection{Weak Boundary Anchoring}\label{sec:weakanchoring}
+    Another technique to handle with boundary conditions is a weak anchoring of  desirable properties for a quantity \( \ttb \) at boundaries.
+    Commonly those properties were not completely fulfill, but they will take up a minimal state in an interplay in the minimization process 
+    with others energy functionals may defined also at the boundaries or the bulk.
+    In our case such a weak anchoring is expressed as a boundary functional
+    \begin{align}
+      F_{w}[\ttb] = \int_{\Upsilon^{s}}f_{w}(\ttb)\mu_{\Upsilon^{s}} \ge 0
+    \end{align}
+    for \( s\in\left\{ +,- \right\} \) with functional derivative weakly defined by
+    \begin{align}
+      \int_{\Upsilon^{s}} \tscal{\varphi_{w}(\ttb), \tgammab} \mu_{\Upsilon^{s}}
+       &:=\int_{\Upsilon^{s}} \tscal{\frac{\delta F_{w}}{\delta\ttb}, \tgammab} \mu_{\Upsilon^{s}} \formPeriod
+    \end{align}
+    For example, we can formulate a weak No-Penetration conditon (WNP) for a vector quantity \( \talphab \) by
+    \begin{align}
+      f_{w,NP}(\talphab) &:= c\tscal{\talphab,\nub}^{2} = c(\talpha_{\xi})^{2}
+      &\Rightarrow \varphi_{w,NP} = c\talpha_{\xi} \nub \formPeriod \tag{WNP}
+    \end{align}
+    with \( c>0 \).
+    From former section we know, that for distortion like functionals, integration by parts leads also to boundary integrals.
+    Adding up with the anchoring energy, we obtain boundary terms classified in a pattern
+    \begin{align}\label{eq:boundaryIntegralWithWeakAnchoring}
+      \int_{\Upsilon^{s}} s\tscal{\varphi_{d}(\ttb), \tgammab} + \tscal{\varphi_{w}(\ttb), \tgammab} \mu_{\Upsilon^{s}} \formComma
+    \end{align}
+    where \( \varphi_{d} \) arises from integration by parts of the bulk energy. 
+    Remember, the sign \( s\in\left\{ +,- \right\} \) is the consequence of the relation of the global defined basis vector \( \nub \) and
+    the outer normals \( \nub_{\Upsilon^{s}} \) of the two boundaries. 
+    It is valid, that \( \nub\AtBoundary{+} = \nub_{\Upsilon^{+}}  \) and \( \nub\AtBoundary{-} = -\nub_{\Upsilon^{-}}  \).
+    Anyway, for example, we get for the bulk energy \( \tilde{F}_{N}[\talphab] \)
+    \begin{align}
+      \varphi_{d,N}(\talphab) &= \tnabla_{\nu}\talphab \formComma
+    \end{align}
+    see \eqref{eq:IntByPartsForFN}.
+    To fulfill the EL Equation the integral \eqref{eq:boundaryIntegralWithWeakAnchoring} have to vanish.
+    If we do not want to restrict the variation in \( \tgammab \) we have to stipulate
+    \begin{align}
+      b(\ttb)\AtBoundary{s} := s\varphi_{d}(\ttb)\AtBoundary{s} + \varphi_{w}(\ttb)\AtBoundary{s} = 0 \formComma
+    \end{align}
+    as a consequence.
+    However, with Taylor expansion
+    \begin{align}
+      \varphi_{\cdot}(\ttb)\AtBoundary{s} =  \varphi_{\cdot}(\ttb)\AtSurface 
+                                            + s \frac{h}{2}\partial_{\xi} \varphi_{\cdot}(\ttb)\AtSurface
+                                            + \frac{h^{2}}{8} \partial_{\xi}^{2} \varphi_{\cdot}(\ttb)\AtSurface + \landau(h^{3}) \formComma
+    \end{align}
+    we obtain
+    \begin{align}
+      0 &= \frac{1}{2}\left( b(\ttb)\AtBoundary{+} - b(\ttb)\AtBoundary{-} \right)
+         = \frac{1}{2}\left( \varphi_{d}(\ttb)\AtBoundary{+} +  \varphi_{d}(\ttb)\AtBoundary{-} + \varphi_{w}(\ttb)\AtBoundary{+} -  \varphi_{w}(\ttb)\AtBoundary{-}\right)\\
+        &= \varphi_{d}(\ttb)\AtSurface + \frac{h}{2} \partial_{\xi}\varphi_{w}(\ttb)\AtSurface + \landau(h^{2}) \label{eq:weakanchoringconsequenceminus}\\
+      0 &= \frac{1}{2}\left( b(\ttb)\AtBoundary{+} + b(\ttb)\AtBoundary{-} \right)
+         = \frac{1}{2}\left( \varphi_{d}(\ttb)\AtBoundary{+} -  \varphi_{d}(\ttb)\AtBoundary{-} + \varphi_{w}(\ttb)\AtBoundary{+} +  \varphi_{w}(\ttb)\AtBoundary{-}\right)\\
+        &= \varphi_{w}(\ttb)\AtSurface + \frac{h}{2} \partial_{\xi}\varphi_{d}(\ttb)\AtSurface + \landau(h^{2}) \formPeriod \label{eq:weakanchoringconsequenceplus}
+    \end{align}
+    Hence, if \( \partial_{\xi}\varphi_{w}(\ttb) \) and \( \partial_{\xi}\varphi_{d}(\ttb) \) are bounded regarding \( h \rightarrow 0 \),
+    then we have \( \varphi_{d}(\ttb)\AtSurface = \landau(h) \) and \( \varphi_{w}(\ttb)\AtSurface = \landau(h) \).
+    In contrast to strong boundary anchoring, \ie explicit formulations of boundary conditions, the consequences at surface are the same up to the order of consistency. 
+    For our example \( \tilde{F}_{N}[\talphab] \) this means
+    \begin{align}
+      \talpha_{i:\xi}\AtSurface &=  \landau(h^{2})
+      &\talpha_{\xi:\xi}\AtSurface &= \landau(h)
+      &\alpha_{\xi}\AtSurface &:= \landau(h) \tag{WNPNC} \formComma\\
+      \talpha_{i:\xi}\AtSurface &=  \landau(h^{2})
+      &\talpha_{\xi:\xi}\AtSurface &= \landau(h^{2})
+      &\alpha_{\xi}\AtSurface &:= \landau(h^{2}) \tag{NPNC} \formPeriod
+    \end{align}
+
+
+
+\section{Q-Tensors}
+  In this section, let us investigate the behaviour of Q-tensors \( \tQb \),
+  \ie, \( \trace\tQb = \tensor{\tQ}{^{I}_{I}}= 0 \) and \( \tQ_{IJ} = \tQ_{JI} \), 
+  and their action on the free (elastic) energy functional
+  \begin{align}
+    \tF[\tQb] := \tF_{d}[\tQb] + \tF_{t}[\tQb] + F_{w}[\tQb]
+  \end{align}
+  with distortion energy \( \tF_{d} \), thermotropic energy \(\tF_{t}  \) and a weak anchoring energy \( F_{w} \), defined by
+  \begin{align}
+    \tF_{d}[\tQb] &:= \frac{L}{2}\int_{\surfh} \tnorm{\tnabla\tQb}^{2}\tmu \formComma\\
+     \tF_{t}[\tQb]&:= \int_{\surfh} a\trace\tQb^{2} + \frac{2}{3}b\trace\tQb^{3} + c\trace\tQb^{4} \tmu \formComma\\
+    F_{w}[\tQb]&:= \sum_{s\in\left\{ +,- \right\}} \int_{\Upsilon^{s}} \frac{\alpha}{2} \left( \nub\cdot\tQb\cdot\nub - \beta \right)^{2}
+                                                + \frac{\gamma}{2} \tnorm{\Pi\cdot\tQb\cdot\nub}^{2} \mu_{\Upsilon^{s}} \\
+               &= \sum_{s\in\left\{ +,- \right\}} \int_{\Upsilon^{s}} \frac{\alpha}{2} \left( \tQ_{\xi\xi} - \beta \right)^{2}
+                                                + \frac{\gamma}{2} \tQ_{i\xi}\tensor{\tQ}{^{i}_{\xi}} \mu_{\Upsilon^{s}} \formPeriod
+  \end{align}
+  Note, that the metric tensor on the boundary complies with \( \left[ \tgb\AtBoundary{s}\right]_{I\xi} = \delta_{I\xi} \).
+  Therefor, we can simply rise and lower tangential indices without producing new components in sums.
+  Variation by \( \varepsilon \) in Q-tensor direction \( \tPsib \) results in
+  \begin{align}
+    F_{w}[\tQb+ \varepsilon\tPsib] 
+        &:= \sum_{s\in\left\{ +,- \right\}} \int_{\Upsilon^{s}} \frac{\alpha}{2} \left( \tQ_{\xi\xi} - \beta + \varepsilon\tPsi_{\xi\xi}\right)^{2}
+                                                + \frac{\gamma}{2} \left(\tQ_{i\xi} + \varepsilon\tPsi_{i\xi}\right) 
+                                                  \left( \tensor{\tQ}{^{i}_{\xi}} + \varepsilon \tensor{\tPsi}{^{i}_{\xi}}\right) \mu_{\Upsilon^{s}}\\
+        &:= F_{w}[\tQb] + \varepsilon \sum_{s\in\left\{ +,- \right\}} \int_{\Upsilon^{s}} \alpha \left( \tQ_{\xi\xi} - \beta \right)\tPsi_{\xi\xi}
+                                                + \gamma \tQ_{i\xi}\tensor{\tPsi}{^{i}_{\xi}} \mu_{\Upsilon^{s}}
+                       + \landau(\varepsilon^{2}) \formPeriod
+  \end{align}
+  Hence, the first derivative respective \( \tQb \) restricted to \(\Upsilon^{s}  \) is
+  \begin{align}
+    \varphi_{w}(\tQb) &:= \frac{\delta F_{w}}{\delta\tQb}
+                = \alpha\left( \left( \nub\cdot\tQb\cdot\nub - \beta \right) \right)\left( \nub\otimes\nub \right)
+                      +\gamma\left( \Pi\cdot\tQb\cdot\nub \right) \otimes \nub \formComma
+  \end{align}
+  or in component notation
+  \begin{align}
+    \left[ \varphi_{w}(\tQb) \right]_{ij} &= 0 \\
+    \left[ \varphi_{w}(\tQb) \right]_{\xi\xi} &= \alpha \left( \tQ_{\xi\xi} - \beta \right) \\
+    \left[ \varphi_{w}(\tQb) \right]_{i\xi} &= \left[ \varphi_{w}(\tQb) \right]_{\xi i}
+                                  = \gamma \tQ_{i\xi} \formPeriod
+  \end{align}
+  The thermotropic energy \(\tF_{t}  \) has only an impact in the bulk, \ie, its action on the boundary has only a measurement of zero.
+  But the distortion energy  has a noticeable effect at the boundaries while formulating the EL equations.
+  This is
+  \begin{align}
+    \int_{\surfh} \tscal{\frac{\delta F_{d}}{\delta\tQb}, \tPsib} \tmu
+          &= L \int_{\surfh} \tscal{\tnabla\tQb, \tnabla\tPsib} \tmu
+          = L \int_{\surfh} \tQ_{IJ:K} \tPsi^{IJ:K} \tmu \\
+          &= -L\int_{\surfh} \tensor{\tQ}{_{IJ:K}^{K}} \tPsi^{IJ} \tmu
+             + \sum_{s\in\left\{ +,- \right\}} sL \int_{\Upsilon^{s}} \tQ_{IJ:\xi} \tPsi^{IJ} \mu_{\Upsilon^{s}} \\
+          &= -L \int_{\surfh} \tscal{\tlaplace\tQb , \tPsib} \tmu 
+                  + \sum_{s\in\left\{ +,- \right\}} sL \int_{\Upsilon^{s}} \tscal{\tnabla_{\nub}\tQb , \tPsib} \mu_{\Upsilon^{s}} \formPeriod
+  \end{align}
+  So, we are able to define (see \autoref{sec:weakanchoring})
+  \begin{align}
+    \varphi_{d}(\tQb) &:= L \tnabla_{\nub}\tQb = \left\{L \tQ_{IJ:\xi} \right\}
+  \end{align}
+  at the boundary \( \Upsilon^{s} \)
+  Hence, for natural boundary conditions, which fulfill the EL equations, we get
+  \begin{align}
+    \tQ_{ij:\xi}\AtSurface &= \landau(h^{2}) \\
+    \tQ_{\xi\xi:\xi}\AtSurface &=  \partial_{\xi}\tQ_{\xi\xi}\AtSurface =  \landau(h) \\
+    \tQ_{i\xi:\xi}\AtSurface &= \tQ_{\xi i :\xi}\AtSurface = \landau(h)
+  \end{align}
+  as a consequence of \eqref{eq:weakanchoringconsequenceminus}, and
+  \begin{align}
+    \partial_{\xi} \tQ_{ij:\xi}\AtSurface &= \landau(h) \\
+    \tQ_{\xi\xi}\AtSurface &=  \beta + \landau(h) \\
+    \tQ_{i\xi}\AtSurface &= \tQ_{\xi i}\AtSurface = \landau(h)
+  \end{align}
+  as a consequence of \eqref{eq:weakanchoringconsequenceplus}.
+  Thus we are capable of determining all covariant derivatives 
+  \begin{align}
+    \left[  \tnabla\tQb \right]_{IJK} = \tQ_{IJ:K}
+          = \partial_{K}\tQ_{IJ} - \tch{KI}{L}\tQ_{LJ} - \tch{KJ}{L}\tQ_{IL}
+  \end{align}
+  restricted on \( \surf \).
+  All derivatives in normal direction \( \tQ_{IJ:\xi}\AtSurface \) are written above.
+  With surface tensor 
+  \begin{align}
+    \Qb &=\left\{ Q_{ij} \right\} := \Pi\cdot\tQb\AtSurface\cdot\Pi = \left\{ \tQ_{ij}\AtSurface \right\}
+  \end{align}
+  the remaining derivatives are
+  \begin{align}
+    \tQ_{ij:k}\AtSurface &= \left(\partial_{k}\tQ_{ij} - \tch{ki}{l}\tQ_{lj} - \tch{kj}{l}\tQ_{il}\right)\AtSurface 
+                                          - \tch{ki}{\xi}\tQ_{\xi j}\AtSurface -\tch{kj}{\xi}\tQ_{i\xi}\AtSurface\\
+                         &= Q_{ij|k} + \landau(h)\\
+    \tQ_{i\xi:k}\AtSurface &= \tQ_{\xi i:k}\AtSurface =  \partial_{k}\tQ_{i\xi}\AtSurface - \tch{ki}{l}\tQ_{l\xi}\AtSurface  
+                                                          - \tch{ki}{\xi}\tQ_{\xi\xi}\AtSurface- \tch{k\xi}{l}\tQ_{il}\AtSurface\\
+                         &= -\beta B_{ik} + \tensor{B}{_{k}^{l}}Q_{li} + \landau(h) \\
+    \tQ_{\xi\xi:k}\AtSurface &= \partial_{k}\tQ_{\xi\xi}\AtSurface - \tch{k\xi}{l}\tQ_{l\xi}\AtSurface - \tch{k\xi}{l}\tQ_{\xi l}\AtSurface 
+                              = \partial_{k}\beta + \landau(h) \\
+                             &= \landau(h) \formPeriod
+  \end{align}
+  So we get for square of the norm
+  \begin{align}
+    \tnorm{\tnabla\tQb\AtSurface}^{2} &= \tQ_{IJ:K}\tQ^{IJ:K}\AtSurface
+                        =  \tQ_{ij:k}\tQ^{ij:k}\AtSurface + 2 \tQ_{i\xi:k}\tQ^{i\xi:k} \AtSurface + \landau(h) \\
+                        &= \left\| \nabla\Qb \right\|^{2} + 2 \left( \left\| \Bb\Qb \right\|^{2} 
+                                      - 2\beta\left\langle \Bb^{2}, \Qb \right\rangle + \beta^{2}\left\| \Bb \right\|^{2}\right) + \landau(h) \formPeriod
+  \end{align}
+  Unfortunately, \( \Qb \) is symmetric indeed, but not a surface Q-tensor generally, because 
+  \begin{align}
+    \trace\Qb = \trace\tQb\AtSurface - \tQ_{\xi\xi}\AtSurface = -\beta + \landau(h) \formPeriod 
+  \end{align}
+  However, it is easier to handle with a surface Q-tensor \( \qb \), 
+  therefor we define
+  \begin{align}
+    \qb &:= \Qb - \frac{ \trace\Qb}{2}\gb =  \Qb + \frac{\beta}{2}\gb + \landau(h) \\
+    \Rightarrow\   \Qb &= \qb - \frac{\beta}{2}\gb + \landau(h) \formPeriod
+  \end{align}
+  This stipulation causes
+  \begin{align}
+    \tnorm{\tnabla\tQb\AtSurface}^{2} &= \left\| \nabla\qb \right\|^{2} + \landau(h)\\
+              &\quad +2\left(  \left\| \Bb\qb \right\|^{2} + \frac{\beta^{2}}{4}\left\| \Bb \right\|^{2} - \beta\left\langle \Bb^{2}, \qb \right\rangle
+                      -2\beta\left( \left\langle \Bb^{2}, \qb \right\rangle - \frac{\beta}{2}\left\| \Bb \right\|^{2} \right)
+                      +\beta^{2}\left\| \Bb \right\|^{2} \right)\\
+        &= \left\| \nabla\qb \right\|^{2} + 2\left\| \Bb\qb \right\|^{2} - 6\beta\left\langle \Bb^{2}, \qb \right\rangle + \frac{9}{2}\beta^{2}\left\| \Bb \right\|^{2} 
+            + \landau(h)  \\
+        \Bigg(&= \left\| \nabla\qb \right\|^{2} + 2\left\| \Bb\left( \qb - \frac{3}{2}\beta\gb \right) \right\|^{2} +  \landau(h) \Bigg) \formPeriod
+  \end{align}
+  To proceed further, \autoref{thm:quadtwotensortheorem} results in
+  \begin{align}
+    \qb^{2} &= \frac{1}{2}\left( \trace\qb^{2} \right)\gb = \frac{\left\| \qb \right\|^{2}}{2}\gb \quad\bot\quad \qb \formComma
+  \end{align}
+  and thus, the covariant components of the square of \( \tQb \) restricted to the surface are
+  \begin{align}
+    \left[ \tQb^{2}\AtSurface \right]_{ij}
+            &= \tQ_{iK}\tensor{\tQ}{^{K}_{j}}\AtSurface
+             = \tQ_{ik}\tensor{\tQ}{^{k}_{j}}\AtSurface + \landau(h)
+             = \left[ \Qb^{2} \right]_{ij} + \landau(h)\\
+            &= \left[ \qb^{2} \right]_{ij} -\beta q_{ij} + \frac{\beta^{2}}{4}g_{ij} + \landau(h)
+             = \frac{1}{2}\left( \trace\qb^{2} + \frac{\beta^{2}}{2} \right)g_{ij} - \beta q_{ij} + \landau(h)\\
+      \left[ \tQb^{2}\AtSurface \right]_{\xi\xi} 
+            &= \tQ_{\xi K}\tensor{\tQ}{^{K}_{\xi}}\AtSurface
+             = \left( \tQ_{\xi\xi} \right)^{2}\AtSurface + \landau(h)
+             = \beta^{2} + \landau(h) \\
+      \left[ \tQb^{2}\AtSurface \right]_{i \xi}
+            &= \left[ \tQb^{2}\AtSurface \right]_{\xi i}
+            = \tQ_{i K}\tensor{\tQ}{^{K}_{\xi}}\AtSurface
+            = \landau(h) \formPeriod
+  \end{align}
+  Therefor, we obtain
+  \begin{align}
+    \trace\tQb^{2}\AtSurface
+        &= \trace\qb^{2} +\frac{\beta^{2}}{2} + \beta^{2} + \landau(h)
+         = \trace\qb^{2} + \frac{3}{2}\beta^{2} + \landau(h) \\
+    \trace\tQb^{3}\AtSurface
+        &= \tscal{ \tQb^{2}\AtSurface, \tQb\AtSurface }
+         = \left[ \tQb^{2}\AtSurface \right]_{ij} \tQ^{ij}\AtSurface + \left[ \tQb^{2} \right]_{\xi\xi}\tQ_{\xi\xi}\AtSurface + \landau(h)\\
+        &= \left\langle \frac{1}{2}\left( \trace\qb^{2} + \frac{\beta^{2}}{2} \right)\gb - \beta \qb, \qb - \frac{\beta}{2}\gb \right\rangle + \beta^{3}  + \landau(h)\\
+        &=  -\frac{\beta}{2}\left( \trace\qb^{2} + \frac{\beta^{2}}{2} \right) - \beta\trace\qb^{2} + \beta^{3}  + \landau(h)\\
+        &= \frac{3}{2}\left( -\beta\trace\qb^{2} + \frac{1}{2}\beta^{3} \right) + \landau(h)\\
+     \trace\tQb^{4}\AtSurface
+        &= \frac{1}{2}\left( \trace\tQb^{2}\AtSurface \right)^{2}
+         = \trace\qb^{4} + \frac{3}{2}\beta^{2}\trace\qb^{2} + \frac{9}{8}\beta^{4} + \landau(h) \formPeriod
+  \end{align}
+  By adding these results up, we have
+  \begin{align}
+    &a\trace\tQb^{2}\AtSurface + \frac{2}{3}b\trace\tQb^{3}\AtSurface + c\trace\tQb^{4}\AtSurface\\
+        &\quad\quad= \frac{1}{2}\left( 2a - 2b\beta+3c\beta^{2} \right)\trace\qb^{2} + c\trace\qb^{4} +\frac{\beta^{2}}{8}\left( 12a + 4b\beta + 9c\beta^{2} \right) + \landau(h)\formPeriod
+  \end{align}
+  Therefor, we define the surface energy functional by 
+  \begin{align}
+    F[\qb] &:= F_{d}[\qb] +  F_{t}[\qb]\\
+    F_{d}[\qb] &:= \frac{L}{2}\int_{\surf}\left\| \nabla\qb \right\|^{2} +2\left\| \Bb\qb \right\|^{2} 
+                    - 6\beta\left\langle \Bb^{2}, \qb \right\rangle + \frac{9}{2}\beta^{2}\left\| \Bb \right\|^{2}\mu\\
+    F_{t}[\qb] &:= \int_{\surf} \frac{1}{2}\left( 2a - 2b\beta+3c\beta^{2} \right)\trace\qb^{2} + c\trace\qb^{4}
+                        +\frac{\beta^{2}}{8}\left( 12a + 4b\beta + 9c\beta^{2} \right) \mu \formComma
+  \end{align}
+  If we do not like with quadratic shape operator terms, we should substitute
+  \begin{align}
+    \left\| \Bb\qb \right\|^{2} &= \meanc\left\langle \Bb,\qb^{2} \right\rangle - \gaussc\trace\qb^{2}\\
+    \left\langle \Bb^{2}, \qb \right\rangle &= \meanc\left\langle \Bb, \qb \right\rangle \\
+    \left\| \Bb \right\|^{2} &= \meanc^{2} - 2\gaussc \formPeriod
+  \end{align}
+  With all these spadework above in this section and \autoref{thm:midpointrule}, we see easily
+  \begin{align}
+    \frac{1}{h}\tF[\tQb] &= F[\qb] + \landau(h)
+  \end{align}
+
+  If we want to  reconstruct the thin shell global \( \tQb \), then we can use constant interpolation in normal direction, \ie, 
+  \begin{align}
+    \tQb \approx \left( q^{ij} - \frac{\beta}{2}g^{ij} \right)\left( \partial_{i}\txb\otimes \partial_{j}\txb\right) + \beta\left( \nub\otimes\nub \right)
+  \end{align}
+  in \( \surfh \)
+
+  Note, that the terms, which do not depend on \( \qb \) in \( F_{d} \) and \( F_{t} \), can be ommited, because those terms do not affect the minimization process.
+  Therefor the resulting truncated energies for special cases \( \beta=0 \) and \( \beta=\frac{1}{3} \) are
+  \begin{align}
+    F_{d}^{0}[\qb] &=  \frac{L}{2}\int_{\surf} \left\| \nabla\qb \right\|^{2} +2\left\| \Bb\qb \right\|^{2} \mu \\
+    F_{t}^{0}[\qb] &= \int_{\surf} a \trace\qb^{2} + c\trace\qb^{4} \mu \\
+    F_{d}^{\frac{1}{3}}[\qb] &=  \frac{L}{2}\int_{\surf} \left\| \nabla\qb \right\|^{2} +2\left\| \Bb\qb \right\|^{2} -2 \left\langle \Bb^{2}, \qb \right\rangle\mu \\
+                      &= \frac{L}{2}\int_{\surf} \left\| \nabla\qb \right\|^{2} + 2\meanc\left\langle \Bb,\qb^{2} - \qb \right\rangle - 2\gaussc\trace\qb^{2} \mu\\
+    F_{t}^{\frac{1}{3}}[\qb] &= \int_{\surf} \frac{1}{6}\left( 6a - 2b +c \right)\trace\qb^{2} + c\trace\qb^{4} \mu
+  \end{align}
+
+  \subsection{Evolution Equation}
+    For a dynamic evolution to minimize \( F \), we propose the ansatz
+    \begin{align}
+      \int_{\surf}\left\langle \partial_{t}\qb + \frac{\delta F}{\delta \qb}\left[ \qb \right], \psib \right\rangle \mu = 0.
+    \end{align}
+    for all surface Q-tensors \( \psib \).
+    Integration by parts and self-adjointness  of \( \Bb \) result in
+    \begin{align}
+      \int_{\surf} \left\| \nabla\left(\qb+\varepsilon\psib\right) \right\|^{2}\mu 
+            &= \int_{\surf} \left\| \nabla\qb \right\|^{2} - 2\varepsilon\left\langle \Delta^{dG}\qb, \psib \right\rangle +\landau(\varepsilon^{2}) \mu \\
+      \left\| \Bb\left(\qb+\varepsilon\psib\right) \right\|^{2} 
+            &= \left\| \Bb\qb\right\|^{2} + 2\varepsilon\left\langle \Bb^{2}\qb,\psib \right\rangle +\landau(\varepsilon^{2}) \\
+      \left\langle \Bb^{2},\qb+\varepsilon\psib \right\rangle 
+            &= \left\langle \Bb^{2}, \qb \right\rangle + \varepsilon\left\langle \Bb^{2}, \psib \right\rangle\\
+      \left( \qb+\varepsilon\psib \right)^{2}
+            &= \qb^{2} + \varepsilon\left( \qb\psib + \psib\qb\right) + \landau(\varepsilon^{2}) \\
+      \trace\left( \qb+\varepsilon\psib \right)^{2}
+            &= \trace\qb^{2} + 2\varepsilon\left\langle \qb,\psib \right\rangle + \landau(\varepsilon^{2}) \\
+      \trace\left( \qb+\varepsilon\psib \right)^{4}
+            &= \frac{1}{2} \left( \trace\left( \qb+\varepsilon\psib \right)^{2}  \right)^{2}
+             = \trace\qb^{4} + 2\varepsilon\trace\qb^{2}\left\langle \qb,\psib \right\rangle + \landau(\varepsilon^{2})
+    \end{align}
+    and therefor
+    \begin{align}
+      && \partial_{t}\qb - L\left( \Delta^{dG}\qb - 2\Bb^{2}\qb \right) + \left( 2a - 2b\beta + c\left( 3\beta^{2} + 2\trace\qb^{2}  \right) \right)\qb &= 3L\beta\Bb^{2}\\
+      \beta &= 0: & \partial_{t}\qb - L\left( \Delta^{dG}\qb - 2\Bb^{2}\qb \right) + 2\left( a + c\trace\qb^{2}  \right)\qb &= 0 \\
+      \beta &= \frac{1}{3}: & \partial_{t}\qb - L\left( \Delta^{dG}\qb - 2\Bb^{2}\qb \right) + \frac{1}{3}\left( 6a - 2b + c\left( 1+6\trace\qb^{2} \right) \right)\qb &= L\Bb^{2}
+    \end{align}
+
+
+\section{Appendix}
+  
+  \begin{theorem}\label{thm:quadtwotensortheorem}
+    For all 2-tensors \( \tb \) on surface \( \surf \) holds
+    \begin{align}
+      \tb^{2} &=  \left( \trace\tb \right)\tb + \frac{1}{2}\left( \trace\tb^{2}-  \left( \trace\tb \right)^{2} \right)\gb \formPeriod
+    \end{align}
+  \end{theorem}
+  \begin{proof}
+    Something, which is lost in the clutter of my desk, 
+    nevertheless, it is still \( \checkmark\)\texttt{MProved}.
+  \end{proof}
+
+  \begin{theorem}\label{thm:midpointrule}
+    Be \( \ttb  \) a quantity defined in the thin shell \( \surfh \) and
+    \( \tilde{f}: \ttb \mapsto \left( \surfh \rightarrow \R \right) \) maps to a density in \( \surfh \).
+    If the \(\surf_{\xi}  \)-layer functional
+    \begin{align}
+      F[\ttb](\xi) &:= \int_{\surf_{\xi}}\tilde{f}[\ttb]\left( 1-\xi\meanc+\xi^{2}\gaussc \right)\mu\formComma
+    \end{align}
+    fulfil the regularity in \( \xi \)
+    \begin{align}
+       \frac{\operatorname{d}^{2}}{\operatorname{d}\xi^{2}} F[\ttb] = \landau(1) \formComma
+    \end{align}
+    then it holds
+    \begin{align}
+      \frac{1}{h}\int_{\surfh} \tilde{f}[\ttb]\tmu
+        &= \int_{\surf} \tilde{f}[\ttb]\AtSurface\mu + \landau(h^{2}) \formComma
+    \end{align}
+  \end{theorem}
+  \begin{proof}
+    With the midpoint (rectangle) rule and assumed regularity, we have
+    \begin{align}
+      \int_{\surfh} \tilde{f}[\ttb]\tmu &= \int_{-\frac{h}{2}}^{\frac{h}{2}}F[\ttb](\xi) \operatorname{d}\xi
+            =hF[\ttb](0) + \landau(h^{3}) \formComma
+    \end{align}
+    where \( F[\ttb](0) = \int_{\surf} \tilde{f}[\ttb]\AtSurface\mu \). 
+  \end{proof}
+
 
 \bibliography{bibl}
 \bibliographystyle{alpha}

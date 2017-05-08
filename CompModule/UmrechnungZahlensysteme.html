@@ -1,0 +1,123 @@
+<!DOCTYPE HTML">
+<HTML>
+ <HEAD>
+  <TITLE>UmrechnungZahlensysteme</TITLE>
+  <META NAME="generator" CONTENT="wxMaxima">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    displayAlign: "left",
+    context: "MathJax"
+  })
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+</script>
+  <link rel="stylesheet" type="text/css" href="UmrechnungZahlensysteme_htmlimg/UmrechnungZahlensysteme.css"/>
+ </HEAD>
+ <BODY>
+
+<!-- ***************************************************** -->
+<!--          Created with wxMaxima version 15.08.2         -->
+<!-- ***************************************************** -->
+<noscript><div class="error message">    Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</div></noscript>\(      \DeclareMathOperator{\abs}{abs}
+\)
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">dec2b</span>(<span class="code_variable">z</span>,<span class="code_variable">b</span>,<span class="code_variable">maxNachkomma</span>)<span class="code_operator">:</span><span class="code_operator">=</span>(<span class="code_variable">zVorkomma</span> <span class="code_operator">:</span> <span class="code_function">floor</span>(<span class="code_variable">z</span>) <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">Abrunden</span><span class="code_comment"> </span><span class="code_comment">zB</span><span class="code_comment">. </span><span class="code_comment">floor</span><span class="code_comment">(</span><span class="code_comment">12</span><span class="code_comment">.</span><span class="code_comment">34</span><span class="code_comment">)</span><span class="code_comment">=</span><span class="code_comment">12</span><span class="code_comment"> </span><span class="code_comment">*/</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">zNachkomma</span> <span class="code_operator">:</span> <span class="code_variable">z</span> <span class="code_operator">-</span> <span class="code_variable">zVorkomma</span> <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">Nachkommastellen</span><span class="code_comment"> </span><span class="code_comment">zB</span><span class="code_comment">. </span><span class="code_comment">0</span><span class="code_comment">.</span><span class="code_comment">34</span><span class="code_comment"> </span><span class="code_comment">*/</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">yVorkomma</span> <span class="code_operator">:</span> [] <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">leere</span><span class="code_comment"> </span><span class="code_comment">Liste</span><span class="code_comment"> </span><span class="code_comment">*/</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">yNachkomma</span> <span class="code_operator">:</span> [] <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">leere</span><span class="code_comment"> </span><span class="code_comment">Liste</span><span class="code_comment"> </span><span class="code_comment">*/</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while <span class="code_variable">zVorkomma</span><span class="code_operator">#</span><span class="code_number">0</span> do <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">solange</span><span class="code_comment"> </span><span class="code_comment">zVorkomma</span><span class="code_comment"> </span><span class="code_comment">ungleich</span><span class="code_comment"> </span><span class="code_comment">0</span><span class="code_comment"> (</span><span class="code_comment">als</span><span class="code_comment"> </span><span class="code_comment">ganze</span><span class="code_comment"> </span><span class="code_comment">Zahl</span><span class="code_comment">)</span><span class="code_comment">*/</span><BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="code_variable">yVorkomma</span> <span class="code_operator">:</span> <span class="code_function">cons</span>(<span class="code_function">mod</span>(<span class="code_variable">zVorkomma</span>,<span class="code_variable">b</span>), <span class="code_variable">yVorkomma</span>) <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">haenge</span><span class="code_comment"> </span><span class="code_comment">Rest</span><span class="code_comment"> </span><span class="code_comment">von</span><span class="code_comment"> </span><span class="code_comment">&quot;</span><span class="code_comment">zVorkomma</span><span class="code_comment">/</span><span class="code_comment">b</span><span class="code_comment">&quot;</span><span class="code_comment"> </span><span class="code_comment">vorne</span><span class="code_comment"> </span><span class="code_comment">an</span><span class="code_comment"> </span><span class="code_comment">Liste</span><span class="code_comment"> </span><span class="code_comment">yVorkomma</span><span class="code_comment"> </span><span class="code_comment">an</span><span class="code_comment"> </span><span class="code_comment">*/</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">zVorkomma</span> <span class="code_operator">:</span> <span class="code_function">floor</span>(<span class="code_variable">zVorkomma</span> <span class="code_operator">/</span> <span class="code_variable">b</span>) ),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while <span class="code_variable">zNachkomma</span><span class="code_operator">#</span><span class="code_number">0</span>.<span class="code_number">0</span> &nbsp;and <span class="code_function">length</span>(<span class="code_variable">yNachkomma</span>) &lt; <span class="code_variable">maxNachkomma</span> do <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">solange</span><span class="code_comment"> </span><span class="code_comment">zNachkomma</span><span class="code_comment"> </span><span class="code_comment">ungleich</span><span class="code_comment"> </span><span class="code_comment">0</span><span class="code_comment">.</span><span class="code_comment">0</span><span class="code_comment"> (</span><span class="code_comment">als</span><span class="code_comment"> </span><span class="code_comment">Gleitkommazahl</span><span class="code_comment">) </span><span class="code_comment">und</span><span class="code_comment"> </span><span class="code_comment">Abbruch</span><span class="code_comment"> </span><span class="code_comment">auch</span><span class="code_comment"> </span><span class="code_comment">bei</span><span class="code_comment"> </span><span class="code_comment">maximaler</span><span class="code_comment"> </span><span class="code_comment">Laenge</span><span class="code_comment"> </span><span class="code_comment">um</span><span class="code_comment"> </span><span class="code_comment">Endlosschleife</span><span class="code_comment"> </span><span class="code_comment">vorzubeugen</span><span class="code_comment"> </span><span class="code_comment">*/</span><BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="code_variable">r</span> <span class="code_operator">:</span> <span class="code_function">floor</span>(<span class="code_variable">b</span> <span class="code_operator">*</span> <span class="code_variable">zNachkomma</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">yNachkomma</span> <span class="code_operator">:</span> <span class="code_function">endcons</span>(<span class="code_variable">r</span>, <span class="code_variable">yNachkomma</span>), <span class="code_comment">/*</span><span class="code_comment"> </span><span class="code_comment">r</span><span class="code_comment"> </span><span class="code_comment">wird</span><span class="code_comment"> </span><span class="code_comment">hinten</span><span class="code_comment"> </span><span class="code_comment">an</span><span class="code_comment"> </span><span class="code_comment">Liste</span><span class="code_comment"> </span><span class="code_comment">yNachkomma</span><span class="code_comment"> </span><span class="code_comment">angehängt</span><span class="code_comment"> </span><span class="code_comment">*/</span><BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">zNachkomma</span> <span class="code_operator">:</span> <span class="code_variable">b</span> <span class="code_operator">*</span> <span class="code_variable">zNachkomma</span> <span class="code_operator">-</span> <span class="code_variable">r</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<span class="code_variable">yVorkomma</span>, <span class="code_variable">yNachkomma</span>, <span class="code_variable">b</span>])<span class="code_endofline">$</span><BR>
+<span class="code_function">B2dec</span>(<span class="code_variable">y</span>)<span class="code_operator">:</span><span class="code_operator">=</span>( <span class="code_variable">yVorkomma</span> <span class="code_operator">:</span> <span class="code_variable">y</span>[<span class="code_number">1</span>],<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">yNachkomma</span> <span class="code_operator">:</span> <span class="code_variable">y</span>[<span class="code_number">2</span>],<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">B</span> <span class="code_operator">:</span> <span class="code_variable">y</span>[<span class="code_number">3</span>],<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">z</span> <span class="code_operator">:</span> <span class="code_number">0</span>,<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for <span class="code_variable">i</span><span class="code_operator">:</span><span class="code_number">1</span> thru <span class="code_function">length</span>(<span class="code_variable">yVorkomma</span>) do<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">z</span> <span class="code_operator">:</span> <span class="code_variable">z</span> <span class="code_operator">+</span> <span class="code_variable">yVorkomma</span>[<span class="code_variable">i</span>] <span class="code_operator">*</span> <span class="code_variable">B</span><span class="code_operator">^</span>(<span class="code_function">length</span>(<span class="code_variable">yVorkomma</span>)<span class="code_operator">-</span><span class="code_variable">i</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for <span class="code_variable">i</span><span class="code_operator">:</span><span class="code_number">1</span> thru <span class="code_function">length</span>(<span class="code_variable">yNachkomma</span>) do<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_variable">z</span> <span class="code_operator">:</span> <span class="code_variable">z</span> <span class="code_operator">+</span> <span class="code_variable">yNachkomma</span>[<span class="code_variable">i</span>] <span class="code_operator">*</span> <span class="code_variable">B</span><span class="code_operator">^</span>(<span class="code_operator">-</span><span class="code_variable">i</span>),<BR>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code_function">float</span>(<span class="code_variable">z</span>))<span class="code_endofline">$</span><BR>
+<span class="code_function">B2b</span>(<span class="code_variable">y</span>,<span class="code_variable">b</span>,<span class="code_variable">maxNachkomma</span>)<span class="code_operator">:</span><span class="code_operator">=</span><span class="code_function">dec2b</span>(<span class="code_function">B2dec</span>(<span class="code_variable">y</span>), <span class="code_variable">b</span>, <span class="code_variable">maxNachkomma</span>)<span class="code_endofline">$</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">z</span> <span class="code_operator">:</span> <span class="code_number">12</span>.<span class="code_number">34</span><span class="code_endofline">;</span><BR>
+<span class="code_variable">y8</span> <span class="code_operator">:</span> <span class="code_function">dec2b</span>(<span class="code_variable">z</span>,<span class="code_number">8</span>,<span class="code_number">30</span>)<span class="code_endofline">;</span><BR>
+<span class="code_function">B2dec</span>(<span class="code_variable">y8</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o4) }\quad 12.34\]\[\mathrm{\tt (\%o5) }\quad [[1,4],[2,5,6,0,5,0,7,5,3,4,1,2,1,7,2,7],8]\]\[\mathrm{\tt (\%o6) }\quad 12.34\]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">y2</span> <span class="code_operator">:</span> <span class="code_function">B2b</span>(<span class="code_variable">y8</span>,<span class="code_number">2</span>,<span class="code_number">30</span>)<span class="code_endofline">;</span><BR>
+<span class="code_function">B2dec</span>(<span class="code_variable">y2</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o7) }\quad [[1,1,0,0],[0,1,0,1,0,1,1,1,0,0,0,0,1,0,1,0,0,0,1,1,1,1,0,1,0,1,1,1,0,0],2]\]\[\mathrm{\tt (\%o8) }\quad 12.33999999985098\]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">a</span><span class="code_operator">:</span><span class="code_function">B2dec</span>([[<span class="code_number">1</span>,<span class="code_number">2</span>,<span class="code_number">2</span>],[],<span class="code_number">3</span>])<span class="code_endofline">;</span><BR>
+<span class="code_variable">b</span><span class="code_operator">:</span><span class="code_function">B2dec</span>([[<span class="code_number">2</span>,<span class="code_number">1</span>],[],<span class="code_number">3</span>])<span class="code_endofline">;</span><BR>
+<span class="code_variable">c</span><span class="code_operator">:</span><span class="code_variable">a</span><span class="code_operator">*</span><span class="code_variable">b</span><span class="code_endofline">;</span><BR>
+<span class="code_function">dec2b</span>(<span class="code_variable">c</span>,<span class="code_number">3</span>,<span class="code_number">30</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o14) }\quad 17.0\]\[\mathrm{\tt (\%o15) }\quad 7.0\]\[\mathrm{\tt (\%o16) }\quad 119.0\]\[\mathrm{\tt (\%o17) }\quad [[1,1,1,0,2],[],3]\]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">a</span><span class="code_operator">:</span><span class="code_function">B2dec</span>([[<span class="code_number">1</span>,<span class="code_number">1</span>,<span class="code_number">0</span>],[],<span class="code_number">2</span>])<span class="code_endofline">;</span><BR>
+<span class="code_variable">b</span><span class="code_operator">:</span><span class="code_function">B2dec</span>([[<span class="code_number">1</span>,<span class="code_number">0</span>,<span class="code_number">0</span>],[],<span class="code_number">2</span>])<span class="code_endofline">;</span><BR>
+<span class="code_variable">c</span><span class="code_operator">:</span><span class="code_variable">a</span><span class="code_operator">/</span><span class="code_variable">b</span><span class="code_endofline">;</span><BR>
+<span class="code_function">dec2b</span>(<span class="code_variable">c</span>,<span class="code_number">2</span>,<span class="code_number">30</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o18) }\quad 6.0\]\[\mathrm{\tt (\%o19) }\quad 4.0\]\[\mathrm{\tt (\%o20) }\quad 1.5\]\[\mathrm{\tt (\%o21) }\quad [[1],[1],2]\]
+
+ <HR>
+ <SMALL> Created with <A HREF="http://wxmaxima.sourceforge.net/">wxMaxima</A>.</SMALL>
+ </BODY>
+</HTML>
