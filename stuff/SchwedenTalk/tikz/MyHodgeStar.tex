@@ -1,0 +1,25 @@
+\begin{tikzpicture}[>=latex, line width=2pt, scale=0.8]
+
+% vertex coords
+\coordinate (V1) at (0,-2);
+\coordinate (V2) at (0,2);
+\coordinate (V3) at (3,0);
+\coordinate (V4) at (-3,0);
+
+%points
+\fill(V1) circle(2pt);
+\fill(V2) circle(2pt);
+\fill(V3) circle(2pt);
+\fill(V4) circle(2pt);
+
+%arrows
+\draw[->] (V1) -- (V2) node [midway,left] {$e$} ;
+\draw[->] (V2) -- (V3) node [midway,above] {$\tilde{e}_{2}$};
+\draw[->] (V1) -- (V3) node [midway,below] {$\tilde{e}_{1}$};
+\draw[->] (V4) -- (V2) node [midway,above] {$\tilde{e}_{3}$};
+\draw[->] (V4) -- (V1) node [midway,below] {$\tilde{e}_{4}$};
+
+
+
+
+\end{tikzpicture}

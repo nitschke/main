@@ -1,0 +1,25 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.08.2 ] */
+
+/* [wxMaxima: input   start ] */
+fpprec:30$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+y:log(1.1b0);
+for n from 1 thru 20 do
+(y:1/n-10.0*y, print(y))$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+bfloat(integrate(x^20/(10+x),x,0,1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+y:0b0;
+for n from 30 step -1 thru 21 do
+(y:0.1*(1/n-y), print(y))$
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

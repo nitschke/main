@@ -1,0 +1,26 @@
+\begin{tikzpicture}[>=latex, line width=2pt, scale=0.8]
+
+% vertex coords
+\coordinate (V1) at (0,-2);
+\coordinate (V2) at (0,2);
+\coordinate (V3) at (3,0);
+\coordinate (V4) at (-3,0);
+
+%points
+\fill(V1) circle(2pt);
+\fill(V2) circle(2pt);
+\fill(V3) circle(2pt);
+\fill(V4) circle(2pt);
+
+%arrows
+\draw[->] (V1) -- (V2) node [midway,left=-35pt] {$-\frac{\left| e \right|}{\left| \star e \right|}\left(\frac{1}{\left|T_{1} \right|} +\frac{1}{\left|T_{2} \right|} \right)$} ;
+\draw[<-] (V2) -- (V3) node [midway,above=5pt] {$\frac{\left| e \right|}{\left| \star e \right|\left|T_{2} \right|}$};
+\draw[->] (V1) -- (V3) node [midway,below] {$\frac{\left| e \right|}{\left| \star e \right|\left|T_{2} \right|}$};
+\draw[->] (V4) -- (V2) node [midway,above=5pt] {$\frac{\left| e \right|}{\left| \star e \right|\left|T_{1} \right|}$};
+\draw[<-] (V4) -- (V1) node [midway,below] {$\frac{\left| e \right|}{\left| \star e \right|\left|T_{2} \right|}$};
+
+%define picture size
+\draw[opacity=0] (-3.1,-2.1) rectangle (3.1,2.3);
+
+
+\end{tikzpicture}

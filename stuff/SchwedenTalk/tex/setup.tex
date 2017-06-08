@@ -1,0 +1,162 @@
+\usepackage[german]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{csquotes}
+\usepackage{times}
+\usepackage{txfonts}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{upgreek}
+\usepackage{amssymb}
+\usepackage{multimedia}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{xy}
+\usepackage{paralist}
+\usepackage{pdfpages}
+% \usepackage[autoplay,every=1,type=png]{animate} % \usepackage[every=1]{animate}
+\usepackage{pdfanim}
+\setlength{\fboxrule}{5pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri,shapes,topaths}
+\usetikzlibrary{calc}
+\usepackage{multirow}
+
+\usepackage{tensor}
+\usepackage{multicol}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% USER DEFINED COMMANDS AND PATHS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\insertpicture}[2]{\begin{minipage}{#1}\centering\includegraphics[width=\textwidth]{#2}\end{minipage}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COLOR DEFINITIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{tublue}{rgb}{0.04,0.16,0.32}
+\definecolor{greycust}{rgb}{0.50,0.50,0.50}
+\definecolor{gwhite}{rgb}{0.99,0.99,0.99}
+\definecolor{tubluelight}{rgb}{0.12,0.45,0.87}
+\definecolor{altcol}{rgb}{0.8,0.0,0.0}      % AlertColor
+\definecolor{mygray}{gray}{0.8}
+\definecolor{mygray2}{gray}{0.6}
+\definecolor{headgray}{gray}{0.4}
+\newcommand{\red}{\color{red}}
+\newcommand{\black}{\color{black}}
+\newcommand{\tublue}{\color{tublue}}
+\setbeamercolor{normal text}{fg=tublue}%
+\setbeamercolor{structure}{fg=tublue}%
+\setbeamercolor{alerted text}{fg=tubluelight}%
+\setbeamercolor{section in toc}{fg=tublue}%
+\setbeamercolor{item}{fg=tubluelight}%
+\setbeamercolor{block title}{fg=tubluelight}%
+\setbeamercolor{footline}{fg=greycust}
+\setbeamercolor{background canvas}{bg=}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE CONFIGURATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\nframetitle}[1]{\frametitle{\hspace{9.4mm}\textcolor{tublue}{#1}}\vspace{-8mm}\vfill} % \put(3.5,4.8){\tiny \textbf{Department of Mathematics~}Institute of Scientific Computing}
+\newcommand{\newframesubtitle}[1]{\framesubtitle{\hspace{7mm} \textcolor{tublue}{#1}}}
+\newcommand{\newframesubtitletwo}[1]{\frametitle{\centering \Large #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HEADLINE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\useoutertheme[hoptionsi]{miniframes}
+
+% HEADER STYLE (16:10)
+\setbeamertemplate{headline}{
+	\begin{beamercolorbox}{section in head}
+		\vskip4pt
+		%%% TU LOGO
+		\begin{minipage}{33.5mm}
+			{\rule{2.5mm}{0pt}\rule[-0.5mm]{0pt}{3.5mm}\includegraphics[width=30mm]{pic/logo/tu_blau.pdf}}
+		\end{minipage}
+		\hfill
+		%%% NAVIGATION ITEMS
+		\begin{minipage}{85mm} % ADJUST THE WIDTH OF THIS MINIPAGE TO YOUR CONTENT
+			{\rule{4.5mm}{0pt}\insertnavigation{83mm}} % AND THIS
+		\end{minipage}
+		\hfill
+		%%% ADDITIONAL LOGO (if needed)
+		\begin{minipage}{15mm}
+			{\rule{2.5mm}{0pt}
+			%\includegraphics[height=10mm]{logo_ilr.pdf}
+		}
+		\end{minipage}
+		\vskip2pt
+		% DIVIDER BETWEEN HEADER AND CONTENT (TWO LINES)
+		\begin{minipage}{128mm}
+			\setlength{\unitlength}{1mm}
+			\begin{picture}(128,1.5)
+			\linethickness{.1mm} \put(-10,1.3){\line(1,0){175}}
+			\linethickness{.1mm} \put(-10,0){\line(1,0){175}}
+			\end{picture}
+		\end{minipage}
+	\end{beamercolorbox}
+} % 197.2 x 166.5
+% FOOTER STYLE
+\setbeamertemplate{footline}{
+	\vfill
+	\vspace{-10mm}
+	\begin{minipage}{\textwidth}
+		\rule{\textwidth}{.1mm}
+		\vskip2pt 
+		$\quad$\tiny Institute of Scientific Computing 
+		\hfill
+		\insertframenumber%\inserttotalframenumber
+		$\quad$\\
+		\vskip3pt
+	\end{minipage}
+}
+\setbeamersize{text margin left=12.9mm,text margin right=12.9mm}
+
+% Bibliography
+\usepackage[backend=bibtex,style=alphabetic,language=american]{biblatex}
+\bibliography{lib}
+\usepackage[draft]{todonotes}   % notes showed
+
+%% FOOTNOTE INDENTATION
+\makeatletter
+%\renewcommand\@makefntext[1]{\leftskip=2em\hskip-2em\@makefnmark#1}
+\renewcommand\@makefntext[1]{\leftskip=10pt\hskip-3.7pt\@makefnmark#1}
+\makeatother
+
+% user commands 
+\newcommand{\eg}{e.\,g.}%
+\newcommand{\formComma}{\,\text{,}}
+\newcommand{\formPeriod}{\,\text{.}}
+\newcommand{\R}{\mathbb{R}}%
+\newcommand{\xb}{\mathbf{x}}%
+\newcommand{\ub}{\mathbf{u}}%
+\newcommand{\tub}{\tilde{\ub}}%
+\newcommand{\tu}{\tilde{u}}%
+\newcommand{\vb}{\mathbf{v}}%
+\newcommand{\eb}{\mathbf{e}}%
+\newcommand{\gb}{\mathbf{g}}%
+\newcommand{\Xb}{\mathbf{x}}% parametrization X:{(theta,phi)} --> R3
+\newcommand{\fv}{\underline{\mathbf{f}}}
+\newcommand{\pv}{\underline{\mathbf{p}}}
+\newcommand{\scalarprod}[1]{\big\langle{#1}\big\rangle}%
+\newcommand{\exd}{\mathbf{d}} %exterior derivative
+\newcommand{\lie}{\mathcal{L}} %Lie-Ableitung
+\newcommand{\surf}{\mathcal{S}}
+\newcommand{\gaussianCurvature}{\kappa}
+\newcommand{\Grad}{\operatorname{grad}}
+\newcommand{\Div}{\operatorname{div}}%
+\newcommand{\Rot}{\operatorname{rot}}%
+\newcommand{\DivSurf}{\Div_{\surf}}%
+\newcommand{\GradSurf}{\Grad_{\surf}}
+\newcommand{\RotSurf}{\Rot_{\surf}}
+\newcommand{\laplaceBeltrami}{\Delta_{\surf}}
+\newcommand{\vecLaplace}{\boldsymbol{\Delta}}
+\newcommand{\laplaceDeRham}{\vecLaplace^{\textup{dR}}}
+\newcommand{\laplaceRotRot}{\vecLaplace^{\textup{RR}}}
+\newcommand{\laplaceGradDiv}{\vecLaplace^{\textup{GD}}}
+\newcommand{\LaplaceDeRham}{Laplace-deRham }
+\newcommand{\ProjectSurf}{\pi_\surf}
+\newcommand{\Tangent}{\mathsf{T}}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\landau}{\mathcal{O}} %landau symbol O
+\newcommand{\SC}{\mathcal{K}} % simplicial complex
+\newcommand{\Vs}{\mathcal{V}} % set of vertices
+\newcommand{\Es}{\mathcal{E}} % set of edges
+\newcommand{\Fs}{\mathcal{T}} % set of faces
+\newcommand{\face}{T} % one face
+\newcommand{\FormSpace}{\Lambda^{1}} % space of 1 forms
+\newcommand{\U}{u} %Komponenten des Geschwindigkeitfeldes
+\newcommand{\Ub}{\mathbf{\U}} %Geschwindigkeitsfeld
+\newcommand{\tU}{\tilde{u}} %Komponenten des Geschwindigkeitfeldes
+\newcommand{\tUb}{\mathbf{\tU}} %Geschwindigkeitsfeld
+\newcommand{\lc}{\mathbf{E}} % Levi-Civita-Tensor
+

@@ -1,0 +1,406 @@
+\documentclass[15pt,t,aspectratio=1610]{beamer}
+
+%%% INCLUDE TEX SETUP
+\input{tex/setup}
+
+\begin{document}
+
+	%%% TITLEPAGE
+	\input{tex/titlepage}
+
+	%%% TABLE OF CONTENTS 
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents
+	\end{frame}
+
+  \section{Motivation}
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents[current]
+	\end{frame}
+
+  \begin{frame}
+    \nframetitle{Navier-Stokes Equation\footnotemark[1]}
+    \begin{itemize}
+      \item Smooth Riemannian surface \( \surf \) without boundary
+      \item Inextensible homogeneous medium
+      \item No external forces
+      \item Tangential surface velocity field: \( \vb(t)\in\Tangent\surf \)
+      \item Conservation of mass:\quad \( \Div\vb = 0 \)
+      \item Conservation of linear momentum:\quad \( \rho\left(\partial_{t}\vb + \nabla_{\vb}\vb\right) = \Div\mathbf{\sigma} \)
+      \item Surface Cauchy stress tensor:
+            \( \tensor[^{\flat}]{\mathbf{\sigma}}{^{\flat}} = -p\gb + \mu\lie_{\vb}\gb \)
+      \item \( \Rightarrow\quad \partial_{t}\vb + \nabla_{\vb} \vb = - \Grad p + \frac{1}{\text{Re}} \left(- \laplaceDeRham \vb + 2 \gaussianCurvature \vb \right)\)
+      \item Laplace-DeRham:\quad \(- \laplaceDeRham \vb = \Div\Grad\vb - \gaussianCurvature \vb  \) \quad (Weitzenb"ock)
+    \end{itemize}
+		\vskip10pt
+		\footnotetext[1]{\tiny\fullcite{ArroyoDeSimone_PRE_2009}\vskip0pt}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Vorticity Equation}
+          \begin{align}
+            \begin{aligned}
+            \partial_{t}\vb + \nabla_{\vb} \vb &= - \Grad p + \frac{1}{\text{Re}} \left(- \laplaceDeRham \vb + 2 \gaussianCurvature \vb \right)
+              &\text{and}&&\Div\vb &= 0
+              \end{aligned}\tag{NSE}
+          \end{align}
+    \begin{itemize}
+      \item Streamfunction: \( \psi \) with \( \vb = \Rot\psi \)
+      \item Vorticity: \( \Rot\vb = \Delta\psi \)
+      \item Applying \( \Rot \) on (NSE): 
+        \begin{align}
+          \partial_{t}\Delta\psi + \left\langle \Rot\psi , \Grad\Delta\psi \right\rangle &= \frac{1}{\text{Re}}\left( \Delta^{2}\psi + 2\Div\left( \gaussianCurvature\Grad\psi \right) \right)
+          \tag{VE}
+        \end{align}
+      \item Approaches:\quad \eg 
+        \begin{itemize}
+          \item Surface Finite Element Method\footnotemark[1]\footnotemark[2] (SFEM)
+          %\item Diffuse Interface\footnotemark[3]\footnotemark[4] (DI)
+          \item Diffuse Interface\footnotemark[3] (DI)
+            \item Discrete Exterior Calculus (DEC)
+        \end{itemize}
+    \end{itemize}
+		\vskip5pt
+		\footnotetext[1]{\tiny\fullcite{Nitschkeetal_JFM_2012}}
+		\footnotetext[2]{\tiny\fullcite{Reutheretal_MMS_2015}}
+		%\footnotetext[3]{\tiny\fullcite{Raetzetal_CMS_2006}}
+		\footnotetext[3]{\tiny\fullcite{Reutheretal_JCP_2016}\vskip0pt}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Vorticity Equation}
+        \begin{align}
+          \partial_{t}\Delta\psi + \left\langle \Rot\psi , \Grad\Delta\psi \right\rangle &= \frac{1}{\text{Re}}\left( \Delta^{2}\psi + 2\Div\left( \gaussianCurvature\Grad\psi \right) \right)
+          \tag{VE}
+        \end{align}
+    \begin{itemize}
+      \item \textbf{Drawback}: reduced solution space for genus \( g(\surf)\ne 0 \)  (\eg\ Torus)
+      \item Hodge decomposition:\quad
+            \( \vb = \Rot\psi + \Grad\varphi + \vb_{\text{Harm}}  \)
+      \item Harmonic vector field \( \vb_{\text{Harm}}\in\Tangent_{\text{Harm}}\surf \):\quad
+            \( \Div\vb_{\text{Harm}} = \Rot\vb_{\text{Harm}} = 0 \)
+      \item For \( g(\surf)\ne 0 \):\quad \( \operatorname{dim}_{\R}\Tangent_{\text{Harm}}\surf \ne 0 \)
+      \item \( \Rightarrow \)\quad On the Torus, \( \vb=0 \) is the only stationary solution for arbitrary \( \text{Re} \).
+            \quad \textbf{Contradicting} the existence of stationary Killing vector Fields \( \vb_{\text{Kill}}\ne 0 \), where \( \lie_{\vb_{\text{Kill}}}\gb = 0 \). 
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Navier-Stokes Equation}
+          \begin{align}
+            \begin{aligned}
+            \partial_{t}\vb + \nabla_{\vb} \vb &= - \Grad p + \frac{1}{\text{Re}} \left(- \laplaceDeRham \vb + 2 \gaussianCurvature \vb \right)
+              &\text{and}&&\Div\vb &= 0
+              \end{aligned}\tag{NSE}
+          \end{align}
+    \begin{itemize}
+      \item Approaches:
+          \begin{itemize}
+            \item Vector Spherical Harmonics\footnotemark[1] (VSH)
+              \begin{itemize}
+                \item Needs eigen function of \( \Delta \) \( \leadsto \) difficult for arbitrary surfaces
+              \end{itemize}
+            \item SFEM\footnotemark[1] of coordinate function on the embedding space \( \R^{3} \):
+              \begin{itemize}
+                \item Huge amount of assembling effort
+                \item \eg\  for \( I,J,K\in\left\{ x,y,z \right\} \):\quad
+                  \( \int_{\surf}\left\langle \Grad\tilde{\vb},  \Grad\tilde{\Psi} \right\rangle \mu 
+                       = \quad \quad\int_{\surf} \tensor{\Pi}{^{I}_{J}}\tilde{v}_{I:K}\tilde{\Psi}^{J:K}
+                             + \nu_{J}\tensor{B}{^{K}_{I}}\tensor{\tilde{v}}{^{I}_{:K}}\tilde{\Psi}^{J}
+                             + \nu_{I}\tensor{B}{^{K}_{J}}\tilde{v}^{I}\tensor{\tilde{\Psi}}{^{J}_{:K}}
+                             + \left( \mathcal{H}^{2} - 2\gaussianCurvature \right)\nu_{I}\nu_{J}\tilde{v}^{I}\tilde{\Psi}^{J} \mu\)
+              \end{itemize}
+            \item Special FE-Spaces
+              \begin{itemize}
+                \item \eg\ Brezzi-Douglas-Marini or Raviart-Thomas elements\footnotemark[2]
+              \end{itemize}
+            \item Discrete Exterior Calculus\footnotemark[1]\footnotemark[3] (DEC)
+          \end{itemize}
+    \end{itemize}
+		\footnotetext[1]{\tiny\fullcite{Nestleretal_arXiv_2016}}
+		\footnotetext[2]{\tiny\fullcite{Arnoldetal_AN_2006}}
+		\footnotetext[3]{\tiny\fullcite{Hirani_2003}\vskip0pt}
+  \end{frame}
+
+  \section{Exterior Calculus Description and Time-discrete equations}
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents[current]
+	\end{frame}
+	
+  \begin{frame}
+    \nframetitle{Navier-Stokes Equation - Exterior Calculus Description}
+          \begin{align}
+            \begin{aligned}
+            \partial_{t}\alt<3->{\ub}{\vb} + \alt<9->{\frac{1}{2}\exd\left\| \ub \right\|^{2} + \left( *\exd\ub \right)\left( *\ub \right)}{\nabla_{\vb}\alt<3->{\ub}{\vb}} 
+                  &= -\alt<4->{\exd}{\Grad} p + \frac{1}{\text{Re}} \left(\alt<7->{*\exd*\exd}{-\laplaceDeRham}\alt<3->{\ub}{\vb} + 2 \gaussianCurvature\alt<3->{\ub}{\vb} \right)
+              &\text{and}&&\alt<4->{*\exd *}{\Div}\alt<3->{\ub}{\vb} &= 0
+              \end{aligned}\tag{NSE}
+          \end{align}
+    \begin{itemize}
+      \item<1-> Operators are metric compatible 
+            \( \leadsto \) lower indices without changing operators
+      \item<2-> \( \ub:=\vb^{\flat}\in\Tangent^{*}\surf=\FormSpace\surf \)
+      \item<5-> \( p\in\Lambda^{0}\surf \)
+      \item<6-> \( - \laplaceDeRham \ub = *\exd*\exd\ub +\exd*\exd*\ub =   *\exd*\exd\ub \)
+      \item<8-> \( \nabla_{\vb}\ub = \frac{1}{2}\exd\left\| \ub \right\|^{2} + \left( *\exd\ub \right)\left( *\ub \right) \)
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Time-discrete equations}
+    \begin{itemize}
+      \item Solution at time \( t_{k} \):\quad \( \ub_{k}\in\FormSpace\surf \)
+      \item Initial condition for \( k=0 \):\quad \( \ub_{0} := \ub(t=0) \)
+      \item \( \nabla_{\ub^{\sharp}_{k+1}}\ub_{k+1} = \nabla_{\ub^{\sharp}_{k}}\ub_{k+1} + \nabla_{\ub^{\sharp}_{k+1}}\ub_{k} - \nabla_{\ub^{\sharp}_{k}}\ub_{k}\)
+                  \(= \exd\left( \left\langle \ub_{k+1},\ub_{k} \right\rangle - \frac{1}{2}\left\| \ub_{k} \right\|^{2} \right)
+                       +\left( *\exd\ub_{k+1} - *\exd\ub_{k} \right)\left( *\ub_{k} \right) - \left( *\exd**\ub_{k} \right)\left( *\ub_{k+1} \right)\in\FormSpace\surf\)
+      \item Generalized pressure:\quad \( q_{k+1} := p_{k+1} + \left\langle \ub_{k+1},\ub_{k} \right\rangle - \frac{1}{2}\left\| \ub_{k} \right\|^{2} \in \Lambda^{0}\surf  \)
+    \end{itemize}
+    \begin{align}
+      \begin{aligned}
+    	\frac{1}{\tau_{k}}\ub_{k+1} + \exd q_{k+1} + (* \exd \ub_{k+1})(* \ub_{k}) - (*\exd * )&(* \ub_{k})(* \ub_{k+1}) \nonumber \\ 
+    	- \frac{1}{\text{Re}} \left(  (*\exd * \exd) \ub_{k+1} + 2\gaussianCurvature \ub_{k+1} \right) &= \frac{1}{\tau_{k}}\ub_{k} + (* \exd\ub_{k})(* \ub_{k}) \\
+    	\left\langle \ub_{k+1}, \ub_{k} \right\rangle + p_{k+1} - q_{k+1} &= \frac{1}{2}\left\| \ub_{k} \right\|^{2} \\
+    	* \exd * \ub_{k+1} &= 0 
+      \end{aligned}\tag{TDNSE}
+    \end{align}
+  \end{frame}
+
+  \section{DEC Discretization}
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents[current]
+	\end{frame}
+  \begin{frame}
+    \nframetitle{Surface Discretization}
+    \begin{minipage}{.5\textwidth}
+    \begin{itemize}
+      \item<1-> Simplicial Complex:\quad \( \SC=\Vs\sqcup\Es\sqcup\Fs \)
+      \item<2-> \( \surf\approx\left| \SC \right| \)
+      \item<3-> well-centered, orientable
+      \item<4-> Dual cell \( \star v \)
+      \item<5-> Dual edges \( \star e \)
+      \item<6-> Dual vertices \( \star\face \)
+      \item<7-> Not restricted to triangle faces
+    \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{.49\textwidth}
+      \begin{overprint}
+        \onslide<1> \centering\input{tikz/VCellDecomp_1.tex}
+        \onslide<2> \centering\includegraphics[width=\textwidth]{pic/torusgrid.png}
+        \onslide<3> \centering\input{tikz/VCellDecomp_2.tex}
+        \onslide<4> \centering\input{tikz/VCellDecomp_3.tex}
+        \onslide<5> \centering\input{tikz/VCellDecomp_4.tex}
+        \onslide<6> \centering\input{tikz/VCellDecomp_5.tex}
+        \onslide<7> \centering\input{tikz/staggeredGrid_n2.tex}
+      \end{overprint}
+    \end{minipage}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Degrees Of Freedom (DOFs)}
+    \begin{itemize}
+      \item<1-> Discrete differential forms maps simplices to integral values over their.
+      \item<2-> 0-form \( p_{h}\in\Lambda^{0}_{h}\SC \):\quad \( p_{h}(v) = \int_{\pi(v)}p = p(v) \)
+      \item<3-> 1-form \( u_{h}\in\Lambda^{1}_{h}\SC \):\quad \( u_{h}(e) = \int_{\pi(e)}\ub\)
+             \begin{itemize}
+              \item<4-> \( u_{h}(e) \approx \ub(\mathbf{e}) = \left\langle \vb, \mathbf{e} \right\rangle \) on an intermediate point \(\xi\in\pi(e)\subset\surf  \).
+             \end{itemize}
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Discrete Hodge Operator}
+    \begin{overprint}
+    \onslide<1-6>
+        \begin{itemize}
+          \item<1-> \( p_{h}\in\Lambda^{0}_{h}\SC \),\quad  \( u_{h}\in\Lambda^{1}_{h}\SC \),\quad \( \omega_{h}\in\Lambda^{2}_{h}\SC \)
+        \end{itemize}
+        \begin{multicols}{2}
+          \begin{itemize}
+            \item<2-> \( (*p)_{h}(\face) \approx  \left|\face \right|p_{h}(\star\face) \)\vspace{1pt}
+            \item<3-> \( (*\omega)_{h}(v) \approx  \frac{1}{\left| \star v \right|}\omega_{h}\left( \star v \right) \)\vspace{3pt}
+            \item<4-> \( (*u)_{h}(e) \approx -\frac{\left| e \right|}{\left| \star e \right|}u_{h}(\star e) \)
+          \end{itemize}
+          \columnbreak
+          \begin{itemize}
+            \item<2-> \( (*p)_{h}(\star v) \approx  \left| \star v \right|p_{h}(v) \)
+            \item<3-> \( (*\omega)_{h}(\star\face) \approx \frac{1}{\left| T \right|}\omega_{h}\left( T \right)\)
+            \item<4-> \( (*u)_{h}(\star e) \approx \frac{\left| \star e \right|}{\left| e \right|}u_{h}(e) \)
+          \end{itemize}
+        \end{multicols}
+        \begin{itemize}
+          \item<5-> Many other ways to define a discrete Hodge star operator\footnotemark[1] 
+        \end{itemize}
+    \onslide<7> \centering\input{tikz/MyHodgeStar.tex}
+    \onslide<8>
+        \begin{align}
+          \begin{aligned}
+        	\frac{1}{\tau_{k}}\ub_{k+1} + \exd q_{k+1} + (* \exd \ub_{k+1})({\color{altcol}* \ub_{k}}) - (*\exd * )&({\color{altcol}* \ub_{k}})({\color{altcol}* \ub_{k+1}}) \nonumber \\ 
+        	- \frac{1}{\text{Re}} \left(  (*\exd * \exd) \ub_{k+1} + 2\gaussianCurvature \ub_{k+1} \right) &= \frac{1}{\tau_{k}}\ub_{k} + (* \exd\ub_{k})({\color{altcol}* \ub_{k}}) \\
+        	{\color{altcol}\left\langle \ub_{k+1}, \ub_{k} \right\rangle} + p_{k+1} - q_{k+1} &= \frac{1}{2}{\color{altcol}\left\| \ub_{k} \right\|^{2}} \\
+        	* \exd * \ub_{k+1} &= 0 
+          \end{aligned}\tag{TDNSE}
+        \end{align}
+    \end{overprint}
+    \vspace{-93pt}
+    \begin{itemize}
+      \item<6-> \eg\vspace{-25pt}
+        \begin{align*}
+        	\left( *\ub \right)_{h}(e) &\approx \circledast u_h(e) \\
+        	&:= \frac{1}{4}\sum_{\face \succ e}\sum_{\substack{\tilde{e}\prec\face\\\tilde{e}\ne e}} \frac{s_{e\tilde{e}}}{\sqrt{\left| e \right|^{2}\left| \tilde{e} \right|^{2} - \left( \vect{e}\cdot\tilde{\vect{e}}\right)^{2}}} \left( \left( \vect{e}\cdot\tilde{\vect{e}} \right) u_h(e) -\left| e \right|^{2} u_h(\tilde{e}) \right)
+        \end{align*}
+    \vspace{-15pt}
+    \end{itemize}
+		\footnotetext[1]{\tiny\fullcite{Mohamed_CAD_2016}\vskip0pt}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Operator Discretizations\footnotemark[1]}
+    \begin{overprint}
+      \onslide<1,7,10,13,15>
+        \begin{align}
+          \begin{aligned}
+        	\frac{1}{\tau_{k}}\ub_{k+1} + \exd q_{k+1} 
+              + \alt<7>{{\color{altcol}(* \exd \ub_{k+1})(* \ub_{k})}}{(* \exd \ub_{k+1})(* \ub_{k})} 
+              -\alt<13>{{\color{altcol}(*\exd * )}}{(*\exd * )} & \alt<13>{{\color{altcol}(* \ub_{k})(* \ub_{k+1})}}{(* \ub_{k})(* \ub_{k+1})} \nonumber \\ 
+        	    - \frac{1}{\text{Re}} \left(  \alt<1>{{\color{altcol}(*\exd * \exd) \ub_{k+1}}}{(*\exd * \exd) \ub_{k+1}} + 2\gaussianCurvature \ub_{k+1} \right) 
+          &= \frac{1}{\tau_{k}}\ub_{k} + (* \exd\ub_{k})(* \ub_{k}) \\
+        	\alt<15>{{\color{altcol}\left\langle \ub_{k+1}, \ub_{k} \right\rangle}}{\left\langle \ub_{k+1}, \ub_{k} \right\rangle} + p_{k+1} - q_{k+1} &= \frac{1}{2}\left\| \ub_{k} \right\|^{2} \\
+        	\alt<10>{{\color{altcol}* \exd * \ub_{k+1}}}{* \exd * \ub_{k+1}} &= 0 
+          \end{aligned}\tag{TDNSE}
+        \end{align}
+      \onslide<2> \centering\input{tikz/rotrot_edges.tex}
+      \onslide<3> \centering\input{tikz/rotrot_factors.tex}
+      \onslide<4-5> \centering\input{tikz/rotrot_staggered.tex}
+      \onslide<6> \centering\input{tikz/rotrot_staggered_factors.tex}
+      \onslide<8> \centering\input{tikz/rothodge_edges.tex}
+      \onslide<9> \centering\input{tikz/rothodge_factors.tex}
+      \onslide<11,16> \centering\input{tikz/div_edges.tex}
+      \onslide<12> \centering\input{tikz/div_voronoi.tex}
+      \onslide<14> \centering\input{tikz/divhodge_voronoi.tex}
+    \end{overprint}
+    \vspace{-100pt}
+    \begin{overprint}
+      \onslide<1-4>
+        \begin{align*}
+          ( *\exd * \exd \ub_{k+1})_{h} (e) &\approx -\frac{\left| e \right|}{\left| \star e \right|} \sum_{\face\succ e} \frac{s_{\face,e}}{\left| \face \right|} \sum_{\tilde{e}\prec\face}
+          s_{\face,\tilde{e}}\, (\ub_{k+1})_{h}(\tilde{e})
+          =: ( *\exd * \exd)_{h} (\ub_{k+1})_{h} (e)
+        \end{align*}
+      \onslide<5-6>
+        \begin{align*}
+          (\Rot\Rot u)^{y}_{i,j} &=
+	          \frac{1}{h^{2}}\left(  - 2u^{y}_{i,j} + u^{y}_{i+1,j} +  u^{y}_{i-1,j}
+						-u^{x}_{i,j} + u^{x}_{i,j+1}
+						-u^{x}_{i-1,j+1} +u^{x}_{i-1,j} \right) + \landau(h^{2})
+        \end{align*}
+      \onslide<7-9>
+        \begin{align*}
+          \left((* \exd \ub_{k+1})(*\ub_{k})\right)_{h}(e) &\approx \frac{(*\ub_{k})_{h}(e)}{\sum_{\face\succ e}|\face|}
+          \sum_{\face\succ e}\sum_{\tilde{e}\prec\face}s_{\face,\tilde{e}}(\ub_{k+1})_{h}(\tilde{e})
+            =:((* \ub_{k})(* \exd ))_{h}(\ub_{k+1})_{h}
+        \end{align*}
+      \onslide<10-12>
+          \begin{align*}
+            (*\exd * \ub_{k+1})_{h}(v) &\approx -\frac{1}{|\star v|}\sum_{\tilde{e}\succ v}s_{v,\tilde{e}}\frac{|\star \tilde{e}|}{|\tilde{e}|}(\ub_{k+1})_{h}(\tilde{e})
+              =: (*\exd *)_{h} (\ub_{k+1})_{h}(v)
+          \end{align*}
+      \onslide<13>
+        \begin{align*}
+          \left((*\exd * )(*\ub_{k})(* \ub_{k+1})\right)_{h}(e) &\approx -\frac{1}{2}\left( \sum_{v\prec e} \frac{1}{|\star v|}\sum_{\tilde{e}\succ v}
+                        s_{v,\tilde{e}}\frac{|\star \tilde{e}|}{|\tilde{e}|}(*\ub_{k})_{h}(\tilde{e}) \right) (*\ub_{k+1})_{h}(e)
+        \end{align*}
+      \onslide<14>
+        \begin{align*}
+          \hspace{-10pt}
+          \left((*\exd * )(*\ub_{k})(* \ub_{k+1})\right)_{h}(e) &\approx \frac{1}{2}\left( \sum_{v\prec e} (*\exd*)_{h}(*\ub_{k})_{h}(v)\right) (*\ub_{k+1})_{h}(e)
+              =: ((*\exd * )(* \ub_{k}))_{h}(* \ub_{k+1})_{h}
+        \end{align*}
+      \onslide<15-16>
+        \begin{align*}
+          \left\langle \ub_{k+1} , \ub_{k} \right\rangle_{h}(v)
+              &\approx \frac{1}{4\left| \star v \right|}\sum_{\tilde{e}\succ v} 
+              \frac{\left| \star \tilde{e} \right|}{\left| \tilde{e} \right|} \left( (\ub_{k})_{h}(\tilde{e}) (\ub_{k+1})_{h}(\tilde{e}) 
+                                                          + \left( *\ub_{k} \right)_{h}(\tilde{e}) \left( *\ub_{k+1} \right)_{h}(\tilde{e}) \right)
+        \end{align*}
+    \end{overprint}
+    \footnotetext[1]{\tiny\fullcite{nitschke_etal_2016}\vskip0pt}
+  \end{frame}
+
+  \begin{frame}
+    \nframetitle{Fully-discrete equations}
+    \begin{itemize}
+      \item 
+          For \( k=0,1,\ldots \) and given initial values \((\ub_{0})_{h}  \) and \((* \ub_{0})_{h}  \), 
+          find \( (\ub_{k+1})_{h}, (* \ub_{k+1})_{h} \in \Lambda^{1}_{h}\SC \) and \( (p_{k+1})_{h},(q_{k+1})_{h}\in \Lambda^{0}_{h}\SC  \) s.t.
+    \end{itemize}
+    \begin{align}
+      \begin{aligned}
+      \circledast(\ub_{k+1})_{h} - (* \ub_{k+1})_{h} &= 0 &&\text{in } \Es\\
+    	\frac{1}{\tau_{k}}(\ub_{k+1})_{h} + (\exd q_{k+1})_{h} 
+          + ((* \ub_{k})(* \exd ))_{h}(\ub_{k+1})_{h} 
+          &- ((*\exd * )(* \ub_{k}))_{h}(* \ub_{k+1})_{h} \nonumber \\ 
+    	- \frac{1}{\text{Re}} \left(  (*\exd * \exd)_{h} (\ub_{k+1})_{h} + 2\gaussianCurvature (\ub_{k+1})_{h} \right) 
+                    &= \frac{1}{\tau_{k}}(\ub_{k})_{h} + ((* \ub_{k})(* \exd ))_{h}(\ub_{k})_{h}  &&\text{in } \Es \\
+    	\left\langle \cdot, \ub_{k} \right\rangle_{h}\left[ (\ub_{k+1})_{h}, (*\ub_{k+1})_{h} \right] 
+            + (p_{k+1})_{h} - (q_{k+1})_{h} &= \left\langle \cdot, \ub_{k} \right\rangle_{h}\left[ (\ub_{k})_{h}, (*\ub_{k})_{h} \right] &&\text{in } \Vs\\
+    	(* \exd *)_{h} (\ub_{k+1})_{h} &= 0 &&\text{in } \Vs
+      \end{aligned}\tag{DECNSE}
+    \end{align}
+  \end{frame}
+	
+	\section{Eins}
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents[current]
+	\end{frame}
+	\begin{frame}
+		\nframetitle{Experimental Setup}
+		\vskip20pt
+		\begin{center}
+			\begin{minipage}{0.41\textwidth}
+				\begin{itemize}
+					\item Experiment and Model\footnotemark[1]
+					\item Shear flow through chamber
+					\item Qualitative and quantitative results
+				\end{itemize}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{0.55\textwidth}
+				\centering
+				\insertpicture{\textwidth}{pic/test.png}
+			\end{minipage}
+		\end{center}
+		\vskip10pt
+		\footnotetext[1]{\tiny\fullcite{HonerkampSmith_PRL_2013}\vskip0pt}
+	\end{frame}
+	
+	\section{Zwei}
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents[current]
+	\end{frame}
+	\begin{frame}
+		\nframetitle{}
+		\vskip20pt
+	\end{frame}
+	
+	\section{Drei}
+	\begin{frame}
+		\nframetitle{Content}
+		\tableofcontents[current]
+	\end{frame}
+	\begin{frame}
+		\nframetitle{}
+		\vskip20pt
+	\end{frame}
+	
+	\input{tex/thanks.tex}
+\end{document}
+
+
